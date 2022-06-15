@@ -18,9 +18,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'role',
+        'NIDK',
         'password',
+        'level_akses',
     ];
 
     /**
@@ -41,4 +42,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $primaryKey = 'NIDK';
 }

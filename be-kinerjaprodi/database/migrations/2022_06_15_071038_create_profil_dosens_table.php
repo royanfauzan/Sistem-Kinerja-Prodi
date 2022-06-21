@@ -14,7 +14,8 @@ class CreateProfilDosensTable extends Migration
     public function up()
     {
         Schema::create('profil_dosens', function (Blueprint $table) {
-            $table->id('id_dosen');
+            $table->id();
+            $table->foreignId('id_dosen');
             $table->string('NamaDosen');
             $table->string('NIK');
             $table->string('TempatLahir');

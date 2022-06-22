@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\profilDosen;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -78,13 +79,14 @@ class ApiController extends Controller
                 ], 500);
         }
 
-        $user = User::where('NIDK',$request->NIDK)->get();
+        $user = User::where('NIDK',$request->NIDK)->first();
  	
  		//Token created, return with success response and jwt token
         return response()->json([
             'success' => true,
             'token' => $token,
             'user' => $user,
+            'userProfile' => $user->profilDosen
         ]);
     }
 
@@ -126,5 +128,9 @@ class ApiController extends Controller
  
     //     return response()->json(['user' => $user]);
     // }
+
+    public function tester(Request $request){
+        return response()->json(['Sukses' => true]);
+    }
 
 }

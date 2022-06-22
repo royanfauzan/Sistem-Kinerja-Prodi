@@ -15,7 +15,7 @@ class CreateProfilDosensTable extends Migration
     {
         Schema::create('profil_dosens', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_dosen');
+            $table->foreignId('NIDK');
             $table->string('NamaDosen');
             $table->string('NIK');
             $table->string('TempatLahir');
@@ -23,12 +23,12 @@ class CreateProfilDosensTable extends Migration
             $table->string('JenisKelamin');
             $table->string('StatusPerkawinan');
             $table->string('Agama');
-            $table->string('Golongan');
-            $table->string('Pangkat');
-            $table->string('JabatanAkademik');
-            $table->string('Alamat');
-            $table->string('NoTelepon');
-            $table->string('Email');
+            $table->string('Golongan')->default("");
+            $table->string('Pangkat')->default("");
+            $table->string('JabatanAkademik')->default("");
+            $table->string('Alamat')->default("");
+            $table->string('NoTelepon')->default("");
+            $table->string('Email')->default("");
             $table->timestamps();
         });
     }

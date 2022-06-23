@@ -60,7 +60,7 @@ class DetaildosenController extends Controller
 
             $dokumen = $request->file('fileBukti');
 
-            $namaFiledokumen = preg_replace('/\s+/', '_', trim($dokumen->getClientOriginalName())) . "-". time() . "." . $dokumen->getClientOriginalExtension();
+            $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".",$dokumen->getClientOriginalName(),2)[0])) . "-". time() . "." . $dokumen->getClientOriginalExtension();
 
             $dokumen->move($folderdokumen, $namaFiledokumen);
 
@@ -74,10 +74,10 @@ class DetaildosenController extends Controller
 
         $dtDosen = Detaildosen::create([
             'profil_dosen_id'=>$request->profil_dosen_id,
-            'bidangKeahlian'=>$request->profil_dosen_id,
-            'kesesuaian'=>$request->profil_dosen_id,
-            'jabatanAkademik'=>$request->profil_dosen_id,
-            'noSertifPendidik'=>$request->profil_dosen_id,
+            'bidangKeahlian'=>$request->bidangKeahlian,
+            'kesesuaian'=>$request->kesesuaian,
+            'jabatanAkademik'=>$request->jabatanAkademik,
+            'noSertifPendidik'=>$request->noSertifPendidik,
             "fileBukti" => $finalPathdokumen,
         ]);
 

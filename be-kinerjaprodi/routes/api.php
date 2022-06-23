@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\DetaildosenController;
+use App\Http\Controllers\ProfildosenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +22,16 @@ use App\Http\Controllers\ApiController;
 // });
 
 Route::post('login', [ApiController::class, 'authenticate']);
+
+Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::get('testmid', [ApiController::class, 'tester']);
+});
+
+Route::group(['middleware' => ['adminonly']], function() {
+    Route::get('testadmin', [ApiController::class, 'tester']);
+    Route::post('profildosens', [ProfildosenController::class, 'store']);
+});
+
+Route::group(['middleware' => ['dosenonly']], function() {
+    Route::post('detildosens', [DetaildosenController::class, 'store']);
+});

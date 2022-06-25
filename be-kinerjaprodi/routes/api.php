@@ -4,7 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\DetaildosenController;
-use App\Http\Controllers\ProfildosenController;
+use App\Http\Controllers\MitraController;
+use App\Http\Controllers\KerjasamaController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,13 +24,13 @@ use App\Http\Controllers\ProfildosenController;
 // });
 
 Route::post('login', [ApiController::class, 'authenticate']);
-Route::post('created', [ApiController::class, 'insertmitra']);
-Route::post('updated/{id}', [ApiController::class, 'editmitra']);
-Route::post('delete/{id}', [ApiController::class, 'deletemitra']);
+Route::post('created', [MitraController::class, 'insertmitra']);
+Route::post('updated/{id}', [MitraController::class, 'editmitra']);
+Route::post('delete/{id}', [MitraController::class, 'deletemitra']);
 
-Route::post('create_kjs', [ApiController::class, 'insertkerjasama']);
-Route::post('update_kjs/{id}', [ApiController::class, 'editkerjasama']);
-Route::post('delete_kjs/{id}', [ApiController::class, 'delete_kjs']);
+Route::post('create_kjs', [KerjasamaController::class, 'insertkerjasama']);
+Route::post('update_kjs/{id}', [KerjasamaController::class, 'editkerjasama']);
+Route::post('delete_kjs/{id}', [KerjasamaController::class, 'delete_kjs']);
 
 
 Route::group(['middleware' => ['jwt.verify']], function () {

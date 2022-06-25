@@ -22,16 +22,24 @@ use App\Http\Controllers\ProfildosenController;
 // });
 
 Route::post('login', [ApiController::class, 'authenticate']);
+Route::post('created', [ApiController::class, 'insertmitra']);
+Route::post('updated/{id}', [ApiController::class, 'editmitra']);
+Route::post('delete/{id}', [ApiController::class, 'deletemitra']);
 
-Route::group(['middleware' => ['jwt.verify']], function() {
+Route::post('create_kjs', [ApiController::class, 'insertkerjasama']);
+Route::post('update_kjs/{id}', [ApiController::class, 'editkerjasama']);
+Route::post('delete_kjs/{id}', [ApiController::class, 'delete_kjs']);
+
+
+Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('testmid', [ApiController::class, 'tester']);
 });
 
-Route::group(['middleware' => ['adminonly']], function() {
+Route::group(['middleware' => ['adminonly']], function () {
     Route::get('testadmin', [ApiController::class, 'tester']);
     Route::post('profildosens', [ProfildosenController::class, 'store']);
 });
 
-Route::group(['middleware' => ['dosenonly']], function() {
+Route::group(['middleware' => ['dosenonly']], function () {
     Route::post('detildosens', [DetaildosenController::class, 'store']);
 });

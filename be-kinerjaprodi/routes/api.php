@@ -17,7 +17,6 @@ use App\Http\Controllers\MitraController;
 use App\Http\Controllers\KerjasamaController;
 use App\Http\Controllers\MahasiswaAsingController;
 use App\Http\Controllers\PendidikanController;
-use App\Http\Controllers\PenelitianController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\PengabdianController;
 use App\Http\Controllers\PenggunaanDanaController;
@@ -67,6 +66,7 @@ Route::post('delete_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'd
 
 
 Route::get('testaxios', [ProfildosenController::class, 'index']);
+Route::get('testuser', [ApiController::class, 'get_alluser']);
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('testmid', [ApiController::class, 'tester']);
     Route::post('penelitiandosens', [PenelitianController::class, 'store']);

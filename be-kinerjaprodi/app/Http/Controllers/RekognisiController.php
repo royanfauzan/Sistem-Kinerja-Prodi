@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Detaildosen;
+use App\Models\Rekognisi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
-class DetaildosenController extends Controller
+class RekognisiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -37,13 +38,22 @@ class DetaildosenController extends Controller
     public function store(Request $request)
     {
         //
-        $data = $request->only('profil_dosen_id', 'bidangKeahlian', 'kesesuaian', 'jabatanAkademik', 'noSertifPendidik', 'fileBukti');
+
+        $user = JWTAuth::parseToken()->authenticate();
+        $dosenId = null;
+        if ($user->profilDosen) {
+            $dosenId=$user->profilDosen->id;
+        }else{
+            $dosenId = $request->dosenId;
+        }
+
+        $data = $request->only('rekognisi', 'bidang', 'tingkat', 'tahun', 'noSertifPendidik', 'fileBukti','deskripsi');
         $validator = Validator::make($data, [
-            'profil_dosen_id'=>'required|string',
-            'bidangKeahlian'=>'required|string',
-            'kesesuaian'=>"required|string",
-            'jabatanAkademik'=>'required|string',
-            'noSertifPendidik'=>'required|string',
+            'rekognisi'=>'required|string',
+            'bidang'=>'required|string',
+            'tingkat'=>"required|string",
+            'tahun'=>'required|string',
+            'deskripsi'=>'required|string',
             "fileBukti" => "required|mimetypes:application/pdf|max:10000",
         ]);
 
@@ -56,7 +66,7 @@ class DetaildosenController extends Controller
 
         $finalPathdokumen = "";
         try {
-            $folderdokumen = "storage/detaildosen/";
+            $folderdokumen = "storage/rekognisidosen/";
 
             $dokumen = $request->file('fileBukti');
 
@@ -72,19 +82,22 @@ class DetaildosenController extends Controller
             ], 400);
         }
 
-        $dtDosen = Detaildosen::create([
-            'profil_dosen_id'=>$request->profil_dosen_id,
-            'bidangKeahlian'=>$request->bidangKeahlian,
-            'kesesuaian'=>$request->kesesuaian,
-            'jabatanAkademik'=>$request->jabatanAkademik,
-            'noSertifPendidik'=>$request->noSertifPendidik,
+        $rekognisi = Rekognisi::create([
+            'rekognisi'=>$request->rekognisi,
+            'bidang'=>$request->rekognisi,
+            'tingkat'=>$request->rekognisi,
+            'tahun'=>$request->rekognisi,
+            'deskripsi'=>$request->rekognisi,
             "fileBukti" => $finalPathdokumen,
+            'profil_dosen_id' => $dosenId
         ]);
 
         return response()->json([
-            'success' => false,
-            'detilDosen' => $dtDosen ,
+            'success' => true,
+            'rekognisi' => $rekognisi ,
+            'dosenId'=> $dosenId
         ]);
+
     }
 
     /**

@@ -12,10 +12,16 @@ use App\Http\Controllers\DetaildosenController;
 use App\Http\Controllers\MitraController;
 use App\Http\Controllers\KerjasamaController;
 use App\Http\Controllers\MahasiswaAsingController;
+use App\Http\Controllers\PendidikanController;
+use App\Http\Controllers\PenelitianController;
 use App\Http\Controllers\PenerimaanController;
+use App\Http\Controllers\PengabdianController;
 use App\Http\Controllers\PenggunaanDanaController;
+use App\Http\Controllers\ProfildosenController;
+use App\Http\Controllers\RekognisiController;
 use App\Models\MahasiswaAsing;
 use App\Models\PenggunaanDana;
+use App\Models\Rekognisi;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,8 +61,11 @@ Route::post('create_penerimaan_mahasiswa', [PenerimaanController::class, 'insert
 Route::post('update_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'edit_penerimaan_mahasiswa']);
 Route::post('delete_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'delete_penerimaan_mahasiswa']);
 
+
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('testmid', [ApiController::class, 'tester']);
+    Route::post('penelitiandosens', [PenelitianController::class, 'store']);
+    Route::post('pengabdiandosens', [PengabdianController::class, 'store']);
 });
 
 Route::group(['middleware' => ['adminonly']], function () {
@@ -66,6 +75,8 @@ Route::group(['middleware' => ['adminonly']], function () {
 
 Route::group(['middleware' => ['dosenonly']], function () {
     Route::post('detildosens', [DetaildosenController::class, 'store']);
+    Route::post('rekognisidosens', [RekognisiController::class, 'store']);
+    Route::post('pendidikandosens', [PendidikanController::class, 'store']);
 });
 //route prodi
 Route::post('Prodi', [ProdiController::class, 'store']);

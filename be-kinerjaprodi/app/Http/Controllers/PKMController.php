@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Penelitian;
+use App\Models\Pkm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class PenelitianController extends Controller
+class PKMController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,12 +36,13 @@ class PenelitianController extends Controller
      */
     public function store(Request $request)
     {
-        $datapenelitian = $request->only('tema_sesuai_roadmap', 'judul', 'tahun', 'sumber_dana_PT_mandiri', 'dana_PT_Mandiri', 'sumber_dalam_negri', 'dana_dalam_negri', 'sumber_luar_negri', 'dana_luar_negri');
+        $datapkm = $request->only('tema_sesuai_roadmap', 'judul_kegiatan', 'lokasi', 'tahun', 'sumber_dana_PT_mandiri', 'dana_PT_Mandiri', 'sumber_dalam_negri', 'dana_dalam_negri', 'sumber_luar_negri', 'dana_luar_negri');
 
        //valid credential
-       $validator = Validator::make($datapenelitian, [
+       $validator = Validator::make($datapkm, [
         'tema_sesuai_roadmap' => 'required',
-        'judul' => 'required', 
+        'judul_kegiatan' => 'required', 
+        'lokasi' => 'required', 
         'tahun' => 'required', 
         'sumber_dana_PT_mandiri' => 'required', 
         'dana_PT_Mandiri' => 'required', 
@@ -56,12 +57,13 @@ class PenelitianController extends Controller
            return response()->json(['error' => $validator->errors()], 200);
        }
 
-       $datapenelitian = Penelitian::create( //ngirim ke database
+       $datapkm = Pkm::create( //ngirim ke database
            [
                //yg kiri dari form, kanan dari database
                'tema_sesuai_roadmap'=> $request->tema_sesuai_roadmap,
                'nama_matkul' => $request->nama_matkul,
-               'judul' => $request->judul, 
+               'judul_kegiatan' => $request->judul_kegiatan, 
+               'lokasi' => $request->lokasi, 
                'tahun' => $request->tahun, 
                'sumber_dana_PT_mandiri' => $request->sumber_dana_PT_mandiri, 
                'dana_PT_Mandiri' => $request->dana_PT_Mandiri, 
@@ -77,7 +79,8 @@ class PenelitianController extends Controller
            'success' => true, 
            'tema_sesuai_roadmap'=> $request->tema_sesuai_roadmap,
            'nama_matkul' => $request->nama_matkul,
-           'judul' => $request->judul, 
+           'judul_kegiatan' => $request->judul_kegiatan, 
+           'lokasi' => $request->lokasi, 
            'tahun' => $request->tahun, 
            'sumber_dana_PT_mandiri' => $request->sumber_dana_PT_mandiri, 
            'dana_PT_Mandiri' => $request->dana_PT_Mandiri, 
@@ -85,7 +88,7 @@ class PenelitianController extends Controller
            'dana_dalam_negri' => $request->dana_dalam_negri, 
            'sumber_luar_negri' => $request->sumber_luar_negri, 
            'dana_luar_negri' => $request->dana_luar_negri,
-           'all_penelitian' => Penelitian::all()
+           'all_pkm' => Pkm::all()
        ]);
     }
 
@@ -120,13 +123,14 @@ class PenelitianController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $penelitian = Penelitian::where('id', $id)->first();
-        $datapenelitian = $request->only('tema_sesuai_roadmap', 'judul',  'tahun', 'sumber_dana_PT_mandiri', 'dana_PT_Mandiri', 'sumber_dalam_negri', 'dana_dalam_negri', 'sumber_luar_negri', 'dana_luar_negri');
+        $pkm = PKM::where('id', $id)->first();
+        $datapkm = $request->only('tema_sesuai_roadmap', 'judul_kegiatan', 'lokasi', 'tahun', 'sumber_dana_PT_mandiri', 'dana_PT_Mandiri', 'sumber_dalam_negri', 'dana_dalam_negri', 'sumber_luar_negri', 'dana_luar_negri');
 
         // valid credential
-        $validator = Validator::make($datapenelitian, [
+        $validator = Validator::make($datapkm, [
             'tema_sesuai_roadmap' => 'required',
-            'judul' => 'required', 
+            'judul_kegiatan' => 'required', 
+            'lokasi' => 'required', 
             'tahun' => 'required', 
             'sumber_dana_PT_mandiri' => 'required', 
             'dana_PT_Mandiri' => 'required', 
@@ -141,22 +145,24 @@ class PenelitianController extends Controller
             return response()->json(['error' => $validator->errors()], 200);
         }
 
-        $penelitian-> tema_sesuai_roadmap = $request->tema_sesuai_roadmap;
-        $penelitian->judul = $request->judul; 
-        $penelitian-> tahun = $request->tahun; 
-        $penelitian-> sumber_dana_PT_mandiri = $request->sumber_dana_PT_mandiri;
-        $penelitian-> dana_PT_Mandiri = $request->dana_PT_Mandiri;
-        $penelitian-> sumber_dalam_negri = $request->sumber_dalam_negri;
-        $penelitian-> dana_dalam_negri = $request->dana_dalam_negri; 
-        $penelitian-> sumber_luar_negri = $request->sumber_luar_negri; 
-        $penelitian-> dana_luar_negri = $request->dana_luar_negri;
-        $penelitian->save();
+        $pkm-> tema_sesuai_roadmap = $request->tema_sesuai_roadmap;
+        $pkm->judul_kegiatan = $request->judul_kegiatan; 
+        $pkm-> lokasi = $request->lokasi; 
+        $pkm-> tahun = $request->tahun; 
+        $pkm-> sumber_dana_PT_mandiri = $request->sumber_dana_PT_mandiri;
+        $pkm-> dana_PT_Mandiri = $request->dana_PT_Mandiri;
+        $pkm-> sumber_dalam_negri = $request->sumber_dalam_negri;
+        $pkm-> dana_dalam_negri = $request->dana_dalam_negri; 
+        $pkm-> sumber_luar_negri = $request->sumber_luar_negri; 
+        $pkm-> dana_luar_negri = $request->dana_luar_negri;
+        $pkm->save();
 
         //Token created, return with success response and jwt token
         return response()->json([
             'success' => true,
             'tema_sesuai_roadmap'=> $request->tema_sesuai_roadmap,
-           'judul' => $request->judul, 
+           'judul_kegiatan' => $request->judul_kegiatan, 
+           'lokasi' => $request->lokasi, 
            'tahun' => $request->tahun, 
            'sumber_dana_PT_mandiri' => $request->sumber_dana_PT_mandiri, 
            'dana_PT_Mandiri' => $request->dana_PT_Mandiri, 
@@ -164,7 +170,7 @@ class PenelitianController extends Controller
            'dana_dalam_negri' => $request->dana_dalam_negri, 
            'sumber_luar_negri' => $request->sumber_luar_negri, 
            'dana_luar_negri' => $request->dana_luar_negri,
-            'all_penelitian' => Penelitian::all()
+            'all_pkm' => PKM::all()
         ]);
     }
 

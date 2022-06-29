@@ -62,6 +62,7 @@ Route::post('update_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'e
 Route::post('delete_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'delete_penerimaan_mahasiswa']);
 
 
+Route::get('testaxios', [ProfildosenController::class, 'index']);
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('testmid', [ApiController::class, 'tester']);
     Route::post('penelitiandosens', [PenelitianController::class, 'store']);

@@ -16,6 +16,10 @@ class ProfildosenController extends Controller
     public function index()
     {
         //
+        return response()->json([
+            'success' => true,
+            'profil' => profilDosen::all(),
+        ]);
     }
 
     /**

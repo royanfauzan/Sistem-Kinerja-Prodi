@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\profilDosen;
+use App\Models\Rekognisi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
-class ProfildosenController extends Controller
+class RekognisiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,10 +17,6 @@ class ProfildosenController extends Controller
     public function index()
     {
         //
-        return response()->json([
-            'success' => true,
-            'profil' => profilDosen::all(),
-        ]);
     }
 
     /**
@@ -41,16 +38,23 @@ class ProfildosenController extends Controller
     public function store(Request $request)
     {
         //
-        $data = $request->only('NIDK', 'NamaDosen', 'NIK', 'TempatLahir', 'TanggalLahir', 'JenisKelamin', 'StatusPerkawinan', 'Agama');
+
+        $user = JWTAuth::parseToken()->authenticate();
+        $dosenId = null;
+        if ($user->profilDosen) {
+            $dosenId=$user->profilDosen->id;
+        }else{
+            $dosenId = $request->dosenId;
+        }
+
+        $data = $request->only('rekognisi', 'bidang', 'tingkat', 'tahun', 'noSertifPendidik', 'fileBukti','deskripsi');
         $validator = Validator::make($data, [
-            'NIDK'=>'required|string',
-            'NamaDosen'=>'required|string',
-            'NIK'=>"required|string",
-            'TempatLahir'=>'required|string',
-            'TanggalLahir'=>'required|string',
-            'JenisKelamin'=>'required|string',
-            'StatusPerkawinan'=>'required|string',
-            'Agama'=>'required|string',
+            'rekognisi'=>'required|string',
+            'bidang'=>'required|string',
+            'tingkat'=>"required|string",
+            'tahun'=>'required|string',
+            'deskripsi'=>'required|string',
+            "fileBukti" => "required|mimetypes:application/pdf|max:10000",
         ]);
 
         if ($validator->fails()) {
@@ -60,39 +64,40 @@ class ProfildosenController extends Controller
             ], 400);
         }
 
-        if (profilDosen::where('NIDK',$request->NIDK)->first()) {
+        $finalPathdokumen = "";
+        try {
+            $folderdokumen = "storage/rekognisidosen/";
+
+            $dokumen = $request->file('fileBukti');
+
+            $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".",$dokumen->getClientOriginalName(),2)[0])) . "-". time() . "." . $dokumen->getClientOriginalExtension();
+
+            $dokumen->move($folderdokumen, $namaFiledokumen);
+
+            $finalPathdokumen = $folderdokumen . $namaFiledokumen;
+        } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'message' => "Profil Sudah Tersimpan",
+                'message' => "Gagal Menyimpan Dokumen".$th,
             ], 400);
         }
 
-        //Request is valid, create new profil
-        $profil = profilDosen::create([
-            'NIDK'=>$request->NIDK,
-            'NamaDosen'=>$request->NamaDosen,
-            'NIK'=>$request->NIK,
-            'TempatLahir'=>$request->TempatLahir,
-            'TanggalLahir'=>$request->TanggalLahir,
-            'JenisKelamin'=>$request->JenisKelamin,
-            'StatusPerkawinan'=>$request->StatusPerkawinan,
-            'Agama'=>$request->Agama,
+        $rekognisi = Rekognisi::create([
+            'rekognisi'=>$request->rekognisi,
+            'bidang'=>$request->rekognisi,
+            'tingkat'=>$request->rekognisi,
+            'tahun'=>$request->rekognisi,
+            'deskripsi'=>$request->rekognisi,
+            "fileBukti" => $finalPathdokumen,
+            'profil_dosen_id' => $dosenId
         ]);
-
-        $profil->Golongan = isset($request->Golongan)?$request->Golongan:'';
-        $profil->Pangkat = isset($request->Pangkat)?$request->Pangkat:'';
-        $profil->JabatanAkademik = isset($request->JabatanAkademik)?$request->JabatanAkademik:'';
-        $profil->Alamat = isset($request->Alamat)?$request->Alamat:'';
-        $profil->NoTelepon = isset($request->NoTelepon)?$request->NoTelepon:'';
-        $profil->Email = isset($request->Email)?$request->Email:'';
-
-        $profil->save();
-
 
         return response()->json([
             'success' => true,
-            'profil' => $profil,
+            'rekognisi' => $rekognisi ,
+            'dosenId'=> $dosenId
         ]);
+
     }
 
     /**

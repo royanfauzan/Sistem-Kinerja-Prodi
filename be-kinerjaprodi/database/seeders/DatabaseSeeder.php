@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Mitra;
 use App\Models\profilDosen;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -52,6 +53,26 @@ class DatabaseSeeder extends Seeder
             'JenisKelamin'=>'L',
             'StatusPerkawinan'=>'Belum Kawin',
             'Agama'=>'Kristen',
+        ]);
+
+        Mitra::create([
+                'namamitra'=>'Pilar Kreatif Teknologi',
+                'alamat'=>'Denpasar',
+                'no_telepon'=>'085123123123',
+                'nama_cp'=>'JOse v2',
+                'no_telp_cp'=>'089123123242',
+                'email_cp'=>'jose2@gmail.com',
+                'bidang'=>'Teknologi',
+        ]);
+
+        Mitra::create([
+            'namamitra'=>'Avatar Solution',
+            'alamat'=>'Badung',
+            'no_telepon'=>'085123123123',
+            'nama_cp'=>'Doni ',
+            'no_telp_cp'=>'089123123242',
+            'email_cp'=>'Doni@gmail.com',
+            'bidang'=>'Teknologi',
         ]);
     }
 }

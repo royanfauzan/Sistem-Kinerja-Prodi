@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Detaildosen;
+use App\Models\Pendidikan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
-class DetaildosenController extends Controller
+class PendidikanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -37,14 +38,21 @@ class DetaildosenController extends Controller
     public function store(Request $request)
     {
         //
-        $data = $request->only('profil_dosen_id', 'bidangKeahlian', 'kesesuaian', 'jabatanAkademik', 'noSertifPendidik', 'fileBukti');
+        $user = JWTAuth::parseToken()->authenticate();
+        $dosenId = null;
+        if ($user->profilDosen) {
+            $dosenId=$user->profilDosen->id;
+        }else{
+            $dosenId = $request->dosenId;
+        }
+
+        $data = $request->only('tahun_lulus', 'program_pendidikan', 'perguruan_tinggi', 'jurusan', 'prodi');
         $validator = Validator::make($data, [
-            'profil_dosen_id'=>'required|string',
-            'bidangKeahlian'=>'required|string',
-            'kesesuaian'=>"required|string",
-            'jabatanAkademik'=>'required|string',
-            'noSertifPendidik'=>'required|string',
-            "fileBukti" => "required|mimetypes:application/pdf|max:10000",
+            'tahun_lulus'=>'required|string',
+            'program_pendidikan'=>'required|string',
+            'perguruan_tinggi'=>"required|string",
+            'jurusan'=>"required|string",
+            'prodi'=>"required|string",
         ]);
 
         if ($validator->fails()) {
@@ -54,36 +62,19 @@ class DetaildosenController extends Controller
             ], 400);
         }
 
-        $finalPathdokumen = "";
-        try {
-            $folderdokumen = "storage/detaildosen/";
-
-            $dokumen = $request->file('fileBukti');
-
-            $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".",$dokumen->getClientOriginalName(),2)[0])) . "-". time() . "." . $dokumen->getClientOriginalExtension();
-
-            $dokumen->move($folderdokumen, $namaFiledokumen);
-
-            $finalPathdokumen = $folderdokumen . $namaFiledokumen;
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => "Gagal Menyimpan Dokumen".$th,
-            ], 400);
-        }
-
-        $dtDosen = Detaildosen::create([
-            'profil_dosen_id'=>$request->profil_dosen_id,
-            'bidangKeahlian'=>$request->bidangKeahlian,
-            'kesesuaian'=>$request->kesesuaian,
-            'jabatanAkademik'=>$request->jabatanAkademik,
-            'noSertifPendidik'=>$request->noSertifPendidik,
-            "fileBukti" => $finalPathdokumen,
+        $pendidikan = Pendidikan::create([
+            'tahun_lulus'=>$request->tahun_lulus,
+            'program_pendidikan'=>$request->program_pendidikan,
+            'perguruan_tinggi'=>$request->perguruan_tinggi,
+            'jurusan'=>$request->jurusan,
+            'prodi'=>$request->prodi,
+            'profil_dosen_id'=>$dosenId
         ]);
 
         return response()->json([
-            'success' => false,
-            'detilDosen' => $dtDosen ,
+            'success' => true,
+            'rekognisi' => $pendidikan,
+            'dosenId'=> $dosenId
         ]);
     }
 

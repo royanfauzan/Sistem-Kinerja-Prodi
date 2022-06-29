@@ -131,4 +131,9 @@ class ApiController extends Controller
         return response()->json(['user' => $user]);
     }
 
+    public function get_alluser()
+    {
+        return response()->json(['userdosen' => User::all()]);
+    }
+
 }

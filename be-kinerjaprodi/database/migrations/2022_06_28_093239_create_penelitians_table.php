@@ -18,12 +18,12 @@ class CreatePenelitiansTable extends Migration
             $table->string('tema_sesuai_roadmap');
             $table->string('judul');
             $table->string('tahun');
-            $table->string('sumber_dana_PT_mandiri');
-            $table->bigInteger('dana_PT_Mandiri');
-            $table->string('sumber_dalam_negri');
-            $table->bigInteger('dana_dalam_negri');
-            $table->string('sumber_luar_negri');
-            $table->bigInteger('dana_luar_negri');
+            $table->string('sumber_dana_PT_mandiri')->nullable();
+            $table->bigInteger('dana_PT_Mandiri')->nullable();
+            $table->string('sumber_dalam_negri')->nullable();
+            $table->bigInteger('dana_dalam_negri')->nullable();
+            $table->string('sumber_luar_negri')->nullable();
+            $table->bigInteger('dana_luar_negri')->nullable();
             $table->timestamps();
         });
     }

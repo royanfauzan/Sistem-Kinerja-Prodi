@@ -1,19 +1,31 @@
 import axios from "axios";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
+import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
+import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 
 interface Udosen {
-    NIDK: string;
-    role: string;
-    level_akses: number;
-    created_at: string;
-    updated_at: string;
+  NIDK: string;
+  role: string;
+  level_akses: number;
+  profil_dosen: object;
+  created_at: string;
+  updated_at: string;
 }
 
 export default function inputprofil() {
+  const router = useRouter();
+
   const [userDosens, setuserDosens] = useState<Udosen[]>([]);
 
-  useEffect(() => {
+  // state pake test user
+  const [stadmin, setStadmin] = useState(false);
+
+  // pake ngambil data untuk halaman input
+  const pengambilData = async () =>{
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/testuser",
@@ -29,316 +41,384 @@ export default function inputprofil() {
         console.log("gagal");
         console.log(err.response);
       });
-  }, []);
+  }
+
+
+
+  // Setelah halaman Loading nya muncul, ini jalan
+  // untuk mastiin yg akses halaman ini user admin
+  useEffect(()=>{
+    // cek token, kalo gaada disuruh login
+    const lgToken = localStorage.getItem('token');
+    if(!lgToken){
+      router.push('/login')
+    }
+
+    // perjalanan validasi token 
+    axios({
+      method: "get",
+      url: "http://127.0.0.1:8000/api/get_user",
+      headers: { "Authorization": `Bearer ${lgToken}` },
+    })
+    .then(function (response) {
+            console.log(response);
+            console.log('Sukses');
+            const {level_akses} = response.data.user;
+            // kalo ga admin dipindah ke halaman lain
+            if(level_akses !== 3){
+              return router.push('/');
+            }
+            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+            setStadmin(true);
+            pengambilData();
+    })
+    .catch(function (err) {
+        console.log('gagal');
+        console.log(err.response);
+        return router.push('/');
+    })
+  },[]);
+
+
+
+  const submitForm = async (event) => {
+    event.preventDefault();
+
+    toast.loading("Loading...");
+    const lgToken = localStorage.getItem("token");
+
+    let formData = new FormData();
+    formData.append("NIDK", event.target.nidk.value);
+    formData.append("NIK", event.target.nik.value);
+    formData.append("NamaDosen", event.target.nama.value);
+    formData.append("Agama", event.target.agama.value);
+    formData.append("TempatLahir", event.target.tempatlahir.value);
+    formData.append("TanggalLahir", event.target.tanggallahir.value);
+    formData.append("StatusPerkawinan", event.target.statusK.value);
+    formData.append("JenisKelamin", event.target.jenisK.value);
+
+    formData.append("Golongan", event.target.golongan.value);
+    formData.append("Pangkat", event.target.pangkat.value);
+    formData.append("JabatanAkademik", event.target.jabatanA.value);
+    formData.append("Alamat", event.target.alamat.value);
+    formData.append("NoTelepon", event.target.notelp.value);
+    formData.append("Email", event.target.email.value);
+
+    console.log(formData);
+
+    axios({
+      method: "post",
+      url: "http://127.0.0.1:8000/api/profildosens",
+      data: formData,
+      headers: {
+        Authorization: `Bearer ${lgToken}`,
+        "Content-Type": "multipart/form-data",
+      },
+    })
+      .then(function (response) {
+        const { profil } = response.data;
+        //handle success
+        toast.dismiss();
+        toast.success("Login Sugses!!");
+        // console.log(token);
+        console.log(profil);
+        router.push("/");
+      })
+      .catch(function (error) {
+        //handle error
+        toast.dismiss();
+        if (error.response.status == 400) {
+          toast.error("Gagal Menyimpan Data!!");
+        } else {
+          toast.error("Gagal Menyimpan Data");
+        }
+
+        console.log("tidak success");
+        console.log(error.response);
+      });
+  };
 
   return (
-    <LayoutForm>
-      <div className="container-fluid py-4">
-        <div className="row">
-          <div className="col-md-8">
-            <div className="card">
-              <div className="card-header pb-0">
-                <div className="d-flex align-items-center">
-                  <p className="mb-0">Input Data</p>
-                  <button className="btn btn-primary btn-sm ms-auto">
-                    Simpan
-                  </button>
-                </div>
-              </div>
-              <div className="card-body">
-                <p className="text-uppercase text-sm">Profil Dosen</p>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label
-                        htmlFor="example-text-input"
-                        className="form-control-label"
+    <>
+    <LoadingUtama loadStatus={stadmin}/>
+      {stadmin  &&(
+        <LayoutForm>
+        <div className="container-fluid py-4">
+          <div className="row">
+            <div className="col-md-8">
+              <form id="inputDetilDosen" onSubmit={submitForm}>
+                <div className="card">
+                  <div className="card-header pb-0">
+                    <div className="d-flex align-items-center">
+                      <p className="mb-0">Input Data</p>
+                      <button
+                        className="btn btn-primary btn-sm ms-auto"
+                        type="submit"
                       >
-                        NIDK
-                      </label>
-                      <select
-                        className="form-select"
-                        aria-label="Default select example"
-                        defaultValue="0"
-                      >
-                        <option >Pilih NIDK User</option>
-                        {userDosens.map((userDosen) => {
-                            if (userDosen.role!=='admin') {
+                        Simpan
+                      </button>
+                    </div>
+                  </div>
+                  <div className="card-body">
+                    <p className="text-uppercase text-sm">Profil Dosen</p>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="nidk" className="form-control-label">
+                            NIDK
+                          </label>
+                          <select
+                            className="form-select"
+                            aria-label="Default select example"
+                            defaultValue="0"
+                            id="nidk"
+                          >
+                            <option>Pilih NIDK User</option>
+                            {userDosens.map((userDosen) => {
+                              if (
+                                userDosen.role !== "admin" &&
+                                !userDosen.profil_dosen
+                              ) {
                                 return (
-                                    <option value={userDosen.NIDK} key={userDosen.NIDK}>{userDosen.NIDK}</option>
+                                  <option
+                                    value={userDosen.NIDK}
+                                    key={userDosen.NIDK}
+                                  >
+                                    {userDosen.NIDK}
+                                  </option>
                                 );
-                            }
-                      })}
-                      </select>
+                              }
+                            })}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="nik" className="form-control-label">
+                            NIK
+                          </label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="NIK dosen"
+                            id="nik"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="nama" className="form-control-label">
+                            Nama
+                          </label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Nama dosen"
+                            id="nama"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="agama" className="form-control-label">
+                            Agama
+                          </label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Agama"
+                            id="agama"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label
+                            htmlFor="tempatlahir"
+                            className="form-control-label"
+                          >
+                            Tempat Lahir
+                          </label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Tabanan"
+                            id="tempatlahir"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label
+                            htmlFor="tanggallahir"
+                            className="form-control-label"
+                          >
+                            Tanggal Lahir
+                          </label>
+                          <input
+                            className="form-control"
+                            type="date"
+                            placeholder="Pilih Tanggal"
+                            id="tanggallahir"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label
+                            htmlFor="jenisK"
+                            className="form-control-label"
+                          >
+                            Jenis Kelamin
+                          </label>
+                          <select
+                            className="form-select"
+                            aria-label="Default select example"
+                            defaultValue="Laki-Laki"
+                            id="jenisK"
+                          >
+                            <option value="Laki-Laki">Laki-Laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label
+                            htmlFor="statusK"
+                            className="form-control-label"
+                          >
+                            Status Perkawinan
+                          </label>
+                          <select
+                            className="form-select"
+                            aria-label="Default select example"
+                            defaultValue="Belum Kawin"
+                            id="statusK"
+                          >
+                            <option value="Belum Kawin">Belum Kawin</option>
+                            <option value="Kawin">Kawin</option>
+                          </select>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label
-                        htmlFor="example-text-input"
-                        className="form-control-label"
-                      >
-                        NIK
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="NIK dosen"
-                      />
+                    <hr className="horizontal dark" />
+                    <p className="text-uppercase text-sm">Informasi Akademik</p>
+                    <div className="row">
+                      <div className="col-md-4">
+                        <div className="form-group">
+                          <label
+                            htmlFor="pangkat"
+                            className="form-control-label"
+                          >
+                            Pangkat
+                          </label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="pangkat"
+                            id="pangkat"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="form-group">
+                          <label
+                            htmlFor="jabatanA"
+                            className="form-control-label"
+                          >
+                            Jabatan Akademik
+                          </label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Jabatan Akademik"
+                            id="jabatanA"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="form-group">
+                          <label
+                            htmlFor="golongan"
+                            className="form-control-label"
+                          >
+                            Golongan
+                          </label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="golongan"
+                            id="golongan"
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label
-                        htmlFor="example-text-input"
-                        className="form-control-label"
-                      >
-                        Nama
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="Nama dosen"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label
-                        htmlFor="example-text-input"
-                        className="form-control-label"
-                      >
-                        Agama
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="Agama"
-                      />
+                    <hr className="horizontal dark" />
+                    <p className="text-uppercase text-sm">Kontak</p>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="email" className="form-control-label">
+                            Email
+                          </label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Email"
+                            id="email"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label
+                            htmlFor="notelp"
+                            className="form-control-label"
+                          >
+                            Nomor Telpon
+                          </label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="085******"
+                            id="notelp"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-12">
+                        <div className="form-group">
+                          <label
+                            htmlFor="alamat"
+                            className="form-control-label"
+                          >
+                            Alamat
+                          </label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Email"
+                            id="alamat"
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <hr className="horizontal dark" />
-                <p className="text-uppercase text-sm">Informasi Akademik</p>
-                <div className="row">
-                  <div className="col-md-4">
-                    <div className="form-group">
-                      <label
-                        htmlFor="example-text-input"
-                        className="form-control-label"
-                      >
-                        Pangkat
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="pangkat"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="form-group">
-                      <label
-                        htmlFor="example-text-input"
-                        className="form-control-label"
-                      >
-                        Jabatan Akademik
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="Jabatan Akademik"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="form-group">
-                      <label
-                        htmlFor="example-text-input"
-                        className="form-control-label"
-                      >
-                        Golongan
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="golongan"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <hr className="horizontal dark" />
-                <p className="text-uppercase text-sm">Kontak</p>
-                <div className="row">
-                <div className="col-md-6">
-                    <div className="form-group">
-                      <label
-                        htmlFor="example-text-input"
-                        className="form-control-label"
-                      >
-                        Email
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="Email"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label
-                        htmlFor="example-text-input"
-                        className="form-control-label"
-                      >
-                        Nomor Telpon
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="085******"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </form>
+            </div>
+            <div className="col-md-4">
+              <CardUtama />
             </div>
           </div>
-          <div className="col-md-4">
-            <div className="card card-profile">
-              <img
-                src="/img/argon/bg-profile.jpg"
-                alt="Image placeholder"
-                className="card-img-top"
-              />
-              <div className="row justify-content-center">
-                <div className="col-4 col-lg-4 order-lg-2">
-                  <div className="mt-n4 mt-lg-n6 mb-4 mb-lg-0">
-                    <a>
-                      <img
-                        src="/img/argon/LOgoPNB.png"
-                        className="rounded-circle img-fluid border border-2 border-white"
-                      />
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
-                <div className="d-flex justify-content-between">
-                  <a className="btn btn-sm btn-info mb-0 d-none d-lg-block">
-                    Connect
-                  </a>
-                  <a className="btn btn-sm btn-info mb-0 d-block d-lg-none">
-                    <i className="ni ni-collection"></i>
-                  </a>
-                  <a className="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">
-                    Message
-                  </a>
-                  <a className="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none">
-                    <i className="ni ni-email-83"></i>
-                  </a>
-                </div>
-              </div>
-              <div className="card-body pt-0">
-                <div className="row">
-                  <div className="col">
-                    <div className="d-flex justify-content-center">
-                      {/* <div className="d-grid text-center">
-                        <span className="text-lg font-weight-bolder">22</span>
-                        <span className="text-sm opacity-8">Friends</span>
-                      </div>
-                      <div className="d-grid text-center mx-4">
-                        <span className="text-lg font-weight-bolder">10</span>
-                        <span className="text-sm opacity-8">Photos</span>
-                      </div>
-                      <div className="d-grid text-center">
-                        <span className="text-lg font-weight-bolder">89</span>
-                        <span className="text-sm opacity-8">Comments</span>
-                      </div> */}
-                    </div>
-                  </div>
-                </div>
-                <div className="text-center mt-4">
-                  {/* <h5>
-                    Mark Davis<span className="font-weight-light">, 35</span>
-                  </h5>
-                  <div className="h6 font-weight-300">
-                    <i className="ni location_pin mr-2"></i>Bucharest, Romania
-                  </div>
-                  <div className="h6 mt-4">
-                    <i className="ni business_briefcase-24 mr-2"></i>Solution
-                    Manager - Creative Tim Officer
-                  </div>
-                  <div>
-                    <i className="ni education_hat mr-2"></i>University of
-                    Computer Science
-                  </div> */}
-                </div>
-              </div>
-            </div>
-          </div>
+          <FooterUtama />
         </div>
-        <footer className="footer pt-3  ">
-          <div className="container-fluid">
-            <div className="row align-items-center justify-content-lg-between">
-              <div className="col-lg-6 mb-lg-0 mb-4">
-                <div className="copyright text-center text-sm text-muted text-lg-start">
-                  © 2022, made with{" "}
-                  <i className="fa fa-heart" aria-hidden="true"></i> by
-                  <a
-                    href="https://www.creative-tim.com"
-                    className="font-weight-bold"
-                    target="_blank"
-                  >
-                    Creative Tim
-                  </a>
-                  for a better web.
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <ul className="nav nav-footer justify-content-center justify-content-lg-end">
-                  <li className="nav-item">
-                    <a
-                      href="https://www.creative-tim.com"
-                      className="nav-link text-muted"
-                      target="_blank"
-                    >
-                      Creative Tim
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="https://www.creative-tim.com/presentation"
-                      className="nav-link text-muted"
-                      target="_blank"
-                    >
-                      About Us
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="https://www.creative-tim.com/blog"
-                      className="nav-link text-muted"
-                      target="_blank"
-                    >
-                      Blog
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="https://www.creative-tim.com/license"
-                      className="nav-link pe-0 text-muted"
-                      target="_blank"
-                    >
-                      License
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </footer>
-      </div>
-    </LayoutForm>
+      </LayoutForm>
+      )}
+    </>
   );
 }

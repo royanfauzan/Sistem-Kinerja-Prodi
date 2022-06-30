@@ -69,6 +69,7 @@ Route::get('testaxios', [ProfildosenController::class, 'index']);
 Route::get('testuser', [ApiController::class, 'get_alluser']);
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('testmid', [ApiController::class, 'tester']);
+    Route::get('get_user', [ApiController::class, 'get_user']);
     Route::post('penelitiandosens', [PenelitianController::class, 'store']);
     Route::post('pengabdiandosens', [PengabdianController::class, 'store']);
 });

@@ -133,7 +133,7 @@ class ApiController extends Controller
 
     public function get_alluser()
     {
-        return response()->json(['userdosen' => User::all()]);
+        return response()->json(['userdosen' => User::with('profilDosen')->get()]);
     }
 
 }

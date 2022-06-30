@@ -57,7 +57,7 @@ export default function index() {
         console.log(localStorage.getItem('token'));
         console.log("success");
         console.log(response);
-        router.push("/");
+        router.push("/profildosen/inputprofil");
       })
       .catch(function (error) {
         //handle error
@@ -156,7 +156,6 @@ export default function index() {
                   </button>
                 </div>
               </form>
-
             </div>
           </div>
         </div>

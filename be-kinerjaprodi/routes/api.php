@@ -22,7 +22,7 @@ use App\Http\Controllers\MasastudiController;
 use App\Http\Controllers\PagelaranController;
 use App\Http\Controllers\PresentaseController;
 use App\Http\Controllers\PrestasiController;
-use App\Http\Controllers\ProdiController;
+
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SeminarController;
 use App\Http\Controllers\TempatController;

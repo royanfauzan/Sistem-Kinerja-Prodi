@@ -1,0 +1,119 @@
+.fpload{
+    height: 100vh;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to { 
+        transform: rotate(360deg);
+    }
+}
+ 
+
+ @-webkit-keyframes rotate {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to { 
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes fading {
+    0% {
+        opacity: 0.9;
+    }
+    25% { 
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 0.6;
+    }
+    75% { 
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0.9;
+    }
+}
+
+
+.load {
+	width: 200px;
+	height: 200px;
+	margin: 0px auto 0;
+	border:solid 15px #324357;
+	border-radius: 50%;
+	border-right-color: transparent;
+	border-bottom-color: transparent;
+	 -webkit-transition: all 0.5s ease-in;
+    -webkit-animation-name:             rotate; 
+    -webkit-animation-duration:         1.0s; 
+    -webkit-animation-iteration-count:  infinite;
+    -webkit-animation-timing-function: linear;
+    	
+    	 transition: all 0.5s ease-in;
+    animation-name:             rotate; 
+    animation-duration:         1.0s; 
+    animation-iteration-count:  infinite;
+    animation-timing-function: linear; 
+}
+
+.loadSmal {
+	width: 200px;
+	height: 200px;
+	margin: 0px auto 0;
+	border:solid 10px #f3d73c;
+	border-radius: 50%;
+	border-right-color: transparent;
+	border-bottom-color: transparent;
+	 -webkit-transition: all 0.4s ease-in;
+    -webkit-animation-name:             rotate; 
+    -webkit-animation-duration:         0.8s; 
+    -webkit-animation-iteration-count:  infinite;
+    -webkit-animation-timing-function: linear;
+    	
+    	 transition: all 0.4s ease-in;
+    animation-name:             rotate; 
+    animation-duration:         0.8s; 
+    animation-iteration-count:  infinite;
+    animation-timing-function: linear; 
+}
+
+.loadSmaler {
+	width: 197px;
+	height: 197px;
+	margin: 0px auto 0;
+	border:solid 3px #f8f8f8;
+	border-radius: 50%;
+	border-right-color: transparent;
+	border-bottom-color: transparent;
+	 -webkit-transition: all 0.3s ease-in;
+    -webkit-animation-name:             rotate; 
+    -webkit-animation-duration:         0.6s; 
+    -webkit-animation-iteration-count:  infinite;
+    -webkit-animation-timing-function: linear;
+    	
+    	 transition: all 0.3s ease-in;
+    animation-name:             rotate; 
+    animation-duration:         0.6s; 
+    animation-iteration-count:  infinite;
+    animation-timing-function: linear; 
+}
+
+.loadGmb {
+	width: 200px;
+	height: 200px;
+	margin: 0px auto 0;
+	border:solid 10px #1d7ff0;
+	border-radius: 50%;
+	border-right-color: transparent;
+	border-bottom-color: transparent;    	
+    	 transition: all 0.5s ease-in;
+    animation-name:             fading; 
+    animation-duration:         3.2s; 
+    animation-iteration-count:  infinite;
+    animation-timing-function: linear; 
+}

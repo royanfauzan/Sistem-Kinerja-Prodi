@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Prodi;
 use Illuminate\Http\Request;
+use App\Models\Prodi;
 use Illuminate\Support\Facades\Validator;
 
 class ProdiController extends Controller
@@ -34,14 +34,15 @@ class ProdiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request) //untuk input data dari form ke database
     {
-        $dataprodi = $request->only('prodi', 'nm_prodi');
+        //data prodi menampung data dari request yang di dapat dari form yang berisi data dari field prodi & nama prodi
+        $dataprodi = $request->only('prodi', 'nama_prodi');
 
         //valid credential
         $validator = Validator::make($dataprodi, [
             'prodi' => 'required',
-            'nm_prodi' => 'required'
+            'nama_prodi' => 'required'
         ]);
 
         //Send failed response if request is not valid
@@ -49,18 +50,19 @@ class ProdiController extends Controller
             return response()->json(['error' => $validator->errors()], 200);
         }
 
-        $dataprodi = Prodi::create(
+        $dataprodi = Prodi::create( //ngirim ke database
             [
+                //yg kiri dari form, kanan dari database
                 'prodi' => $request->prodi,
-                'nm_prodi' => $request->nm_prodi,
+                'nama_prodi' => $request->nama_prodi,
             ]
         );
 
         //Token created, return with success response and jwt token
-        return response()->json([
-            'success' => true,
+        return response()->json([ //ngirim ke front end
+            'success' => true, 
             'prodi' => $request->prodi,
-            'nm_prodi' => $request->nm_prodi,
+            'nama_prodi' => $request->nama_prodi,
             'all_prodi' => Prodi::all()
         ]);
     }
@@ -97,12 +99,12 @@ class ProdiController extends Controller
     public function update(Request $request, $id)
     {
         $prodi = Prodi::where('id', $id)->first();
-        $dataprodi = $request->only('prodi', 'nm_prodi');
+        $dataprodi = $request->only('prodi', 'nama_prodi');
 
         // valid credential
         $validator = Validator::make($dataprodi, [
             'prodi' => 'required',
-            'nm_prodi' => 'required'
+            'nama_prodi' => 'required'
         ]);
 
         //Send failed response if request is not valid
@@ -111,14 +113,14 @@ class ProdiController extends Controller
         }
 
         $prodi->prodi = $request->prodi;
-        $prodi->nm_prodi = $request->nm_prodi;
+        $prodi->nama_prodi = $request->nama_prodi;
         $prodi->save();
 
         //Token created, return with success response and jwt token
         return response()->json([
             'success' => true,
             'prodi' => $request->prodi,
-            'nm_prodi' => $request->nm_prodi,
+            'nama_prodi' => $request->nama_prodi,
             'all_prodi' => Prodi::all()
         ]);
     }

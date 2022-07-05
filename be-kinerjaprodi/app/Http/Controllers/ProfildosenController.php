@@ -18,7 +18,7 @@ class ProfildosenController extends Controller
         //
         return response()->json([
             'success' => true,
-            'profil' => profilDosen::all(),
+            'profilDosens' => profilDosen::all(),
         ]);
     }
 

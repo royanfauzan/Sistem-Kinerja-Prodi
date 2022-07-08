@@ -22,7 +22,6 @@ use App\Http\Controllers\MasastudiController;
 use App\Http\Controllers\PagelaranController;
 use App\Http\Controllers\PresentaseController;
 use App\Http\Controllers\PrestasiController;
-use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SeminarController;
 use App\Http\Controllers\TempatController;
@@ -162,6 +161,7 @@ Route::group(['middleware' => ['dosenonly']], function () {
     Route::post('pendidikandosens', [PendidikanController::class, 'store']);
 });
 //route prodi
+Route::get('Prodi', [ProdiController::class, 'index']);
 Route::post('Prodi', [ProdiController::class, 'store']);
 Route::put('Prodi/{id}', [ProdiController::class, 'update']);
 

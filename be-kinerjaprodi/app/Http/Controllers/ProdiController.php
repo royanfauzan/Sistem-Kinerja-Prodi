@@ -15,7 +15,10 @@ class ProdiController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_prodi' => Prodi::all()
+        ]);
     }
 
     /**

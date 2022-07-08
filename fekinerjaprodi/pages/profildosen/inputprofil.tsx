@@ -120,7 +120,7 @@ export default function inputprofil() {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(profil);
-        router.push("/");
+        router.push("/profildosen/daftarprofil");
       })
       .catch(function (error) {
         //handle error

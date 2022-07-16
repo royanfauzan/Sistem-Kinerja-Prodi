@@ -9,6 +9,12 @@ use App\Models\Mitra;
 
 class KerjasamaController extends Controller
 {
+    public function tampilkerjasama(){
+        return response()->json([
+            'success' => true,
+            'Mitra' => Mitra::all(),
+        ]);
+    }
     public function insertkerjasama(Request $request)
     {
         $credentials = $request->only(

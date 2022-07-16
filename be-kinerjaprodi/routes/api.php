@@ -124,6 +124,7 @@ Route::post('created', [MitraController::class, 'insertmitra']);
 Route::post('updated/{id}', [MitraController::class, 'editmitra']);
 Route::post('delete/{id}', [MitraController::class, 'deletemitra']);
 
+Route::get('read_kjs', [KerjasamaController::class, 'tampilkerjasama']);
 Route::post('create_kjs', [KerjasamaController::class, 'insertkerjasama']);
 Route::post('update_kjs/{id}', [KerjasamaController::class, 'editkerjasama']);
 Route::post('delete_kjs/{id}', [KerjasamaController::class, 'delete_kjs']);
@@ -137,6 +138,7 @@ Route::post('create_mahasiswa_asing', [MahasiswaAsingController::class, 'insert_
 Route::post('update_mahasiswa_asing/{id}', [MahasiswaAsingController::class, 'edit_mahasiswa_asing']);
 Route::post('delete_mahasiswa_asing/{id}', [MahasiswaAsingController::class, 'delete_mahasiswa_asing']);
 
+Route::get('read_penerimaan_mahasiswa', [PenerimaanController::class, 'tampilmahasiswa']);
 Route::post('create_penerimaan_mahasiswa', [PenerimaanController::class, 'insert_penerimaan_mahasiswa']);
 Route::post('update_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'edit_penerimaan_mahasiswa']);
 Route::post('delete_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'delete_penerimaan_mahasiswa']);
@@ -164,6 +166,7 @@ Route::group(['middleware' => ['dosenonly']], function () {
 //route prodi
 Route::post('Prodi', [ProdiController::class, 'store']);
 Route::put('Prodi/{id}', [ProdiController::class, 'update']);
+Route::get('Prodi', [ProdiController::class, 'tampilprodi']);
 
 //route mahasiswa
 Route::post('Mahasiswa', [MahasiswaController::class, 'store']);

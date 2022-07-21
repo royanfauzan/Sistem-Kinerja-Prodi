@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class PenerimaanController extends Controller
 {
+    public function tampilmahasiswa(){
+        return response()->json([
+            'success' => true,
+            'Seleksi' => Penerimaan::all(),
+        ]);
+    }
     public function tester(Request $request)
     {
         return response()->json(['Sukses' => true]);

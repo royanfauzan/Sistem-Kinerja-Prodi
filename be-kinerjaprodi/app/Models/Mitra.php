@@ -17,4 +17,8 @@ class Mitra extends Model
         'email_cp',
         'bidang',
     ];
+
+    public function kerjasama() {
+        return $this->hasMany(Kerjasama::class);
+    }
 }

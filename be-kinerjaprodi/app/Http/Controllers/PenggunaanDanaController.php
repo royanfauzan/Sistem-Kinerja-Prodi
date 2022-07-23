@@ -5,9 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\PenggunaanDana;
+use App\Models\Prodi;
 
 class PenggunaanDanaController extends Controller
+
 {
+    public function tampil_penggunaan_dana()
+    {
+        //
+       
+        return response()->json([
+            'success' => true,
+            'tampil_penggunaan_dana' => PenggunaanDana::with('prodi')->get()
+        ]);
+    }
+
     public function insert_penggunaan_dana(Request $request)
     {
         $credentials = $request->only(

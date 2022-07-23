@@ -19,4 +19,7 @@ class Penerimaan extends Model
         'Mahasiswa_Aktif_Transfer',
         'Program_Studi_Prodi_Id'
     ];
+    public function prodi() {
+        return $this->belongsTo(Prodi::class,'Program_Studi_Prodi_Id','id');
+    }
 }

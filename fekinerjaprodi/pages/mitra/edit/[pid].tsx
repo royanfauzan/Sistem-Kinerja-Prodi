@@ -2,41 +2,48 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
-import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutForm";
-import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
+import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
+import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
+import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
 
-interface Prodi {
-  nama_prodi: string;
 
+// Untuk Ngambil Data Berdasarkan ID
+export async function getServerSideProps(context) {
+
+  //http request
+  const req  = await axios.get(`http://127.0.0.1:8000/api/show_mitra/${context.query.pid}`)
+  const res  = await req.data.tampil_mitras
+
+  return {
+    props: {
+        mitra: res // <-- assign response
+    },
+  }
 }
+// interface Kategori {
+//   id: number;
+//   nama: string;
+//   created_at: string;
+//   updated_at: string;
+// }
 
-export default function input_mahasiswa_asing() {
+
+export default function update_datamitra(props) {
+  const {mitra} = props;
+  console.log(mitra);
+  
   const router = useRouter();
+  const {pid} = router.query;
 
-  const [dataProdis, setdataProdi] = useState<Prodi[]>([]);
+  const [dataMitras, setdataMitra] = useState(mitra);
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () =>{
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/Prodi",
-    })
-      .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { Prodi} = response.data;
-        setdataProdi(Prodi);
-        console.log(dataProdis);
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+  
   }
 
 
@@ -44,12 +51,16 @@ export default function input_mahasiswa_asing() {
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
   useEffect(()=>{
+    
+    
     // cek token, kalo gaada disuruh login
     const lgToken = localStorage.getItem('token');
     if(!lgToken){
       router.push('/login')
-    }
 
+      
+    }
+    
     // perjalanan validasi token 
     axios({
       method: "get",
@@ -74,9 +85,11 @@ export default function input_mahasiswa_asing() {
         return router.push('/');
     })
   },[]);
+  
+  //HAPUS DATA
+ 
 
-
-
+  // Insert Update Data
   const submitForm = async (event) => {
     event.preventDefault();
 
@@ -97,7 +110,7 @@ export default function input_mahasiswa_asing() {
 
     axios({
       method: "post",
-      url: "http://127.0.0.1:8000/api/created",
+      url: `http://127.0.0.1:8000/api/update_mitra/${dataMitras.id}`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -110,8 +123,8 @@ export default function input_mahasiswa_asing() {
         toast.dismiss();
         toast.success("Login Sugses!!");
         // console.log(token);
-        console.log(profil);
-        router.push("/");
+        console.log(response.data);
+        // router.push("/");
       })
       .catch(function (error) {
         //handle error
@@ -146,6 +159,7 @@ export default function input_mahasiswa_asing() {
                       >
                         Simpan
                       </button>
+                     
                     </div>
                   </div>
                   <div className="card-body">
@@ -162,7 +176,7 @@ export default function input_mahasiswa_asing() {
                             type="text"
                             placeholder=" Alamat"
                             id="namamitra"
-                            required
+                            defaultValue={dataMitras.namamitra}
                           />
                         </div>
                       </div>
@@ -177,7 +191,7 @@ export default function input_mahasiswa_asing() {
                             type="text"
                             placeholder="Alamat Mitra"
                             id="alamat"
-                            required
+                            defaultValue={dataMitras.alamat}
                           />
                         </div>
                       </div>
@@ -192,7 +206,7 @@ export default function input_mahasiswa_asing() {
                             type="text"
                             placeholder="Nomor Telepon Mitra"
                             id="no_telepon"
-                            required
+                            defaultValue={dataMitras.no_telepon}
                           />
                         </div>
                       </div>
@@ -207,7 +221,7 @@ export default function input_mahasiswa_asing() {
                             type="text"
                             placeholder="Nama CP"
                             id="nama_cp"
-                            required
+                            defaultValue={dataMitras.nama_cp}
                           />
                         </div>
                       </div>
@@ -222,7 +236,7 @@ export default function input_mahasiswa_asing() {
                             type="text"
                             placeholder="Nomor Telepon CP"
                             id="no_telp_cp"
-                            required
+                            defaultValue={dataMitras.no_telp_cp}
                           />
                         </div>
                       </div>
@@ -237,7 +251,7 @@ export default function input_mahasiswa_asing() {
                             type="text"
                             placeholder="Email CP"
                             id="email_cp"
-                            required
+                            defaultValue={dataMitras.email_cp}
                           />
                         </div>
                       </div>
@@ -252,6 +266,7 @@ export default function input_mahasiswa_asing() {
                             aria-label="Default select example"
                             defaultValue="0"
                             id="bidang"
+                            defaultValue={dataMitras.bidang}
                           >
                             <option >Bidang Kerjasama</option>
                             <option value="Kerjasama Pendidikan"> Kerjasama Pendidikan </option>

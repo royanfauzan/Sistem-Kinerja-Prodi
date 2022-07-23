@@ -12,13 +12,24 @@ class KerjasamaController extends Controller
     public function tampilkerjasama(){
         return response()->json([
             'success' => true,
-            'Mitra' => Mitra::all(),
+            'tampilkerjasama' => Kerjasama::with('Mitra')->get()
+
+        ]);
+    }
+
+    public function tampil_edit_kerjasama($id)
+    {
+        //
+        return response()->json([
+            'success' => true,
+            'tampil_kerjasama' => Kerjasama::find($id),
+            'id' => $id
         ]);
     }
     public function insertkerjasama(Request $request)
     {
         $credentials = $request->only(
-            'namamitra',
+            'idmitra',
             'tingkat',
             'judul_kegiatan',
             'manfaat',
@@ -32,8 +43,8 @@ class KerjasamaController extends Controller
 
         //valid credential
         $validator = Validator::make($credentials, [
-            'namamitra' => 'required|string|min:6',
-            'tingkat' => 'required|string|min:6',
+            'idmitra' => 'required|string',
+            'tingkat' => 'required|string',
             'judul_kegiatan' => 'required|string|',
             'manfaat' => 'required|string|',
             'tanggal_kegiatan' => 'required|string|',
@@ -41,17 +52,35 @@ class KerjasamaController extends Controller
             'bukti_kerjasama' => 'required|string|',
             'tahun_berakhir' => 'required|string|',
             'bidang' => 'required|string|',
-            'file_bukti' => 'required|string|',
+            'file_bukti' => ['required','mimes:pdf,docx','max:10048'],
 
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+        $finalPathdokumen = "";
+        try {
+            $folderdokumen = "storage/kerjasama/";
+
+            $dokumen = $request->file('file_bukti');
+
+            $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".",$dokumen->getClientOriginalName(),2)[0])) . "-". time() . "." . $dokumen->getClientOriginalExtension();
+
+            $dokumen->move($folderdokumen, $namaFiledokumen);
+
+            $finalPathdokumen = $folderdokumen . $namaFiledokumen;
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Menyimpan Dokumen".$th,
+            ], 400);
         }
 
-        $mitra = Mitra::where('namamitra', $request->namamitra)->first();
+
+        
         $model = Kerjasama::create([
-            'mitra_id' => $mitra->id,
+            'mitra_id' => $request->idmitra,
             'tingkat' => $request->tingkat,
             'judul_kegiatan' => $request->judul_kegiatan,
             'manfaat' => $request->manfaat,
@@ -60,7 +89,7 @@ class KerjasamaController extends Controller
             'bukti_kerjasama' => $request->bukti_kerjasama,
             'tahun_berakhir' => $request->tahun_berakhir,
             'bidang' => $request->bidang,
-            'file_bukti' => $request->file_bukti,
+            'file_bukti' => $finalPathdokumen,
 
         ]);
 
@@ -80,7 +109,7 @@ class KerjasamaController extends Controller
     public function editkerjasama(Request $request, $id)
     {
         $credentials = $request->only(
-            'namamitra',
+            'idmitra',
             'tingkat',
             'judul_kegiatan',
             'manfaat',
@@ -92,10 +121,13 @@ class KerjasamaController extends Controller
             'file_bukti'
         );
 
-        //valid credential
+    
+        if(!$request->file('file_bukti') )
+        {
+                //valid credential
         $validator = Validator::make($credentials, [
-            'namamitra' => 'required|string|min:6',
-            'tingkat' => 'required|string|min:6',
+            'idmitra' => 'required|string',
+            'tingkat' => 'required|string',
             'judul_kegiatan' => 'required|string|',
             'manfaat' => 'required|string|',
             'tanggal_kegiatan' => 'required|string|',
@@ -103,16 +135,63 @@ class KerjasamaController extends Controller
             'bukti_kerjasama' => 'required|string|',
             'tahun_berakhir' => 'required|string|',
             'bidang' => 'required|string|',
-            'file_bukti' => 'required|string|',
+           
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 200);
         }
 
-        $mitra = Mitra::where('namamitra', $request->namamitra)->first();
+            $model = Kerjasama::find($id);
+            $model->mitra_id = $request->idmitra;
+            $model->tingkat = $request->tingkat;
+            $model->judul_kegiatan = $request->judul_kegiatan;
+            $model->manfaat = $request->manfaat;
+            $model->tanggal_kegiatan = $request->tanggal_kegiatan;
+            $model->lama_kegiatan =  $request->lama_kegiatan;
+            $model->bukti_kerjasama = $request->bukti_kerjasama;
+            $model->tahun_berakhir = $request->tahun_berakhir;
+            $model->bidang = $request->bidang;
+            $model->save();
+        }
+        else{
+                       //valid credential
+        $validator = Validator::make($credentials, [
+            'idmitra' => 'required|string',
+            'tingkat' => 'required|string',
+            'judul_kegiatan' => 'required|string|',
+            'manfaat' => 'required|string|',
+            'tanggal_kegiatan' => 'required|string|',
+            'lama_kegiatan' => 'required|string|',
+            'bukti_kerjasama' => 'required|string|',
+            'tahun_berakhir' => 'required|string|',
+            'bidang' => 'required|string|',
+            'file_bukti' => ['required','mimes:pdf,docx','max:10048'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 200);
+        }
+            $finalPathdokumen = "";
+            
+        try {
+            $folderdokumen = "storage/kerjasama/";
+
+            $dokumen = $request->file('file_bukti');
+
+            $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".",$dokumen->getClientOriginalName(),2)[0])) . "-". time() . "." . $dokumen->getClientOriginalExtension();
+
+            $dokumen->move($folderdokumen, $namaFiledokumen);
+
+            $finalPathdokumen = $folderdokumen . $namaFiledokumen;
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Menyimpan Dokumen".$th,
+            ], 400);
+        }
         $model = Kerjasama::find($id);
-        $model->mitra_id = $mitra->id;
+        $model->mitra_id = $request->idmitra;
         $model->tingkat = $request->tingkat;
         $model->judul_kegiatan = $request->judul_kegiatan;
         $model->manfaat = $request->manfaat;
@@ -121,8 +200,13 @@ class KerjasamaController extends Controller
         $model->bukti_kerjasama = $request->bukti_kerjasama;
         $model->tahun_berakhir = $request->tahun_berakhir;
         $model->bidang = $request->bidang;
-        $model->file_bukti = $request->file_bukti;
+        $model->file_bukti= $finalPathdokumen;
         $model->save();
+        }
+
+        
+       
+     
 
         if (!$model) {
             return response()->json([

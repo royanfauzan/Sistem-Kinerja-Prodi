@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class MahasiswaAsingController extends Controller
 {
+    public function tampil_mahasiswa_asing(){
+        return response()->json([
+            'success' => true,
+            'mahasiswa_asing' => MahasiswaAsing::with('prodi')->get()
+        ]);
+    }
     public function tester(Request $request)
     {
         return response()->json(['Sukses' => true]);
@@ -123,4 +129,5 @@ class MahasiswaAsingController extends Controller
             'message' => "Data Mahasiswa Asing Berhasil Dihapus"
         ]);
     }
+   
 }

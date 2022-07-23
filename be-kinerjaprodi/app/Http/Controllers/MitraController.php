@@ -7,6 +7,23 @@ use App\Models\Mitra;
 use Illuminate\Support\Facades\Validator;
 class MitraController extends Controller
 {
+    public function tampil_mitra()
+    {
+        //
+        return response()->json([
+            'success' => true,
+            'tampil_mitras' => Mitra::all(),
+        ]);
+    }
+    public function tampil_editmitra($id)
+    {
+        //
+        return response()->json([
+            'success' => true,
+            'tampil_mitras' => Mitra::find($id),
+            'id' => $id
+        ]);
+    }
     public function tester(Request $request)
     {
         return response()->json(['Sukses' => true]);

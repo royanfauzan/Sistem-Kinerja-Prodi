@@ -20,4 +20,7 @@ class Kerjasama extends Model
         'bidang',
         'file_bukti'
     ];
+    public function Mitra() {
+        return $this->belongsTo(Mitra::class,'mitra_id','id');
+    }
 }

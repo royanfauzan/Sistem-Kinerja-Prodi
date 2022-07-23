@@ -6,29 +6,28 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
-import Link from 'next/link';
 
 export default function daftarprofil() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
-  const [tampilMitra, settampilMitra] = useState([]);
+  const [tampilMahasiswaAsing, settampilMahasiswaAsing] = useState([]);
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/read_mitra",
+      url: "http://127.0.0.1:8000/api/read_mahasiswa_asing",
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { tampil_mitras } = response.data;
-        settampilMitra(tampil_mitras);
+        const { mahasiswa_asing} = response.data;
+        settampilMahasiswaAsing(mahasiswa_asing);
 
-        console.log(tampil_mitras);
+        console.log(mahasiswa_asing);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -68,24 +67,6 @@ export default function daftarprofil() {
       });
   }, []);
 
-  const deleteMitra = (id) => {
-    axios({
-      method: "post",
-      url: `http://127.0.0.1:8000/api/delete_mitra/${id}`,
-    
-    })
-    .then(function (response) {
-   
-      router.reload();    
-    })
-    .catch(function (err) {
-        console.log('gagal');
-        console.log(err.response);
-    })
-   
-  };
-
-
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -103,68 +84,59 @@ export default function daftarprofil() {
                       <thead>
                         <tr>
                           <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Nama Mitra
+                            Tahun Akademik
                           </th>
                           <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                           Alamat
+                          Program Studi
                           </th>
                           <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                          Nomor Telepon
+                          Mahasiswa Aktif
                           </th>
                           <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                           Nama Contact Person
+                           Mahasiswa Aktif Full Time
                           </th>
                           <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                           No. Telp Contact Person
+                           Mahasiswa Aktif Part Time
                           </th>
 
                           <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                         Email Contact Person
+                        Nama Prodi
                           </th>
 
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                          Bidang
-                          </th>
-
+                       
                           <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                             Aksi
                           </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {tampilMitra.map((tMitra) => {
+                        {tampilMahasiswaAsing.map((tAsing) => {
                           return (
-                            <tr key={`tmitra`+tMitra.id}>
-                              <td>
-                               
-                                  <h6 className="mb-0 text-sm">
-                                      {tMitra.namamitra}
-                                    </h6>
-                                  
-                              </td>
+                            <tr key={`tasing`+tAsing.id}>
+                             
                               <td>
                               <div className="d-flex flex-column justify-content-center">
                                     <h6 className="mb-0 text-sm">
-                                    {tMitra.alamat}
+                                    {tAsing.Tahun_Akademik}
                                     </h6>
                                    
                                   </div>
                               </td>
                               <td className="align-middle ">
                               <p className="text-xs text-secondary mb-0">
-                              {tMitra.no_telepon}
+                              {tAsing.Program_Studi}
                                     </p>
                               </td>
                           
                               <td className="align-middle text-center text-sm">
                               <p className="text-xs font-weight-bold mb-0">
-                              {tMitra.nama_cp}
+                              {tAsing.Mahasiswa_Aktif}
                                 </p>
                               </td>
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
                                 <p className="text-xs font-weight-bold mb-0">
-                                {tMitra.no_telp_cp}
+                                {tAsing.Mahasiswa_Aktif_Fulltime}
                                 </p>
                                 </span>
                               </td>
@@ -172,7 +144,7 @@ export default function daftarprofil() {
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
                                 <p className="text-xs font-weight-bold mb-0">
-                                {tMitra.email_cp}
+                                {tAsing.Mahasiswa_Aktif_Parttime}
                                 </p>
                                 </span>
                               </td>
@@ -180,17 +152,18 @@ export default function daftarprofil() {
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
                                 <p className="text-xs font-weight-bold mb-0">
-                                {tMitra.bidang}
+                                {tAsing.prodi.nama_prodi}
                                 </p>
                                 </span>
                               </td>
                               <td className="align-middle text-center">
-                              <Link href={`/mitra/edit/${tMitra.id}`}>
-                              <button className="btn btn-sm btn-primary border-0 shadow-sm mb-3 me-3">EDIT</button>
-                              </Link>
-                             
-                              <button onClick={() => deleteMitra(tMitra.id)} className="btn btn-sm btn-danger border-0 shadow-sm mb-3 me-3">HAPUS</button>
-                             
+                                <a
+                                  className="text-secondary  font-weight-bold text-xs"
+                                  data-toggle="tooltip"
+                                  data-original-title="Edit user"
+                                >
+                                  Edit
+                                </a>
                               </td>
                             </tr>
                           );

@@ -12,7 +12,7 @@ use App\Http\Controllers\PenelitianController;
 use App\Http\Controllers\PKMController;
 use App\Http\Controllers\ProdukMHSController;
 use App\Http\Controllers\ApiController;
-
+use App\Http\Controllers\BimbinganController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\IpkController;
 use App\Http\Controllers\KepuasanController;
@@ -30,9 +30,11 @@ use App\Http\Controllers\TulisanController;
 use App\Http\Controllers\WaktutungguController;
 
 use App\Http\Controllers\DetaildosenController;
+use App\Http\Controllers\EwmpController;
 use App\Http\Controllers\MitraController;
 use App\Http\Controllers\KerjasamaController;
 use App\Http\Controllers\MahasiswaAsingController;
+use App\Http\Controllers\MengajarController;
 use App\Http\Controllers\PendidikanController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\PengabdianController;
@@ -155,6 +157,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('get_user', [ApiController::class, 'get_user']);
     Route::post('penelitiandosens', [PenelitianController::class, 'store']);
     Route::post('pengabdiandosens', [PengabdianController::class, 'store']);
+    Route::post('ewmps', [EwmpController::class, 'store']);
+    Route::post('mengajars', [MengajarController::class, 'store']);
+    Route::post('bimbingans', [BimbinganController::class, 'store']);
 });
 
 Route::group(['middleware' => ['adminonly']], function () {

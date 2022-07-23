@@ -116,29 +116,39 @@ Route::put('produk/{id}', [ProdukController::class, 'update']);
 Route::post('presentase', [PresentaseController::class, 'store']);
 Route::put('presentase/{id}', [PresentaseController::class, 'update']);
 
-Route::post('created', [MitraController::class, 'insertmitra']);
-Route::post('updated/{id}', [MitraController::class, 'editmitra']);
-Route::post('delete/{id}', [MitraController::class, 'deletemitra']);
 
+Route::post('created', [MitraController::class, 'insertmitra']);
+Route::get('read_mitra', [MitraController::class, 'tampil_mitra']);
+Route::get('show_mitra/{id}', [MitraController::class, 'tampil_editmitra']);
+Route::post('update_mitra/{id}', [MitraController::class, 'editmitra']);
+Route::post('delete_mitra/{id}', [MitraController::class, 'deletemitra']);
+
+Route::get('read_kjs', [KerjasamaController::class, 'tampilkerjasama']);
 Route::post('create_kjs', [KerjasamaController::class, 'insertkerjasama']);
+Route::get('show_kjs/{id}', [KerjasamaController::class, 'tampil_edit_kerjasama']);
 Route::post('update_kjs/{id}', [KerjasamaController::class, 'editkerjasama']);
 Route::post('delete_kjs/{id}', [KerjasamaController::class, 'delete_kjs']);
 
 
 Route::post('create_penggunaan_dana', [PenggunaanDanaController::class, 'insert_penggunaan_dana']);
+Route::get('read_penggunaan_dana', [PenggunaanDanaController::class, 'tampil_penggunaan_dana']);
 Route::post('update_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'edit_penggunaan_dana']);
 Route::post('delete_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'delete_penggunaan_dana']);
 
 Route::post('create_mahasiswa_asing', [MahasiswaAsingController::class, 'insert_mahasiswa_asing']);
+Route::get('read_mahasiswa_asing', [MahasiswaAsingController::class, 'tampil_mahasiswa_asing']);
 Route::post('update_mahasiswa_asing/{id}', [MahasiswaAsingController::class, 'edit_mahasiswa_asing']);
 Route::post('delete_mahasiswa_asing/{id}', [MahasiswaAsingController::class, 'delete_mahasiswa_asing']);
 
+
 Route::post('create_penerimaan_mahasiswa', [PenerimaanController::class, 'insert_penerimaan_mahasiswa']);
+Route::get('read_penerimaan_mahasiswa', [PenerimaanController::class, 'tampilmahasiswa']);
+Route::get('show_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'tampil_edit_penerimaan']);
 Route::post('update_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'edit_penerimaan_mahasiswa']);
 Route::post('delete_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'delete_penerimaan_mahasiswa']);
 
 
-Route::get('testaxios', [ProfildosenController::class, 'index']);
+Route::get('profildosens', [ProfildosenController::class, 'index']);
 Route::get('testuser', [ApiController::class, 'get_alluser']);
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('testmid', [ApiController::class, 'tester']);
@@ -150,6 +160,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 Route::group(['middleware' => ['adminonly']], function () {
     Route::get('testadmin', [ApiController::class, 'tester']);
     Route::post('profildosens', [ProfildosenController::class, 'store']);
+    Route::get('profildosens', [ProfildosenController::class, 'index']);
 });
 
 Route::group(['middleware' => ['dosenonly']], function () {
@@ -161,6 +172,7 @@ Route::group(['middleware' => ['dosenonly']], function () {
 Route::get('Prodi', [ProdiController::class, 'index']);
 Route::post('Prodi', [ProdiController::class, 'store']);
 Route::put('Prodi/{id}', [ProdiController::class, 'update']);
+Route::get('Prodi', [ProdiController::class, 'tampilprodi']);
 
 //route mahasiswa
 Route::get('Mahasiswa', [MahasiswaController::class, 'index']);

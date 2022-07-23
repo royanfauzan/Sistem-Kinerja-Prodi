@@ -32,4 +32,7 @@ class PenggunaanDana extends Model
     'Prodi_Id',
     'Tahun'
 ];
+public function prodi() {
+    return $this->belongsTo(Prodi::class,'Prodi_Id','id');
+}
 }

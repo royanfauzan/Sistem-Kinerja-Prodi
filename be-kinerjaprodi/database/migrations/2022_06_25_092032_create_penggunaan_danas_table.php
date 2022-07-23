@@ -31,7 +31,6 @@ class CreatePenggunaanDanasTable extends Migration
             $table->bigInteger('Biaya_Operasional_TidakLangsung_UPPS');
             $table->bigInteger('Biaya_Tenaga_Kependidikan_Prodi');
             $table->bigInteger('Biaya_Tenaga_Kependidikan_UPPS');
-            $table->foreignId('Guna_Dana_Id');
             $table->foreignId('Prodi_Id');
             $table->string('Tahun');
             $table->timestamps();

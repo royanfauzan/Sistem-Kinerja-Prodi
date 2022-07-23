@@ -61,10 +61,6 @@ use App\Models\Rekognisi;
 
 Route::post('login', [ApiController::class, 'authenticate']);
 
-// Prodi
-Route::post('Prodi', [ProdiController::class, 'store']);
-Route::put('Prodi/{id}', [ProdiController::class, 'update']);
-
 // Kepuasan lulusan
 Route::post('kepuasan', [KepuasanController::class, 'store']);
 
@@ -162,38 +158,47 @@ Route::group(['middleware' => ['dosenonly']], function () {
     Route::post('pendidikandosens', [PendidikanController::class, 'store']);
 });
 //route prodi
+Route::get('Prodi', [ProdiController::class, 'index']);
 Route::post('Prodi', [ProdiController::class, 'store']);
 Route::put('Prodi/{id}', [ProdiController::class, 'update']);
 
 //route mahasiswa
+Route::get('Mahasiswa', [MahasiswaController::class, 'index']);
 Route::post('Mahasiswa', [MahasiswaController::class, 'store']);
 Route::put('Mahasiswa/{id}', [MahasiswaController::class, 'update']);
 
 //route matkul
+Route::get('Matkul', [MatkulController::class, 'index']);
 Route::post('Matkul', [MatkulController::class, 'store']);
 Route::put('Matkul/{id}', [MatkulController::class, 'update']);
 
 //route kepuasan mahasiswa
+Route::get('KepuasanMHS', [KepuasanMHSController::class, 'index']);
 Route::post('KepuasanMHS', [KepuasanMHSController::class, 'store']);
 Route::put('KepuasanMHS/{id}', [KepuasanMHSController::class, 'update']);
 
 //route produk mahasiswa
+Route::get('ProdukMHS', [ProdukMHSController::class, 'index']);
 Route::post('ProdukMHS', [ProdukMHSController::class, 'store']);
 Route::put('ProdukMHS/{id}', [ProdukMHSController::class, 'update']);
 
 //route data capaian kurikulum
+Route::get('CapaianKurikulum', [CapKurikulumController::class, 'index']);
 Route::post('CapaianKurikulum', [CapKurikulumController::class, 'store']);
 Route::put('CapaianKurikulum/{id}', [CapKurikulumController::class, 'update']);
 
 //route data PKM
+Route::get('PKM', [PKMController::class, 'index']);
 Route::post('PKM', [PKMController::class, 'store']);
 Route::put('PKM/{id}', [PKMController::class, 'update']);
 
 //route penelitian
+Route::get('Penelitian', [PenelitianController::class, 'index']);
 Route::post('Penelitian', [PenelitianController::class, 'store']);
 Route::put('Penelitian/{id}', [PenelitianController::class, 'update']);
 
 //route integrasi
+Route::get('Integrasi', [IntegrasiController::class, 'index']);
 Route::post('Integrasi', [IntegrasiController::class, 'store']);
 Route::put('Integrasi/{id}', [IntegrasiController::class, 'update']);
 

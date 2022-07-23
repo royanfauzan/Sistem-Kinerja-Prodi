@@ -15,7 +15,10 @@ class MatkulController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([ //ngirim ke front end
+            'success' => true, 
+            'all_matkul' => Matkul::all()
+        ]);
     }
 
     /**
@@ -65,7 +68,7 @@ class MatkulController extends Controller
            'nama_matkul' => $request->nama_matkul,
            'sks' => $request->sks,
            'prodi_id' => $request->prodi_id,
-           'all_mhs' => Matkul::all()
+           'all_matkul' => Matkul::all()
        ]);
     }
 

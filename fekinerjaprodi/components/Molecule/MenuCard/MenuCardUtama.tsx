@@ -9,9 +9,9 @@ interface MenuCardProps{
 
 export default function MenuCardUtama(props:MenuCardProps) {
     return (
-        <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div className="col-xl-4 col-sm-6 mb-xl-0 mb-4 mt-3">
           <div className="card">
-            <div className="card-body p-3">
+            <div className="card-body p-3 ">
               <div className="row">
                 <div className="col-8">
                   <div className="numbers">

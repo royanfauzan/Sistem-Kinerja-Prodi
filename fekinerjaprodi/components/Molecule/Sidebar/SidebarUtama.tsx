@@ -14,7 +14,7 @@ export default function SidebarUtama() {
     <div className="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul className="navbar-nav">
         <li className="nav-item">
-          <a className="nav-link " href="./dashboard.php">
+          <a className="nav-link " href="/dashboards/dashboardadmin">
             <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
             </div>

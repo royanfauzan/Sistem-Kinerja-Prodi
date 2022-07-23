@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Kepuasan_MHS;
-use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,7 +14,10 @@ class KepuasanMHSController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([ //ngirim ke front end
+            'success' => true, 
+            'all_mhs' => Kepuasan_MHS::with('prodi')->get(),
+        ]);
     }
 
     /**
@@ -138,7 +139,7 @@ class KepuasanMHSController extends Controller
                'tangible_1' => $request->tangible_1,
                'tl_tangible' => $request->tl_tangible,
                'prodi_id' => $request->prodi_id,
-               'all_mhs' => Mahasiswa::all()
+               'all_mhs' => Kepuasan_MHS::all()
        ]);
     }
 

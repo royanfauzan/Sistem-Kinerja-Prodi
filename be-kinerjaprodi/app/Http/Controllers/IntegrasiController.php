@@ -15,7 +15,10 @@ class IntegrasiController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([ //ngirim ke front end
+            'success' => true, 
+            'all_integrasi' => Integrasi::with(['profil_dosen', 'penelitian', 'pkm', 'matkul'])->get(),
+        ]);
     }
 
     /**
@@ -42,7 +45,7 @@ class IntegrasiController extends Controller
        $validator = Validator::make($dataintegrasi, [
         'bentuk_integrasi' => 'required', 
         'tahun' => 'required', 
-        'file_bukti' => 'required', 
+        'file_bukti' => "required|mimetypes:application/pdf|max:10000", 
         'dosen_id' => 'required', 
         'penelitian_id' => 'required', 
         'PkM_id' => 'required', 
@@ -55,12 +58,30 @@ class IntegrasiController extends Controller
            return response()->json(['error' => $validator->errors()], 200);
        }
 
+       $finalPathdokumen = "";
+       try {
+           $folderdokumen = "storage/integrasi/";
+
+           $dokumen = $request->file('file_bukti');
+
+           $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".",$dokumen->getClientOriginalName(),2)[0])) . "-". time() . "." . $dokumen->getClientOriginalExtension();
+
+           $dokumen->move($folderdokumen, $namaFiledokumen);
+
+           $finalPathdokumen = $folderdokumen . $namaFiledokumen;
+       } catch (\Throwable $th) {
+           return response()->json([
+               'success' => false,
+               'message' => "Gagal Menyimpan Dokumen".$th,
+           ], 400);
+       }
+
        $dataintegrasi = Integrasi::create( //ngirim ke database
            [
                //yg kiri dari form, kanan dari database
                'bentuk_integrasi' => $request->bentuk_integrasi, 
                 'tahun' => $request->tahun, 
-                'file_bukti' => $request->file_bukti, 
+                'file_bukti' => $finalPathdokumen, 
                 'dosen_id' => $request->dosen_id, 
                 'penelitian_id' => $request->penelitian_id, 
                 'PkM_id'=> $request->PkM_id, 
@@ -74,7 +95,7 @@ class IntegrasiController extends Controller
            'success' => true, 
                 'bentuk_integrasi' => $request->bentuk_integrasi, 
                 'tahun' => $request->tahun, 
-                'file_bukti' => $request->file_bukti, 
+                'file_bukti' => $finalPathdokumen, 
                 'dosen_id' => $request->dosen_id, 
                 'penelitian_id' => $request->penelitian_id, 
                 'PkM_id'=> $request->PkM_id, 

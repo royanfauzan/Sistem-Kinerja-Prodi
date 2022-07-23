@@ -16,7 +16,10 @@ class CapKurikulumController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([ //ngirim ke front end
+            'success' => true, 
+            'all_capkurikulum' => CapKurikulum::with(['matkul', 'prodi'])->get(),
+        ]);
     }
 
     /**
@@ -48,7 +51,8 @@ class CapKurikulumController extends Controller
             'seminar' => 'required',
             'praktikum' => 'required',
             'konversi_kredit_jam' => 'required', 
-            'sikap', 'pengetahuan' => 'required', 
+            'sikap' => 'required',
+            'pengetahuan' => 'required', 
             'ketrampilan_umum' => 'required', 
             'ketrampilan_khusus' => 'required', 
             'dok_ren_pembelajaran' => 'required', 

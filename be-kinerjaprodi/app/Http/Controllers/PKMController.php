@@ -15,7 +15,10 @@ class PKMController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([ //ngirim ke front end
+            'success' => true, 
+            'all_pkm' => Pkm::all()
+        ]);
     }
 
     /**

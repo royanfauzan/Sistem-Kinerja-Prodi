@@ -9,4 +9,8 @@ class Prestasi extends Model
 {
     use HasFactory;
     protected $guarded = ["id"];
+    public function prodi()
+    {
+        return $this->belongsTo(Prodi::class,'prodi_id','id');
+    }
 }

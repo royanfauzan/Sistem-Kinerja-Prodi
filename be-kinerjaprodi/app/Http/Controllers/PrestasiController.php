@@ -15,7 +15,10 @@ class PrestasiController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_prodi' => Prestasi::with('prodi')->get(),
+        ]);
     }
 
     /**

@@ -5,9 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\PenggunaanDana;
+use App\Models\Prodi;
 
 class PenggunaanDanaController extends Controller
+
 {
+    public function tampil_penggunaan_dana()
+    {
+        //
+       
+        return response()->json([
+            'success' => true,
+            'tampil_penggunaan_dana' => PenggunaanDana::with('prodi')->get()
+        ]);
+    }
+
     public function insert_penggunaan_dana(Request $request)
     {
         $credentials = $request->only(
@@ -27,7 +39,6 @@ class PenggunaanDanaController extends Controller
             'Biaya_Operasional_TidakLangsung_UPPS',
             'Biaya_Tenaga_Kependidikan_Prodi',
             'Biaya_Tenaga_Kependidikan_UPPS',
-            'Guna_Dana_Id',
             'Prodi_Id',
             'Tahun'
         );
@@ -50,7 +61,6 @@ class PenggunaanDanaController extends Controller
             'Biaya_Operasional_TidakLangsung_UPPS' => 'required',
             'Biaya_Tenaga_Kependidikan_Prodi' => 'required',
             'Biaya_Tenaga_Kependidikan_UPPS' => 'required',
-            'Guna_Dana_Id' => 'required',
             'Prodi_Id' => 'required',
             'Tahun' => 'required',
 
@@ -78,7 +88,6 @@ class PenggunaanDanaController extends Controller
             'Biaya_Operasional_TidakLangsung_UPPS'=>$request->Biaya_Operasional_TidakLangsung_UPPS,
             'Biaya_Tenaga_Kependidikan_Prodi'=>$request->Biaya_Tenaga_Kependidikan_Prodi,
             'Biaya_Tenaga_Kependidikan_UPPS'=>$request->Biaya_Tenaga_Kependidikan_UPPS,
-            'Guna_Dana_Id'=>$request->Guna_Dana_Id,
             'Prodi_Id'=>$request->Prodi_Id,
             'Tahun'=>$request->Tahun
            
@@ -117,7 +126,6 @@ class PenggunaanDanaController extends Controller
             'Biaya_Operasional_TidakLangsung_UPPS',
             'Biaya_Tenaga_Kependidikan_Prodi',
             'Biaya_Tenaga_Kependidikan_UPPS',
-            'Guna_Dana_Id',
             'Prodi_Id',
             'Tahun'
         );
@@ -140,7 +148,6 @@ class PenggunaanDanaController extends Controller
             'Biaya_Operasional_TidakLangsung_UPPS' => 'required',
             'Biaya_Tenaga_Kependidikan_Prodi' => 'required',
             'Biaya_Tenaga_Kependidikan_UPPS' => 'required',
-            'Guna_Dana_Id' => 'required',
             'Prodi_Id' => 'required',
             'Tahun' => 'required',
         ]);
@@ -167,7 +174,6 @@ class PenggunaanDanaController extends Controller
         $model->Biaya_Operasional_TidakLangsung_UPPS= $request->Biaya_Operasional_TidakLangsung_UPPS;
         $model->Biaya_Tenaga_Kependidikan_Prodi = $request->Biaya_Tenaga_Kependidikan_Prodi;
         $model->Biaya_Tenaga_Kependidikan_UPPS = $request->Biaya_Tenaga_Kependidikan_UPPS;
-        $model->Guna_Dana_Id = $request->Guna_Dana_Id ;
         $model->Prodi_Id = $request->Prodi_Id;
         $model->Tahun = $request->Tahun;
 

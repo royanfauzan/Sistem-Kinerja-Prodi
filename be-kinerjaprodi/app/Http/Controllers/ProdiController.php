@@ -13,12 +13,14 @@ class ProdiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function tampilprodi()
     {
+        
         return response()->json([
             'success' => true,
-            'all_prodi' => Prodi::all()
+            'Prodi' => Prodi::all(),
         ]);
+    
     }
 
     /**

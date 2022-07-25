@@ -7,9 +7,25 @@ use Illuminate\Http\Request;
 
 class PenerimaanController extends Controller
 {
+    public function tampilmahasiswa(){
+        return response()->json([
+            'success' => true,
+            'Seleksi' => Penerimaan::with('prodi')->get()
+        ]);
+    }
     public function tester(Request $request)
     {
         return response()->json(['Sukses' => true]);
+    }
+
+    public function tampil_edit_penerimaan($id)
+    {
+        //
+        return response()->json([
+            'success' => true,
+            'tampil_penerimaan' => Penerimaan::with('prodi')->where('id',$id)->first(),
+            'id' => $id
+        ]);
     }
 
     public function insert_penerimaan_mahasiswa(Request $request)

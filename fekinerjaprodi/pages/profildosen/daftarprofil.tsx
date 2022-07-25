@@ -6,6 +6,7 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
 export default function daftarprofil() {
   const router = useRouter();
@@ -76,13 +77,31 @@ export default function daftarprofil() {
             <div className="col-12">
               <div className="card mb-4">
                 <div className="card-header pb-0">
+                <div className="row justify-content-between">
+                  <div className="col-4">
                   <h6>Authors table</h6>
+                  </div>
+                    <div className="col-4 d-flex flex-row-reverse">
+                    <ReactHTMLTableToExcel
+                    id="test-table-xls-button"
+                    className="download-table-xls-button btn btn-success ms-3"
+                    table="tableprint"
+                    filename="tablexls"
+                    sheet="tablexls"
+                    buttonText="Export Excel"/>
+                    </div>
+                  </div>
+                  
                 </div>
                 <div className="card-body px-0 pt-0 pb-2">
                   <div className="table-responsive p-0">
-                    <table className="table align-items-center mb-0">
+                  
+                    <table className="table align-items-center mb-0" id="tableprint">
                       <thead>
                         <tr>
+                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                            NIDK
+                          </th>
                           <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                             Profil
                           </th>
@@ -102,20 +121,21 @@ export default function daftarprofil() {
                         {profilDosen.map((pDsn) => {
                           return (
                             <tr key={`pdsn`+pDsn.id}>
+                              <td className="align-middle text-center text-sm">
+                              <p className="text-xs font-weight-bold mb-0">
+                              {pDsn.NIDK}
+                                </p>
+                              </td>
                               <td>
                                 <div className="d-flex px-2 py-1">
-                                  <div className="me-5">
-                                  <h6 className="mb-0 text-sm">
-                                      {pDsn.NIDK}
-                                    </h6>
-                                  </div>
+                                  
                                   <div className="d-flex flex-column justify-content-center">
                                     <h6 className="mb-0 text-sm">
                                       {pDsn.NamaDosen}
                                     </h6>
-                                    <p className="text-xs text-secondary mb-0">
+                                    {/* <p className="text-xs text-secondary mb-0">
                                     {pDsn.Email}
-                                    </p>
+                                    </p> */}
                                   </div>
                                 </div>
                               </td>

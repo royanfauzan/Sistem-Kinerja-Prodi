@@ -22,7 +22,6 @@ use App\Http\Controllers\MasastudiController;
 use App\Http\Controllers\PagelaranController;
 use App\Http\Controllers\PresentaseController;
 use App\Http\Controllers\PrestasiController;
-
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SeminarController;
 use App\Http\Controllers\TempatController;
@@ -64,17 +63,22 @@ use App\Models\Rekognisi;
 Route::post('login', [ApiController::class, 'authenticate']);
 
 // Kepuasan lulusan
+Route::get('kepuasan', [KepuasanController::class, 'index']);
+Route::get('kepuasan', [KepuasanController::class, 'index']);
 Route::post('kepuasan', [KepuasanController::class, 'store']);
 
 // Tempat kerja lulusan
+Route::get('tempat', [TempatController::class, 'index']);
 Route::post('tempat', [TempatController::class, 'store']);
 Route::put('tempat/{id}', [TempatController::class, 'update']);
 
 // IPK
+Route::get('ipk', [IpkController::class, 'index']);
 Route::post('ipk', [IpkController::class, 'store']);
 Route::put('ipk/{id}', [IpkController::class, 'update']);
 
 //Prestasi
+Route::get('prestasi', [PrestasiController::class, 'index']);
 Route::post('prestasi', [PrestasiController::class, 'store']);
 Route::put('prestasi/{id}', [PrestasiController::class, 'update']);
 

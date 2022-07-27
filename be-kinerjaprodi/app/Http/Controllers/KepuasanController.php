@@ -15,7 +15,10 @@ class KepuasanController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_prodi' => KP_lulus::with('prodi')->get(),
+        ]);
     }
 
     /**

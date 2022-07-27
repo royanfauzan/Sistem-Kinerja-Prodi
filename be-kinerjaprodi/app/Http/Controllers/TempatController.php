@@ -15,7 +15,10 @@ class TempatController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_prodi' => Tempat::with('kepuasan')->get(),
+        ]);
     }
 
     /**

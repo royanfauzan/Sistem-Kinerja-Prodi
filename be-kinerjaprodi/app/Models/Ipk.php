@@ -9,4 +9,9 @@ class Ipk extends Model
 {
     protected $guarded = ["id"];
     use HasFactory;
+    
+    public function prodi()
+    {
+        return $this->belongsTo(Prodi::class,'prodi_id','id');
+    }
 }

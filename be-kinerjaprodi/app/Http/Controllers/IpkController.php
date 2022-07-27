@@ -15,7 +15,10 @@ class IpkController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_ipk' => Ipk::with('prodi')->get(),
+        ]);
     }
 
     /**
@@ -73,7 +76,7 @@ class IpkController extends Controller
                 'ipk_avg' => $request->ipk_avg,
                 'ipk_max' => $request->ipk_min,
                 'prodi_id' => $request->prodi_id,
-            'all_prodi' => Ipk::all()
+            'all_ipk' => Ipk::all()
         ]);
     }
 
@@ -143,7 +146,7 @@ class IpkController extends Controller
                 'ipk_avg' => $request->ipk_avg,
                 'ipk_max' => $request->ipk_min,
                 'prodi_id' => $request->prodi_id,
-            'all_prodi' => Ipk::all()
+            'all_ipk' => Ipk::all()
         ]);
     }
 

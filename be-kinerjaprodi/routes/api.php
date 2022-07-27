@@ -185,9 +185,10 @@ Route::post('Mahasiswa', [MahasiswaController::class, 'store']);
 Route::put('Mahasiswa/{id}', [MahasiswaController::class, 'update']);
 
 //route matkul
+Route::get('tampil_Matkul/{id}', [MatkulController::class, 'show']);
 Route::get('Matkul', [MatkulController::class, 'index']);
 Route::post('Matkul', [MatkulController::class, 'store']);
-Route::put('Matkul/{id}', [MatkulController::class, 'update']);
+Route::put('Matkul_Update/{id}', [MatkulController::class, 'update']);
 
 //route kepuasan mahasiswa
 Route::get('KepuasanMHS', [KepuasanMHSController::class, 'index']);
@@ -215,7 +216,8 @@ Route::post('Penelitian', [PenelitianController::class, 'store']);
 Route::put('Penelitian/{id}', [PenelitianController::class, 'update']);
 
 //route integrasi
+Route::get('tampil_Integrasi/{id}', [IntegrasiController::class, 'show']);
 Route::get('Integrasi', [IntegrasiController::class, 'index']);
 Route::post('Integrasi', [IntegrasiController::class, 'store']);
-Route::put('Integrasi/{id}', [IntegrasiController::class, 'update']);
+Route::put('Integrasi_Update/{id}', [IntegrasiController::class, 'update']);
 

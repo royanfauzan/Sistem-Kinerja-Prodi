@@ -25,13 +25,13 @@ export default function inputkerjasama() {
   const pengambilData = async () =>{
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/read_kjs",
+      url: "http://127.0.0.1:8000/api/read_mitra",
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { Mitra} = response.data;
-        setMitras(Mitra);
+        const { tampil_mitras} = response.data;
+        setMitras(tampil_mitras);
         console.log(dataMitras);
       })
       .catch(function (err) {

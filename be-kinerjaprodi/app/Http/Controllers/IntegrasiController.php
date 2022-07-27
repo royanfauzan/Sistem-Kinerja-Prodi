@@ -112,7 +112,11 @@ class IntegrasiController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_integrasi' => Integrasi::with(['profil_dosen', 'penelitian', 'pkm', 'matkul'])->where('id', $id) ->first() ,
+            'id' => $id
+        ]);
     }
 
     /**

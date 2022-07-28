@@ -12,12 +12,12 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 export async function getServerSideProps(context) {
 
   //http request
-  const req  = await axios.get(`http://127.0.0.1:8000/api/tampil_Matkul/${context.query.id_matkul}`)
+  const req  = await axios.get(`http://127.0.0.1:8000/api/tampil_Mahasiswa/${context.query.id_mhs}`)
   const res  = await req.data.all_mhs
 
   return {
     props: { 
-        matkul: res // <-- assign response
+      mahasiswa: res // <-- assign response
     },
   }
 }
@@ -29,14 +29,14 @@ export async function getServerSideProps(context) {
 // }
 
 
-export default function update_datamatkul(props) {
-  const {matkul} = props;
-  console.log(matkul);
+export default function update_datamhs(props) {
+  const {mahasiswa} = props;
+  console.log(mahasiswa);
   
   const router = useRouter();
   
 
-  const [dataMatkul, setdataMatkul] = useState(matkul);
+  const [datamhs, setdatamhs] = useState(mahasiswa);
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -99,16 +99,15 @@ export default function update_datamatkul(props) {
     const lgToken = localStorage.getItem("token");
 
     let formData = new FormData();
-    formData.append("nama_matkul", event.target.nama_matkul.value);
-    formData.append("sks", event.target.sks.value);
-    formData.append("prodi_id", event.target.prodi_id.value);
-    // formData.append("_method","put");
+    formData.append("nim", event.target.nim.value);
+    formData.append("nama", event.target.nama.value);
+
 
     console.log(formData);
 
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/Matkul_Update/${dataMatkul.id}`+`?_method=PUT`,
+      url: `http://127.0.0.1:8000/api/Mahasiswa_Update/${datamhs.id}`+`?_method=PUT`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -150,7 +149,7 @@ export default function update_datamatkul(props) {
                 <div className="card">
                   <div className="card-header pb-0">
                     <div className="d-flex align-items-center">
-                      <p className="mb-0">Edit Data Mata Kuliah</p>
+                      <p className="mb-0">Edit Data Mahasiswa</p>
                       <button
                         className="btn btn-primary btn-sm ms-auto"
                         type="submit"
@@ -161,54 +160,39 @@ export default function update_datamatkul(props) {
                     </div>
                   </div>
                   <div className="card-body">
-                    <p className="text-uppercase text-sm"> Mata Kuliah </p>
+                    <p className="text-uppercase text-sm"> MAHASISWA </p>
                     <div className="row">
 
                     <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="nama_matkul" className="form-control-label">
-                        Nama Mata kuliah
-                      </label>
-                      <input
-                      defaultValue={dataMatkul.nama_matkul}
-                        className="form-control"
-                        type="text"
-                        placeholder="Nama Matkul"
-                        id="nama_matkul"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="sks" className="form-control-label">
-                        SKS
-                      </label>
-                      <input
-                      defaultValue={dataMatkul.sks}
-                        className="form-control"
-                        type="text"
-                        placeholder="SKS"
-                        id="sks"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="prodi_id" className="form-control-label">
-                        Prodi ID
-                      </label>
-                      <input
-                      defaultValue={dataMatkul.prodi_id}
-                        className="form-control"
-                        type="text"
-                        placeholder="Prodi ID"
-                        id="prodi_id"
-                        required
-                      />
-                    </div>
-                  </div>     
+                        <div className="form-group">
+                          <label htmlFor="nim" className="form-control-label">
+                            NIM Mahasiswa
+                          </label>
+                          <input
+                          defaultValue={datamhs.nim}
+                            className="form-control"
+                            type="text"
+                            placeholder="NIM Mahasiswa"
+                            id="nim"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="nama" className="form-control-label">
+                            Nama Mahasiswa
+                          </label>
+                          <input
+                          defaultValue={datamhs.nama}
+                            className="form-control"
+                            type="text"
+                            placeholder="Nama Mahasiswa"
+                            id="nama"
+                            required
+                          />
+                        </div>
+                      </div>      
                    
 
                             

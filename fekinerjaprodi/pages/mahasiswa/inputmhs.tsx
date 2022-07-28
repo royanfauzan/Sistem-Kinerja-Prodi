@@ -87,8 +87,8 @@ export default function inputmhs() {
     const lgToken = localStorage.getItem("token");
 
     let formData = new FormData();
-    formData.append("nama", event.target.nama.value);
     formData.append("nim", event.target.nim.value);
+    formData.append("nama", event.target.nama.value);
 
     
 
@@ -153,20 +153,6 @@ export default function inputmhs() {
                       
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="nama" className="form-control-label">
-                            Nama Mahasiswa
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Nama Mahasiswa"
-                            id="nama"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
                           <label htmlFor="nim" className="form-control-label">
                             NIM Mahasiswa
                           </label>
@@ -175,6 +161,20 @@ export default function inputmhs() {
                             type="text"
                             placeholder="NIM Mahasiswa"
                             id="nim"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="nama" className="form-control-label">
+                            Nama Mahasiswa
+                          </label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Nama Mahasiswa"
+                            id="nama"
                             required
                           />
                         </div>

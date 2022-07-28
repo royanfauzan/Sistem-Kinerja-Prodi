@@ -12,7 +12,7 @@ import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 export default function inputintegrasi() {
   const router = useRouter();
 
-  const [userProfilDosens, setuserProfilDosens] = useState([]);
+  const [userProfilDosens, setdataDosen] = useState([]);
   const [userPenelitians, setuserPenelitians] = useState([]);
   const [filebukti, setfilebuktis] = useState<File>([]);
 
@@ -24,21 +24,43 @@ export default function inputintegrasi() {
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () =>{
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/testaxios",
-    })
+    // axios({
+    //   method: "get",
+    //   url: "http://127.0.0.1:8000/api/profildosens",
+    // })
+    //   .then(function (response) {
+    //     console.log(response);
+    //     console.log("Sukses");
+    //     const { profilDosens } = response.data;
+    //     setuserProfilDosens(profilDosens);
+    //     console.log(profilDosens);
+    //   })
+    //   .catch(function (err) {
+    //     console.log("gagal");
+    //     console.log(err.response);
+    //   });
+    const lgToken = localStorage.getItem('token');
+    if(!lgToken){
+      router.push('/login')
+    }
+
+
+      axios({
+        method: "get",
+        url: "http://127.0.0.1:8000/api/profildosens",
+        headers: { "Authorization": `Bearer ${lgToken}` },
+      })
       .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { profil } = response.data;
-        setuserProfilDosens(profil);
-        console.log(profil);
+              console.log(response);
+              console.log('Sukses');
+              const {profilDosens} = response.data;
+             setdataDosen(profilDosens);
       })
       .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+          console.log('gagal');
+          console.log(err.response);
+          return router.push('/');
+      })
 
       
   

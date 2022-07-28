@@ -67,23 +67,24 @@ export default function update_dataintegrasi(props) {
   const [dataPenelitian, setdataPenelitian] = useState(penelitian);
   const [dataPKM, setdataPKM] = useState(PKM);
   const [datamatkul, setdatamatkul] = useState(matkul);
+  const [filebukti, setfilebuktis] = useState<File>([]);
   
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
-
-  // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
-    
-  }
-
+  const url="http://127.0.0.1:8000/";
+  const [dataurl, setUrl] = useState(url);
   const [selectDosen, setSelectDosen] = useState(integrasi.dosen_id);
   const [selectPenelitian, setSelectPenelitian] = useState(integrasi.penelitian_id);
   const [selectPKM, setselectPKM] = useState(integrasi.PkM_id);
   const [selectMatkul, setselectMatkul] = useState(integrasi.matkul_id);
 
-
-
+  // pake ngambil data untuk halaman input
+  const pengambilData = async () =>{
+    
+  }
+  
+ 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
   useEffect(()=>{
@@ -93,8 +94,6 @@ export default function update_dataintegrasi(props) {
     const lgToken = localStorage.getItem('token');
     if(!lgToken){
       router.push('/login')
-
-      
     }
 
     axios({
@@ -158,8 +157,9 @@ export default function update_dataintegrasi(props) {
     formData.append("tahun", event.target.tahun.value);
     formData.append("file_bukti", filebukti);
 
-    console.log(formData);
-
+    console.log(filebukti);
+   
+   
     axios({
       method: "post",
       url: `http://127.0.0.1:8000/api/Integrasi_Update/${dataIntegrasi.id}`+`?_method=PUT`,
@@ -176,7 +176,7 @@ export default function update_dataintegrasi(props) {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(response.data);
-        // router.push("/");
+        router.push("/");
       })
       .catch(function (error) {
         //handle error
@@ -203,17 +203,18 @@ export default function update_dataintegrasi(props) {
   };
 
   const handleChangePKM = (e) => {
-    setSelectPKM(e.target.value);
+    setselectPKM(e.target.value);
    
   };
 
   const handleChangeMatkul = (e) => {
-    setSelectMatkul(e.target.value);
+    setselectMatkul(e.target.value);
    
   };
 
   const handleChangeFile = (e) => {
     setfilebuktis(e.target.files[0]);
+   
   };
 
   return (
@@ -239,7 +240,7 @@ export default function update_dataintegrasi(props) {
                     </div>
                   </div>
                   <div className="card-body">
-                    <p className="text-uppercase text-sm"> MITRA </p>
+                    <p className="text-uppercase text-sm"> Integrasi </p>
                     <div className="row">
 
                     <div className="col-md-6">
@@ -391,20 +392,20 @@ export default function update_dataintegrasi(props) {
 
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="bukti" className="form-control-label">
+                          <label htmlFor="file_bukti" className="form-control-label">
                             File Bukti
                           </label>
+                          <div>
+                          <a href={dataurl+dataIntegrasi.file_bukti}> {dataIntegrasi.file_bukti}</a> </div>
                           <input
-                          
                             className="form-control"
                             type="file"
                             onChange={handleChangeFile}
-                            id="bukti"
-                            required
+                            id="file_bukti"
+                          
                           />
                         </div>
-                      </div>       
-                   
+                      </div>   
 
                             
                     

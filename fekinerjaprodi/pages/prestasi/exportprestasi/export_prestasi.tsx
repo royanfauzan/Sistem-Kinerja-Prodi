@@ -2,12 +2,12 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
-import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutForm";
-import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
-import Link from "next/link";
+import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
+import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
+import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
+import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
+import Link from "next/link";
 
 export default function daftarprestasi() {
   const router = useRouter();
@@ -69,20 +69,6 @@ export default function daftarprestasi() {
       });
   }, []);
 
-  const deletepstsi = (id) => {
-    axios({
-      method: "post",
-      url: `http://127.0.0.1:8000/api/delete_prestasi/${id}`,
-    })
-      .then(function (response) {
-        router.reload();
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
-  };
-
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -92,40 +78,43 @@ export default function daftarprestasi() {
             <div className="col-12">
               <div className="card mb-4">
                 <div className="card-header pb-0">
-                  <div className="col-4">
-                    <h6>Authors table</h6>
-                  </div>
-                  <div className="row justify-content-between mb-4">
+                  <div className="row justify-content-between">
                     <div className="col-4">
-                      <td className="align-middle">
-                        <Link href={`/prestasi/inputprestasi/`}>
-                          <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                            Tambah Data
-                          </button>
-                        </Link>
-                      </td>
+                      <h6>Authors table</h6>
                     </div>
-                    <div className="col-4 d-flex flex-row-reverse">
-                      <td className="align-middle">
-                        <Link href={`/prestasi/exportprestasi/export_prestasi`}>
-                          <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-5 mt-3 mb-0">
-                            Export Excel
-                          </button>
-                        </Link>
-                      </td>
+
+                    <div className="row justify-content-between mb-4">
+                      <div className="col-4">
+                        <td className="align-middle">
+                          <Link href={`/prestasi/daftarprestasi/`}>
+                            <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
+                              Daftar Tabel
+                            </button>
+                          </Link>
+                        </td>
+                      </div>
+                      <div className="col-4 d-flex flex-row-reverse">
+                        <ReactHTMLTableToExcel
+                          id="test-table-xls-button"
+                          className="download-table-xls-button btn btn-success mt-3"
+                          table="tableprint"
+                          filename="tablexls"
+                          sheet="tablexls"
+                          buttonText="Export Excel"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-
-                <div className="card-body p-3">
+                <div className="card-body px-0 pt-0 pb-2">
                   <div className="table-responsive p-0">
                     <table
-                      className="table align-items-center mb-0 table table-striped table-hover"
+                      className="table align-items-center mb-0"
                       id="tableprint"
                     >
                       <thead>
                         <tr>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-3">
+                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-4">
                             Prodi
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
@@ -143,14 +132,13 @@ export default function daftarprestasi() {
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Kategori
                           </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2 pe-0"></th>
                         </tr>
                       </thead>
                       <tbody>
                         {profilDosen.map((kpsn) => {
                           return (
                             <tr key={`kpsn` + kpsn.id}>
-                              <td className="align-middle  text-sm ps-3">
+                              <td className="align-middle  text-sm ps-4">
                                 <p className="text-xs font-weight-bold mb-0">
                                   {kpsn.prodi.prodi +
                                     " " +
@@ -186,21 +174,6 @@ export default function daftarprestasi() {
                                 <p className="text-xs font-weight-bold mb-0">
                                   {kpsn.kategori}
                                 </p>
-                              </td>
-
-                              <td className="align-middle pe-0">
-                                <Link href={`/prestasi/edit/${kpsn.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
-
-                                <button
-                                  onClick={() => deletepstsi(kpsn.id)}
-                                  className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
-                                >
-                                  Hapus
-                                </button>
                               </td>
                             </tr>
                           );

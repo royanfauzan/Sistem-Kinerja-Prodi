@@ -7,6 +7,7 @@ import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
 import Link from "next/link";
+import TableToExcel from "@linways/table-to-excel";
 
 export default function penerimaanMahasiswa() {
   const router = useRouter();

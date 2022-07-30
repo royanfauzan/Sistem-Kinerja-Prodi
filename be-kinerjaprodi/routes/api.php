@@ -64,23 +64,27 @@ Route::post('login', [ApiController::class, 'authenticate']);
 
 // Kepuasan lulusan
 Route::get('kepuasan', [KepuasanController::class, 'index']);
-Route::get('kepuasan', [KepuasanController::class, 'index']);
 Route::post('kepuasan', [KepuasanController::class, 'store']);
+Route::put('update_kepuasan/{id}', [KepuasanController::class, 'update']);
 
 // Tempat kerja lulusan
 Route::get('tempat', [TempatController::class, 'index']);
 Route::post('tempat', [TempatController::class, 'store']);
-Route::put('tempat/{id}', [TempatController::class, 'update']);
+Route::put('update_tempat/{id}', [TempatController::class, 'update']);
+Route::get('show_tempat/{id}', [TempatController::class, 'show']);
 
 // IPK
 Route::get('ipk', [IpkController::class, 'index']);
 Route::post('ipk', [IpkController::class, 'store']);
-Route::put('ipk/{id}', [IpkController::class, 'update']);
+Route::put('update_ipk/{id}', [IpkController::class, 'update']);
+Route::get('show_ipk/{id}', [IpkController::class, 'show']);
 
 //Prestasi
 Route::get('prestasi', [PrestasiController::class, 'index']);
 Route::post('prestasi', [PrestasiController::class, 'store']);
-Route::put('prestasi/{id}', [PrestasiController::class, 'update']);
+Route::put('edit_prestasi/{id}', [PrestasiController::class, 'update']);
+Route::get('show_prestasi/{id}', [PrestasiController::class, 'show']);
+Route::post('delete_prestasi/{id}', [PrestasiController::class, 'destroy']);
 
 //Kesesuaian bidang kerja
 Route::post('kesesuaian', [KesesuaianController::class, 'store']);

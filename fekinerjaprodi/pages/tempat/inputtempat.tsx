@@ -95,12 +95,12 @@ export default function inputtempat() {
       },
     })
       .then(function (response) {
-        const { all_prodi } = response.data;
+        const { all_tempat } = response.data;
         //handle success
         toast.dismiss();
         toast.success("Login Sugses!!");
         // console.log(token);
-        console.log(all_prodi);
+        console.log(all_tempat);
         router.push("/");
       })
       .catch(function (error) {

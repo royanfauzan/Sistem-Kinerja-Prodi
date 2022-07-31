@@ -125,7 +125,10 @@ export default function daftarprestasi() {
                     >
                       <thead>
                         <tr>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-3">
+                        <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
+                            NO
+                          </th>
+                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Prodi
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
@@ -147,10 +150,14 @@ export default function daftarprestasi() {
                         </tr>
                       </thead>
                       <tbody>
-                        {profilDosen.map((kpsn) => {
+                        {profilDosen.map((kpsn, number) => {
                           return (
                             <tr key={`kpsn` + kpsn.id}>
-                              <td className="align-middle  text-sm ps-3">
+                              <td>
+                                <h6 className="mb-0 text-sm ps-2">{number + 1}</h6>
+                              </td>
+
+                              <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
                                   {kpsn.prodi.prodi +
                                     " " +

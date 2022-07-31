@@ -77,6 +77,19 @@ export default function daftarprestasi() {
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
+                <style jsx>{`
+                  table,
+                  td,
+                  th {
+                    border: 2px solid;
+                    text-align: center;
+                  }
+
+                  table {
+                    width: 100%;
+                    border-collapse: collapse;
+                  }
+                `}</style>
                 <div className="card-header pb-0">
                   <div className="row justify-content-between">
                     <div className="col-4">
@@ -85,13 +98,11 @@ export default function daftarprestasi() {
 
                     <div className="row justify-content-between mb-4">
                       <div className="col-4">
-                        <td className="align-middle">
-                          <Link href={`/prestasi/daftarprestasi/`}>
-                            <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                              Daftar Tabel
-                            </button>
-                          </Link>
-                        </td>
+                        <Link href={`/prestasi/daftarprestasi/`}>
+                          <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
+                            Daftar Tabel
+                          </button>
+                        </Link>
                       </div>
                       <div className="col-4 d-flex flex-row-reverse">
                         <ReactHTMLTableToExcel
@@ -107,79 +118,102 @@ export default function daftarprestasi() {
                   </div>
                 </div>
                 <div className="card-body px-0 pt-0 pb-2">
-                  <div className="table-responsive p-0">
-                    <table
-                      className="table align-items-center mb-0"
-                      id="tableprint"
-                    >
-                      <thead>
-                        <tr>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-4">
-                            Prodi
-                          </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Nama Kegiatan
-                          </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Tahun
-                          </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Tingkat
-                          </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Prestasi Dicapai
-                          </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Kategori
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {profilDosen.map((kpsn) => {
-                          return (
-                            <tr key={`kpsn` + kpsn.id}>
-                              <td className="align-middle  text-sm ps-4">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.prodi.prodi +
-                                    " " +
-                                    kpsn.prodi.nama_prodi}
-                                </p>
-                              </td>
+                  <div className="table-responsive p-3">
+                    {
+                      <table
+                        border="1"
+                        className="table align-items-center mb-0"
+                        id="tableprint"
+                      >
+                        <thead>
+                          <tr>
+                            <th rowspan="2">No</th>
+                            <th rowspan="2">Nama Kegiatan</th>
+                            <th rowspan="2">Waktu Pengelolaan</th>
+                            <th colspan="3">Tingkat</th>
+                            <th rowspan="2">Prestasi yang Dicapai</th>
+                          </tr>
+                          <tr>
+                            <th>Lokal / Wilayah</th>
+                            <th>Nasional</th>
+                            <th>Internasional</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {profilDosen.map((kpsn, number) => {
+                            return (
+                              <tr key={`kpsn` + kpsn.id}>
+                                <th>
+                                  <h6 className="mb-0 text-sm">{number + 1}</h6>
+                                </th>
 
-                              <td className="align-middle  text-sm">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.nm_kegiatan}
-                                </p>
-                              </td>
+                                <th className="align-middle  text-sm">
+                                  <p className="text-xs font-weight-bold mb-0">
+                                    {kpsn.nm_kegiatan}
+                                  </p>
+                                </th>
 
-                              <td className="align-middle  text-sm">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.tahun}
-                                </p>
-                              </td>
+                                <th className="align-middle  text-sm">
+                                  <p className="text-xs font-weight-bold mb-0">
+                                    {kpsn.tahun}
+                                  </p>
+                                </th>
 
-                              <td className="align-middle ">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.tingkat}
-                                </p>
-                              </td>
+                                {kpsn.tingkat == "Lokal" ? (
+                                  <>
+                                    {" "}
+                                    <th></th> <th> </th>{" "}
+                                    <th>
+                                      {" "}
+                                      <h6 className="mb-0 text-sm">Lokal </h6>
+                                    </th>
+                                  </>
+                                ) : (
+                                  ""
+                                )}
 
-                              <td className="align-middle ">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.prestasi_dicapai}
-                                </p>
-                              </td>
+                                {kpsn.tingkat == "Nasional" ? (
+                                  <>
+                                    {" "}
+                                    <th></th>{" "}
+                                    <th>
+                                      {" "}
+                                      <h6 className="mb-0 text-sm">
+                                        Nasional{" "}
+                                      </h6>
+                                    </th>{" "}
+                                    <th> </th>{" "}
+                                  </>
+                                ) : (
+                                  ""
+                                )}
 
-                              <td className="align-middle ">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.kategori}
-                                </p>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
+                                {kpsn.tingkat == "Internasional" ? (
+                                  <>
+                                    {" "}
+                                    <th>
+                                      {" "}
+                                      <h6 className="mb-0 text-sm">
+                                        internasional{" "}
+                                      </h6>
+                                    </th>{" "}
+                                    <th></th> <th> </th>{" "}
+                                  </>
+                                ) : (
+                                  ""
+                                )}
+
+                                <th className="align-middle ">
+                                  <p className="text-xs font-weight-bold mb-0">
+                                    {kpsn.prestasi_dicapai}
+                                  </p>
+                                </th>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    }
                   </div>
                 </div>
               </div>

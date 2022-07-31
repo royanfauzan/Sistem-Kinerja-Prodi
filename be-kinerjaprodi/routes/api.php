@@ -22,6 +22,10 @@ use App\Http\Controllers\MasastudiController;
 use App\Http\Controllers\PagelaranController;
 use App\Http\Controllers\PresentaseController;
 use App\Http\Controllers\PrestasiController;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 616928e (validasi)
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SeminarController;
 use App\Http\Controllers\TempatController;
@@ -63,22 +67,34 @@ use App\Models\Rekognisi;
 Route::post('login', [ApiController::class, 'authenticate']);
 
 // Kepuasan lulusan
+<<<<<<< HEAD
 Route::get('kepuasan', [KepuasanController::class, 'index']);
 Route::get('kepuasan', [KepuasanController::class, 'index']);
 Route::post('kepuasan', [KepuasanController::class, 'store']);
 
 // Tempat kerja lulusan
 Route::get('tempat', [TempatController::class, 'index']);
+=======
+Route::post('kepuasan', [KepuasanController::class, 'store']);
+
+// Tempat kerja lulusan
+>>>>>>> 616928e (validasi)
 Route::post('tempat', [TempatController::class, 'store']);
 Route::put('tempat/{id}', [TempatController::class, 'update']);
 
 // IPK
+<<<<<<< HEAD
 Route::get('ipk', [IpkController::class, 'index']);
+=======
+>>>>>>> 616928e (validasi)
 Route::post('ipk', [IpkController::class, 'store']);
 Route::put('ipk/{id}', [IpkController::class, 'update']);
 
 //Prestasi
+<<<<<<< HEAD
 Route::get('prestasi', [PrestasiController::class, 'index']);
+=======
+>>>>>>> 616928e (validasi)
 Route::post('prestasi', [PrestasiController::class, 'store']);
 Route::put('prestasi/{id}', [PrestasiController::class, 'update']);
 
@@ -130,6 +146,11 @@ Route::post('update_mitra/{id}', [MitraController::class, 'editmitra']);
 Route::post('delete_mitra/{id}', [MitraController::class, 'deletemitra']);
 
 Route::get('read_kjs', [KerjasamaController::class, 'tampilkerjasama']);
+<<<<<<< HEAD
+=======
+Route::get('read_bidang_kjs/{bidang}', [KerjasamaController::class, 'tampilkerjasamabidang']);
+Route::get('read_kjs/{search}', [KerjasamaController::class, 'searchkerjasama']);
+>>>>>>> 616928e (validasi)
 Route::post('create_kjs', [KerjasamaController::class, 'insertkerjasama']);
 Route::get('show_kjs/{id}', [KerjasamaController::class, 'tampil_edit_kerjasama']);
 Route::post('update_kjs/{id}', [KerjasamaController::class, 'editkerjasama']);
@@ -139,16 +160,31 @@ Route::post('delete_kjs/{id}', [KerjasamaController::class, 'delete_kjs']);
 Route::post('create_penggunaan_dana', [PenggunaanDanaController::class, 'insert_penggunaan_dana']);
 Route::get('read_penggunaan_dana', [PenggunaanDanaController::class, 'tampil_penggunaan_dana']);
 Route::post('update_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'edit_penggunaan_dana']);
+<<<<<<< HEAD
+=======
+Route::get('export_penggunaan_dana/{tahun}', [PenggunaanDanaController::class, 'export_penggunaan_dana']);
+Route::get('show_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'tampil_edit_dana']);
+>>>>>>> 616928e (validasi)
 Route::post('delete_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'delete_penggunaan_dana']);
 
 Route::post('create_mahasiswa_asing', [MahasiswaAsingController::class, 'insert_mahasiswa_asing']);
 Route::get('read_mahasiswa_asing', [MahasiswaAsingController::class, 'tampil_mahasiswa_asing']);
+<<<<<<< HEAD
+=======
+Route::get('search_mahasiswa_asing/{search}', [MahasiswaAsingController::class, 'search_mahasiswa_asing']);
+Route::get('export_mahasiswa_asing/{tahun}', [MahasiswaAsingController::class, 'tampilexport_mahasiswa_asing']);
+Route::get('show_mahasiswa_asing/{id}', [MahasiswaAsingController::class, 'tampil_edit_mahasiswa_asing']);
+>>>>>>> 616928e (validasi)
 Route::post('update_mahasiswa_asing/{id}', [MahasiswaAsingController::class, 'edit_mahasiswa_asing']);
 Route::post('delete_mahasiswa_asing/{id}', [MahasiswaAsingController::class, 'delete_mahasiswa_asing']);
 
 
 Route::post('create_penerimaan_mahasiswa', [PenerimaanController::class, 'insert_penerimaan_mahasiswa']);
 Route::get('read_penerimaan_mahasiswa', [PenerimaanController::class, 'tampilmahasiswa']);
+<<<<<<< HEAD
+=======
+Route::get('search_penerimaan_mahasiswa/{search}', [PenerimaanController::class, 'searchmahasiswa']);
+>>>>>>> 616928e (validasi)
 Route::get('show_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'tampil_edit_penerimaan']);
 Route::post('update_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'edit_penerimaan_mahasiswa']);
 Route::post('delete_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'delete_penerimaan_mahasiswa']);
@@ -222,4 +258,7 @@ Route::put('Penelitian/{id}', [PenelitianController::class, 'update']);
 Route::get('Integrasi', [IntegrasiController::class, 'index']);
 Route::post('Integrasi', [IntegrasiController::class, 'store']);
 Route::put('Integrasi/{id}', [IntegrasiController::class, 'update']);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 616928e (validasi)

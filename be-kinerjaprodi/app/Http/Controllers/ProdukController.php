@@ -44,7 +44,11 @@ class ProdukController extends Controller
             'deskripsi' => 'required',
             'tahun' => 'required',
             'deskripsi_bukti' => 'required',
+<<<<<<< HEAD
             "file_bukti" => "required|mimetypes:application/pdf|max:10000",
+=======
+            'file_bukti' => 'required',
+>>>>>>> 616928e (validasi)
         ]);
 
         //Send failed response if request is not valid
@@ -52,6 +56,7 @@ class ProdukController extends Controller
             return response()->json(['error' => $validator->errors()], 200);
         }
 
+<<<<<<< HEAD
         $finalPathdokumen = "";
         try {
             $folderdokumen = "storage/detailproduk/";
@@ -70,13 +75,19 @@ class ProdukController extends Controller
             ], 400);
         }
 
+=======
+>>>>>>> 616928e (validasi)
         $dataproduk = Produk::create(
             [
                 'nm_produk' => $request->nm_produk,
                 'deskripsi' => $request->deskripsi,
                 'tahun' => $request->tahun,
                 'deskripsi_bukti' => $request->deskripsi_bukti,
+<<<<<<< HEAD
                 'file_bukti' => $finalPathdokumen,
+=======
+                'file_bukti' => $request->file_bukti,
+>>>>>>> 616928e (validasi)
             ]
         );
 
@@ -87,7 +98,11 @@ class ProdukController extends Controller
             'deskripsi' => $request->deskripsi,
             'tahun' => $request->tahun,
             'deskripsi_bukti' => $request->deskripsi_bukti,
+<<<<<<< HEAD
             'file_bukti' => $finalPathdokumen,
+=======
+            'file_bukti' => $request->file_bukti,
+>>>>>>> 616928e (validasi)
             'all_tabel' => Produk::all()
         ]);
     }

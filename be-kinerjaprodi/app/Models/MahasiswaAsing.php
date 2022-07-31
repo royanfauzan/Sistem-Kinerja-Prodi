@@ -10,7 +10,10 @@ class MahasiswaAsing extends Model
     use HasFactory;
     protected $fillable = [
         'Tahun_Akademik',
+<<<<<<< HEAD
         'Program_Studi',
+=======
+>>>>>>> 616928e (validasi)
         'Mahasiswa_Aktif',
         'Mahasiswa_Aktif_Fulltime',
         'Mahasiswa_Aktif_Parttime',

@@ -1,21 +1,21 @@
-import axios from "axios";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
-import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
-import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
-import Link from "next/link";
+import axios from "axios"
+import { useRouter } from "next/router"
+import React, { useEffect, useState } from "react"
+import toast from "react-hot-toast"
+import FooterUtama from "../../../components/Molecule/Footer/FooterUtama"
+import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama"
+import LayoutForm from "../../../components/Organism/Layout/LayoutForm"
+import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
+import Link from "next/link"
 
 export default function penerimaanMahasiswa() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [stadmin, setStadmin] = useState(false);
-  const [tampilPenerimaan, settampilPenerimaan] = useState([]);
+  const [stadmin, setStadmin] = useState(false)
+  const [tampilPenerimaan, settampilPenerimaan] = useState([])
 
   const pengambilData = async () => {
-    const lgToken = localStorage.getItem("token");
+    const lgToken = localStorage.getItem("token")
 
     axios({
       method: "get",
@@ -23,24 +23,24 @@ export default function penerimaanMahasiswa() {
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { Seleksi } = response.data;
-        settampilPenerimaan(Seleksi);
+        console.log(response)
+        console.log("Sukses")
+        const { Seleksi } = response.data
+        settampilPenerimaan(Seleksi)
 
-        console.log(Seleksi);
+        console.log(Seleksi)
       })
       .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
-  };
+        console.log("gagal")
+        console.log(err.response)
+      })
+  }
 
   useEffect(() => {
     // cek token, kalo gaada disuruh login
-    const lgToken = localStorage.getItem("token");
+    const lgToken = localStorage.getItem("token")
     if (!lgToken) {
-      router.push("/login");
+      router.push("/login")
     }
 
     // perjalanan validasi token
@@ -50,23 +50,23 @@ export default function penerimaanMahasiswa() {
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { level_akses } = response.data.user;
+        console.log(response)
+        console.log("Sukses")
+        const { level_akses } = response.data.user
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
-          return router.push("/");
+          return router.push("/")
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-        setStadmin(true);
-        pengambilData();
+        setStadmin(true)
+        pengambilData()
       })
       .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-        return router.push("/");
-      });
-  }, []);
+        console.log("gagal")
+        console.log(err.response)
+        return router.push("/")
+      })
+  }, [])
 
   const deletePenerimaan = (id) => {
     axios({
@@ -74,13 +74,13 @@ export default function penerimaanMahasiswa() {
       url: `http://127.0.0.1:8000/api/delete_penerimaan_mahasiswa/${id}`,
     })
       .then(function (response) {
-        router.reload();
+        router.reload()
       })
       .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
-  };
+        console.log("gagal")
+        console.log(err.response)
+      })
+  }
 
   return (
     <>
@@ -90,6 +90,18 @@ export default function penerimaanMahasiswa() {
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
+                <div className="card-header pb-0">
+                  <div className="row justify-content-between">
+                    <div className="col-4">
+                      <h6>Authors table</h6>
+                    </div>
+                    <div className="col-4 d-flex flex-row-reverse">
+                      <button className="btn btn-sm btn-success border-0 shadow-sm mb-3 me-3">
+                        EXPORT
+                      </button>
+                    </div>
+                  </div>
+                </div>
                 <style jsx>{`
                   table,
                   td,
@@ -138,9 +150,9 @@ export default function penerimaanMahasiswa() {
                             </div>
                           </td>
                           <td className="align-middle ">
-                          <h6 className="mb-0 text-sm">
+                            <h6 className="mb-0 text-sm">
                               {tPenerimaan.Pendaftaran}
-                           </h6>
+                            </h6>
                           </td>
 
                           <td className="align-middle text-center text-sm">
@@ -180,7 +192,7 @@ export default function penerimaanMahasiswa() {
                             </span>
                           </td>
                         </tr>
-                      );
+                      )
                     })}
                   </tbody>
                 </table>
@@ -191,5 +203,5 @@ export default function penerimaanMahasiswa() {
         </LayoutForm>
       )}
     </>
-  );
+  )
 }

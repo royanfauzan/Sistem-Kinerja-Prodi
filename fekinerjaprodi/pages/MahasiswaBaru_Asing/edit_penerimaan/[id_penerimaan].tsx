@@ -1,37 +1,43 @@
-import axios from "axios";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
-import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
-import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import axios from "axios"
+import { useRouter } from "next/router"
+import React, { useEffect, useState } from "react"
+import toast from "react-hot-toast"
+import FooterUtama from "../../../components/Molecule/Footer/FooterUtama"
+import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama"
+import LayoutForm from "../../../components/Organism/Layout/LayoutForm"
+import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 // Untuk Ngambil Data Berdasarkan ID
 export async function getServerSideProps(context) {
   //http request
   const req = await axios.get(
     `http://127.0.0.1:8000/api/show_penerimaan_mahasiswa/${context.query.id_penerimaan}`
-  );
-  const res = await req.data.tampil_penerimaan;
+  )
+  const res = await req.data.tampil_penerimaan
 
   return {
     props: {
       penerimaan: res, // <-- assign response
     },
-  };
+  }
 }
 
 export default function editpenerimaan(props) {
-  const router = useRouter();
-  const { penerimaan } = props;
-  const [dataPenerimaan, setdataPenerimaan] = useState(penerimaan);
-  console.log(dataPenerimaan);
-  const [dataProdi, setdataProdi] = useState([]);
-  const [selectProdi, setSelectProdi] = useState(penerimaan.Program_Studi_Prodi_Id);
+  const router = useRouter()
+  const MySwal = withReactContent(Swal)
+  const { penerimaan } = props
+  const [dataPenerimaan, setdataPenerimaan] = useState(penerimaan)
+  console.log(dataPenerimaan)
+  const [dataProdi, setdataProdi] = useState([])
+  const [selectProdi, setSelectProdi] = useState(
+    penerimaan.Program_Studi_Prodi_Id
+  )
+  const [dataError, setError] = useState([])
 
   // state pake test user
-  const [stadmin, setStadmin] = useState(false);
+  const [stadmin, setStadmin] = useState(false)
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () => {
@@ -40,25 +46,25 @@ export default function editpenerimaan(props) {
       url: "http://127.0.0.1:8000/api/Prodi",
     })
       .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { Prodi } = response.data;
-        setdataProdi(Prodi);
-        console.log(dataProdi);
+        console.log(response)
+        console.log("Sukses")
+        const { Prodi } = response.data
+        setdataProdi(Prodi)
+        console.log(dataProdi)
       })
       .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
-  };
+        console.log("gagal")
+        console.log(err.response)
+      })
+  }
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
   useEffect(() => {
     // cek token, kalo gaada disuruh login
-    const lgToken = localStorage.getItem("token");
+    const lgToken = localStorage.getItem("token")
     if (!lgToken) {
-      router.push("/login");
+      router.push("/login")
     }
 
     // perjalanan validasi token
@@ -68,53 +74,52 @@ export default function editpenerimaan(props) {
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { level_akses } = response.data.user;
+        console.log(response)
+        console.log("Sukses")
+        const { level_akses } = response.data.user
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
-          return router.push("/");
+          return router.push("/")
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-        setStadmin(true);
-        pengambilData();
+        setStadmin(true)
+        pengambilData()
       })
       .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-        return router.push("/");
-      });
-  }, []);
+        console.log("gagal")
+        console.log(err.response)
+        return router.push("/")
+      })
+  }, [])
 
   const handleChangeProdi = (e) => {
-    setSelectProdi(e.target.value);
-   
-  };
+    setSelectProdi(e.target.value)
+  }
 
   const submitForm = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    toast.loading("Loading...");
-    const lgToken = localStorage.getItem("token");
+    toast.loading("Loading...")
+    const lgToken = localStorage.getItem("token")
 
-    let formData = new FormData();
-    formData.append("Tahun_Akademik", event.target.tahun_akademik.value);
-    formData.append("Daya_Tampung", event.target.daya_tampung.value);
-    formData.append("Pendaftaran", event.target.pendaftar.value);
-    formData.append("Lulus_Seleksi", event.target.Lulus_Seleksi.value);
-    formData.append("Maba_Reguler", event.target.Maba_Reguler.value);
-    formData.append("Maba_Transfer", event.target.Maba_Transfer.value);
+    let formData = new FormData()
+    formData.append("Tahun_Akademik", event.target.tahun_akademik.value)
+    formData.append("Daya_Tampung", event.target.daya_tampung.value)
+    formData.append("Pendaftaran", event.target.pendaftar.value)
+    formData.append("Lulus_Seleksi", event.target.Lulus_Seleksi.value)
+    formData.append("Maba_Reguler", event.target.Maba_Reguler.value)
+    formData.append("Maba_Transfer", event.target.Maba_Transfer.value)
     formData.append(
       "Mahasiswa_Aktif_Reguler",
       event.target.Mahasiswa_Reguler.value
-    );
+    )
     formData.append(
       "Mahasiswa_Aktif_Transfer",
       event.target.Mahasiswa_Transfer.value
-    );
-    formData.append("Program_Studi_Prodi_Id", event.target.prodi.value);
+    )
+    formData.append("Program_Studi_Prodi_Id", event.target.prodi.value)
 
-    console.log(formData);
+    console.log(formData)
 
     axios({
       method: "post",
@@ -126,27 +131,25 @@ export default function editpenerimaan(props) {
       },
     })
       .then(function (response) {
-        const { profil } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(profil);
-        router.push("/");
+        MySwal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data Berhasil Di Update",
+        })
+
+        router.push("/MahasiswaBaru_Asing/tabel_penerimaan")
       })
       .catch(function (error) {
         //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
-        console.log(error.response);
-      });
-  };
+        MySwal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Data Gagal Di Input",
+        })
+        setError(error.response.data.error)
+        console.log(error.response)
+      })
+  }
 
   return (
     <>
@@ -179,7 +182,11 @@ export default function editpenerimaan(props) {
                           <div className="form-group">
                             <label
                               htmlFor="prodi"
-                              className="form-control-label"
+                              className={
+                                dataError.Program_Studi_Prodi_Id
+                                  ? "is-invalid"
+                                  : ""
+                              }
                             >
                               Nama Prodi
                             </label>
@@ -199,9 +206,16 @@ export default function editpenerimaan(props) {
                                   >
                                     {dataProdi.nama_prodi}
                                   </option>
-                                );
+                                )
                               })}
                             </select>
+                            {dataError.Program_Studi_Prodi_Id ? (
+                              <div className="invalid-feedback">
+                                {dataError.Program_Studi_Prodi_Id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -209,7 +223,9 @@ export default function editpenerimaan(props) {
                           <div className="form-group">
                             <label
                               htmlFor="tahun_akademik"
-                              className="form-control-label"
+                              className={
+                                dataError.Tahun_Akademik ? "is-invalid" : ""
+                              }
                             >
                               Tahun Akademik
                             </label>
@@ -219,8 +235,14 @@ export default function editpenerimaan(props) {
                               placeholder="Tahun Akademik"
                               id="tahun_akademik"
                               defaultValue={dataPenerimaan.Tahun_Akademik}
-                              required
                             />
+                            {dataError.Tahun_Akademik ? (
+                              <div className="invalid-feedback">
+                                {dataError.Tahun_Akademik}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -228,7 +250,9 @@ export default function editpenerimaan(props) {
                           <div className="form-group">
                             <label
                               htmlFor="daya_tampung"
-                              className="form-control-label"
+                              className={
+                                dataError.Daya_Tampung ? "is-invalid" : ""
+                              }
                             >
                               Daya Tampung
                             </label>
@@ -238,8 +262,14 @@ export default function editpenerimaan(props) {
                               placeholder="Daya Tampung"
                               id="daya_tampung"
                               defaultValue={dataPenerimaan.Daya_Tampung}
-                              required
                             />
+                            {dataError.Daya_Tampung ? (
+                              <div className="invalid-feedback">
+                                {dataError.Daya_Tampung}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -247,7 +277,9 @@ export default function editpenerimaan(props) {
                           <div className="form-group">
                             <label
                               htmlFor="pendaftar"
-                              className="form-control-label"
+                              className={
+                                dataError.Pendaftaran ? "is-invalid" : ""
+                              }
                             >
                               Pendaftar
                             </label>
@@ -257,8 +289,14 @@ export default function editpenerimaan(props) {
                               placeholder="Pendaftar"
                               id="pendaftar"
                               defaultValue={dataPenerimaan.Pendaftaran}
-                              required
                             />
+                            {dataError.Pendaftaran ? (
+                              <div className="invalid-feedback">
+                                {dataError.Pendaftaran}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -266,7 +304,9 @@ export default function editpenerimaan(props) {
                           <div className="form-group">
                             <label
                               htmlFor="Lulus_Seleksi"
-                              className="form-control-label"
+                              className={
+                                dataError.Lulus_Seleksi ? "is-invalid" : ""
+                              }
                             >
                               Lulus Seleksi
                             </label>
@@ -276,8 +316,14 @@ export default function editpenerimaan(props) {
                               placeholder="Lulus Seleksi"
                               id="Lulus_Seleksi"
                               defaultValue={dataPenerimaan.Lulus_Seleksi}
-                              required
-                            />
+                            />{" "}
+                            {dataError.Lulus_Seleksi ? (
+                              <div className="invalid-feedback">
+                                {dataError.Lulus_Seleksi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -285,7 +331,9 @@ export default function editpenerimaan(props) {
                           <div className="form-group">
                             <label
                               htmlFor="Maba_Reguler"
-                              className="form-control-label"
+                              className={
+                                dataError.Maba_Reguler ? "is-invalid" : ""
+                              }
                             >
                               Mahasiswa Baru Reguler
                             </label>
@@ -294,9 +342,15 @@ export default function editpenerimaan(props) {
                               type="text"
                               placeholder="Mahasiswa Baru Reguler"
                               id="Maba_Reguler"
-                              required
                               defaultValue={dataPenerimaan.Maba_Reguler}
                             />
+                            {dataError.Maba_Reguler ? (
+                              <div className="invalid-feedback">
+                                {dataError.Maba_Reguler}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -304,7 +358,9 @@ export default function editpenerimaan(props) {
                           <div className="form-group">
                             <label
                               htmlFor="Maba_Transfer"
-                              className="form-control-label"
+                              className={
+                                dataError.Maba_Transfer ? "is-invalid" : ""
+                              }
                             >
                               Mahasiswa Baru Transfer
                             </label>
@@ -314,8 +370,14 @@ export default function editpenerimaan(props) {
                               placeholder="Mahasiswa Baru Transfer"
                               id="Maba_Transfer"
                               defaultValue={dataPenerimaan.Maba_Transfer}
-                              required
                             />
+                            {dataError.Maba_Transfer ? (
+                              <div className="invalid-feedback">
+                                {dataError.Maba_Transfer}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -323,7 +385,11 @@ export default function editpenerimaan(props) {
                           <div className="form-group">
                             <label
                               htmlFor="Mahasiswa_Reguler"
-                              className="form-control-label"
+                              className={
+                                dataError.Mahasiswa_Aktif_Reguler
+                                  ? "is-invalid"
+                                  : ""
+                              }
                             >
                               Jumlah Mahasiswa Aktif Reguler
                             </label>
@@ -332,9 +398,17 @@ export default function editpenerimaan(props) {
                               type="text"
                               placeholder=" Jumlah Mahasiswa Aktif Reguler"
                               id="Mahasiswa_Reguler"
-                              required
-                              defaultValue={dataPenerimaan.Mahasiswa_Aktif_Reguler}
+                              defaultValue={
+                                dataPenerimaan.Mahasiswa_Aktif_Reguler
+                              }
                             />
+                            {dataError.Mahasiswa_Aktif_Reguler ? (
+                              <div className="invalid-feedback">
+                                {dataError.Mahasiswa_Aktif_Reguler}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -342,7 +416,11 @@ export default function editpenerimaan(props) {
                           <div className="form-group">
                             <label
                               htmlFor="Mahasiswa_Reguler"
-                              className="form-control-label"
+                              className={
+                                dataError.Mahasiswa_Aktif_Transfer
+                                  ? "is-invalid"
+                                  : ""
+                              }
                             >
                               Jumlah Mahasiswa Aktif Transfer
                             </label>
@@ -351,9 +429,17 @@ export default function editpenerimaan(props) {
                               type="text"
                               placeholder=" Jumlah Mahasiswa Aktif Transfer"
                               id="Mahasiswa_Transfer"
-                              defaultValue={dataPenerimaan.Mahasiswa_Aktif_Transfer}
-                              required
+                              defaultValue={
+                                dataPenerimaan.Mahasiswa_Aktif_Transfer
+                              }
                             />
+                            {dataError.Mahasiswa_Aktif_Transfer ? (
+                              <div className="invalid-feedback">
+                                {dataError.Mahasiswa_Aktif_Transfer}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                       </div>
@@ -370,5 +456,5 @@ export default function editpenerimaan(props) {
         </LayoutForm>
       )}
     </>
-  );
+  )
 }

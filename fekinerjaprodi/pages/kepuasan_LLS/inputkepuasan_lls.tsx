@@ -25,9 +25,9 @@ export default function inputkepuasan_lls() {
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_prodi } = response.data;
-        setuserDosens(all_prodi);
-        console.log(all_prodi);
+        const { Prodi } = response.data;
+        setuserDosens(Prodi);
+        console.log(Prodi);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -141,7 +141,7 @@ export default function inputkepuasan_lls() {
                   <div className="card-body">
                     <p className="text-uppercase text-sm">Kepuasan Lulusan</p>
                     <div className="row">
-                      <div className="col-md-6">
+                    <div className="col-md-6">
                         <div className="form-group">
                           <label htmlFor="prodi" className="form-control-label">
                             Prodi

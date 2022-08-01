@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kasesuaian;
+use App\Models\KP_lulus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,7 +16,10 @@ class KesesuaianController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_kesesuaian' => Kasesuaian::with('kepuasan')->get(),
+        ]);
     }
 
     /**
@@ -64,10 +68,10 @@ class KesesuaianController extends Controller
         return response()->json([
             'success' => true,
             'rendah' => $request->rendah,
-                'sedang' => $request->sedang,
-                'tinggi' => $request->tinggi,
-                'kepuasan_id' => $request->kepuasan_id,
-            'all_prodi' => Kasesuaian::all()
+            'sedang' => $request->sedang,
+            'tinggi' => $request->tinggi,
+            'kepuasan_id' => $request->kepuasan_id,
+            'all_kesesuaian' => Kasesuaian::all()
         ]);
     }
 
@@ -79,7 +83,11 @@ class KesesuaianController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_kesesuaian' => KP_lulus::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -128,10 +136,10 @@ class KesesuaianController extends Controller
         return response()->json([
             'success' => true,
             'rendah' => $request->rendah,
-                'sedang' => $request->sedang,
-                'tinggi' => $request->tinggi,
-                'kepuasan_id' => $request->kepuasan_id,
-            'all_prodi' => Kasesuaian::all()
+            'sedang' => $request->sedang,
+            'tinggi' => $request->tinggi,
+            'kepuasan_id' => $request->kepuasan_id,
+            'all_kesesuaian' => Kasesuaian::all()
         ]);
     }
 
@@ -143,6 +151,18 @@ class KesesuaianController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $kesesuaian = KP_lulus::find($id);
+        $kesesuaian->delete();
+
+        if (!$kesesuaian) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

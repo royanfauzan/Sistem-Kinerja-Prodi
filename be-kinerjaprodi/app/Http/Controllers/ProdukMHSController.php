@@ -61,7 +61,7 @@ class ProdukMHSController extends Controller
  
             $dokumen = $request->file('file_bukti');
  
-            $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".",$dokumen->getClientOriginalName(),2)[0])) . "-". time() . "." . $dokumen->getClientOriginalExtension();
+            $namaFiledokumen = $dokumen->getClientOriginalName();
  
             $dokumen->move($folderdokumen, $namaFiledokumen);
  
@@ -104,7 +104,11 @@ class ProdukMHSController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_produk' => Produk_MHS::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -136,7 +140,7 @@ class ProdukMHSController extends Controller
             'deskripsi' => 'required',
             'tahun' => 'required',
             'deskripsi_bukti' => 'required',
-            'file_bukti' => 'required'
+            'file_bukti' => "required|mimetypes:application/pdf|max:10000",
         ]);
 
         //Send failed response if request is not valid
@@ -144,11 +148,29 @@ class ProdukMHSController extends Controller
             return response()->json(['error' => $validator->errors()], 200);
         }
 
+        $finalPathdokumen = "";
+        try {
+            $folderdokumen = "storage/produkmhs/";
+ 
+            $dokumen = $request->file('file_bukti');
+ 
+            $namaFiledokumen = $dokumen->getClientOriginalName();
+ 
+            $dokumen->move($folderdokumen, $namaFiledokumen);
+ 
+            $finalPathdokumen = $folderdokumen . $namaFiledokumen;
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Menyimpan Dokumen".$th,
+            ], 400);
+        }
+
         $produkmhs->nama_produk = $request->nama_produk;
         $produkmhs->deskripsi = $request->deskripsi;
         $produkmhs->tahun = $request->tahun;
         $produkmhs->deskripsi_bukti = $request->deskripsi_bukti;
-        $produkmhs->file_bukti = $request->file_bukti;
+        $produkmhs->file_bukti = $finalPathdokumen;
         $produkmhs->save();
 
         //Token created, return with success response and jwt token
@@ -158,7 +180,7 @@ class ProdukMHSController extends Controller
             'deskripsi' => $request->deskripsi,
             'tahun' => $request->tahun,
             'deskripsi_bukti' => $request->deskripsi_bukti,
-            'file_bukti' => $request->file_bukti,
+            'file_bukti' => $finalPathdokumen,
             'all_produk' => Produk_MHS::all()
         ]);
     }

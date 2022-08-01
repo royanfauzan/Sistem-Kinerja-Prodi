@@ -2,44 +2,50 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
-import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutForm";
-import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
+import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
+import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
+import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
 
-interface Udosen {
-  id: number;
-  nim: string;
-  nama: string;
-  created_at: string;
-  updated_at: string;
+
+// Untuk Ngambil Data Berdasarkan ID
+export async function getServerSideProps(context) {
+
+  //http request
+  const req  = await axios.get(`http://127.0.0.1:8000/api/tampil_Mahasiswa/${context.query.id_mhs}`)
+  const res  = await req.data.all_mhs
+
+  return {
+    props: { 
+      mahasiswa: res // <-- assign response
+    },
+  }
 }
+// interface Kategori {
+//   id: number;
+//   nama: string;
+//   created_at: string;
+//   updated_at: string;
+// }
 
-export default function inputmhs() {
+
+export default function update_datamhs(props) {
+  const {mahasiswa} = props;
+  console.log(mahasiswa);
+  
   const router = useRouter();
+  
 
-  const [userDosens, setuserDosens] = useState<Udosen[]>([]);
+  const [datamhs, setdatamhs] = useState(mahasiswa);
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
+  
+  
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () =>{
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/testuser",
-    })
-      .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { userdosen } = response.data;
-        setuserDosens(userdosen);
-        console.log(userdosen);
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+  
   }
 
 
@@ -47,12 +53,16 @@ export default function inputmhs() {
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
   useEffect(()=>{
+    
+    
     // cek token, kalo gaada disuruh login
     const lgToken = localStorage.getItem('token');
     if(!lgToken){
       router.push('/login')
-    }
 
+      
+    }
+    
     // perjalanan validasi token 
     axios({
       method: "get",
@@ -77,9 +87,11 @@ export default function inputmhs() {
         return router.push('/');
     })
   },[]);
+  
+  //HAPUS DATA
+ 
 
-
-
+  // Insert Update Data
   const submitForm = async (event) => {
     event.preventDefault();
 
@@ -90,13 +102,12 @@ export default function inputmhs() {
     formData.append("nim", event.target.nim.value);
     formData.append("nama", event.target.nama.value);
 
-    
 
     console.log(formData);
 
     axios({
       method: "post",
-      url: "http://127.0.0.1:8000/api/Mahasiswa",
+      url: `http://127.0.0.1:8000/api/Mahasiswa_Update/${datamhs.id}`+`?_method=PUT`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -104,13 +115,13 @@ export default function inputmhs() {
       },
     })
       .then(function (response) {
-        const { all_mhs } = response.data;
+        const { profil } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Input Sukses!");
+        toast.success("Login Sugses!!");
         // console.log(token);
-        console.log(all_mhs);
-        router.push("/");
+        console.log(response.data);
+        // router.push("/");
       })
       .catch(function (error) {
         //handle error
@@ -134,29 +145,31 @@ export default function inputmhs() {
         <div className="container-fluid py-4">
           <div className="row">
             <div className="col-md-8">
-              <form id="inputDetailDosen" onSubmit={submitForm}>
+              <form id="inputDetilDosen" onSubmit={submitForm}>
                 <div className="card">
                   <div className="card-header pb-0">
                     <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
+                      <p className="mb-0">Edit Data Mahasiswa</p>
                       <button
                         className="btn btn-primary btn-sm ms-auto"
                         type="submit"
                       >
                         Simpan
                       </button>
+                     
                     </div>
                   </div>
                   <div className="card-body">
-                    <p className="text-uppercase text-sm">Mahasiswa</p>
+                    <p className="text-uppercase text-sm"> MAHASISWA </p>
                     <div className="row">
-                      
-                      <div className="col-md-6">
+
+                    <div className="col-md-6">
                         <div className="form-group">
                           <label htmlFor="nim" className="form-control-label">
                             NIM Mahasiswa
                           </label>
                           <input
+                          defaultValue={datamhs.nim}
                             className="form-control"
                             type="text"
                             placeholder="NIM Mahasiswa"
@@ -171,6 +184,7 @@ export default function inputmhs() {
                             Nama Mahasiswa
                           </label>
                           <input
+                          defaultValue={datamhs.nama}
                             className="form-control"
                             type="text"
                             placeholder="Nama Mahasiswa"
@@ -178,8 +192,13 @@ export default function inputmhs() {
                             required
                           />
                         </div>
-                      </div>                                                                                    
+                      </div>      
+                   
+
+                            
+                    
                     </div>
+                  
                   </div>
                 </div>
               </form>

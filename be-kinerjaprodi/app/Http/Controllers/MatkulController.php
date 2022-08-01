@@ -80,7 +80,11 @@ class MatkulController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_mhs' => Matkul::find($id),
+            'id' => $id
+        ]);
     }
 
     /**

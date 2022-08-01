@@ -117,7 +117,11 @@ class CapKurikulumController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_capkurikulum' => CapKurikulum::with(['matkul', 'prodi'])->where('id', $id) ->first() ,
+            'id' => $id
+        ]);
     }
 
     /**
@@ -152,7 +156,8 @@ class CapKurikulumController extends Controller
         'seminar' => 'required',
         'praktikum' => 'required',
         'konversi_kredit_jam' => 'required', 
-        'sikap', 'pengetahuan' => 'required', 
+        'sikap' => 'required', 
+        'pengetahuan' => 'required', 
         'ketrampilan_umum' => 'required', 
         'ketrampilan_khusus' => 'required', 
         'dok_ren_pembelajaran' => 'required', 

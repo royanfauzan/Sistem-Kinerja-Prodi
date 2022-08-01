@@ -6,7 +6,7 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
-
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 export default function daftarmatkul() {
   const router = useRouter();
 
@@ -76,11 +76,26 @@ export default function daftarmatkul() {
             <div className="col-12">
               <div className="card mb-4">
                 <div className="card-header pb-0">
-                  <h6>Tabel Daftar Mata Kuliah</h6>
+                <div className="row justify-content-between">
+                  <div className="col-4">
+                  <h6>Authors table</h6>
+                  </div>
+                    <div className="col-4 d-flex flex-row-reverse">
+                    <ReactHTMLTableToExcel
+                    id="test-table-xls-button"
+                    className="download-table-xls-button btn btn-success ms-3"
+                    table="tabelmatkul"
+                    filename="tablexls"
+                    sheet="tablexls"
+                    buttonText="Export Excel"/>
+                    </div>
+                  </div>
                 </div>
+
+                
                 <div className="card-body px-0 pt-0 pb-2">
                   <div className="table-responsive p-0">
-                    <table className="table align-items-center mb-0">
+                    <table id="tabelmatkul" className="table align-items-center mb-0">
                       <thead>
                         <tr>
                           <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">

@@ -190,47 +190,55 @@ Route::group(['middleware' => ['dosenonly']], function () {
     Route::post('pendidikandosens', [PendidikanController::class, 'store']);
 });
 //route prodi
-Route::get('Prodi', [ProdiController::class, 'index']);
+// Route::get('Prodi', [ProdiController::class, 'index']);
 Route::post('Prodi', [ProdiController::class, 'store']);
 Route::put('Prodi/{id}', [ProdiController::class, 'update']);
 Route::get('Prodi', [ProdiController::class, 'tampilprodi']);
 
 //route mahasiswa
+Route::get('tampil_Mahasiswa/{id}', [MahasiswaController::class, 'show']);
 Route::get('Mahasiswa', [MahasiswaController::class, 'index']);
 Route::post('Mahasiswa', [MahasiswaController::class, 'store']);
-Route::put('Mahasiswa/{id}', [MahasiswaController::class, 'update']);
+Route::put('Mahasiswa_Update/{id}', [MahasiswaController::class, 'update']);
 
 //route matkul
+Route::get('tampil_Matkul/{id}', [MatkulController::class, 'show']);
 Route::get('Matkul', [MatkulController::class, 'index']);
 Route::post('Matkul', [MatkulController::class, 'store']);
-Route::put('Matkul/{id}', [MatkulController::class, 'update']);
+Route::put('Matkul_Update/{id}', [MatkulController::class, 'update']);
 
 //route kepuasan mahasiswa
+Route::get('tampil_KepuasanMHS/{id}', [KepuasanMHSController::class, 'show']);
 Route::get('KepuasanMHS', [KepuasanMHSController::class, 'index']);
 Route::post('KepuasanMHS', [KepuasanMHSController::class, 'store']);
-Route::put('KepuasanMHS/{id}', [KepuasanMHSController::class, 'update']);
+Route::put('KepuasanMHS_Update/{id}', [KepuasanMHSController::class, 'update']);
 
 //route produk mahasiswa
+Route::get('tampil_ProdukMHS/{id}', [ProdukMHSController::class, 'show']);
 Route::get('ProdukMHS', [ProdukMHSController::class, 'index']);
 Route::post('ProdukMHS', [ProdukMHSController::class, 'store']);
-Route::put('ProdukMHS/{id}', [ProdukMHSController::class, 'update']);
+Route::put('ProdukMHS_Update/{id}', [ProdukMHSController::class, 'update']);
 
 //route data capaian kurikulum
+Route::get('tampil_CapaianKurikulum/{id}', [CapKurikulumController::class, 'show']);
 Route::get('CapaianKurikulum', [CapKurikulumController::class, 'index']);
 Route::post('CapaianKurikulum', [CapKurikulumController::class, 'store']);
-Route::put('CapaianKurikulum/{id}', [CapKurikulumController::class, 'update']);
+Route::put('CapaianKurikulum_Update/{id}', [CapKurikulumController::class, 'update']);
 
 //route data PKM
+Route::get('tampil_PKM/{id}', [PKMController::class, 'show']);
 Route::get('PKM', [PKMController::class, 'index']);
 Route::post('PKM', [PKMController::class, 'store']);
-Route::put('PKM/{id}', [PKMController::class, 'update']);
+Route::put('PKM_Update/{id}', [PKMController::class, 'update']);
 
 //route penelitian
+Route::get('tampil_Penelitian/{id}', [PenelitianController::class, 'show']);
 Route::get('Penelitian', [PenelitianController::class, 'index']);
 Route::post('Penelitian', [PenelitianController::class, 'store']);
-Route::put('Penelitian/{id}', [PenelitianController::class, 'update']);
+Route::put('Penelitian_Update/{id}', [PenelitianController::class, 'update']);
 
 //route integrasi
+Route::get('tampil_Integrasi/{id}', [IntegrasiController::class, 'show']);
 Route::get('Integrasi', [IntegrasiController::class, 'index']);
 Route::post('Integrasi', [IntegrasiController::class, 'store']);
 Route::put('Integrasi/{id}', [IntegrasiController::class, 'update']);

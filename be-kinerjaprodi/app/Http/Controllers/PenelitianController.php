@@ -100,7 +100,11 @@ class PenelitianController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_penelitian' => Penelitian::find($id),
+            'id' => $id
+        ]);
     }
 
     /**

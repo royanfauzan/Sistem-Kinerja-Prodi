@@ -77,7 +77,11 @@ class MahasiswaController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_mhs' => Mahasiswa::find($id),
+            'id' => $id
+        ]);
     }
 
     /**

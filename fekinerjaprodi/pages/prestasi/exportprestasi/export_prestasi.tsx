@@ -9,6 +9,7 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import Link from "next/link";
 
+
 export default function daftarprestasi() {
   const router = useRouter();
 
@@ -81,7 +82,7 @@ export default function daftarprestasi() {
                   table,
                   td,
                   th {
-                    border: 2px solid;
+                    border: 2px solid !important;
                     text-align: center;
                   }
 
@@ -121,7 +122,7 @@ export default function daftarprestasi() {
                   <div className="table-responsive p-3">
                     {
                       <table
-                        border="1"
+                        border="2"
                         className="table align-items-center mb-0"
                         id="tableprint"
                       >
@@ -143,30 +144,30 @@ export default function daftarprestasi() {
                           {profilDosen.map((kpsn, number) => {
                             return (
                               <tr key={`kpsn` + kpsn.id}>
-                                <th>
-                                  <h6 className="mb-0 text-sm">{number + 1}</h6>
-                                </th>
+                                <td>
+                                  <p className="mb-0 text-sm">{number + 1}</p>
+                                </td>
 
-                                <th className="align-middle  text-sm">
+                                <td className="align-middle  text-sm">
                                   <p className="text-xs font-weight-bold mb-0">
                                     {kpsn.nm_kegiatan}
                                   </p>
-                                </th>
+                                </td>
 
-                                <th className="align-middle  text-sm">
+                                <td className="align-middle  text-sm">
                                   <p className="text-xs font-weight-bold mb-0">
                                     {kpsn.tahun}
                                   </p>
-                                </th>
+                                </td>
 
                                 {kpsn.tingkat == "Lokal" ? (
                                   <>
                                     {" "}
-                                    <th></th> <th> </th>{" "}
-                                    <th>
+                                    <td></td> <td> </td>{" "}
+                                    <td>
                                       {" "}
-                                      <h6 className="mb-0 text-sm">Lokal </h6>
-                                    </th>
+                                      <p className="mb-0 text-sm">Lokal </p>
+                                    </td>
                                   </>
                                 ) : (
                                   ""
@@ -175,14 +176,14 @@ export default function daftarprestasi() {
                                 {kpsn.tingkat == "Nasional" ? (
                                   <>
                                     {" "}
-                                    <th></th>{" "}
-                                    <th>
+                                    <td></td>{" "}
+                                    <td>
                                       {" "}
-                                      <h6 className="mb-0 text-sm">
+                                      <p className="mb-0 text-sm">
                                         Nasional{" "}
-                                      </h6>
-                                    </th>{" "}
-                                    <th> </th>{" "}
+                                      </p>
+                                    </td>{" "}
+                                    <td> </td>{" "}
                                   </>
                                 ) : (
                                   ""
@@ -191,24 +192,25 @@ export default function daftarprestasi() {
                                 {kpsn.tingkat == "Internasional" ? (
                                   <>
                                     {" "}
-                                    <th>
+                                    <td>
                                       {" "}
-                                      <h6 className="mb-0 text-sm">
+                                      <p className="mb-0 text-sm">
                                         internasional{" "}
-                                      </h6>
-                                    </th>{" "}
-                                    <th></th> <th> </th>{" "}
+                                      </p>
+                                    </td>{" "}
+                                    <td></td> <td> </td>{" "}
                                   </>
                                 ) : (
                                   ""
                                 )}
 
-                                <th className="align-middle ">
+                                <td className="align-middle ">
                                   <p className="text-xs font-weight-bold mb-0">
                                     {kpsn.prestasi_dicapai}
                                   </p>
-                                </th>
+                                </td>
                               </tr>
+                              
                             );
                           })}
                         </tbody>

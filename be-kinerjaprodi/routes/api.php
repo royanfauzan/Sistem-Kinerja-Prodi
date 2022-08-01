@@ -180,6 +180,8 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
 // Dev area EWMP
 Route::get('ewmps', [EwmpController::class, 'index']);
+Route::get('laporanewmp/{tahun}', [EwmpController::class, 'exportewmp']);
+Route::get('ewmplisttahun', [EwmpController::class, 'listtahun']);
 
 Route::group(['middleware' => ['adminonly']], function () {
     Route::get('testadmin', [ApiController::class, 'tester']);

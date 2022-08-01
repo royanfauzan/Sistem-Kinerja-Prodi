@@ -2,18 +2,12 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-=======
 use App\Models\Penelitian;
->>>>>>> 616928e (validasi)
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\PenggunaanDana;
 use App\Models\Prodi;
-<<<<<<< HEAD
-=======
 use App\Models\Pkm;
->>>>>>> 616928e (validasi)
 
 class PenggunaanDanaController extends Controller
 
@@ -21,18 +15,11 @@ class PenggunaanDanaController extends Controller
     public function tampil_penggunaan_dana()
     {
         //
-<<<<<<< HEAD
-       
-=======
-
->>>>>>> 616928e (validasi)
         return response()->json([
             'success' => true,
             'tampil_penggunaan_dana' => PenggunaanDana::with('prodi')->get()
         ]);
     }
-<<<<<<< HEAD
-=======
     public function export_penggunaan_dana($tahun)
     {
         //// memecah isi data menjadi array
@@ -68,7 +55,6 @@ class PenggunaanDanaController extends Controller
 
         ]);
     }
->>>>>>> 616928e (validasi)
 
     public function insert_penggunaan_dana(Request $request)
     {
@@ -97,13 +83,8 @@ class PenggunaanDanaController extends Controller
         $validator = Validator::make($credentials, [
             'Biaya_Dosen_Prodi' => 'required',
             'Biaya_Dosen_UPPS' => 'required',
-<<<<<<< HEAD
-            'Biaya_Investasi_Prasarana_Prodi'=> 'required',
-            'Biaya_Investasi_Prasarana_UPPS'=> 'required',
-=======
             'Biaya_Investasi_Prasarana_Prodi' => 'required',
             'Biaya_Investasi_Prasarana_UPPS' => 'required',
->>>>>>> 616928e (validasi)
             'Biaya_Investasi_Sarana_Prodi' => 'required',
             'Biaya_Investasi_Sarana_UPPS' => 'required',
             'Biaya_Investasi_SDM_Prodi' => 'required',
@@ -127,27 +108,6 @@ class PenggunaanDanaController extends Controller
         }
 
         $model = PenggunaanDana::create([
-<<<<<<< HEAD
-            'Biaya_Dosen_Prodi'=>$request->Biaya_Dosen_Prodi,
-            'Biaya_Dosen_UPPS'=>$request->Biaya_Dosen_UPPS,
-            'Biaya_Investasi_Prasarana_Prodi'=>$request->Biaya_Investasi_Prasarana_Prodi,
-            'Biaya_Investasi_Prasarana_UPPS'=>$request->Biaya_Investasi_Prasarana_UPPS,
-            'Biaya_Investasi_Sarana_Prodi'=>$request->Biaya_Investasi_Sarana_Prodi,
-            'Biaya_Investasi_Sarana_UPPS'=>$request->Biaya_Investasi_Sarana_UPPS,
-            'Biaya_Investasi_SDM_Prodi'=>$request->Biaya_Investasi_SDM_Prodi,
-            'Biaya_Investasi_SDM_UPPS' =>$request->Biaya_Investasi_SDM_UPPS,
-            'Biaya_Operasional_Kemahasiswaan_Prodi'=>$request->Biaya_Operasional_Kemahasiswaan_Prodi,
-            'Biaya_Operasional_Kemahasiswaan_UPPS'=>$request->Biaya_Operasional_Kemahasiswaan_UPPS,
-            'Biaya_Operasional_Pembelajaran_Prodi'=>$request->Biaya_Operasional_Pembelajaran_Prodi,
-            'Biaya_Operasional_Pembelajaran_UPPS'=>$request->Biaya_Operasional_Pembelajaran_UPPS,
-            'Biaya_Operasional_TidakLangsung_Prodi'=>$request->Biaya_Operasional_TidakLangsung_Prodi,
-            'Biaya_Operasional_TidakLangsung_UPPS'=>$request->Biaya_Operasional_TidakLangsung_UPPS,
-            'Biaya_Tenaga_Kependidikan_Prodi'=>$request->Biaya_Tenaga_Kependidikan_Prodi,
-            'Biaya_Tenaga_Kependidikan_UPPS'=>$request->Biaya_Tenaga_Kependidikan_UPPS,
-            'Prodi_Id'=>$request->Prodi_Id,
-            'Tahun'=>$request->Tahun
-           
-=======
             'Biaya_Dosen_Prodi' => $request->Biaya_Dosen_Prodi,
             'Biaya_Dosen_UPPS' => $request->Biaya_Dosen_UPPS,
             'Biaya_Investasi_Prasarana_Prodi' => $request->Biaya_Investasi_Prasarana_Prodi,
@@ -167,7 +127,6 @@ class PenggunaanDanaController extends Controller
             'Prodi_Id' => $request->Prodi_Id,
             'Tahun' => $request->Tahun
 
->>>>>>> 616928e (validasi)
 
         ]);
 
@@ -233,15 +192,9 @@ class PenggunaanDanaController extends Controller
             return response()->json(['error' => $validator->errors()], 200);
         }
 
-<<<<<<< HEAD
-       
-        $model = PenggunaanDana::find($id);
-       
-=======
 
         $model = PenggunaanDana::find($id);
 
->>>>>>> 616928e (validasi)
         $model->Biaya_Dosen_Prodi = $request->Biaya_Dosen_Prodi;
         $model->Biaya_Dosen_UPPS = $request->Biaya_Dosen_UPPS;
         $model->Biaya_Investasi_Prasarana_Prodi = $request->Biaya_Investasi_Prasarana_Prodi;
@@ -254,11 +207,7 @@ class PenggunaanDanaController extends Controller
         $model->Biaya_Operasional_Pembelajaran_Prodi = $request->Biaya_Operasional_Pembelajaran_Prodi;
         $model->Biaya_Operasional_Pembelajaran_UPPS = $request->Biaya_Operasional_Pembelajaran_UPPS;
         $model->Biaya_Operasional_TidakLangsung_Prodi = $request->Biaya_Operasional_TidakLangsung_Prodi;
-<<<<<<< HEAD
-        $model->Biaya_Operasional_TidakLangsung_UPPS= $request->Biaya_Operasional_TidakLangsung_UPPS;
-=======
         $model->Biaya_Operasional_TidakLangsung_UPPS = $request->Biaya_Operasional_TidakLangsung_UPPS;
->>>>>>> 616928e (validasi)
         $model->Biaya_Tenaga_Kependidikan_Prodi = $request->Biaya_Tenaga_Kependidikan_Prodi;
         $model->Biaya_Tenaga_Kependidikan_UPPS = $request->Biaya_Tenaga_Kependidikan_UPPS;
         $model->Prodi_Id = $request->Prodi_Id;

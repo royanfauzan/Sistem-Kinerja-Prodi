@@ -1,29 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
-<<<<<<< HEAD
-=======
-
->>>>>>> 616928e (validasi)
 use App\Models\MahasiswaAsing;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class MahasiswaAsingController extends Controller
 {
-<<<<<<< HEAD
-    public function tampil_mahasiswa_asing(){
-=======
     public function tampil_mahasiswa_asing()
     {
->>>>>>> 616928e (validasi)
         return response()->json([
             'success' => true,
             'mahasiswa_asing' => MahasiswaAsing::with('prodi')->get()
         ]);
     }
-<<<<<<< HEAD
-=======
     public function search_mahasiswa_asing($search)
     {
         return response()->json([
@@ -56,23 +46,11 @@ class MahasiswaAsingController extends Controller
             'ts3' =>  MahasiswaAsing::with('prodi')->where('mahasiswa_asings.Tahun_Akademik', $tahunn[2])->first(),
         ]);
     }
->>>>>>> 616928e (validasi)
     public function tester(Request $request)
     {
         return response()->json(['Sukses' => true]);
     }
 
-<<<<<<< HEAD
-    public function insert_mahasiswa_asing(Request $request)
-    {
-        $credentials = $request->only(
-        'Tahun_Akademik',
-        'Program_Studi',
-        'Mahasiswa_Aktif',
-        'Mahasiswa_Aktif_Fulltime',
-        'Mahasiswa_Aktif_Parttime',
-        'Program_Studi_Prodi_Id'
-=======
     public function tampil_edit_mahasiswa_asing($id)
     {
         //
@@ -91,35 +69,10 @@ class MahasiswaAsingController extends Controller
             'Mahasiswa_Aktif_Fulltime',
             'Mahasiswa_Aktif_Parttime',
             'Program_Studi_Prodi_Id'
->>>>>>> 616928e (validasi)
         );
 
         //valid credential
         $validator = Validator::make($credentials, [
-<<<<<<< HEAD
-            'Tahun_Akademik'=> 'required',
-            'Program_Studi'=> 'required',
-            'Mahasiswa_Aktif'=> 'required',
-            'Mahasiswa_Aktif_Fulltime'=> 'required',
-            'Mahasiswa_Aktif_Parttime'=> 'required',
-            'Program_Studi_Prodi_Id'=> 'required'
-
-          
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
-        }
-
-        $model = MahasiswaAsing::create([
-            'Tahun_Akademik'=> $request->Tahun_Akademik,
-            'Program_Studi'=> $request->Program_Studi,
-            'Mahasiswa_Aktif'=> $request->Mahasiswa_Aktif,
-            'Mahasiswa_Aktif_Fulltime'=> $request->Mahasiswa_Aktif_Fulltime,
-            'Mahasiswa_Aktif_Parttime'=> $request->Mahasiswa_Aktif_Parttime,
-            'Program_Studi_Prodi_Id'=> $request->Program_Studi_Prodi_Id
-           
-=======
             'Tahun_Akademik' => 'required',
             'Mahasiswa_Aktif' => 'required',
             'Mahasiswa_Aktif_Fulltime' => 'required',
@@ -140,7 +93,6 @@ class MahasiswaAsingController extends Controller
             'Mahasiswa_Aktif_Parttime' => $request->Mahasiswa_Aktif_Parttime,
             'Program_Studi_Prodi_Id' => $request->Program_Studi_Prodi_Id
 
->>>>>>> 616928e (validasi)
         ]);
 
         if (!$model) {
@@ -160,10 +112,6 @@ class MahasiswaAsingController extends Controller
     {
         $credentials = $request->only(
             'Tahun_Akademik',
-<<<<<<< HEAD
-            'Program_Studi',
-=======
->>>>>>> 616928e (validasi)
             'Mahasiswa_Aktif',
             'Mahasiswa_Aktif_Fulltime',
             'Mahasiswa_Aktif_Parttime',
@@ -172,20 +120,11 @@ class MahasiswaAsingController extends Controller
 
         //valid credential
         $validator = Validator::make($credentials, [
-<<<<<<< HEAD
-            'Tahun_Akademik'=> 'required',
-            'Program_Studi'=> 'required',
-            'Mahasiswa_Aktif'=> 'required',
-            'Mahasiswa_Aktif_Fulltime'=> 'required',
-            'Mahasiswa_Aktif_Parttime'=> 'required',
-            'Program_Studi_Prodi_Id'=> 'required'
-=======
             'Tahun_Akademik' => 'required',
             'Mahasiswa_Aktif' => 'required',
             'Mahasiswa_Aktif_Fulltime' => 'required',
             'Mahasiswa_Aktif_Parttime' => 'required',
             'Program_Studi_Prodi_Id' => 'required'
->>>>>>> 616928e (validasi)
         ]);
 
         if ($validator->fails()) {
@@ -193,10 +132,6 @@ class MahasiswaAsingController extends Controller
         }
         $model = MahasiswaAsing::find($id);
         $model->Tahun_Akademik = $request->Tahun_Akademik;
-<<<<<<< HEAD
-        $model->Program_Studi = $request->Program_Studi;
-=======
->>>>>>> 616928e (validasi)
         $model->Mahasiswa_Aktif = $request->Mahasiswa_Aktif;
         $model->Mahasiswa_Aktif_Fulltime = $request->Mahasiswa_Aktif_Fulltime;
         $model->Mahasiswa_Aktif_Parttime = $request->Mahasiswa_Aktif_Parttime;
@@ -231,8 +166,4 @@ class MahasiswaAsingController extends Controller
             'message' => "Data Mahasiswa Asing Berhasil Dihapus"
         ]);
     }
-<<<<<<< HEAD
-   
-=======
->>>>>>> 616928e (validasi)
 }

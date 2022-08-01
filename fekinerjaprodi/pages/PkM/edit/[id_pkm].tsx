@@ -130,7 +130,7 @@ export default function update_dataPKM(props) {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(response.data);
-        // router.push("/");
+        router.push("../../PkM/daftarpkm");
       })
       .catch(function (error) {
         //handle error

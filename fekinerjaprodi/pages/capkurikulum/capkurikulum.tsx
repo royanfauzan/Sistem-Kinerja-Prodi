@@ -137,7 +137,7 @@ export default function capkurikulum() {
         toast.success("Input Sukses!");
         // console.log(token);
         console.log(all_capkurikulum);
-        router.push("/");
+        router.push("../capkurikulum/daftarkurikulum");
       })
       .catch(function (error) {
         //handle error

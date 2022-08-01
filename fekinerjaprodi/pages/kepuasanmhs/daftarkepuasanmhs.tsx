@@ -6,6 +6,7 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Link from 'next/link';
 
 export default function daftarkepuasanmhs() {
   const router = useRouter();
@@ -67,6 +68,20 @@ export default function daftarkepuasanmhs() {
       });
   }, []);
 
+  const deletekepuasanmhs = (id) => {
+    axios({
+      method: "post",
+      url: `http://127.0.0.1:8000/api/KepuasanMHS_Delete/${id}`,
+    })
+      .then(function (response) {
+        router.reload();
+      })
+      .catch(function (err) {
+        console.log("gagal");
+        console.log(err.response);
+      });
+  };
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -75,283 +90,181 @@ export default function daftarkepuasanmhs() {
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
-                <div className="card-header pb-0">
+                <style jsx>{`
+                  table,
+                  td,
+                  th {
+                    border: 1px solid !important ;
+                    text-align: center;
+                  }
+
+                  table {
+                    width: 100%;
+                    border-collapse: collapse;
+                  }
+                `}</style>
+                <div className="card-header">
                   <h6>Tabel Kepuasan Mahasiswa</h6>
                 </div>
-                <div className="card-body px-0 pt-0 pb-2">
+                <div className="card-body p-3">
                   <div className="table-responsive p-0">
-                    <table className="table align-items-center mb-0">
+                    <table className="table align-items-center mb-0 table-hover" border="1">
                       <thead>
                         <tr>
-                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Prodi
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Tahun
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Keandalan : Buruk
-                          </th>
-                          
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Keandalan : Cukup
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Keandalan : Baik
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Keandalan : Sangat Baik
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Keandalan : Tindakan Yang Dilakukan
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Daya Tanggap : Buruk
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Daya Tanggap : Cukup
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Daya Tanggap : Baik
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Daya Tanggap : Sangat Baik
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Daya Tanggap : Tindakan Yang Dilakukan
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Kepastian : Buruk
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Kepastian : Cukup
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Kepastian : Baik
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Kepastian : Sangat Baik
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Kepastian : Tindakan Yang Dilakukan
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Empati : Buruk
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Empati : Cukup
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Empati : Baik
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Empati : Sangat Baik
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Empati : Tindakan Yang Dilakukan
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Tangible : Buruk
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Tangible : Cukup
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Tangible : Baik
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Tangible : Sangat Baik
-                          </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Tangible : Tindakan Yang Dilakukan
-                          </th>
-                          <th className="text-secondary opacity-7"></th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4" rowspan="2">NO</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4" rowspan="2">Prodi</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4" rowspan="2">Tahun</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4" colspan="5">Keandalan</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4" colspan="5">Daya Tanggap</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4" colspan="5">Kepastian</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4" colspan="5">Empati</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4" colspan="5">Tangible</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4" rowspan="2">Aksi</th>
+                        </tr>
+                        <tr>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Sangat Baik</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Baik</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Cukup</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Kurang</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Tindakan yang dilakukan</th>
+
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Sangat Baik</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Baik</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Cukup</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Kurang</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Tindakan yang dilakukan</th>
+
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Sangat Baik</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Baik</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Cukup</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Kurang</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Tindakan yang dilakukan</th>
+
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Sangat Baik</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Baik</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Cukup</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Kurang</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Tindakan yang dilakukan</th>
+
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Sangat Baik</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Baik</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Cukup</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Kurang</th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-4">Tindakan yang dilakukan</th>
+
                         </tr>
                       </thead>
+
                       <tbody>
-                        {kepuasanmhs.map((kpsnmhs) => {
+                        {kepuasanmhs.map((kpsnmhs, number) => {
                           return (
-                            <tr key={`kpsnmhs`+kpsnmhs.id}>
-                            
-                            <td>
-                                <p className="text-xs font-weight-bold mb-0">
+                            <tr>
+                              <td className="ps-3 pe-3">
+                                <h6 className="mb-0 text-sm ">{number + 1}</h6>
+                              </td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.prodi.prodi + ' ' + kpsnmhs.prodi.nama_prodi}
-                                </p>
-                              </td>
+                              </p></td>
 
-                              <td>
-                                <p className="text-xs font-weight-bold mb-0">
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.tahun}
-                                </p>
-                              </td>
+                              </p></td>
 
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.keandalan_4}
-                                </p>
-                              </td>
-
-                             
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.keandalan_3}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.keandalan_2}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.keandalan_1}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.tl_keandalan}
-                                </p>
-                              </td>
+                              </p></td>
 
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.dayatanggap_4}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.dayatanggap_3}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.dayatanggap_2}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.dayatanggap_1}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.tl_dayatanggap}
-                                </p>
-                              </td>
+                              </p></td>
 
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
-                                {kpsnmhs.kepastian_4}
-                                </p>
-                              </td>
+                              <td><p className="text-xs font-weight-bold mb-0">
+                                {kpsnmhs.kepastian_4}</p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
+                                {kpsnmhs.kepastian_3}</p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
+                                {kpsnmhs.kepastian_2}</p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
+                                {kpsnmhs.kepastian_1}</p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
+                                {kpsnmhs.tl_kepastian}</p></td>
 
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
-                                {kpsnmhs.kepastian_3}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
-                                {kpsnmhs.kepastian_2}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
-                                {kpsnmhs.kepastian_1}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
-                                {kpsnmhs.tl_kepastian}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.empati_4}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.empati_3}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.empati_2}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.empati_1}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.tl_empati}
-                                </p>
-                              </td>
+                              </p></td>
 
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.tangible_4}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.tangible_3}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.tangible_2}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.tangible_1}
-                                </p>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
+                              </p></td>
+                              <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.tl_tangible}
-                                </p>
-                              </td>
-                             
-                             
-                              <td className="align-middle">
-                                <a
-                                  className="text-secondary font-weight-bold text-xs"
-                                  data-toggle="tooltip"
-                                  data-original-title="Edit user"
+                              </p></td>
+
+                              <td className="align-middle pe-3">
+                                <Link href={`/prestasi/edit/${kpsnmhs.id}`}>
+                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                    Edit
+                                  </button>
+                                </Link>
+
+                                <button
+                                  onClick={() => deletekepuasanmhs(kpsnmhs.id)}
+                                  className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
-                                  Edit
-                                </a>
+                                  Hapus
+                                </button>
                               </td>
                             </tr>
                           );
                         })}
-                        </tbody>
+                      </tbody>
                     </table>
+
                   </div>
                 </div>
               </div>

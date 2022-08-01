@@ -9,4 +9,8 @@ class Penelitian extends Model
 {
     use HasFactory;
     protected $guarded = ["id"];
+    public function penelitian()
+    {
+        return $this->belongsToMany(ProfilDosen::class, 'NamaDosen');
+    }
 }

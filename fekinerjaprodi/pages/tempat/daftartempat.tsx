@@ -24,10 +24,10 @@ export default function daftartempat() {
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_prodi } = response.data;
-        setprofilDosen(all_prodi);
+        const { all_tempat } = response.data;
+        setprofilDosen(all_tempat);
 
-        console.log(all_prodi);
+        console.log(all_tempat);
       })
       .catch(function (err) {
         console.log("gagal");

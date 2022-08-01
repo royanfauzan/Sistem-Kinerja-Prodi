@@ -88,7 +88,11 @@ class IpkController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_ipk' => Ipk::find($id),
+            'id' => $id
+        ]);
     }
 
     /**

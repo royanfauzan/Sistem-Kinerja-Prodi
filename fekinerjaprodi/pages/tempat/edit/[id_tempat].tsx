@@ -2,39 +2,56 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
-import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutForm";
-import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
+import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
+import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
+import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
 
+// Untuk Ngambil Data Berdasarkan ID
+export async function getServerSideProps(context) {
 
-export default function inputprestasi() {
+    //http request
+    const req  = await axios.get(`http://127.0.0.1:8000/api/show_tempat/${context.query.id_tempat}`)
+    const res  = await req.data.all_tempat
+  
+    return {
+      props: {
+          tempat: res // <-- assign response
+      },
+    }
+  }
+
+export default function edittempat(props) {
   const router = useRouter();
+  const {tempat}=props;
+  const [dataTempat, setTempat] = useState(tempat);
+ 
+console.log(tempat);
 
-  const [userDosens, setuserDosens] = useState([]);
-  const [fileBukti, setfileBuktis] = useState<File>([]);
-
-  // state pake test user
+   // State Select
   const [stadmin, setStadmin] = useState(false);
+  const [dataTempats, setTempats] = useState([]);
+  const [selectTempat, setSelectTempat] = useState(tempat.kepuasan_id);
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () =>{
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/Prodi",
+      url: "http://127.0.0.1:8000/api/kepuasan",
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { Prodi } = response.data;
-        setuserDosens(Prodi);
-        console.log(Prodi);
+        const { all_prodi} = response.data;
+        setTempats(all_prodi);
+        console.log(dataTempats);
       })
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
       });
   }
+
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
@@ -44,7 +61,7 @@ export default function inputprestasi() {
     if(!lgToken){
       router.push('/login')
     }
-
+ 
     // perjalanan validasi token 
     axios({
       method: "get",
@@ -62,6 +79,7 @@ export default function inputprestasi() {
             // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
             setStadmin(true);
             pengambilData();
+           
     })
     .catch(function (err) {
         console.log('gagal');
@@ -70,9 +88,11 @@ export default function inputprestasi() {
     })
   },[]);
 
-  const handleChangeFile  = (e) => {
-    setfileBuktis(e.target.files[0]);
+  const handleChangeTempat = (e) => {
+    setSelectTempat(e.target.value);
+   
   };
+
 
   const submitForm = async (event) => {
     event.preventDefault();
@@ -81,18 +101,14 @@ export default function inputprestasi() {
     const lgToken = localStorage.getItem("token");
 
     let formData = new FormData();
-    formData.append("prodi_id", event.target.prodi.value);
-    formData.append("nm_kegiatan", event.target.nm_kegiatan.value);
-    formData.append("tahun", event.target.tahun.value);
-    formData.append("tingkat", event.target.tingkat.value);
-    formData.append("prestasi_dicapai", event.target.dicapai.value);
-    formData.append("kategori", event.target.kategori.value);
-
-    console.log(formData);
+    formData.append("kepuasan_id", event.target.kepuasan.value);
+    formData.append("lokal", event.target.lokal.value);
+    formData.append("nasional", event.target.nasional.value);
+    formData.append("multinasional", event.target.multinasional.value);
 
     axios({
       method: "post",
-      url: "http://127.0.0.1:8000/api/prestasi",
+      url: `http://127.0.0.1:8000/api/update_tempat/${dataTempat.id}` + `?_method=PUT`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -100,13 +116,14 @@ export default function inputprestasi() {
       },
     })
       .then(function (response) {
-        const { all_prestasi } = response.data;
+        const { profil } = response.data;
         //handle success
         toast.dismiss();
         toast.success("Login Sugses!!");
         // console.log(token);
-        console.log(all_prestasi);
-        router.push("../prestasi/daftarprestasi");
+        console.log(profil);
+        router.push("/");
+        console.log(response.data);
       })
       .catch(function (error) {
         //handle error
@@ -148,24 +165,26 @@ export default function inputprestasi() {
                     <div className="row">
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="prodi" className="form-control-label">
-                            Prodi
+                          <label htmlFor="kepuasan" className="form-control-label">
+                            Tahun Kepuasan Lulusan
                           </label>
                           <select
                             className="form-select"
                             aria-label="Default select example"
-                            defaultValue="0"
-                            id="prodi"
+
+                            id="kepuasan"
+                            value={selectTempat}
+                            onChange={handleChangeTempat}
                           >
-                            <option>Pilih Prodi</option>
-                            {userDosens.map((userprodi) => {
+                            <option>Pilih Tahun Lulusan</option>
+                            {dataTempats.map((userkepuasan) => {
                                {
                                 return (
                                   <option
-                                    value={userprodi.id}
-                                    key={userprodi.id}
+                                    value={userkepuasan.id}
+                                    key={userkepuasan.id}
                                   >
-                                    {userprodi.prodi + ` ` + userprodi.nama_prodi}
+                                    {userkepuasan.tahun}
                                   </option>
                                 );
                               }
@@ -175,87 +194,49 @@ export default function inputprestasi() {
                       </div>
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="nm_kegiatan" className="form-control-label">
-                            Nama Kegiatan
+                          <label htmlFor="lokal" className="form-control-label">
+                            Tempat Kerja Lokal
                           </label>
                           <input
                             className="form-control"
                             type="text"
-                            placeholder="Nama Kegiatan"
-                            id="nm_kegiatan"
+                            placeholder="Jumlah kerja lokal"
+                            id="lokal"
+                            defaultValue={dataTempat.lokal}
                             required
                           />
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="tahun" className="form-control-label">
-                            Tahun
+                          <label htmlFor="nasional" className="form-control-label">
+                            Tempat Kerja Nasional
                           </label>
                           <input
                             className="form-control"
                             type="text"
-                            placeholder="Tahun"
-                            id="tahun"
+                            placeholder="Jumlah kerja nasional"
+                            id="nasional"
+                            defaultValue={dataTempat.nasional}
                             required
                           />
                         </div>
                       </div>
-
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="tingkat" className="form-control-label">
-                            Tingkat
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="tingkat"
-                          >
-                            <option >Tingkat Prestasi</option>
-                            <option value="Lokal"> Lokal</option>
-                            <option value="Nasional"> Nasional</option>
-                            <option value="Internasional"> Internasional</option>
-                            
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="dicapai" className="form-control-label">
-                            Prestasi Dicapai
+                          <label htmlFor="multinasional" className="form-control-label">
+                            Tempat Kerja Multinasional
                           </label>
                           <input
                             className="form-control"
                             type="text"
-                            placeholder="Prestasi Dicapai"
-                            id="dicapai"
+                            placeholder="Jumlah kerja multi masional"
+                            id="multinasional"
+                            defaultValue={dataTempat.multinasional}
                             required
                           />
                         </div>
                       </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="kategori" className="form-control-label">
-                          Kategori
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="kategori"
-                          >
-                            <option >Pilih Kategori</option>
-                            <option value="Akademik"> Akademik</option>
-                            <option value="Non Akademik"> Non Akademik</option>
-                            
-                          </select>
-                        </div>
-                      </div>
-
                     </div>
                   </div>
                 </div>

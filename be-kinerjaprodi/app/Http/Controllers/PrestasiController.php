@@ -17,7 +17,7 @@ class PrestasiController extends Controller
     {
         return response()->json([
             'success' => true,
-            'all_prodi' => Prestasi::with('prodi')->get(),
+            'all_prestasi' => Prestasi::with('prodi')->get(),
         ]);
     }
 
@@ -76,7 +76,7 @@ class PrestasiController extends Controller
             'prestasi_dicapai' => $request->prestasi_dicapai,
             'kategori' => $request->kategori,
             'prodi_id' => $request->prodi_id,
-            'all_prodi' => Prestasi::all()
+            'all_prestasi' => Prestasi::all()
         ]);
     }
 
@@ -88,7 +88,11 @@ class PrestasiController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_prestasi' => Prestasi::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -146,7 +150,7 @@ class PrestasiController extends Controller
             'prestasi_dicapai' => $request->prestasi_dicapai,
             'kategori' => $request->kategori,
             'prodi_id' => $request->prodi_id,
-            'all_prodi' => Prestasi::all()
+            'all_prestasi' => Prestasi::all()
         ]);
     }
 
@@ -158,6 +162,18 @@ class PrestasiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $prestasi = Prestasi::find($id);
+        $prestasi->delete();
+
+        if (!$prestasi) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

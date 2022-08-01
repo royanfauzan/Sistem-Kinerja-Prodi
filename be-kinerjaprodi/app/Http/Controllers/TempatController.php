@@ -17,7 +17,7 @@ class TempatController extends Controller
     {
         return response()->json([
             'success' => true,
-            'all_prodi' => Tempat::with('kepuasan')->get(),
+            'all_tempat' => Tempat::with('kepuasan')->get(),
         ]);
     }
 
@@ -70,7 +70,7 @@ class TempatController extends Controller
             'nasional' => $request->nasional,
             'multinasional' => $request->multinasional,
             'kepuasan_id' => $request->kepuasan_id,
-            'all_prodi' => Tempat::all()
+            'all_tempat' => Tempat::all()
         ]);
     }
 
@@ -82,7 +82,11 @@ class TempatController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_tempat' => Tempat::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -135,7 +139,7 @@ class TempatController extends Controller
             'nasional' => $request->nasional,
             'multinasional' => $request->multinasional,
             'kepuasan_id' => $request->kepuasan_id,
-            'all_prodi' => Tempat::all()
+            'all_tempat' => Tempat::all()
         ]);
     }
 

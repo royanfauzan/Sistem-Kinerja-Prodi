@@ -87,8 +87,11 @@ Route::get('show_prestasi/{id}', [PrestasiController::class, 'show']);
 Route::post('delete_prestasi/{id}', [PrestasiController::class, 'destroy']);
 
 //Kesesuaian bidang kerja
+Route::get('kesesuaian', [KesesuaianController::class, 'index']);
 Route::post('kesesuaian', [KesesuaianController::class, 'store']);
-Route::put('kesesuaian/{id}', [KesesuaianController::class, 'update']);
+Route::put('edit_kesesuaian/{id}', [KesesuaianController::class, 'update']);
+Route::get('show_kesesuaian/{id}', [KesesuaianController::class, 'show']);
+Route::post('delete_kesesuaian/{id}', [KesesuaianController::class, 'destroy']);
 
 //Masa Studi
 Route::post('masastudi', [MasastudiController::class, 'store']);

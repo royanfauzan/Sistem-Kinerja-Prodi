@@ -103,7 +103,12 @@ class PKMController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_pkm' => Pkm::find($id),
+            'id' => $id
+        ]);
+    
     }
 
     /**

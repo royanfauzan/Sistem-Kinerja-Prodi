@@ -152,7 +152,11 @@ class KepuasanMHSController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_mhs' => Kepuasan_MHS::with(['prodi'])->where('id', $id) ->first() ,
+            'id' => $id
+        ]);
     }
 
     /**
@@ -274,7 +278,7 @@ class KepuasanMHSController extends Controller
            'tangible_1' => $request->tangible_1,
            'tl_tangible' => $request->tl_tangible,
            'prodi_id' => $request->prodi_id,
-           'all_mhs' => Mahasiswa::all()
+           'all_mhs' => Kepuasan_MHS::all()
        ]);
     }
 

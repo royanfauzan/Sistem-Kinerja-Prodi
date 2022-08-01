@@ -178,6 +178,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('bimbingans', [BimbinganController::class, 'store']);
 });
 
+// Dev area EWMP
+Route::get('ewmps', [EwmpController::class, 'index']);
+
 Route::group(['middleware' => ['adminonly']], function () {
     Route::get('testadmin', [ApiController::class, 'tester']);
     Route::post('profildosens', [ProfildosenController::class, 'store']);

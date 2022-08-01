@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Ewmp;
 use App\Models\Mitra;
 use App\Models\profilDosen;
 use App\Models\User;
@@ -53,6 +54,69 @@ class DatabaseSeeder extends Seeder
             'JenisKelamin'=>'L',
             'StatusPerkawinan'=>'Belum Kawin',
             'Agama'=>'Kristen',
+        ]);
+
+        profilDosen::create([
+            'NIDK'=>'11111111',
+            'NamaDosen'=>'nama 111',
+            'NIK'=>"911111111",
+            'TempatLahir'=>'Singaraja',
+            'TanggalLahir'=>'1998-12-25',
+            'JenisKelamin'=>'L',
+            'StatusPerkawinan'=>'Kawin',
+            'Agama'=>'Hindu',
+        ]);
+
+        Ewmp::create([
+            'dtps'=>true,
+            'profil_dosen_id'=>1,
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>"genap",
+            'sks_ps_akreditasi'=>8,
+            'sks_ps_lain_pt'=>4,
+            'sks_ps_luar_pt'=>0,
+            'sks_penelitian'=>4,
+            'sks_pengabdian'=>4,
+            'sks_tugas'=>4,
+        ]);
+
+        Ewmp::create([
+            'dtps'=>true,
+            'profil_dosen_id'=>1,
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>"ganjil",
+            'sks_ps_akreditasi'=>10,
+            'sks_ps_lain_pt'=>4,
+            'sks_ps_luar_pt'=>0,
+            'sks_penelitian'=>4,
+            'sks_pengabdian'=>4,
+            'sks_tugas'=>4,
+        ]);
+
+        Ewmp::create([
+            'dtps'=>true,
+            'profil_dosen_id'=>2,
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>"genap",
+            'sks_ps_akreditasi'=>8,
+            'sks_ps_lain_pt'=>4,
+            'sks_ps_luar_pt'=>0,
+            'sks_penelitian'=>4,
+            'sks_pengabdian'=>4,
+            'sks_tugas'=>4,
+        ]);
+
+        Ewmp::create([
+            'dtps'=>true,
+            'profil_dosen_id'=>2,
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>"ganjil",
+            'sks_ps_akreditasi'=>10,
+            'sks_ps_lain_pt'=>4,
+            'sks_ps_luar_pt'=>0,
+            'sks_penelitian'=>4,
+            'sks_pengabdian'=>4,
+            'sks_tugas'=>4,
         ]);
 
         Mitra::create([

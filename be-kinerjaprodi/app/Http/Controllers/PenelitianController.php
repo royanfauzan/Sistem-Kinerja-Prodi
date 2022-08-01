@@ -17,7 +17,7 @@ class PenelitianController extends Controller
     {
         return response()->json([ //ngirim ke front end
             'success' => true, 
-            'all_penelitian' => Penelitian::all()
+            'all_penelitian' => Penelitian::with('anggotaDosens')->get()
         ]);
     }
 

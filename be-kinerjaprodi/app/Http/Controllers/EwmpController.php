@@ -17,6 +17,78 @@ class EwmpController extends Controller
     public function index()
     {
         //
+
+        $idsDosens=Ewmp::select('profil_dosen_id')->where('tahun_akademik','2020/2021')->get();
+        $iddoss = array();
+        foreach($idsDosens as $idsDosen){
+            $iddoss[]=$idsDosen->profil_dosen_id;
+        }
+
+        $iddoss=array_unique($iddoss);
+
+        $allewmps = Ewmp::with('profilDosen')->where('tahun_akademik','2020/2021')->get()->groupBy('profil_dosen_id');
+
+        // $hitunganewmp = collect([]);
+        // $hitungIndex = 0;
+        // $index = 0;
+        // $previddosen=$allewmp[0]->profil_dosen_id;
+
+
+        $hitunganewmp = collect([]);
+        $index = 0;
+        $insideCounter=array();
+        foreach($allewmps as $emps){
+            $total = 0;
+            $collectewmp = $emps[0];
+            $collectewmp->profil_dosen = $emps[0]->profil_dosen;
+            $sks_ps_akreditasi = 0;
+            $sks_ps_lain_pt = 0;
+            $sks_ps_luar_pt = 0;
+            $sks_penelitian = 0;
+            $sks_pengabdian = 0;
+            $sks_tugas = 0;
+            foreach ($emps as $key => $emp) {
+                $sks_ps_akreditasi += $emp->sks_ps_akreditasi;
+                $sks_ps_lain_pt += $emp->sks_ps_lain_pt;
+                $sks_ps_luar_pt += $emp->sks_ps_luar_pt;
+                $sks_penelitian += $emp->sks_penelitian;
+                $sks_pengabdian += $emp->sks_pengabdian;
+                $sks_tugas += $emp->sks_tugas;
+            }
+            
+            $collectewmp->sks_ps_akreditasi = $sks_ps_akreditasi;
+            $collectewmp->sks_ps_lain_pt = $sks_ps_lain_pt;
+            $collectewmp->sks_ps_luar_pt = $sks_ps_luar_pt;
+            $collectewmp->sks_penelitian = $sks_penelitian;
+            $collectewmp->sks_pengabdian = $sks_pengabdian;
+            $collectewmp->sks_tugas = $sks_tugas;
+
+            $total = $collectewmp->sks_ps_akreditasi+$collectewmp->sks_ps_lain_pt+$collectewmp->sks_ps_luar_pt+$collectewmp->sks_penelitian+$collectewmp->sks_pengabdian+$collectewmp->sks_tugas;
+
+            $avg = $total/2;
+            $collectewmp->total = $total;
+            $collectewmp->avg = $avg;
+            $hitunganewmp->push($collectewmp);
+            $index++;
+        }
+
+        // $index = 0;
+        // foreach($allewmp as $emp){
+        //     $total = 0;
+        //     $total = $emp->sks_ps_akreditasi+$emp->sks_ps_lain_pt+$emp->sks_ps_luar_pt+$emp->sks_penelitian+$emp->sks_pengabdian+$emp->sks_tugas;
+        //     $avg = $total/2;
+        //     $allewmp[$index]->total = $total;
+        //     $allewmp[$index]->avg = $avg;
+        //     $index++;
+        // }
+
+
+        return response()->json([
+            'success' => true,
+            'ewmp' => $hitunganewmp,
+            'insd' => $insideCounter,
+            'luar' => $index,
+        ]);
     }
 
     /**
@@ -152,5 +224,87 @@ class EwmpController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function exportewmp(Request $request,$tahun)
+    {
+        $tahunint = intval($tahun);
+        $tahun = "".($tahunint-1)."/".($tahunint);
+        $idsDosens=Ewmp::select('profil_dosen_id')->where('tahun_akademik',$tahun)->get();
+        $iddoss = array();
+        foreach($idsDosens as $idsDosen){
+            $iddoss[]=$idsDosen->profil_dosen_id;
+        }
+
+        $iddoss=array_unique($iddoss);
+
+        $allewmps = Ewmp::with('profilDosen')->where('tahun_akademik',$tahun)->get()->groupBy('profil_dosen_id');
+
+        // $hitunganewmp = collect([]);
+        // $hitungIndex = 0;
+        // $index = 0;
+        // $previddosen=$allewmp[0]->profil_dosen_id;
+
+
+        $hitunganewmp = collect([]);
+        $index = 0;
+        $insideCounter=array();
+        foreach($allewmps as $emps){
+            $total = 0;
+            $collectewmp = $emps[0];
+            $collectewmp->profil_dosen = $emps[0]->profil_dosen;
+            $sks_ps_akreditasi = 0;
+            $sks_ps_lain_pt = 0;
+            $sks_ps_luar_pt = 0;
+            $sks_penelitian = 0;
+            $sks_pengabdian = 0;
+            $sks_tugas = 0;
+            foreach ($emps as $key => $emp) {
+                $sks_ps_akreditasi += $emp->sks_ps_akreditasi;
+                $sks_ps_lain_pt += $emp->sks_ps_lain_pt;
+                $sks_ps_luar_pt += $emp->sks_ps_luar_pt;
+                $sks_penelitian += $emp->sks_penelitian;
+                $sks_pengabdian += $emp->sks_pengabdian;
+                $sks_tugas += $emp->sks_tugas;
+            }
+            
+            $collectewmp->sks_ps_akreditasi = $sks_ps_akreditasi;
+            $collectewmp->sks_ps_lain_pt = $sks_ps_lain_pt;
+            $collectewmp->sks_ps_luar_pt = $sks_ps_luar_pt;
+            $collectewmp->sks_penelitian = $sks_penelitian;
+            $collectewmp->sks_pengabdian = $sks_pengabdian;
+            $collectewmp->sks_tugas = $sks_tugas;
+
+            $total = $collectewmp->sks_ps_akreditasi+$collectewmp->sks_ps_lain_pt+$collectewmp->sks_ps_luar_pt+$collectewmp->sks_penelitian+$collectewmp->sks_pengabdian+$collectewmp->sks_tugas;
+
+            $avg = $total/2;
+            $collectewmp->total = $total;
+            $collectewmp->avg = $avg;
+            $hitunganewmp->push($collectewmp);
+            $index++;
+        }
+
+
+        return response()->json([
+            'success' => true,
+            'ewmp' => $hitunganewmp,
+            'insd' => $insideCounter,
+            'luar' => $index,
+        ]);
+    }
+
+    public function listtahun(Request $request)
+    {
+        //
+        $allewmps = Ewmp::all()->groupBy('tahun_akademik');
+        $arrTahun = array();
+        foreach ($allewmps as $key => $ewmp) {
+            $arrTahun[] = $ewmp[0]->tahun_akademik;
+        }
+        return response()->json([
+            'success' => true,
+            'tahunewmps' => $arrTahun,
+        ]);
     }
 }

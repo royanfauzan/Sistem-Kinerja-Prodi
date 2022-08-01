@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function FooterUtama() {
     return (
-        <footer className="footer pt-3  ">
+        <footer className="footer pt-3">
         <div className="container-fluid">
           <div className="row align-items-center justify-content-lg-between">
             <div className="col-lg-6 mb-lg-0 mb-4">

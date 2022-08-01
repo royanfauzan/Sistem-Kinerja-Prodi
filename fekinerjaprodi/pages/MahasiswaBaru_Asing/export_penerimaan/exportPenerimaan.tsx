@@ -7,15 +7,16 @@ import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
 import Link from "next/link";
+import TableToExcel from "@linways/table-to-excel";
 
 export default function penerimaanMahasiswa() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [stadmin, setStadmin] = useState(false);
-  const [tampilPenerimaan, settampilPenerimaan] = useState([]);
+  const [stadmin, setStadmin] = useState(false)
+  const [tampilPenerimaan, settampilPenerimaan] = useState([])
 
   const pengambilData = async () => {
-    const lgToken = localStorage.getItem("token");
+    const lgToken = localStorage.getItem("token")
 
     axios({
       method: "get",
@@ -23,24 +24,24 @@ export default function penerimaanMahasiswa() {
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { Seleksi } = response.data;
-        settampilPenerimaan(Seleksi);
+        console.log(response)
+        console.log("Sukses")
+        const { Seleksi } = response.data
+        settampilPenerimaan(Seleksi)
 
-        console.log(Seleksi);
+        console.log(Seleksi)
       })
       .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
-  };
+        console.log("gagal")
+        console.log(err.response)
+      })
+  }
 
   useEffect(() => {
     // cek token, kalo gaada disuruh login
-    const lgToken = localStorage.getItem("token");
+    const lgToken = localStorage.getItem("token")
     if (!lgToken) {
-      router.push("/login");
+      router.push("/login")
     }
 
     // perjalanan validasi token
@@ -50,23 +51,32 @@ export default function penerimaanMahasiswa() {
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { level_akses } = response.data.user;
+        console.log(response)
+        console.log("Sukses")
+        const { level_akses } = response.data.user
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
-          return router.push("/");
+          return router.push("/")
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-        setStadmin(true);
-        pengambilData();
+        setStadmin(true)
+        pengambilData()
       })
       .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-        return router.push("/");
-      });
-  }, []);
+        console.log("gagal")
+        console.log(err.response)
+        return router.push("/")
+      })
+  }, [])
+
+  const exportExcel = () => {
+    TableToExcel.convert(document.getElementById("table1"), {
+      name: "table1.xlsx",
+      sheet: {
+        name: "Sheet 1"
+      }
+    });
+  };
 
   const deletePenerimaan = (id) => {
     axios({
@@ -74,13 +84,13 @@ export default function penerimaanMahasiswa() {
       url: `http://127.0.0.1:8000/api/delete_penerimaan_mahasiswa/${id}`,
     })
       .then(function (response) {
-        router.reload();
+        router.reload()
       })
       .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
-  };
+        console.log("gagal")
+        console.log(err.response)
+      })
+  }
 
   return (
     <>
@@ -90,6 +100,7 @@ export default function penerimaanMahasiswa() {
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
+              <button onClick={() => exportExcel()} className="btn btn-sm btn-danger border-0 shadow-sm mb-3 me-3">HAPUS</button>
                 <style jsx>{`
                   table,
                   td,
@@ -103,7 +114,7 @@ export default function penerimaanMahasiswa() {
                     border-collapse: collapse;
                   }
                 `}</style>
-                <table>
+                <table id="table1">
                   <thead>
                     <tr>
                       <th rowspan="2">Tahun Akademik</th>
@@ -138,9 +149,9 @@ export default function penerimaanMahasiswa() {
                             </div>
                           </td>
                           <td className="align-middle ">
-                          <h6 className="mb-0 text-sm">
+                            <h6 className="mb-0 text-sm">
                               {tPenerimaan.Pendaftaran}
-                           </h6>
+                            </h6>
                           </td>
 
                           <td className="align-middle text-center text-sm">
@@ -180,7 +191,7 @@ export default function penerimaanMahasiswa() {
                             </span>
                           </td>
                         </tr>
-                      );
+                      )
                     })}
                   </tbody>
                 </table>
@@ -191,5 +202,5 @@ export default function penerimaanMahasiswa() {
         </LayoutForm>
       )}
     </>
-  );
+  )
 }

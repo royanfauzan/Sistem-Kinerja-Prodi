@@ -105,7 +105,37 @@ class KepuasanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $kepuasan = KP_lulus::where('id', $id)->first();
+        $datakepuasan = $request->only('tahun', 'jmlh_lulusan', 'jmlh_terlacak', 'prodi_id');
+
+        //valid credential
+        $validator = Validator::make($datakepuasan, [
+            'tahun' => 'required',
+            'jmlh_lulusan' => 'required',
+            'jmlh_terlacak' => 'required',
+            'prodi_id' => 'required'
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 200);
+        }
+
+        $kepuasan->tahun = $request->tahun;
+        $kepuasan->jmlh_lulusan = $request->jmlh_lulusan;
+        $kepuasan->jmlh_terlacak = $request->jmlh_terlacak;
+        $kepuasan->prodi_id = $request->prodi_id;
+        $kepuasan->save();
+
+        //Token created, return with success response and jwt token
+        return response()->json([
+            'success' => true,
+            'tahun' => $request->tahun,
+            'jmlh_lulusan' => $request->jmlh_lulusan,
+            'jmlh_terlacak' => $request->jmlh_terlacak,
+            'prodi_id' => $request->prodi_id,
+            'all_prodi' => KP_lulus::all()
+        ]);
     }
 
     /**

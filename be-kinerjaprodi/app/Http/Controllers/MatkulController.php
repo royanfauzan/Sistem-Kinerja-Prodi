@@ -145,6 +145,18 @@ class MatkulController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $matkul = Matkul::find($id);
+        $matkul->delete();
+
+        if (!$matkul) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

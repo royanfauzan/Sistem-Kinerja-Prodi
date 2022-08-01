@@ -111,7 +111,7 @@ export default function inputmatkul() {
         toast.success("Input Sukses!");
         // console.log(token);
         console.log(all_matkul);
-        router.push("/");
+        router.push("../matkul/daftarmatkul");
       })
       .catch(function (error) {
         //handle error

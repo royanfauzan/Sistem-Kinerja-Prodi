@@ -193,6 +193,18 @@ class ProdukMHSController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $produkmhs = Produk_MHS::find($id);
+        $produkmhs->delete();
+
+        if (!$produkmhs) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

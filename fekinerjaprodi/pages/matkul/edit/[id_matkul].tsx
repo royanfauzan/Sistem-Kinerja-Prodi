@@ -122,7 +122,7 @@ export default function update_datamatkul(props) {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(response.data);
-        // router.push("/");
+        router.push("../../matkul/daftarmatkul");
       })
       .catch(function (error) {
         //handle error

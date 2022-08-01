@@ -211,6 +211,7 @@ Route::get('tampil_Matkul/{id}', [MatkulController::class, 'show']);
 Route::get('Matkul', [MatkulController::class, 'index']);
 Route::post('Matkul', [MatkulController::class, 'store']);
 Route::put('Matkul_Update/{id}', [MatkulController::class, 'update']);
+Route::post('Matkul_Delete/{id}', [MatkulController::class, 'destroy']);
 
 //route kepuasan mahasiswa
 Route::get('tampil_KepuasanMHS/{id}', [KepuasanMHSController::class, 'show']);
@@ -223,18 +224,21 @@ Route::get('tampil_ProdukMHS/{id}', [ProdukMHSController::class, 'show']);
 Route::get('ProdukMHS', [ProdukMHSController::class, 'index']);
 Route::post('ProdukMHS', [ProdukMHSController::class, 'store']);
 Route::put('ProdukMHS_Update/{id}', [ProdukMHSController::class, 'update']);
+Route::post('ProdukMHS_Delete/{id}', [ProdukMHSController::class, 'destroy']);
 
 //route data capaian kurikulum
 Route::get('tampil_CapaianKurikulum/{id}', [CapKurikulumController::class, 'show']);
 Route::get('CapaianKurikulum', [CapKurikulumController::class, 'index']);
 Route::post('CapaianKurikulum', [CapKurikulumController::class, 'store']);
 Route::put('CapaianKurikulum_Update/{id}', [CapKurikulumController::class, 'update']);
+Route::post('CapaianKurikulum_Delete/{id}', [CapKurikulumController::class, 'destroy']);
 
 //route data PKM
 Route::get('tampil_PKM/{id}', [PKMController::class, 'show']);
 Route::get('PKM', [PKMController::class, 'index']);
 Route::post('PKM', [PKMController::class, 'store']);
 Route::put('PKM_Update/{id}', [PKMController::class, 'update']);
+Route::post('PKM_Delete/{id}', [PKMController::class, 'destroy']);
 
 //route penelitian
 Route::get('tampil_Penelitian/{id}', [PenelitianController::class, 'show']);
@@ -246,4 +250,6 @@ Route::put('Penelitian_Update/{id}', [PenelitianController::class, 'update']);
 Route::get('tampil_Integrasi/{id}', [IntegrasiController::class, 'show']);
 Route::get('Integrasi', [IntegrasiController::class, 'index']);
 Route::post('Integrasi', [IntegrasiController::class, 'store']);
-Route::put('Integrasi/{id}', [IntegrasiController::class, 'update']);
+Route::put('Integrasi_Update/{id}', [IntegrasiController::class, 'update']);
+Route::post('Integrasi_Delete/{id}', [IntegrasiController::class, 'destroy']);
+

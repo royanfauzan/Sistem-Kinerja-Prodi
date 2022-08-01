@@ -113,7 +113,7 @@ export default function inputpkm() {
         toast.success("Input Sukses!");
         // console.log(token);
         console.log(all_mhs);
-        router.push("/");
+        router.push("../../PkM/daftarpkm");
       })
       .catch(function (error) {
         //handle error

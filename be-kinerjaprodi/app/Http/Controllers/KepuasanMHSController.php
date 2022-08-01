@@ -290,6 +290,18 @@ class KepuasanMHSController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $kepuasan_mhs = Kepuasan_MHS::find($id);
+        $kepuasan_mhs->delete();
+
+        if (!$kepuasan_mhs) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

@@ -190,6 +190,18 @@ class PKMController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $pkm = PKM::find($id);
+        $pkm->delete();
+
+        if (!$pkm) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

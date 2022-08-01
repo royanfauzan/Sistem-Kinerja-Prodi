@@ -198,7 +198,7 @@ export default function inputintegrasi() {
         toast.success("Input Sukses!");
         // console.log(token);
         console.log(all_integrasi);
-        router.push("/");
+        router.push("../integrasi/daftarintegrasi");
       })
       .catch(function (error) {
         //handle error

@@ -107,7 +107,7 @@ export default function inputmhs() {
         toast.success("Input Sukses!");
         // console.log(token);
         console.log(all_mhs);
-        router.push("/");
+        router.push("../produkMHS/daftarprodukmhs");
       })
       .catch(function (error) {
         //handle error

@@ -126,7 +126,7 @@ export default function update_dataprodukmhs(props) {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(response.data);
-        // router.push("/");
+        router.push("../../produkMHS/daftarprodukmhs");
       })
       .catch(function (error) {
         //handle error

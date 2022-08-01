@@ -151,7 +151,7 @@ export default function update_datacapkurikulum(props) {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(response.data);
-        // router.push("/");
+        router.push("../../capkurikulum/daftarkurikulum");
       })
       .catch(function (error) {
         //handle error

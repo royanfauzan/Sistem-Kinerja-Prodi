@@ -64,23 +64,27 @@ Route::post('login', [ApiController::class, 'authenticate']);
 
 // Kepuasan lulusan
 Route::get('kepuasan', [KepuasanController::class, 'index']);
-Route::get('kepuasan', [KepuasanController::class, 'index']);
 Route::post('kepuasan', [KepuasanController::class, 'store']);
+Route::put('update_kepuasan/{id}', [KepuasanController::class, 'update']);
 
 // Tempat kerja lulusan
 Route::get('tempat', [TempatController::class, 'index']);
 Route::post('tempat', [TempatController::class, 'store']);
-Route::put('tempat/{id}', [TempatController::class, 'update']);
+Route::put('update_tempat/{id}', [TempatController::class, 'update']);
+Route::get('show_tempat/{id}', [TempatController::class, 'show']);
 
 // IPK
 Route::get('ipk', [IpkController::class, 'index']);
 Route::post('ipk', [IpkController::class, 'store']);
-Route::put('ipk/{id}', [IpkController::class, 'update']);
+Route::put('update_ipk/{id}', [IpkController::class, 'update']);
+Route::get('show_ipk/{id}', [IpkController::class, 'show']);
 
 //Prestasi
 Route::get('prestasi', [PrestasiController::class, 'index']);
 Route::post('prestasi', [PrestasiController::class, 'store']);
-Route::put('prestasi/{id}', [PrestasiController::class, 'update']);
+Route::put('edit_prestasi/{id}', [PrestasiController::class, 'update']);
+Route::get('show_prestasi/{id}', [PrestasiController::class, 'show']);
+Route::post('delete_prestasi/{id}', [PrestasiController::class, 'destroy']);
 
 //Kesesuaian bidang kerja
 Route::post('kesesuaian', [KesesuaianController::class, 'store']);
@@ -130,6 +134,8 @@ Route::post('update_mitra/{id}', [MitraController::class, 'editmitra']);
 Route::post('delete_mitra/{id}', [MitraController::class, 'deletemitra']);
 
 Route::get('read_kjs', [KerjasamaController::class, 'tampilkerjasama']);
+Route::get('read_bidang_kjs/{bidang}', [KerjasamaController::class, 'tampilkerjasamabidang']);
+Route::get('read_kjs/{search}', [KerjasamaController::class, 'searchkerjasama']);
 Route::post('create_kjs', [KerjasamaController::class, 'insertkerjasama']);
 Route::get('show_kjs/{id}', [KerjasamaController::class, 'tampil_edit_kerjasama']);
 Route::post('update_kjs/{id}', [KerjasamaController::class, 'editkerjasama']);
@@ -139,16 +145,22 @@ Route::post('delete_kjs/{id}', [KerjasamaController::class, 'delete_kjs']);
 Route::post('create_penggunaan_dana', [PenggunaanDanaController::class, 'insert_penggunaan_dana']);
 Route::get('read_penggunaan_dana', [PenggunaanDanaController::class, 'tampil_penggunaan_dana']);
 Route::post('update_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'edit_penggunaan_dana']);
+Route::get('export_penggunaan_dana/{tahun}', [PenggunaanDanaController::class, 'export_penggunaan_dana']);
+Route::get('show_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'tampil_edit_dana']);
 Route::post('delete_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'delete_penggunaan_dana']);
 
 Route::post('create_mahasiswa_asing', [MahasiswaAsingController::class, 'insert_mahasiswa_asing']);
 Route::get('read_mahasiswa_asing', [MahasiswaAsingController::class, 'tampil_mahasiswa_asing']);
+Route::get('search_mahasiswa_asing/{search}', [MahasiswaAsingController::class, 'search_mahasiswa_asing']);
+Route::get('export_mahasiswa_asing/{tahun}', [MahasiswaAsingController::class, 'tampilexport_mahasiswa_asing']);
+Route::get('show_mahasiswa_asing/{id}', [MahasiswaAsingController::class, 'tampil_edit_mahasiswa_asing']);
 Route::post('update_mahasiswa_asing/{id}', [MahasiswaAsingController::class, 'edit_mahasiswa_asing']);
 Route::post('delete_mahasiswa_asing/{id}', [MahasiswaAsingController::class, 'delete_mahasiswa_asing']);
 
 
 Route::post('create_penerimaan_mahasiswa', [PenerimaanController::class, 'insert_penerimaan_mahasiswa']);
 Route::get('read_penerimaan_mahasiswa', [PenerimaanController::class, 'tampilmahasiswa']);
+Route::get('search_penerimaan_mahasiswa/{search}', [PenerimaanController::class, 'searchmahasiswa']);
 Route::get('show_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'tampil_edit_penerimaan']);
 Route::post('update_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'edit_penerimaan_mahasiswa']);
 Route::post('delete_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'delete_penerimaan_mahasiswa']);
@@ -229,5 +241,4 @@ Route::put('Penelitian_Update/{id}', [PenelitianController::class, 'update']);
 Route::get('tampil_Integrasi/{id}', [IntegrasiController::class, 'show']);
 Route::get('Integrasi', [IntegrasiController::class, 'index']);
 Route::post('Integrasi', [IntegrasiController::class, 'store']);
-Route::put('Integrasi_Update/{id}', [IntegrasiController::class, 'update']);
-
+Route::put('Integrasi/{id}', [IntegrasiController::class, 'update']);

@@ -2,20 +2,38 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
-import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutForm";
-import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
+import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
+import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
+import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
 
+// Untuk Ngambil Data Berdasarkan ID
+export async function getServerSideProps(context) {
 
-export default function inputprestasi() {
+    //http request
+    const req  = await axios.get(`http://127.0.0.1:8000/api/show_prestasi/${context.query.id_prestasi}`)
+    const res  = await req.data.all_prestasi
+  
+    return {
+      props: {
+          prestasi: res // <-- assign response
+      },
+    }
+  }
+
+export default function editprestasi(props) {
   const router = useRouter();
+  const {prestasi}=props;
+  const [dataPrestasi, setPrestasi] = useState(prestasi);
+ 
+console.log(prestasi);
 
-  const [userDosens, setuserDosens] = useState([]);
-  const [fileBukti, setfileBuktis] = useState<File>([]);
-
-  // state pake test user
+   // State Select
   const [stadmin, setStadmin] = useState(false);
+  const [dataPrestasis, setPrestasis] = useState([]);
+  const [selectTingkat, setselectTingkat] = useState(prestasi.tingkat);
+  const [selectKategori, setselectKategori] = useState(prestasi.kategori);
+  const [selectPrestasi, setSelectPrestasi] = useState(prestasi.prodi_id);
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () =>{
@@ -26,15 +44,16 @@ export default function inputprestasi() {
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { Prodi } = response.data;
-        setuserDosens(Prodi);
-        console.log(Prodi);
+        const { Prodi} = response.data;
+        setPrestasis(Prodi);
+        console.log(dataPrestasis);
       })
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
       });
   }
+
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
@@ -44,7 +63,7 @@ export default function inputprestasi() {
     if(!lgToken){
       router.push('/login')
     }
-
+ 
     // perjalanan validasi token 
     axios({
       method: "get",
@@ -62,6 +81,7 @@ export default function inputprestasi() {
             // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
             setStadmin(true);
             pengambilData();
+           
     })
     .catch(function (err) {
         console.log('gagal');
@@ -70,8 +90,19 @@ export default function inputprestasi() {
     })
   },[]);
 
-  const handleChangeFile  = (e) => {
-    setfileBuktis(e.target.files[0]);
+  const handleChangePrestasi = (e) => {
+    setSelectPrestasi(e.target.value);
+   
+  };
+
+  const handleChangeKategori = (e) => {
+    setselectKategori(e.target.value);
+   
+  };
+
+  const handleChangeTingkat = (e) => {
+    setselectTingkat(e.target.value);
+   
   };
 
   const submitForm = async (event) => {
@@ -88,11 +119,9 @@ export default function inputprestasi() {
     formData.append("prestasi_dicapai", event.target.dicapai.value);
     formData.append("kategori", event.target.kategori.value);
 
-    console.log(formData);
-
     axios({
       method: "post",
-      url: "http://127.0.0.1:8000/api/prestasi",
+      url: `http://127.0.0.1:8000/api/edit_prestasi/${dataPrestasi.id}` + `?_method=PUT`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -100,15 +129,16 @@ export default function inputprestasi() {
       },
     })
       .then(function (response) {
-        const { all_prestasi } = response.data;
+        const { profil } = response.data;
         //handle success
         toast.dismiss();
         toast.success("Login Sugses!!");
         // console.log(token);
-        console.log(all_prestasi);
-        router.push("../prestasi/daftarprestasi");
+        console.log(profil);
+        router.push("../../prestasi/daftarprestasi");
+        console.log(response.data);
       })
-      .catch(function (error) {
+      .catch(function (error) {s
         //handle error
         toast.dismiss();
         if (error.response.status == 400) {
@@ -154,11 +184,13 @@ export default function inputprestasi() {
                           <select
                             className="form-select"
                             aria-label="Default select example"
-                            defaultValue="0"
+
                             id="prodi"
+                            value={selectPrestasi}
+                            onChange={handleChangePrestasi}
                           >
                             <option>Pilih Prodi</option>
-                            {userDosens.map((userprodi) => {
+                            {dataPrestasis.map((userprodi) => {
                                {
                                 return (
                                   <option
@@ -181,8 +213,9 @@ export default function inputprestasi() {
                           <input
                             className="form-control"
                             type="text"
-                            placeholder="Nama Kegiatan"
+                            placeholder="Tahun"
                             id="nm_kegiatan"
+                            defaultValue={dataPrestasi.nm_kegiatan}
                             required
                           />
                         </div>
@@ -195,13 +228,14 @@ export default function inputprestasi() {
                           <input
                             className="form-control"
                             type="text"
-                            placeholder="Tahun"
+                            placeholder="Jumlah Lulusan"
                             id="tahun"
+                            defaultValue={dataPrestasi.tahun}
                             required
                           />
                         </div>
                       </div>
-
+                      
                       <div className="col-md-6">
                         <div className="form-group">
                           <label htmlFor="tingkat" className="form-control-label">
@@ -212,6 +246,9 @@ export default function inputprestasi() {
                             aria-label="Default select example"
                             defaultValue="0"
                             id="tingkat"
+                            value={selectTingkat}
+                            onChange={handleChangeTingkat}
+                            required
                           >
                             <option >Tingkat Prestasi</option>
                             <option value="Lokal"> Lokal</option>
@@ -230,8 +267,9 @@ export default function inputprestasi() {
                           <input
                             className="form-control"
                             type="text"
-                            placeholder="Prestasi Dicapai"
+                            placeholder="Jumlah Terlacak"
                             id="dicapai"
+                            defaultValue={dataPrestasi.prestasi_dicapai}
                             required
                           />
                         </div>
@@ -247,6 +285,9 @@ export default function inputprestasi() {
                             aria-label="Default select example"
                             defaultValue="0"
                             id="kategori"
+                            value={selectKategori}
+                            onChange={handleChangeKategori}
+                            required
                           >
                             <option >Pilih Kategori</option>
                             <option value="Akademik"> Akademik</option>
@@ -255,7 +296,6 @@ export default function inputprestasi() {
                           </select>
                         </div>
                       </div>
-
                     </div>
                   </div>
                 </div>

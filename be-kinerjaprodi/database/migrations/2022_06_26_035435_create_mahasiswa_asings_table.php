@@ -16,7 +16,10 @@ class CreateMahasiswaAsingsTable extends Migration
         Schema::create('mahasiswa_asings', function (Blueprint $table) {
             $table->id();
             $table->string('Tahun_Akademik');
+<<<<<<< HEAD
             $table->string('Program_Studi');
+=======
+>>>>>>> 616928e (validasi)
             $table->string('Mahasiswa_Aktif');
             $table->string('Mahasiswa_Aktif_Fulltime');
             $table->string('Mahasiswa_Aktif_Parttime');

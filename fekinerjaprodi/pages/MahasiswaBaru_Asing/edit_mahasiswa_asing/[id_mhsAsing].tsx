@@ -2,20 +2,35 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
-import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutForm";
-import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
+import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
+import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
+import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
 
-interface Prodi {
-  nama_prodi: string;
+// Untuk Ngambil Data Berdasarkan ID
+export async function getServerSideProps(context) {
+  //http request
+  const req = await axios.get(
+    `http://127.0.0.1:8000/api/show_mahasiswa_asing/${context.query.id_mhsAsing}`
+  );
+  const res = await req.data.tampil_mahasiswa_asing;
+
+  return {
+    props: {
+      mahasiswaAsing: res, // <-- assign response
+    },
+  };
 }
 
-export default function input_mahasiswa_asing() {
+export default function editMahasiswaAsing(props) {
   const router = useRouter();
-
-  const [dataProdis, setdataProdi] = useState<Prodi[]>([]);
-  const [dataError, setError] = useState([]);
+  const { mahasiswaAsing } = props;
+  const [dataMahasiswaAsing, setdataMahasiswaAsing] = useState(mahasiswaAsing);
+  console.log(dataMahasiswaAsing);
+  const [dataProdi, setdataProdi] = useState([]);
+  const [selectProdi, setSelectProdi] = useState(
+    mahasiswaAsing.Program_Studi_Prodi_Id
+  );
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -31,14 +46,13 @@ export default function input_mahasiswa_asing() {
         console.log("Sukses");
         const { Prodi } = response.data;
         setdataProdi(Prodi);
-        console.log(dataProdis);
+        console.log(dataProdi);
       })
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
       });
   };
-
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
   useEffect(() => {
@@ -73,6 +87,10 @@ export default function input_mahasiswa_asing() {
       });
   }, []);
 
+  const handleChangeProdi = (e) => {
+    setSelectProdi(e.target.value);
+  };
+
   const submitForm = async (event) => {
     event.preventDefault();
 
@@ -80,19 +98,18 @@ export default function input_mahasiswa_asing() {
     const lgToken = localStorage.getItem("token");
 
     let formData = new FormData();
-    formData.append("namamitra", event.target.namamitra.value);
-    formData.append("alamat", event.target.alamat.value);
-    formData.append("no_telepon", event.target.no_telepon.value);
-    formData.append("nama_cp", event.target.nama_cp.value);
-    formData.append("no_telp_cp", event.target.no_telp_cp.value);
-    formData.append("email_cp", event.target.email_cp.value);
-    formData.append("bidang", event.target.bidang.value);
+    formData.append("Tahun_Akademik", event.target.tahun_akademik.value);
+    formData.append("Program_Studi", event.target.mahasiswa_aktif.value);
+    formData.append("Mahasiswa_Aktif_Fulltime",event.target.mahasiswa_fulltime.value);
+    formData.append("Mahasiswa_Aktif", event.target.mahasiswa_aktif.value);
+    formData.append("Mahasiswa_Aktif_Parttime",event.target.mahasiswa_parttime.value );
+    formData.append("Program_Studi_Prodi_Id", event.target.prodi.value);
 
     console.log(formData);
 
     axios({
       method: "post",
-      url: "http://127.0.0.1:8000/api/created",
+      url: `http://127.0.0.1:8000/api/update_mahasiswa_asing/${dataMahasiswaAsing.id}`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -105,14 +122,20 @@ export default function input_mahasiswa_asing() {
         toast.dismiss();
         toast.success("Login Sugses!!");
         // console.log(token);
-        console.log(response.data);
-        // router.push("/");
+        console.log(profil);
+        router.push("/");
       })
       .catch(function (error) {
         //handle error
+        toast.dismiss();
+        if (error.response.status == 400) {
+          toast.error("Gagal Menyimpan Data!!");
+        } else {
+          toast.error("Gagal Menyimpan Data");
+        }
 
-        setError(error.response.error);
-        console.log(dataError);
+        console.log("tidak success");
+        console.log(error.response);
       });
   };
 
@@ -128,7 +151,7 @@ export default function input_mahasiswa_asing() {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Input Data Mitra</p>
+                        <p className="mb-0">Input Data Mahasiswa Asing</p>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -138,142 +161,111 @@ export default function input_mahasiswa_asing() {
                       </div>
                     </div>
                     <div className="card-body">
-                      <p className="text-uppercase text-sm"> MITRA </p>
+                      <p className="text-uppercase text-sm"> Mahasiswa Asing</p>
                       <div className="row">
-                        <div className="col-md-12">
+                        <div className="col-md-6">
                           <div className="form-group">
                             <label
-                              htmlFor="namamitra"
+                              htmlFor="prodi"
                               className="form-control-label"
                             >
-                              Nama Mitra
+                              Nama Prodi
                             </label>
-                            <input
-                              className=
-                                "form-control" 
-                               
-                              
-                              type="text"
-                              placeholder=" Alamat"
-                              id="namamitra"
-                            />
-                          
-                          </div>
-                        </div>
-
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label
-                              htmlFor="alamat"
-                              className="form-control-label"
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={selectProdi}
+                              onChange={handleChangeProdi}
+                              id="prodi"
                             >
-                              Alamat
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Alamat Mitra"
-                              id="alamat"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label
-                              htmlFor="no_telepon"
-                              className="form-control-label"
-                            >
-                              Nomor Telepon Mitra
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Nomor Telepon Mitra"
-                              id="no_telepon"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label
-                              htmlFor="nama_cp"
-                              className="form-control-label"
-                            >
-                              Nama CP
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Nama CP"
-                              id="nama_cp"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label
-                              htmlFor="no_telp_cp"
-                              className="form-control-label"
-                            >
-                              Nomor Telepon CP
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Nomor Telepon CP"
-                              id="no_telp_cp"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label
-                              htmlFor="email_cp"
-                              className="form-control-label"
-                            >
-                              Email CP
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Email CP"
-                              id="email_cp"
-                            />
+                              <option>Pilih Prodi</option>
+                              {dataProdi.map((dataProdi) => {
+                                return (
+                                  <option
+                                    value={dataProdi.id}
+                                    key={dataProdi.id}
+                                  >
+                                    {dataProdi.nama_prodi}
+                                  </option>
+                                );
+                              })}
+                            </select>
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
-                              htmlFor="tingkat"
+                              htmlFor="tahun_akademik"
                               className="form-control-label"
                             >
-                              Bidang
+                              Tahun Akademik
                             </label>
-                            <select
-                              className="form-select"
-                              aria-label="Default select example"
-                              defaultValue="0"
-                              id="bidang"
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder=" Tahun Akademik"
+                              id="tahun_akademik"
+                              defaultValue={dataMahasiswaAsing.Tahun_Akademik}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-12">
+                          <div className="form-group">
+                            <label
+                              htmlFor="mahasiswa_aktif"
+                              className="form-control-label"
                             >
-                              <option>Bidang Kerjasama</option>
-                              <option value="Kerjasama Pendidikan">
-                                {" "}
-                                Kerjasama Pendidikan{" "}
-                              </option>
-                              <option value="Kerjasama Penelitian">
-                                {" "}
-                                Kerjasama Penelitian
-                              </option>
-                              <option value="Kerjasama pengabdian Masyarakat">
-                                {" "}
-                                Kerjasama pengabdian Masyarakat
-                              </option>
-                            </select>
+                              Mahasiswa Aktif
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Mahasiswa Aktif"
+                              id="mahasiswa_aktif"
+                              defaultValue={dataMahasiswaAsing.Mahasiswa_Aktif}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-12">
+                          <div className="form-group">
+                            <label
+                              htmlFor="mahasiswa_fulltime"
+                              className="form-control-label"
+                            >
+                              Mahasiswa Aktif Fulltime
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Mahasiswa Aktif Fulltime"
+                              id="mahasiswa_fulltime"
+                              defaultValue={dataMahasiswaAsing.Mahasiswa_Aktif_Fulltime}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-12">
+                          <div className="form-group">
+                            <label
+                              htmlFor="mahasiswa_parttime"
+                              className="form-control-label"
+                            >
+                              Mahasiswa Aktif Part Time
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Mahasiswa Aktif PartTime"
+                              id="mahasiswa_parttime"
+                              defaultValue={dataMahasiswaAsing.Mahasiswa_Aktif_Parttime}
+                              required
+                            />
                           </div>
                         </div>
                       </div>

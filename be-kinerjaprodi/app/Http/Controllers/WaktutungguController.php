@@ -15,7 +15,10 @@ class WaktutungguController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_waktu' => Waktutunggu::with('kepuasan')->get(),
+        ]);
     }
 
     /**
@@ -70,7 +73,7 @@ class WaktutungguController extends Controller
             'jmlh_tunggu_lls_6bln' => $request->jmlh_tunggu_lls_6bln,
             'jmlh_tunggu_lls_lebih_6bln' => $request->jmlh_tunggu_lls_lebih_6bln,
             'kepuasan_id' => $request->kepuasan_id,
-            'all_prodi' => Waktutunggu::all()
+            'all_waktu' => Waktutunggu::all()
         ]);
     }
 
@@ -82,7 +85,11 @@ class WaktutungguController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_waktu' => Waktutunggu::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -137,7 +144,7 @@ class WaktutungguController extends Controller
             'jmlh_tunggu_lls_6bln' => $request->jmlh_tunggu_lls_6bln,
             'jmlh_tunggu_lls_lebih_6bln' => $request->jmlh_tunggu_lls_lebih_6bln,
             'kepuasan_id' => $request->kepuasan_id,
-            'all_prodi' => Waktutunggu::all()
+            'all_waktu' => Waktutunggu::all()
         ]);
     }
 
@@ -149,6 +156,18 @@ class WaktutungguController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $waktutunggu = Waktutunggu::find($id);
+        $waktutunggu->delete();
+
+        if (!$waktutunggu) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

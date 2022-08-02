@@ -20,16 +20,16 @@ export default function daftarprestasi() {
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/prestasi",
+      url: "http://127.0.0.1:8000/api/masastudi",
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_prestasi } = response.data;
-        setprofilDosen(all_prestasi);
+        const { all_masastudi } = response.data;
+        setprofilDosen(all_masastudi);
 
-        console.log(all_prestasi);
+        console.log(all_masastudi);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -69,10 +69,10 @@ export default function daftarprestasi() {
       });
   }, []);
 
-  const deleteprestasi = (id) => {
+  const deletemasastudi = (id) => {
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/delete_prestasi/${id}`,
+      url: `http://127.0.0.1:8000/api/delete_masastudi/${id}`,
     })
       .then(function (response) {
         router.reload();
@@ -98,7 +98,7 @@ export default function daftarprestasi() {
                   <div className="row justify-content-between mb-4">
                     <div className="col-4">
                       <td className="align-middle">
-                        <Link href={`/prestasi/inputprestasi/`}>
+                        <Link href={`/masastudi/inputmasastudi/`}>
                           <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                             Tambah Data
                           </button>
@@ -107,7 +107,9 @@ export default function daftarprestasi() {
                     </div>
                     <div className="col-4 d-flex flex-row-reverse">
                       <td className="align-middle">
-                        <Link href={`/prestasi/exportprestasi/export_prestasi`}>
+                        <Link
+                          href={`/masastudi/exportmasastudi/export_masastudi`}
+                        >
                           <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-5 mt-3 mb-0">
                             Export Excel
                           </button>
@@ -125,26 +127,29 @@ export default function daftarprestasi() {
                     >
                       <thead>
                         <tr>
-                        <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
+                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             NO
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Prodi
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Nama Kegiatan
+                            Tahun Masuk
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Tahun
+                            Jumlah Mahasiswa
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Tingkat
+                            Lulus Tahun 1
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Prestasi Dicapai
+                            Lulus Tahun 2
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Kategori
+                            Lulus Tahun 3
+                          </th>
+                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
+                            Lulus Tahun 4
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2 pe-0"></th>
                         </tr>
@@ -154,7 +159,9 @@ export default function daftarprestasi() {
                           return (
                             <tr key={`kpsn` + kpsn.id}>
                               <td>
-                                <h6 className="mb-0 text-sm ps-2">{number + 1}</h6>
+                                <h6 className="mb-0 text-sm ps-2">
+                                  {number + 1}
+                                </h6>
                               </td>
 
                               <td className="align-middle  text-sm">
@@ -167,43 +174,49 @@ export default function daftarprestasi() {
 
                               <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.nm_kegiatan}
+                                  {kpsn.tahun_masuk}
                                 </p>
                               </td>
 
                               <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.tahun}
+                                  {kpsn.jmlh_mhs}
                                 </p>
                               </td>
 
                               <td className="align-middle ">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.tingkat}
+                                  {kpsn.lulus_thn_1}
                                 </p>
                               </td>
 
                               <td className="align-middle ">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.prestasi_dicapai}
+                                  {kpsn.lulus_thn_2}
                                 </p>
                               </td>
 
                               <td className="align-middle ">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.kategori}
+                                  {kpsn.lulus_thn_3}
+                                </p>
+                              </td>
+
+                              <td className="align-middle ">
+                                <p className="text-xs font-weight-bold mb-0">
+                                  {kpsn.lulus_thn_4}
                                 </p>
                               </td>
 
                               <td className="align-middle pe-0">
-                                <Link href={`/prestasi/edit/${kpsn.id}`}>
+                                <Link href={`/masastudi/edit/${kpsn.id}`}>
                                   <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                     Edit
                                   </button>
                                 </Link>
 
                                 <button
-                                  onClick={() => deleteprestasi(kpsn.id)}
+                                  onClick={() => deletemasastudi(kpsn.id)}
                                   className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
                                   Hapus

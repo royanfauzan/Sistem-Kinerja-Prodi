@@ -20,16 +20,16 @@ export default function daftarprestasi() {
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/prestasi",
+      url: "http://127.0.0.1:8000/api/seminar",
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_prestasi } = response.data;
-        setprofilDosen(all_prestasi);
+        const { all_seminar } = response.data;
+        setprofilDosen(all_seminar);
 
-        console.log(all_prestasi);
+        console.log(all_seminar);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -69,10 +69,10 @@ export default function daftarprestasi() {
       });
   }, []);
 
-  const deleteprestasi = (id) => {
+  const deleteseminar = (id) => {
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/delete_prestasi/${id}`,
+      url: `http://127.0.0.1:8000/api/delete_seminar/${id}`,
     })
       .then(function (response) {
         router.reload();
@@ -129,81 +129,70 @@ export default function daftarprestasi() {
                             NO
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Prodi
-                          </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Nama Kegiatan
+                            Mahasiswa
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Tahun
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Tingkat
+                            Judul Kegiatan
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Prestasi Dicapai
+                            Penyelenggara
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Kategori
+                            Kategori Seminar
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2 pe-0"></th>
                         </tr>
                       </thead>
                       <tbody>
-                        {profilDosen.map((kpsn, number) => {
+                        {profilDosen.map((smnr, number) => {
                           return (
-                            <tr key={`kpsn` + kpsn.id}>
+                            <tr key={`smnr` + smnr.id}>
                               <td>
                                 <h6 className="mb-0 text-sm ps-2">{number + 1}</h6>
                               </td>
 
                               <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.prodi.prodi +
-                                    " " +
-                                    kpsn.prodi.nama_prodi}
+                                  {smnr.mahasiswa.nama}
                                 </p>
                               </td>
 
                               <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.nm_kegiatan}
+                                  {smnr.tahun}
                                 </p>
                               </td>
 
                               <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.tahun}
+                                  {smnr.judul_kegiatan}
                                 </p>
                               </td>
 
                               <td className="align-middle ">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.tingkat}
+                                  {smnr.penyelenggara}
                                 </p>
                               </td>
 
                               <td className="align-middle ">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.prestasi_dicapai}
-                                </p>
-                              </td>
-
-                              <td className="align-middle ">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.kategori}
+                                  {smnr.kategori_seminar}
                                 </p>
                               </td>
 
                               <td className="align-middle pe-0">
-                                <Link href={`/prestasi/edit/${kpsn.id}`}>
+                                <Link href={`/seminar/edit/${smnr.id}`}>
                                   <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                     Edit
                                   </button>
                                 </Link>
 
                                 <button
-                                  onClick={() => deleteprestasi(kpsn.id)}
+                                  onClick={() => deleteseminar(smnr.id)}
                                   className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
                                   Hapus

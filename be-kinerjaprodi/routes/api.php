@@ -94,32 +94,51 @@ Route::get('show_kesesuaian/{id}', [KesesuaianController::class, 'show']);
 Route::post('delete_kesesuaian/{id}', [KesesuaianController::class, 'destroy']);
 
 //Masa Studi
+Route::get('masastudi', [MasastudiController::class, 'index']);
 Route::post('masastudi', [MasastudiController::class, 'store']);
-Route::put('masastudi/{id}', [MasastudiController::class, 'update']);
+Route::put('edit_masastudi/{id}', [MasastudiController::class, 'update']);
+Route::get('show_masastudi/{id}', [MasastudiController::class, 'show']);
+Route::post('delete_masastudi/{id}', [MasastudiController::class, 'destroy']);
 
 //Waktu tunggu
+Route::get('waktutunggu', [WaktutungguController::class, 'index']);
 Route::post('waktutunggu', [WaktutungguController::class, 'store']);
-Route::put('waktutunggu/{id}', [WaktutungguController::class, 'update']);
+Route::put('edit_waktutunggu/{id}', [WaktutungguController::class, 'update']);
+Route::get('show_waktutunggu/{id}', [WaktutungguController::class, 'show']);
+Route::post('delete_waktutunggu/{id}', [WaktutungguController::class, 'destroy']);
 
 //Luaran lainnya
+Route::get('luaran', [LuaranlainnyaController::class, 'index']);
 Route::post('luaran', [LuaranlainnyaController::class, 'store']);
-Route::put('luaran/{id}', [LuaranlainnyaController::class, 'update']);
+Route::put('edit_luaran/{id}', [LuaranlainnyaController::class, 'update']);
+Route::get('show_luaran/{id}', [LuaranlainnyaController::class, 'show']);
+Route::post('delete_luaran/{id}', [LuaranlainnyaController::class, 'destroy']);
+
 
 //Pagelaran MHS
+Route::get('pagelaran', [PagelaranController::class, 'index']);
 Route::post('pagelaran', [PagelaranController::class, 'store']);
-Route::put('pagelaran/{id}', [PagelaranController::class, 'update']);
+Route::put('edit_pagelaran/{id}', [PagelaranController::class, 'update']);
+Route::get('show_pagelaran/{id}', [PagelaranController::class, 'show']);
+Route::post('delete_pagelaran/{id}', [PagelaranController::class, 'destroy']);
 
 //Tulisan MHS
 Route::post('tulisan', [TulisanController::class, 'store']);
 Route::put('tulisan/{id}', [TulisanController::class, 'update']);
 
 //Seminar MHS
+Route::get('seminar', [SeminarController::class, 'index']);
 Route::post('seminar', [SeminarController::class, 'store']);
-Route::put('seminar/{id}', [SeminarController::class, 'update']);
+Route::put('edit_seminar/{id}', [SeminarController::class, 'update']);
+Route::post('delete_seminar/{id}', [SeminarController::class, 'destroy']);
+Route::get('show_seminar/{id}', [SeminarController::class, 'show']);
 
 //Buku
+Route::get('buku', [BukuController::class, 'index']);
 Route::post('buku', [BukuController::class, 'store']);
-Route::put('buku/{id}', [BukuController::class, 'update']);
+Route::put('edit_buku/{id}', [BukuController::class, 'update']);
+Route::post('delete_buku/{id}', [BukuController::class, 'destroy']);
+Route::get('show_buku/{id}', [BukuController::class, 'show']);
 
 //Produk
 Route::post('produk', [ProdukController::class, 'store']);

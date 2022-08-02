@@ -15,7 +15,10 @@ class SeminarController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_seminar' => Seminar::with('mahasiswa')->get(),
+        ]);
     }
 
     /**
@@ -36,7 +39,7 @@ class SeminarController extends Controller
      */
     public function store(Request $request)
     {
-        $dataseminar = $request->only('tahun', 'judul_kegiatan', 'penyelenggara', 'kategori_seminar', 'seminar_id');
+        $dataseminar = $request->only('tahun', 'judul_kegiatan', 'penyelenggara', 'kategori_seminar', 'mahasiswa_id');
 
         //valid credential
         $validator = Validator::make($dataseminar, [
@@ -44,7 +47,7 @@ class SeminarController extends Controller
             'judul_kegiatan' => 'required',
             'penyelenggara' => 'required',
             'kategori_seminar' => 'required',
-            'seminar_id' => 'required',
+            'mahasiswa_id' => 'required',
         ]);
 
         //Send failed response if request is not valid
@@ -58,7 +61,7 @@ class SeminarController extends Controller
                 'judul_kegiatan' => $request->judul_kegiatan,
                 'penyelenggara' => $request->penyelenggara,
                 'kategori_seminar' => $request->kategori_seminar,
-                'seminar_id' => $request->seminar_id
+                'mahasiswa_id' => $request->mahasiswa_id
             ]
         );
 
@@ -69,8 +72,8 @@ class SeminarController extends Controller
             'judul_kegiatan' => $request->judul_kegiatan,
             'penyelenggara' => $request->penyelenggara,
             'kategori_seminar' => $request->kategori_seminar,
-            'seminar_id' => $request->seminar_id,
-            'all_prodi' => Seminar::all()
+            'mahasiswa_id' => $request->mahasiswa_id,
+            'all_seminar' => Seminar::all()
         ]);
     }
 
@@ -82,7 +85,11 @@ class SeminarController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_seminar' => Seminar::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -106,7 +113,7 @@ class SeminarController extends Controller
     public function update(Request $request, $id)
     {
         $seminar = Seminar::where('id', $id)->first();
-        $dataseminar = $request->only('tahun', 'judul_kegiatan', 'penyelenggara', 'kategori_seminar', 'seminar_id');
+        $dataseminar = $request->only('tahun', 'judul_kegiatan', 'penyelenggara', 'kategori_seminar', 'mahasiswa_id');
 
         //valid credential
         $validator = Validator::make($dataseminar, [
@@ -114,7 +121,7 @@ class SeminarController extends Controller
             'judul_kegiatan' => 'required',
             'penyelenggara' => 'required',
             'kategori_seminar' => 'required',
-            'seminar_id' => 'required',
+            'mahasiswa_id' => 'required',
         ]);
 
         //Send failed response if request is not valid
@@ -126,7 +133,7 @@ class SeminarController extends Controller
         $seminar->judul_kegiatan = $request->judul_kegiatan;
         $seminar->penyelenggara = $request->penyelenggara;
         $seminar->kategori_seminar = $request->kategori_seminar;
-        $seminar->seminar_id = $request->seminar_id;
+        $seminar->mahasiswa_id = $request->mahasiswa_id;
         $seminar->save();
 
         //Token created, return with success response and jwt token
@@ -136,8 +143,8 @@ class SeminarController extends Controller
             'judul_kegiatan' => $request->judul_kegiatan,
             'penyelenggara' => $request->penyelenggara,
             'kategori_seminar' => $request->kategori_seminar,
-            'seminar_id' => $request->seminar_id,
-            'all_prodi' => Seminar::all()
+            'mahasiswa_id' => $request->mahasiswa_id,
+            'all_seminar' => Seminar::all()
         ]);
     }
 
@@ -149,6 +156,18 @@ class SeminarController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $seminar = Seminar::find($id);
+        $seminar->delete();
+
+        if (!$seminar) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

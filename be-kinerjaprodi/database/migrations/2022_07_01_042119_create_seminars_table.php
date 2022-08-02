@@ -19,7 +19,7 @@ class CreateSeminarsTable extends Migration
             $table->string('judul_kegiatan');
             $table->string('penyelenggara');
             $table->string('kategori_seminar');
-            $table->string('seminar_id');
+            $table->foreignId('mahasiswa_id');
             $table->timestamps();
         });
     }

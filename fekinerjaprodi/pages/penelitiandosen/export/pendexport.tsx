@@ -9,7 +9,7 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 import Link from "next/link";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
-export default function exportewmp() {
+export default function pendexport() {
   const router = useRouter();
 
   
@@ -98,6 +98,7 @@ export default function exportewmp() {
         console.log(err.response);
       });
   };
+
 
   return (
     <>

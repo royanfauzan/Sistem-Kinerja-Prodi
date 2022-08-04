@@ -40,6 +40,7 @@ use App\Http\Controllers\PengabdianController;
 use App\Http\Controllers\PenggunaanDanaController;
 use App\Http\Controllers\ProfildosenController;
 use App\Http\Controllers\RekognisiController;
+use App\Http\Controllers\SdmLaporanController;
 use App\Models\MahasiswaAsing;
 use App\Models\PenggunaanDana;
 use App\Models\Rekognisi;
@@ -180,8 +181,13 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
 // Dev area EWMP
 Route::get('ewmps', [EwmpController::class, 'index']);
-Route::get('laporanewmp/{tahun}', [EwmpController::class, 'exportewmp']);
+// Dev area Laporan
 Route::get('ewmplisttahun', [EwmpController::class, 'listtahun']);
+Route::get('laporanewmp/{tahun}', [SdmLaporanController::class, 'exportewmp']);
+Route::get('laporanpendos/{tahun}', [SdmLaporanController::class, 'exportpendos']);
+
+
+
 
 Route::group(['middleware' => ['adminonly']], function () {
     Route::get('testadmin', [ApiController::class, 'tester']);

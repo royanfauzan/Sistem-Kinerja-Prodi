@@ -15,7 +15,10 @@ class BukuController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_buku' => Buku::all()
+        ]);
     }
 
     /**
@@ -82,7 +85,7 @@ class BukuController extends Controller
                 'nomor' => $request->nomor,
                 'halaman' => $request->halaman,
                 'sitasi' => $request->sitasi,
-            'all_tabel' => Buku::all()
+            'all_buku' => Buku::all()
         ]);
     }
 
@@ -94,7 +97,11 @@ class BukuController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_buku' => Buku::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -161,7 +168,7 @@ class BukuController extends Controller
                 'nomor' => $request->nomor,
                 'halaman' => $request->halaman,
                 'sitasi' => $request->sitasi,
-            'all_tabel' => Buku::all()
+            'all_buku' => Buku::all()
         ]);
     }
 
@@ -173,6 +180,18 @@ class BukuController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $buku = Buku::find($id);
+        $buku->delete();
+
+        if (!$buku) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

@@ -9,7 +9,7 @@ import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 import Link from "next/link";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
-export default function daftarprestasi() {
+export default function daftarbidang() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
@@ -20,16 +20,16 @@ export default function daftarprestasi() {
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/prestasi",
+      url: "http://127.0.0.1:8000/api/waktutunggu",
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_prestasi } = response.data;
-        setprofilDosen(all_prestasi);
+        const { all_waktu } = response.data;
+        setprofilDosen(all_waktu);
 
-        console.log(all_prestasi);
+        console.log(all_waktu);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -69,10 +69,10 @@ export default function daftarprestasi() {
       });
   }, []);
 
-  const deleteprestasi = (id) => {
+  const deletewaktu = (id) => {
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/delete_prestasi/${id}`,
+      url: `http://127.0.0.1:8000/api/delete_waktutunggu/${id}`,
     })
       .then(function (response) {
         router.reload();
@@ -98,7 +98,7 @@ export default function daftarprestasi() {
                   <div className="row justify-content-between mb-4">
                     <div className="col-4">
                       <td className="align-middle">
-                        <Link href={`/prestasi/inputprestasi/`}>
+                        <Link href={`/waktutunggu/inputwaktu/`}>
                           <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                             Tambah Data
                           </button>
@@ -107,7 +107,7 @@ export default function daftarprestasi() {
                     </div>
                     <div className="col-4 d-flex flex-row-reverse">
                       <td className="align-middle">
-                        <Link href={`/prestasi/exportprestasi/export_prestasi`}>
+                        <Link href={`/waktutunggu/exportwaktu/export_waktu`}>
                           <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-5 mt-3 mb-0">
                             Export Excel
                           </button>
@@ -125,85 +125,76 @@ export default function daftarprestasi() {
                     >
                       <thead>
                         <tr>
-                        <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
+                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             NO
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Prodi
+                            Tahun Kepuasan Lulusan
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Nama Kegiatan
+                            Jumlah Lulusan <br /> Yang Dipesan
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Tahun
+                          Jumlah Tunggu Lulusan <br /> Selama 3 Bulan
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Tingkat
+                          Jumlah Tunggu Lulusan <br /> Selama 6 Bulan
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Prestasi Dicapai
-                          </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Kategori
+                          Jumlah Tunggu Lulusan <br /> Selama 6 Bulan Lebih
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2 pe-0"></th>
                         </tr>
                       </thead>
                       <tbody>
-                        {profilDosen.map((kpsn, number) => {
+                        {profilDosen.map((ksn, number) => {
                           return (
-                            <tr key={`kpsn` + kpsn.id}>
+                            <tr key={`ksn` + ksn.id}>
                               <td>
-                                <h6 className="mb-0 text-sm ps-2">{number + 1}</h6>
+                                <h6 className="mb-0 text-sm ps-2">
+                                  {number + 1}
+                                </h6>
                               </td>
 
                               <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.prodi.prodi +
-                                    " " +
-                                    kpsn.prodi.nama_prodi}
-                                </p>
-                              </td>
-
-                              <td className="align-middle  text-sm">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.nm_kegiatan}
+                                  {ksn.kepuasan.tahun}
                                 </p>
                               </td>
 
                               <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.tahun}
+                                  {ksn.jmlh_lls_dipesan}
+                                </p>
+                              </td>
+
+                              <td className="align-middle  text-sm">
+                                <p className="text-xs font-weight-bold mb-0">
+                                  {ksn.jmlh_tunggu_lls_3bln}
                                 </p>
                               </td>
 
                               <td className="align-middle ">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.tingkat}
+                                  {ksn.jmlh_tunggu_lls_6bln}
                                 </p>
                               </td>
 
                               <td className="align-middle ">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.prestasi_dicapai}
-                                </p>
-                              </td>
-
-                              <td className="align-middle ">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {kpsn.kategori}
+                                  {ksn.jmlh_tunggu_lls_lebih_6bln}
                                 </p>
                               </td>
 
                               <td className="align-middle pe-0">
-                                <Link href={`/prestasi/edit/${kpsn.id}`}>
+                                <Link href={`/waktutunggu/edit/${ksn.id}`}>
                                   <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                     Edit
                                   </button>
                                 </Link>
 
                                 <button
-                                  onClick={() => deleteprestasi(kpsn.id)}
+                                  onClick={() => deletewaktu(ksn.id)}
                                   className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
                                   Hapus

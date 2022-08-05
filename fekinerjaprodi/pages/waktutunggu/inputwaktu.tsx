@@ -2,58 +2,38 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
-import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
-import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
+import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
+import LayoutForm from "../../components/Organism/Layout/LayoutForm";
+import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 
-// Untuk Ngambil Data Berdasarkan ID
-export async function getServerSideProps(context) {
 
-    //http request
-    const req  = await axios.get(`http://127.0.0.1:8000/api/show_prestasi/${context.query.id_prestasi}`)
-    const res  = await req.data.all_prestasi
-  
-    return {
-      props: {
-          prestasi: res // <-- assign response
-      },
-    }
-  }
-
-export default function editprestasi(props) {
+export default function inputwaktu() {
   const router = useRouter();
-  const {prestasi}=props;
-  const [dataPrestasi, setPrestasi] = useState(prestasi);
- 
-console.log(prestasi);
 
-   // State Select
+  const [userDosens, setuserDosens] = useState([]);
+
+  // state pake test user
   const [stadmin, setStadmin] = useState(false);
-  const [dataPrestasis, setPrestasis] = useState([]);
-  const [selectTingkat, setselectTingkat] = useState(prestasi.tingkat);
-  const [selectKategori, setselectKategori] = useState(prestasi.kategori);
-  const [selectPrestasi, setSelectPrestasi] = useState(prestasi.prodi_id);
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () =>{
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/Prodi",
+      url: "http://127.0.0.1:8000/api/kepuasan",
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { Prodi} = response.data;
-        setPrestasis(Prodi);
-        console.log(dataPrestasis);
+        const { all_prodi } = response.data;
+        setuserDosens(all_prodi);
+        console.log(all_prodi);
       })
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
       });
   }
-
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
@@ -63,7 +43,7 @@ console.log(prestasi);
     if(!lgToken){
       router.push('/login')
     }
- 
+
     // perjalanan validasi token 
     axios({
       method: "get",
@@ -81,7 +61,6 @@ console.log(prestasi);
             // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
             setStadmin(true);
             pengambilData();
-           
     })
     .catch(function (err) {
         console.log('gagal');
@@ -90,20 +69,7 @@ console.log(prestasi);
     })
   },[]);
 
-  const handleChangePrestasi = (e) => {
-    setSelectPrestasi(e.target.value);
-   
-  };
 
-  const handleChangeKategori = (e) => {
-    setselectKategori(e.target.value);
-   
-  };
-
-  const handleChangeTingkat = (e) => {
-    setselectTingkat(e.target.value);
-   
-  };
 
   const submitForm = async (event) => {
     event.preventDefault();
@@ -112,16 +78,17 @@ console.log(prestasi);
     const lgToken = localStorage.getItem("token");
 
     let formData = new FormData();
-    formData.append("prodi_id", event.target.prodi.value);
-    formData.append("nm_kegiatan", event.target.nm_kegiatan.value);
-    formData.append("tahun", event.target.tahun.value);
-    formData.append("tingkat", event.target.tingkat.value);
-    formData.append("prestasi_dicapai", event.target.dicapai.value);
-    formData.append("kategori", event.target.kategori.value);
+    formData.append("kepuasan_id", event.target.kepuasan.value);
+    formData.append("jmlh_lls_dipesan", event.target.dipesan.value);
+    formData.append("jmlh_tunggu_lls_3bln", event.target.tiga.value);
+    formData.append("jmlh_tunggu_lls_6bln", event.target.enam.value);
+    formData.append("jmlh_tunggu_lls_lebih_6bln", event.target.enamlebih.value);
+
+    console.log(formData);
 
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/edit_prestasi/${dataPrestasi.id}` + `?_method=PUT`,
+      url: "http://127.0.0.1:8000/api/waktutunggu",
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -129,14 +96,13 @@ console.log(prestasi);
       },
     })
       .then(function (response) {
-        const { profil } = response.data;
+        const { all_waktu } = response.data;
         //handle success
         toast.dismiss();
         toast.success("Login Sugses!!");
         // console.log(token);
-        console.log(profil);
-        router.push("../../prestasi/daftarprestasi");
-        console.log(response.data);
+        console.log(all_waktu);
+        router.push("../waktutunggu/daftarwaktu");
       })
       .catch(function (error) {
         //handle error
@@ -178,26 +144,24 @@ console.log(prestasi);
                     <div className="row">
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="prodi" className="form-control-label">
-                            Prodi
+                          <label htmlFor="kepuasan" className="form-control-label">
+                            Tahun Kepuasan Lulusan
                           </label>
                           <select
                             className="form-select"
                             aria-label="Default select example"
-
-                            id="prodi"
-                            value={selectPrestasi}
-                            onChange={handleChangePrestasi}
+                            defaultValue="0"
+                            id="kepuasan"
                           >
-                            <option>Pilih Prodi</option>
-                            {dataPrestasis.map((userprodi) => {
+                            <option>Pilih Tahun Lulusan</option>
+                            {userDosens.map((userkepuasan) => {
                                {
                                 return (
                                   <option
-                                    value={userprodi.id}
-                                    key={userprodi.id}
+                                    value={userkepuasan.id}
+                                    key={userkepuasan.id}
                                   >
-                                    {userprodi.prodi + ` ` + userprodi.nama_prodi}
+                                    {userkepuasan.tahun}
                                   </option>
                                 );
                               }
@@ -207,69 +171,42 @@ console.log(prestasi);
                       </div>
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="nm_kegiatan" className="form-control-label">
-                            Nama Kegiatan
+                          <label htmlFor="dipesan" className="form-control-label">
+                            Jumlah Lulusan Dipesan
                           </label>
                           <input
                             className="form-control"
                             type="text"
-                            placeholder="Tahun"
-                            id="nm_kegiatan"
-                            defaultValue={dataPrestasi.nm_kegiatan}
+                            placeholder="Jumlah Lulusan Dipesan"
+                            id="dipesan"
                             required
                           />
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="tahun" className="form-control-label">
-                            Tahun
+                          <label htmlFor="tiga" className="form-control-label">
+                            Jumlah tunggu lulusan 3 bulan
                           </label>
                           <input
                             className="form-control"
                             type="text"
-                            placeholder="Jumlah Lulusan"
-                            id="tahun"
-                            defaultValue={dataPrestasi.tahun}
+                            placeholder="Jumlah tunggu lulusan 3 bulan"
+                            id="tiga"
                             required
                           />
                         </div>
                       </div>
-                      
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="tingkat" className="form-control-label">
-                            Tingkat
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="tingkat"
-                            value={selectTingkat}
-                            onChange={handleChangeTingkat}
-                            required
-                          >
-                            <option >Tingkat Prestasi</option>
-                            <option value="Lokal"> Lokal</option>
-                            <option value="Nasional"> Nasional</option>
-                            <option value="Internasional"> Internasional</option>
-                            
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="dicapai" className="form-control-label">
-                            Prestasi Dicapai
+                          <label htmlFor="enam" className="form-control-label">
+                          Jumlah tunggu lulusan 6 bulan
                           </label>
                           <input
                             className="form-control"
                             type="text"
-                            placeholder="Jumlah Terlacak"
-                            id="dicapai"
-                            defaultValue={dataPrestasi.prestasi_dicapai}
+                            placeholder="Jumlah tunggu lulusan 6 bulan"
+                            id="enam"
                             required
                           />
                         </div>
@@ -277,25 +214,19 @@ console.log(prestasi);
 
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="kategori" className="form-control-label">
-                          Kategori
+                          <label htmlFor="enamlebih" className="form-control-label">
+                          Jumlah tunggu lulusan lebih 6 bulan
                           </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="kategori"
-                            value={selectKategori}
-                            onChange={handleChangeKategori}
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Jumlah tunggu lulusan lebih 6 bulan"
+                            id="enamlebih"
                             required
-                          >
-                            <option >Pilih Kategori</option>
-                            <option value="Akademik"> Akademik</option>
-                            <option value="Non Akademik"> Non Akademik</option>
-                            
-                          </select>
+                          />
                         </div>
                       </div>
+
                     </div>
                   </div>
                 </div>

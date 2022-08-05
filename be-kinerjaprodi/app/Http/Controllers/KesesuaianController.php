@@ -151,7 +151,7 @@ class KesesuaianController extends Controller
      */
     public function destroy($id)
     {
-        $kesesuaian = KP_lulus::find($id);
+        $kesesuaian = Kasesuaian::find($id);
         $kesesuaian->delete();
 
         if (!$kesesuaian) {

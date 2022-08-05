@@ -15,7 +15,10 @@ class MasastudiController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_masastudi' => Masastudi::with('prodi')->get(),
+        ]);
     }
 
     /**
@@ -76,7 +79,7 @@ class MasastudiController extends Controller
             'lulus_thn_3' => $request->lulus_thn_3,
             'lulus_thn_4' => $request->lulus_thn_4,
             'prodi_id' => $request->prodi_id,
-            'all_prodi' => Masastudi::all()
+            'all_masastudi' => Masastudi::all()
         ]);
     }
 
@@ -88,7 +91,11 @@ class MasastudiController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_masastudi' => Masastudi::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -149,7 +156,7 @@ class MasastudiController extends Controller
             'lulus_thn_3' => $request->lulus_thn_3,
             'lulus_thn_4' => $request->lulus_thn_4,
             'prodi_id' => $request->prodi_id,
-            'all_prodi' => Masastudi::all()
+            'all_masastudi' => Masastudi::all()
         ]);
     }
 
@@ -161,6 +168,18 @@ class MasastudiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $masastudi = Masastudi::find($id);
+        $masastudi->delete();
+
+        if (!$masastudi) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

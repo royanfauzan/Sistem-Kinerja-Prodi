@@ -9,4 +9,8 @@ class Seminar extends Model
 {
     use HasFactory;
     protected $guarded = ["id"];
+    public function mahasiswa()
+    {
+        return $this->belongsTo(Mahasiswa::class,'mahasiswa_id','id');
+    }
 }

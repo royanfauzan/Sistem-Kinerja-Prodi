@@ -15,7 +15,10 @@ class LuaranlainnyaController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_luaran' => Luaranlainnya::all()
+        ]);
     }
 
     /**
@@ -67,7 +70,7 @@ class LuaranlainnyaController extends Controller
             'keterangan' => $request->keterangan,
             'tahun' => $request->tahun,
             'jenis_luaran' => $request->jenis_luaran,
-            'all_prodi' => Luaranlainnya::all()
+            'all_luaran' => Luaranlainnya::all()
         ]);
     }
 
@@ -79,7 +82,11 @@ class LuaranlainnyaController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_luaran' => Luaranlainnya::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -131,7 +138,7 @@ class LuaranlainnyaController extends Controller
             'keterangan' => $request->keterangan,
             'tahun' => $request->tahun,
             'jenis_luaran' => $request->jenis_luaran,
-            'all_prodi' => Luaranlainnya::all()
+            'all_luaran' => Luaranlainnya::all()
         ]);
     }
 
@@ -143,6 +150,18 @@ class LuaranlainnyaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $luaran = Luaranlainnya::find($id);
+        $luaran->delete();
+
+        if (!$luaran) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

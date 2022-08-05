@@ -210,6 +210,7 @@ class DatabaseSeeder extends Seeder
             'bidang'=>'Teknologi',
         ]);
 
+        // Sumber mandiri/pt
         Penelitian::create( 
             [
                 'tema_sesuai_roadmap'=> 'kelistrikan',
@@ -221,6 +222,107 @@ class DatabaseSeeder extends Seeder
                 'dana_dalam_negri' => 0, 
                 'sumber_luar_negri' => '', 
                 'dana_luar_negri' => 0,
+            ]
+        );
+
+        Penelitian::create( 
+            [
+                'tema_sesuai_roadmap'=> 'kelistrikan 2',
+                'judul' => 'Membuat pembangkit listrik 2', 
+                'tahun' => '2020', 
+                'sumber_dana_PT_mandiri' => 'mandiri', 
+                'dana_PT_Mandiri' => 500000, 
+                'sumber_dalam_negri' => '', 
+                'dana_dalam_negri' => 0, 
+                'sumber_luar_negri' => '', 
+                'dana_luar_negri' => 0,
+            ]
+        );
+
+        Penelitian::create( 
+            [
+                'tema_sesuai_roadmap'=> 'kelistrikan 3',
+                'judul' => 'Membuat pembangkit listrik 3', 
+                'tahun' => '2019', 
+                'sumber_dana_PT_mandiri' => 'mandiri', 
+                'dana_PT_Mandiri' => 500000, 
+                'sumber_dalam_negri' => '', 
+                'dana_dalam_negri' => 0, 
+                'sumber_luar_negri' => '', 
+                'dana_luar_negri' => 0,
+            ]
+        );
+
+
+        // Sumber dalam negri
+        Penelitian::create( 
+            [
+                'tema_sesuai_roadmap'=> 'keuangan',
+                'judul' => 'Membuat sistem bank', 
+                'tahun' => '2021', 
+                'sumber_dana_PT_mandiri' => '', 
+                'dana_PT_Mandiri' => 0, 
+                'sumber_dalam_negri' => 'Bank Bri', 
+                'dana_dalam_negri' => 10000000, 
+                'sumber_luar_negri' => '', 
+                'dana_luar_negri' => 0,
+            ]
+        );
+
+        Penelitian::create( 
+            [
+                'tema_sesuai_roadmap'=> 'keuangan 2',
+                'judul' => 'Membuat sistem bank 2', 
+                'tahun' => '2019', 
+                'sumber_dana_PT_mandiri' => '', 
+                'dana_PT_Mandiri' => 0, 
+                'sumber_dalam_negri' => 'Bank Bri', 
+                'dana_dalam_negri' => 10000000, 
+                'sumber_luar_negri' => '', 
+                'dana_luar_negri' => 0,
+            ]
+        );
+
+        // Sumber Luar negri
+        Penelitian::create( 
+            [
+                'tema_sesuai_roadmap'=> 'teknologi',
+                'judul' => 'Membuat sistem bank Dunia', 
+                'tahun' => '2021', 
+                'sumber_dana_PT_mandiri' => '', 
+                'dana_PT_Mandiri' => 0, 
+                'sumber_dalam_negri' => '', 
+                'dana_dalam_negri' => 0, 
+                'sumber_luar_negri' => 'Bank Dunia', 
+                'dana_luar_negri' => 10000000,
+            ]
+        );
+
+        Penelitian::create( 
+            [
+                'tema_sesuai_roadmap'=> 'teknologi 2',
+                'judul' => 'Membuat sistem bank Dunia 2', 
+                'tahun' => '2020', 
+                'sumber_dana_PT_mandiri' => '', 
+                'dana_PT_Mandiri' => 0, 
+                'sumber_dalam_negri' => '', 
+                'dana_dalam_negri' => 0, 
+                'sumber_luar_negri' => 'Bank Dunia', 
+                'dana_luar_negri' => 10000000,
+            ]
+        );
+
+        Penelitian::create( 
+            [
+                'tema_sesuai_roadmap'=> 'teknologi 3',
+                'judul' => 'Membuat sistem bank Dunia 3', 
+                'tahun' => '2019', 
+                'sumber_dana_PT_mandiri' => '', 
+                'dana_PT_Mandiri' => 0, 
+                'sumber_dalam_negri' => '', 
+                'dana_dalam_negri' => 0, 
+                'sumber_luar_negri' => 'Bank Dunia', 
+                'dana_luar_negri' => 10000000,
             ]
         );
 

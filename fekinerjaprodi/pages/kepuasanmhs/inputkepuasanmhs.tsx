@@ -27,9 +27,9 @@ export default function inputkepuasanmhs() {
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_prodi } = response.data;
-        setuserProdis(all_prodi);
-        console.log(all_prodi);
+        const { Prodi } = response.data;
+        setuserProdis(Prodi);
+        console.log(Prodi);
       })
       .catch(function (err) {
         console.log("gagal");

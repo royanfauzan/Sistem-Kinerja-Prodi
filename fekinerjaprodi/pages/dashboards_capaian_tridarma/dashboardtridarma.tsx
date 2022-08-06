@@ -79,59 +79,65 @@ export default function dashboardadmin() {
         <LayoutForm>
           <div className="container-fluid py-4">
             <div className="row">
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
+              <div className="col-4 mt-3">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">Data IPK Mahasiswa</h5>
+                    <p className="card-text">
+                      With supporting text below as a natural lead-in to
+                      additional content.
+                    </p>
+                    <a href="/prestasi/daftarprestasi" className="btn btn-primary">
+                      Kelola Data
+                    </a>
+                  </div>
+                </div>
+              </div>
 
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
+              <div className="col-4 mt-3">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">Data IPK Mahasiswa</h5>
+                    <p className="card-text">
+                      With supporting text below as a natural lead-in to
+                      additional content.
+                    </p>
+                    <a href="/prestasi/daftarprestasi" className="btn btn-primary">
+                      Kelola Data
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div className="col-4 mt-3">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">Data IPK Mahasiswa</h5>
+                    <p className="card-text">
+                      With supporting text below as a natural lead-in to
+                      additional content.
+                    </p>
+                    <a href="/prestasi/daftarprestasi" className="btn btn-primary">
+                      Kelola Data
+                    </a>
+                  </div>
+                </div>
+              </div>
 
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={`/TulisanMedia/`}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={`/TulisanMedia/`}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={`/TulisanMedia/`}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
+              <div className="col-4 mt-3">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">Data IPK Mahasiswa</h5>
+                    <p className="card-text">
+                      With supporting text below as a natural lead-in to
+                      additional content.
+                    </p>
+                    <a href="/prestasi/daftarprestasi" className="btn btn-primary">
+                      Kelola Data
+                    </a>
+                  </div>
+                </div>
+              </div>
+              
             </div>
             <FooterUtama />
           </div>

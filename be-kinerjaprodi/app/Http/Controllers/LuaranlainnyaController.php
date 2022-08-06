@@ -17,7 +17,7 @@ class LuaranlainnyaController extends Controller
     {
         return response()->json([
             'success' => true,
-            'all_luaran' => Luaranlainnya::all()
+            'all_luaran' => Luaranlainnya::with(['anggotaMahasiswas'])->get(),
         ]);
     }
 
@@ -84,7 +84,7 @@ class LuaranlainnyaController extends Controller
     {
         return response()->json([
             'success' => true,
-            'all_luaran' => Luaranlainnya::find($id),
+            'all_luaran' => Luaranlainnya::with(['anggotaMahasiswas'])->where('id', $id)->first(),
             'id' => $id
         ]);
     }

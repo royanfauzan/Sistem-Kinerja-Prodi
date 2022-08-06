@@ -207,6 +207,8 @@ Route::get('ewmps', [EwmpController::class, 'index']);
 Route::get('ewmplisttahun', [EwmpController::class, 'listtahun']);
 Route::get('laporanewmp/{tahun}', [SdmLaporanController::class, 'exportewmp']);
 Route::get('laporanpendos/{tahun}', [SdmLaporanController::class, 'exportpendos']);
+Route::get('laporanpkmdos/{tahun}', [SdmLaporanController::class, 'exportpkmdos']);
+Route::get('laporanpublikasidos/{tahun}', [SdmLaporanController::class, 'exportpublikasidos']);
 
 
 

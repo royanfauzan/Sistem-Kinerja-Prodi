@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRelasiDosPensTable extends Migration
+class CreateSeminardosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateRelasiDosPensTable extends Migration
      */
     public function up()
     {
-        Schema::create('relasi_dos_pens', function (Blueprint $table) {
+        Schema::create('seminardos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('profil_dosen_id');
-            $table->foreignId('penelitian_id');
-            $table->string('keanggotaan')->default('anggota');
+            $table->string('tahun');
+            $table->string('judul_kegiatan');
+            $table->string('penyelenggara');
+            $table->string('kategori_seminar');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateRelasiDosPensTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('relasi_dos_pens');
+        Schema::dropIfExists('seminardos');
     }
 }

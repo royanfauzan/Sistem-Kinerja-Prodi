@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Bbjurnaldos;
 use App\Models\Ewmp;
 use App\Models\Mitra;
 use App\Models\Penelitian;
@@ -254,100 +255,11 @@ class DatabaseSeeder extends Seeder
         );
 
 
-        // Sumber dalam negri
-        Penelitian::create( 
-            [
-                'tema_sesuai_roadmap'=> 'keuangan',
-                'judul' => 'Membuat sistem bank', 
-                'tahun' => '2021', 
-                'sumber_dana_PT_mandiri' => '', 
-                'dana_PT_Mandiri' => 0, 
-                'sumber_dalam_negri' => 'Bank Bri', 
-                'dana_dalam_negri' => 10000000, 
-                'sumber_luar_negri' => '', 
-                'dana_luar_negri' => 0,
-            ]
-        );
-
-        Penelitian::create( 
-            [
-                'tema_sesuai_roadmap'=> 'keuangan 2',
-                'judul' => 'Membuat sistem bank 2', 
-                'tahun' => '2019', 
-                'sumber_dana_PT_mandiri' => '', 
-                'dana_PT_Mandiri' => 0, 
-                'sumber_dalam_negri' => 'Bank Bri', 
-                'dana_dalam_negri' => 10000000, 
-                'sumber_luar_negri' => '', 
-                'dana_luar_negri' => 0,
-            ]
-        );
-
-        // Sumber Luar negri
-        Penelitian::create( 
-            [
-                'tema_sesuai_roadmap'=> 'teknologi',
-                'judul' => 'Membuat sistem bank Dunia', 
-                'tahun' => '2021', 
-                'sumber_dana_PT_mandiri' => '', 
-                'dana_PT_Mandiri' => 0, 
-                'sumber_dalam_negri' => '', 
-                'dana_dalam_negri' => 0, 
-                'sumber_luar_negri' => 'Bank Dunia', 
-                'dana_luar_negri' => 10000000,
-            ]
-        );
-
-        Penelitian::create( 
-            [
-                'tema_sesuai_roadmap'=> 'teknologi 2',
-                'judul' => 'Membuat sistem bank Dunia 2', 
-                'tahun' => '2020', 
-                'sumber_dana_PT_mandiri' => '', 
-                'dana_PT_Mandiri' => 0, 
-                'sumber_dalam_negri' => '', 
-                'dana_dalam_negri' => 0, 
-                'sumber_luar_negri' => 'Bank Dunia', 
-                'dana_luar_negri' => 10000000,
-            ]
-        );
-
-        Penelitian::create( 
-            [
-                'tema_sesuai_roadmap'=> 'teknologi 3',
-                'judul' => 'Membuat sistem bank Dunia 3', 
-                'tahun' => '2019', 
-                'sumber_dana_PT_mandiri' => '', 
-                'dana_PT_Mandiri' => 0, 
-                'sumber_dalam_negri' => '', 
-                'dana_dalam_negri' => 0, 
-                'sumber_luar_negri' => 'Bank Dunia', 
-                'dana_luar_negri' => 10000000,
-            ]
-        );
-
-        RelasiDosPen::create(
-            [
-                'profil_dosen_id'=> 1,
-                'penelitian_id' => 1,
-                'keanggotaan' => 'Ketua', 
-            ]
-        );
-
-        RelasiDosPen::create(
-            [
-                'profil_dosen_id'=> 2,
-                'penelitian_id' => 1,
-                'keanggotaan' => 'anggota', 
-            ]
-        );
-
-        RelasiDosPen::create(
-            [
-                'profil_dosen_id'=> 3,
-                'penelitian_id' => 1,
-                'keanggotaan' => 'anggota', 
-            ]
-        );
+        // Seeder SDM
+        $this->call([
+            SdmSeeder::class,
+            // PostSeeder::class,
+            // CommentSeeder::class,
+        ]);
     }
 }

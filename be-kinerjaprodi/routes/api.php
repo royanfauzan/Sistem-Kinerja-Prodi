@@ -206,6 +206,7 @@ Route::get('ewmps', [EwmpController::class, 'index']);
 // Dev area Laporan
 Route::get('ewmplisttahun', [EwmpController::class, 'listtahun']);
 Route::get('penelitianlisttahun', [PenelitianController::class, 'listtahun']);
+Route::get('pengabdianlisttahun', [PKMController::class, 'listtahun']);
 Route::get('laporanewmp/{tahun}', [SdmLaporanController::class, 'exportewmp']);
 Route::get('laporanpendos/{tahun}', [SdmLaporanController::class, 'exportpendos']);
 Route::get('laporanpkmdos/{tahun}', [SdmLaporanController::class, 'exportpkmdos']);

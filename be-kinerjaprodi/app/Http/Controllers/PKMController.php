@@ -204,4 +204,18 @@ class PKMController extends Controller
             'message' => "Berhasil Dihapus"
         ]);
     }
+
+    public function listtahun(Request $request)
+    {
+        //
+        $allpenelitians = Pkm::all()->groupBy('tahun');
+        $arrTahun = array();
+        foreach ($allpenelitians as $key => $ewmp) {
+            $arrTahun[] = $ewmp[0]->tahun;
+        }
+        return response()->json([
+            'success' => true,
+            'tahunpenelitians' => $arrTahun,
+        ]);
+    }
 }

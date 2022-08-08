@@ -357,4 +357,15 @@ class SdmLaporanController extends Controller
             'all_penelitian' => $produks,
         ]);
     }
+
+    public function testambildata(Request $request)
+    {
+
+        $produks = Produk::with('anggotaDosens','ketuaProduk')->get();
+
+        return response()->json([
+            'success' => true,
+            'all_data' => $produks,
+        ]);
+    }
 }

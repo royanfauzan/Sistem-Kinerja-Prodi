@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Bbjurnaldos;
 use App\Models\Ewmp;
+use App\Models\Integrasi;
 use App\Models\Pagelarandos;
 use App\Models\Penelitian;
 use App\Models\Pkm;
+use App\Models\Produk;
 use App\Models\Seminardos;
 use Illuminate\Http\Request;
 
@@ -341,6 +343,18 @@ class SdmLaporanController extends Controller
             'jumlah_pagelaran_internasional' => $jmlPagelaraninter,
             
             'jumlah_total' => $jml_total,
+        ]);
+    }
+
+
+    public function exportprodukdos(Request $request,$tahun)
+    {
+
+        $produks = Produk::with('anggotaDosens','ketuaProduk')->get();
+
+        return response()->json([
+            'success' => true,
+            'all_penelitian' => $produks,
         ]);
     }
 }

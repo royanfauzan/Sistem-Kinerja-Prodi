@@ -12,21 +12,22 @@ import ReactHTMLTableToExcel from "react-html-table-to-excel";
 export default function pendexport() {
   const router = useRouter();
 
-  
   const [stadmin, setStadmin] = useState(false);
+  const [isLoaded, setisLoaded] = useState(false);
   const [dataSelectTahun, setSelectTahun] = useState(``);
 
   // console.log(dataSelectTahun);
 
-  const [dataEWMP, setdataEWMP] = useState([]);
   const [dataListTahun, setListTahun] = useState([]);
-
-  const [tampilMhsAsing, settampilMhsAsing] = useState([]);
-  const [dataProdis, setdataProdi] = useState([]);
+  const [dataPenelitianTs, setPenelitianTs] = useState([]);
+  const [dataJmlMandiri, setJmlMandiri] = useState();
+  const [dataJmlDalam, setJmlDalam] = useState();
+  const [dataJmlLuar, setJmlLuar] = useState();
+  const [dataJmlTotal, setJmlTotal] = useState();
 
   const handleChange = (e) => {
-    const value = e.target.value
-    console.log(e.target.value)
+    const value = e.target.value;
+    console.log(e.target.value);
     setSelectTahun(value);
     tampildata(value);
   };
@@ -35,15 +36,15 @@ export default function pendexport() {
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/ewmplisttahun",
+      url: "http://127.0.0.1:8000/api/penelitianlisttahun",
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { tahunewmps } = response.data;
-        setListTahun(tahunewmps);
-        setSelectTahun(tahunewmps[0].split("/")[1]);
-        tampildata(tahunewmps[0].split("/")[1]);
+        const { tahunpenelitians } = response.data;
+        setListTahun(tahunpenelitians);
+        setSelectTahun(tahunpenelitians[0]);
+        tampildata(tahunpenelitians[0]);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -86,19 +87,29 @@ export default function pendexport() {
   const tampildata = (tahun) => {
     axios({
       method: "get",
-      url: `http://127.0.0.1:8000/api/laporanewmp/${tahun}`,
+      url: `http://127.0.0.1:8000/api/laporanpendos/${tahun}`,
     })
       .then(function (response) {
-        const { ewmp } = response.data;
-        setdataEWMP(ewmp);
-        console.log(ewmp);
+        const {
+          penelitian_ts,
+          jumlah_mandiri,
+          jumlah_dalam,
+          jumlah_luar,
+          jumlah_total,
+        } = response.data;
+        setPenelitianTs(penelitian_ts);
+        setJmlMandiri(jumlah_mandiri);
+        setJmlDalam(jumlah_dalam);
+        setJmlLuar(jumlah_luar);
+        setJmlTotal(jumlah_total);
+        setisLoaded(true);
+        console.log(penelitian_ts);
       })
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
       });
   };
-
 
   return (
     <>
@@ -111,7 +122,7 @@ export default function pendexport() {
                 <div className="card">
                   <div className="card-header pb-0">
                     <div className="d-flex align-items-center">
-                      <h4>EWMP</h4>
+                      <h4>Jumlah Penelitian Dosen</h4>
                     </div>
                   </div>
                   <div className="card-body">
@@ -132,10 +143,7 @@ export default function pendexport() {
                               >
                                 {dataListTahun.map((dataTahun) => {
                                   return (
-                                    <option
-                                      value={dataTahun.split("/")[1]}
-                                      key={dataTahun}
-                                    >
+                                    <option value={dataTahun} key={dataTahun}>
                                       {dataTahun}
                                     </option>
                                   );
@@ -157,18 +165,17 @@ export default function pendexport() {
                     </div>
                     <div className="row">
                       <div className="col-12 d-flex flex-row-reverse">
-                          {dataEWMP&&(
-                              <ReactHTMLTableToExcel
-                              id="test-table-xls-button"
-                              className="download-table-xls-button btn btn-success ms-3"
-                              table="tableEWMP"
-                              filename={`tabelEWMP_TH${dataSelectTahun}`}
-                              sheet="3a3"
-                              buttonText="Export Excel"
-                              border="1"
-                            />
-                          )}
-                        
+                        {dataPenelitianTs && (
+                          <ReactHTMLTableToExcel
+                            id="test-table-xls-button"
+                            className="download-table-xls-button btn btn-success ms-3"
+                            table="tablePenelitianDosen"
+                            filename={`tabelEWMP_TH${dataSelectTahun}`}
+                            sheet="3a3"
+                            buttonText="Export Excel"
+                            border="1"
+                          />
+                        )}
                       </div>
                     </div>
                     <div className="row">
@@ -186,54 +193,65 @@ export default function pendexport() {
                             border-collapse: collapse;
                           }
                         `}</style>
-                        <table id="tableEWMP" border={1}>
+                        <table id="tablePenelitianDosen" border={1}>
                           <thead>
                             <tr>
-                              <td rowSpan={3}>No</td>
-                              <td rowSpan={3}>Nama Dosen</td>
-                              <td rowSpan={3}>DTPS</td>
-                              <td colSpan={6}>
-                                Ekuivalen Waktu Mengajar Penuh (EWMP) pada saat
-                                TS dalam satuan kredit semester (sks)
-                              </td>
-                              <td rowSpan={3}>Jumlah</td>
-                              <td rowSpan={3}>Rata Rata per semester</td>
+                              <td rowSpan={2}>No</td>
+                              <td rowSpan={2}>Sumber Pembiayaan</td>
+                              <td colSpan={3}>Jumlah Judul Penelitian</td>
+                              <td rowSpan={2}>Jumlah</td>
                             </tr>
+
                             <tr>
-                              <td colSpan={3}>
-                                Pendidikan: Pembelajaran dan Pembimbingan
-                              </td>
-                              <td rowSpan={2}>Penelitian</td>
-                              <td rowSpan={2}>PKM</td>
-                              <td rowSpan={2}>Tugas</td>
-                            </tr>
-                            <tr>
-                              <td>Ps Diakreditasi</td>
-                              <td>Ps Lain Dalam PT</td>
-                              <td>Ps Lain Luar PT</td>
+                              <td>TS-2</td>
+                              <td>TS-1</td>
+                              <td>TS</td>
                             </tr>
                           </thead>
                           <tbody>
-                            {dataEWMP.map((ewmp, index) => {
-                              const dtps = ewmp.dtps ? "v" : "";
-                              return (
-                                <tr key={`tewmp` + ewmp.id}>
-                                  {/* no */}
-                                  <td>{index + 1}</td>
-                                  {/* prodi */}
-                                  <td>{ewmp.profil_dosen.NamaDosen}</td>
-                                  <td>{dtps}</td>
-                                  <td>{ewmp.sks_ps_akreditasi}</td>
-                                  <td>{ewmp.sks_ps_lain_pt}</td>
-                                  <td>{ewmp.sks_ps_luar_pt}</td>
-                                  <td>{ewmp.sks_penelitian}</td>
-                                  <td>{ewmp.sks_pengabdian}</td>
-                                  <td>{ewmp.sks_tugas}</td>
-                                  <td>{ewmp.total}</td>
-                                  <td>{ewmp.avg}</td>
-                                </tr>
-                              );
-                            })}
+                            {isLoaded&&(
+                              <>
+                              <tr>
+                              <td>{1}</td>
+                              <td>
+                                a)Perguruan Tinggi
+                                <br/>
+                                b)Mandiri
+                              </td>
+                              <td>{dataPenelitianTs[2].mandiript}</td>
+                              <td>{dataPenelitianTs[1].mandiript}</td>
+                              <td>{dataPenelitianTs[0].mandiript}</td>
+                              <td>{dataJmlMandiri}</td>
+                            </tr>
+                            <tr>
+                              <td>{2}</td>
+                              <td>
+                                Lembaga Dalam Negri (diluar PT)
+                              </td>
+                              <td>{dataPenelitianTs[2].dalam}</td>
+                              <td>{dataPenelitianTs[1].dalam}</td>
+                              <td>{dataPenelitianTs[0].dalam}</td>
+                              <td>{dataJmlDalam}</td>
+                            </tr>
+                            <tr>
+                              <td>{3}</td>
+                              <td>
+                                Lembaga Luar Negri
+                              </td>
+                              <td>{dataPenelitianTs[2].luar}</td>
+                              <td>{dataPenelitianTs[1].luar}</td>
+                              <td>{dataPenelitianTs[0].luar}</td>
+                              <td>{dataJmlLuar}</td>
+                            </tr>
+                            <tr>
+                              <td colSpan={2}>Jumlah</td>
+                              <td>{dataPenelitianTs[2].jumlahts}</td>
+                              <td>{dataPenelitianTs[1].jumlahts}</td>
+                              <td>{dataPenelitianTs[0].jumlahts}</td>
+                              <td>{dataJmlTotal}</td>
+                            </tr>
+                              </>
+                            )}
                           </tbody>
                         </table>
                       </div>

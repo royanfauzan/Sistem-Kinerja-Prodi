@@ -113,6 +113,17 @@ class DatabaseSeeder extends Seeder
             'Agama'=>'Hindu',
         ]);
 
+        profilDosen::create([
+            'NIDK'=>'44444444',
+            'NamaDosen'=>'nama 444',
+            'NIK'=>"944444444",
+            'TempatLahir'=>'Singaraja',
+            'TanggalLahir'=>'1998-12-25',
+            'JenisKelamin'=>'L',
+            'StatusPerkawinan'=>'Kawin',
+            'Agama'=>'Hindu',
+        ]);
+
         Ewmp::create([
             'dtps'=>true,
             'profil_dosen_id'=>1,

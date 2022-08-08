@@ -6,7 +6,7 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
-import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import Link from "next/link";
 
 export default function kepuasanmahasiswa() {
@@ -178,7 +178,8 @@ export default function kepuasanmahasiswa() {
                           table="tabelkepuasanmhs"
                           filename="tablexls"
                           sheet="tablexls"
-                          buttonText="Export Excel" />
+                          buttonText="Export Excel"
+                        />
                       </div>
                     </div>
                   </div>
@@ -195,17 +196,20 @@ export default function kepuasanmahasiswa() {
                     width: 100%;
                     border-collapse: collapse;
                   }
-                  
                 `}</style>
                 <div className="card-body p-3">
                   <div className="table-responsive p-0">
                     <table id="tabelkepuasanmhs" border="1">
                       <thead>
                         <tr>
-                          <th width="40px" rowspan="2">No</th>
+                          <th width="40px" rowspan="2">
+                            No
+                          </th>
                           <th rowspan="2">Aspek Yang Diukur</th>
                           <th colspan="4">Tingkat Kepuasan Mahasiswa (%)</th>
-                          <th rowspan="2">Rencana Tindak Lanjut oleh UPPS/PS</th>
+                          <th rowspan="2">
+                            Rencana Tindak Lanjut oleh UPPS/PS
+                          </th>
                         </tr>
                         <tr>
                           <th width="100px">Sangat Baik</th>
@@ -390,7 +394,9 @@ export default function kepuasanmahasiswa() {
                                   <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_1 + tampilKepuasanmhs.dayatanggap_1 + tampilKepuasanmhs.kepastian_1 + tampilKepuasanmhs.empati_1 + tampilKepuasanmhs.tangible_1}</h6>
                                 </th>
                                 <th>
-                                  <h6 className="mb-0 text-sm"></h6>
+                                  <p className="mb-0 text-sm">
+                                    {kepuasanmap.tl_keandalan}
+                                  </p>
                                 </th>
                       </tr>
                     </table>

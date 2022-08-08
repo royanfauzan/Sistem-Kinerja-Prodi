@@ -129,6 +129,9 @@ export default function daftarluaran() {
                             NO
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
+                            Nama Mahasiswa
+                          </th>
+                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             judul
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
@@ -151,6 +154,21 @@ export default function daftarluaran() {
                                 <h6 className="mb-0 text-sm ps-2">
                                   {number + 1}
                                 </h6>
+                              </td>
+
+                              <td>
+                                {lurn.anggota_mahasiswas.map(
+                                  (anggota_mahasiswas) => {
+                                    return (
+                                      <p
+                                        className="mb-0 text-sm"
+                                        key="anggota.id"
+                                      >
+                                        {anggota_mahasiswas.nama}
+                                      </p>
+                                    );
+                                  }
+                                )}
                               </td>
 
                               <td className="align-middle  text-sm">
@@ -181,6 +199,12 @@ export default function daftarluaran() {
                                 <Link href={`/luaran/edit/${lurn.id}`}>
                                   <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                     Edit
+                                  </button>
+                                </Link>
+
+                                <Link href={`/luaran/pilih/${lurn.id}`}>
+                                  <button className="btn btn-sm btn-success border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                    Pilih mahasiswa
                                   </button>
                                 </Link>
 

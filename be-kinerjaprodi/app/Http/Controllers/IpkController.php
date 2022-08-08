@@ -8,6 +8,22 @@ use Illuminate\Support\Facades\Validator;
 
 class IpkController extends Controller
 {
+
+    private function tahuntsgenerator($tahun, $tipe = 'biasa')
+    {
+        $tslist = collect();
+        $thnInt = intval($tahun);
+        $tslist->ts = '' . ($thnInt);
+        $tslist->ts1 = '' . ($thnInt - 1);
+        $tslist->ts2 = '' . ($thnInt - 2);
+        if (!strcmp($tipe, 'akademik')) {
+            $tslist->ts = "" . ($thnInt - 1) . "/" . ($thnInt);
+            $tslist->ts1 = "" . ($thnInt - 2) . "/" . ($thnInt - 1);
+            $tslist->ts2 = "" . ($thnInt - 3) . "/" . ($thnInt - 2);
+        }
+        return $tslist;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -71,11 +87,11 @@ class IpkController extends Controller
         return response()->json([
             'success' => true,
             'tahun' => $request->tahun,
-                'jmlh_lulusan' => $request->jmlh_lulusan,
-                'ipk_min' => $request->ipk_max,
-                'ipk_avg' => $request->ipk_avg,
-                'ipk_max' => $request->ipk_min,
-                'prodi_id' => $request->prodi_id,
+            'jmlh_lulusan' => $request->jmlh_lulusan,
+            'ipk_min' => $request->ipk_max,
+            'ipk_avg' => $request->ipk_avg,
+            'ipk_max' => $request->ipk_min,
+            'prodi_id' => $request->prodi_id,
             'all_prodi' => Ipk::all()
         ]);
     }
@@ -145,12 +161,40 @@ class IpkController extends Controller
         return response()->json([
             'success' => true,
             'tahun' => $request->tahun,
-                'jmlh_lulusan' => $request->jmlh_lulusan,
-                'ipk_min' => $request->ipk_max,
-                'ipk_avg' => $request->ipk_avg,
-                'ipk_max' => $request->ipk_min,
-                'prodi_id' => $request->prodi_id,
+            'jmlh_lulusan' => $request->jmlh_lulusan,
+            'ipk_min' => $request->ipk_max,
+            'ipk_avg' => $request->ipk_avg,
+            'ipk_max' => $request->ipk_min,
+            'prodi_id' => $request->prodi_id,
             'all_prodi' => Ipk::all()
+        ]);
+    }
+
+    public function exportpendos(Request $request, $tahun)
+    {
+        $tahunlist = $this->tahuntsgenerator($tahun);
+        $penelitiants = collect([]);
+
+
+        $penelitianDosens = Ipk::where('tahun', $tahunlist->ts)
+            ->orWhere('tahun', $tahunlist->ts1)
+            ->orWhere('tahun', $tahunlist->ts2)
+            ->get();
+
+        $arrTahun = [$tahunlist->ts, $tahunlist->ts1, $tahunlist->ts2];
+
+        foreach ($arrTahun as $key => $th) {
+            $listpenelitiants = $penelitianDosens->where('tahun', $th);
+
+            $sementara = collect(['ipkts' . $key => $listpenelitiants, 'ts' => $th]);
+            $penelitiants->push(collect($sementara));
+        }
+
+
+        return response()->json([
+            'success' => true,
+            'all_ipk' => $penelitianDosens,
+            'penelitian_ts' => $penelitiants,
         ]);
     }
 

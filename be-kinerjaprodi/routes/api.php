@@ -41,6 +41,7 @@ use App\Http\Controllers\PenggunaanDanaController;
 use App\Http\Controllers\ProfildosenController;
 use App\Http\Controllers\RekognisiController;
 use App\Http\Controllers\SdmLaporanController;
+use App\Http\Controllers\RelasiLuaranController;
 use App\Models\MahasiswaAsing;
 use App\Models\PenggunaanDana;
 use App\Models\Rekognisi;
@@ -75,6 +76,7 @@ Route::put('update_tempat/{id}', [TempatController::class, 'update']);
 Route::get('show_tempat/{id}', [TempatController::class, 'show']);
 
 // IPK
+Route::get('ipk/laporan/{tahun}', [IpkController::class, 'exportpendos']);
 Route::get('ipk', [IpkController::class, 'index']);
 Route::post('ipk', [IpkController::class, 'store']);
 Route::put('update_ipk/{id}', [IpkController::class, 'update']);
@@ -109,6 +111,7 @@ Route::get('show_waktutunggu/{id}', [WaktutungguController::class, 'show']);
 Route::post('delete_waktutunggu/{id}', [WaktutungguController::class, 'destroy']);
 
 //Luaran lainnya
+Route::post('luaran_mhs/{id}', [LuaranlainnyaController::class, 'pilihmahasiswa']);
 Route::get('luaran', [LuaranlainnyaController::class, 'index']);
 Route::post('luaran', [LuaranlainnyaController::class, 'store']);
 Route::put('edit_luaran/{id}', [LuaranlainnyaController::class, 'update']);
@@ -235,6 +238,11 @@ Route::get('tampil_Mahasiswa/{id}', [MahasiswaController::class, 'show']);
 Route::get('Mahasiswa', [MahasiswaController::class, 'index']);
 Route::post('Mahasiswa', [MahasiswaController::class, 'store']);
 Route::put('Mahasiswa_Update/{id}', [MahasiswaController::class, 'update']);
+
+//Relasi Luaran
+Route::get('relasiluaran', [RelasiluaranController::class, 'index']);
+Route::put('edit_relasiluaran/{id}', [RelasiluaranController::class, 'update']);
+Route::post('relasiluaran', [RelasiLuaranController::class, 'store']);
 
 //route matkul
 Route::get('tampil_Matkul/{id}', [MatkulController::class, 'show']);

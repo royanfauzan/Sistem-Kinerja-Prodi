@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Luaranlainnya;
+use App\Models\relasi_luaran_mhs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -138,6 +139,42 @@ class LuaranlainnyaController extends Controller
             'keterangan' => $request->keterangan,
             'tahun' => $request->tahun,
             'jenis_luaran' => $request->jenis_luaran,
+            'all_luaran' => Luaranlainnya::all()
+        ]);
+    }
+
+    public function pilihmahasiswa(Request $request, $id)
+    {
+        $luaran = Luaranlainnya::where('id', $id)->first();
+        $dataluaran = $request->only('mahasiswa_id', 'luaranlainnya_id', 'keanggotaan');
+
+        //valid credential
+        $validator = Validator::make($dataluaran, [
+            'mahasiswa_id' => 'required',
+            'luaranlainnya_id' => 'required',
+            'keanggotaan' => 'required',
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 200);
+        }
+
+        $relasimahasiswa = relasi_luaran_mhs::create(
+            [
+                'mahasiswa_id' => $request->mahasiswa_id,
+                'luaranlainnya_id' => $request->luaranlainnya_id,
+                'keanggotaan' => $request->keanggotaan,
+            ]
+        );
+
+
+        //Token created, return with success response and jwt token
+        return response()->json([
+            'success' => true,
+            'mahasiswa_id' => $request->mahasiswa_id,
+            'luaranlainnya_id' => $request->luaranlainnya_id,
+            'keanggotaan' => $request->keanggotaan,
             'all_luaran' => Luaranlainnya::all()
         ]);
     }

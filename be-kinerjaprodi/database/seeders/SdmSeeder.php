@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Bbjurnaldos;
 use App\Models\Pagelarandos;
 use App\Models\Penelitian;
+use App\Models\Pkm;
 use App\Models\Produk;
 use App\Models\RelasiDosPen;
 use App\Models\RelasiDosProd;

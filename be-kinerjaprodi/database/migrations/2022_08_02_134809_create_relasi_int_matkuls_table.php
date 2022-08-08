@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIntegrasisTable extends Migration
+class CreateRelasiIntMatkulsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreateIntegrasisTable extends Migration
      */
     public function up()
     {
-        Schema::create('integrasis', function (Blueprint $table) {
+        Schema::create('relasi_int_matkuls', function (Blueprint $table) {
             $table->id();
-            $table->string('bentuk_integrasi');
-            $table->string('tahun');
-            $table->string('file_bukti');
-            $table->foreignId('dosen_id');
-            $table->foreignId('penelitian_id')->nullable();
-            $table->foreignId('PkM_id')->nullable();
             $table->foreignId('matkul_id');
+            $table->foreignId('integrasi_id');
+            $table->string('keanggotaan');
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ class CreateIntegrasisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('integrasis');
+        Schema::dropIfExists('relasi_int_matkuls');
     }
 }

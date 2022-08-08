@@ -18,7 +18,7 @@ class CapKurikulumController extends Controller
     {
         return response()->json([ //ngirim ke front end
             'success' => true,
-            'all_capkurikulum' => CapKurikulum::with(['matkul', 'prodi'])->get(),
+            'all_capkurikulum' => CapKurikulum::with(['matkul', 'prodi', 'anggotaMatkuls'])->get(),
         ]);
     }
 
@@ -119,7 +119,7 @@ class CapKurikulumController extends Controller
     {
         return response()->json([
             'success' => true,
-            'all_capkurikulum' => CapKurikulum::with(['matkul', 'prodi'])->where('id', $id)->first(),
+            'all_capkurikulum' => CapKurikulum::with(['matkul', 'prodi', 'anggotaMatkuls'])->where('id', $id)->first(),
             'id' => $id
         ]);
     }

@@ -12,16 +12,8 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 export async function getServerSideProps(context) {
 
   //http request
-  const req = await axios.get(`http://127.0.0.1:8000/api/tampil_Integrasi/${context.query.id_integrasi}`)
+  const req = await axios.get(`http://127.0.0.1:8000/api/tampil_Integrasi/${context.query.id_pilih}`)
   const integrasi = await req.data.all_integrasi
-
-
-
-  const reqpenelitian = await axios.get(`http://127.0.0.1:8000/api/Penelitian/`)
-  const penelitian = await reqpenelitian.data.all_penelitian
-
-  const reqPKM = await axios.get(`http://127.0.0.1:8000/api/PKM/`)
-  const PKM = await reqPKM.data.all_pkm
 
   const reqmatkul = await axios.get(`http://127.0.0.1:8000/api/Matkul/`)
   const matkul = await reqmatkul.data.all_matkul
@@ -29,8 +21,6 @@ export async function getServerSideProps(context) {
   return {
     props: {
       integrasi: integrasi,
-      penelitian: penelitian,
-      PKM: PKM,
       matkul: matkul// <-- assign response
     },
   }

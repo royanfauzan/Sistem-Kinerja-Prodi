@@ -106,7 +106,7 @@ export default function daftarintgrs() {
                   </div>
                   <div className="col-4 d-flex flex-row-reverse">
                     <div className="align-middle">
-                      <Link href={`/matkul/export/exportmatkul/`}>
+                      <Link href={`/integrasi/export/exportintegrasi/`}>
                         <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                           Export Tabel
                         </button>
@@ -116,14 +116,14 @@ export default function daftarintgrs() {
                 </div>
                 <div className="card-body p-3">
                   <div className="table-responsive p-0">
-                    <table  className="table align-items-center mb-0 table table-striped table-hover">
+                    <table className="table align-items-center mb-0 table table-striped table-hover">
                       <thead>
                         <tr>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-3">
                             NO
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Profil Dosen
+                            Nama Dosen
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
                             Penelitian
@@ -152,7 +152,7 @@ export default function daftarintgrs() {
                         {integrasi.map((intgrs, number) => {
                           return (
                             <tr key={`intgrs` + intgrs.id}>
-                              
+
                               <td className="ps-3 pe-3">
                                 <h6 className="mb-0 text-sm">{number + 1}</h6>
                               </td>
@@ -163,17 +163,25 @@ export default function daftarintgrs() {
                                 </p>
                               </td>
 
-                              <td>
-                                <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {intgrs.penelitian.tema_sesuai_roadmap + ' ' + intgrs.penelitian.judul}
-                                </p>
-                              </td>
+                              {intgrs.penelitian ? (
+                                <td>
+                                  <p className="text-xs font-weight-bold mb-0 pe-3">
+                                    {intgrs.penelitian.tema_sesuai_roadmap + ' ' + intgrs.penelitian.judul}
+                                  </p>
+                                </td>
+                              ) : (
+                                <td></td>
+                              )}
 
-                              <td>
-                                <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {intgrs.pkm.tema_sesuai_roadmap + ' ' + intgrs.pkm.judul_kegiatan}
-                                </p>
-                              </td>
+                              {intgrs.pkm ? (
+                                <td>
+                                  <p className="text-xs font-weight-bold mb-0 pe-3">
+                                    {intgrs.pkm.tema_sesuai_roadmap + ' ' + intgrs.pkm.judul_kegiatan}
+                                  </p>
+                                </td>
+                              ) : (
+                                <td></td>
+                              )}
 
                               <td>
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
@@ -192,7 +200,7 @@ export default function daftarintgrs() {
                                   {intgrs.tahun}
                                 </p>
                               </td>
-                              <td  className="align-middle text-sm">
+                              <td className="align-middle text-sm">
                                 <span className="text-dark text-xs font-weight-bold">
                                   <p className="text-xs font-weight-bold mb-0 pe-3">
                                     {intgrs.file_bukti}
@@ -201,7 +209,7 @@ export default function daftarintgrs() {
                               </td>
 
                               <td className="align-middle pe-3 text-end">
-                                <Link href={`/integrasi/edit/${intgrs.id}`}>
+                                <Link href={`/integrasi/pilih/${intgrs.id}`}>
                                   <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                     Edit
                                   </button>

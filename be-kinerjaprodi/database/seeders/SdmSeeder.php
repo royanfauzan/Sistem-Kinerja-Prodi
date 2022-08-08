@@ -5,7 +5,9 @@ namespace Database\Seeders;
 use App\Models\Bbjurnaldos;
 use App\Models\Pagelarandos;
 use App\Models\Penelitian;
+use App\Models\Produk;
 use App\Models\RelasiDosPen;
+use App\Models\RelasiDosProd;
 use App\Models\Seminardos;
 use Illuminate\Database\Seeder;
 
@@ -465,5 +467,95 @@ class SdmSeeder extends Seeder
                 'file_bukti' => 'storage/testarea/image.jpg',
             ]
         );
+
+        Produk::create(
+            [
+                'nm_produk' => 'nama produk 1',
+                'deskripsi' => 'deskripsi produk 1',
+                'tahun' => '2021',
+                'deskripsi_bukti' => 'foto produk',
+                'file_bukti' => 'storage/testarea/image.jpg',
+            ]
+        );
+
+        Produk::create(
+            [
+                'nm_produk' => 'nama produk 2',
+                'deskripsi' => 'deskripsi produk 2',
+                'tahun' => '2020',
+                'deskripsi_bukti' => 'foto produk',
+                'file_bukti' => 'storage/testarea/image.jpg',
+            ]
+        );
+
+        Produk::create(
+            [
+                'nm_produk' => 'nama produk 3',
+                'deskripsi' => 'deskripsi produk 3',
+                'tahun' => '2019',
+                'deskripsi_bukti' => 'foto produk',
+                'file_bukti' => 'storage/testarea/image.jpg',
+            ]
+        );
+
+        Produk::create(
+            [
+                'nm_produk' => 'nama produk 4',
+                'deskripsi' => 'deskripsi produk 4',
+                'tahun' => '2019',
+                'deskripsi_bukti' => 'foto produk',
+                'file_bukti' => 'storage/testarea/image.jpg',
+            ]
+        );
+
+        RelasiDosProd::create(
+            [
+                'profil_dosen_id'=> 1,
+                'produk_id' => 1,
+                'keanggotaan' => 'Ketua', 
+            ]
+        );
+
+        RelasiDosProd::create(
+            [
+                'profil_dosen_id'=> 2,
+                'produk_id' => 2,
+                'keanggotaan' => 'Ketua', 
+            ]
+        );
+
+        RelasiDosProd::create(
+            [
+                'profil_dosen_id'=> 3,
+                'produk_id' => 3,
+                'keanggotaan' => 'Ketua', 
+            ]
+        );
+
+        RelasiDosProd::create(
+            [
+                'profil_dosen_id'=> 4,
+                'produk_id' => 4,
+                'keanggotaan' => 'Ketua', 
+            ]
+        );
+
+        RelasiDosProd::create(
+            [
+                'profil_dosen_id'=> 1,
+                'produk_id' => 2,
+                'keanggotaan' => 'anggota', 
+            ]
+        );
+
+        RelasiDosProd::create(
+            [
+                'profil_dosen_id'=> 2,
+                'produk_id' => 1,
+                'keanggotaan' => 'anggota', 
+            ]
+        );
+
+
     }
 }

@@ -185,4 +185,18 @@ class PenelitianController extends Controller
     {
         //
     }
+
+    public function listtahun(Request $request)
+    {
+        //
+        $allpenelitians = Penelitian::all()->groupBy('tahun');
+        $arrTahun = array();
+        foreach ($allpenelitians as $key => $ewmp) {
+            $arrTahun[] = $ewmp[0]->tahun;
+        }
+        return response()->json([
+            'success' => true,
+            'tahunpenelitians' => $arrTahun,
+        ]);
+    }
 }

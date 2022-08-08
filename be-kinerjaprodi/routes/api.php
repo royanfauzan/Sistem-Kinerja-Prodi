@@ -205,10 +205,12 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 Route::get('ewmps', [EwmpController::class, 'index']);
 // Dev area Laporan
 Route::get('ewmplisttahun', [EwmpController::class, 'listtahun']);
+Route::get('penelitianlisttahun', [PenelitianController::class, 'listtahun']);
 Route::get('laporanewmp/{tahun}', [SdmLaporanController::class, 'exportewmp']);
 Route::get('laporanpendos/{tahun}', [SdmLaporanController::class, 'exportpendos']);
 Route::get('laporanpkmdos/{tahun}', [SdmLaporanController::class, 'exportpkmdos']);
 Route::get('laporanpublikasidos/{tahun}', [SdmLaporanController::class, 'exportpublikasidos']);
+Route::get('laporanprodukdos/{tahun}', [SdmLaporanController::class, 'exportprodukdos']);
 
 
 

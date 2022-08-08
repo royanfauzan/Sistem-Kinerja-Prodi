@@ -12,12 +12,12 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 export async function getServerSideProps(context) {
 
   //http request
-  const req  = await axios.get(`http://127.0.0.1:8000/api/tampil_Matkul/${context.query.id_matkul}`)
-  const res  = await req.data.all_mhs
+  const req = await axios.get(`http://127.0.0.1:8000/api/tampil_Matkul/${context.query.id_matkul}`)
+  const res = await req.data.all_mhs
 
   return {
-    props: { 
-        matkul: res // <-- assign response
+    props: {
+      matkul: res // <-- assign response
     },
   }
 }
@@ -30,66 +30,66 @@ export async function getServerSideProps(context) {
 
 
 export default function update_datamatkul(props) {
-  const {matkul} = props;
+  const { matkul } = props;
   console.log(matkul);
-  
+
   const router = useRouter();
-  
+
 
   const [dataMatkul, setdataMatkul] = useState(matkul);
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
-  
-  
+
+
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
-  
+  const pengambilData = async () => {
+
   }
 
 
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
-    
-    
+  useEffect(() => {
+
+
     // cek token, kalo gaada disuruh login
     const lgToken = localStorage.getItem('token');
-    if(!lgToken){
+    if (!lgToken) {
       router.push('/login')
 
-      
+
     }
-    
+
     // perjalanan validasi token 
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/get_user",
       headers: { "Authorization": `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-    })
-    .catch(function (err) {
+      .then(function (response) {
+        console.log(response);
+        console.log('Sukses');
+        const { level_akses } = response.data.user;
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push('/');
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+      })
+      .catch(function (err) {
         console.log('gagal');
         console.log(err.response);
         return router.push('/');
-    })
-  },[]);
-  
+      })
+  }, []);
+
   //HAPUS DATA
- 
+
 
   // Insert Update Data
   const submitForm = async (event) => {
@@ -99,6 +99,7 @@ export default function update_datamatkul(props) {
     const lgToken = localStorage.getItem("token");
 
     let formData = new FormData();
+    formData.append("kode_matkul", event.target.kode_matkul.value);
     formData.append("nama_matkul", event.target.nama_matkul.value);
     formData.append("sks", event.target.sks.value);
     formData.append("prodi_id", event.target.prodi_id.value);
@@ -108,7 +109,7 @@ export default function update_datamatkul(props) {
 
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/Matkul_Update/${dataMatkul.id}`+`?_method=PUT`,
+      url: `http://127.0.0.1:8000/api/Matkul_Update/${dataMatkul.id}` + `?_method=PUT`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -140,92 +141,108 @@ export default function update_datamatkul(props) {
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
         <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetilDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <p className="mb-0">Edit Data Mata Kuliah</p>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
-                     
-                    </div>
-                  </div>
-                  <div className="card-body">
-                    <p className="text-uppercase text-sm"> Mata Kuliah </p>
-                    <div className="row">
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetilDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <p className="mb-0">Edit Data Mata Kuliah</p>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Simpan
+                        </button>
 
-                    <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="nama_matkul" className="form-control-label">
-                        Nama Mata kuliah
-                      </label>
-                      <input
-                      defaultValue={dataMatkul.nama_matkul}
-                        className="form-control"
-                        type="text"
-                        placeholder="Nama Matkul"
-                        id="nama_matkul"
-                        required
-                      />
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="sks" className="form-control-label">
-                        SKS
-                      </label>
-                      <input
-                      defaultValue={dataMatkul.sks}
-                        className="form-control"
-                        type="text"
-                        placeholder="SKS"
-                        id="sks"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="prodi_id" className="form-control-label">
-                        Prodi ID
-                      </label>
-                      <input
-                      defaultValue={dataMatkul.prodi_id}
-                        className="form-control"
-                        type="text"
-                        placeholder="Prodi ID"
-                        id="prodi_id"
-                        required
-                      />
-                    </div>
-                  </div>     
-                   
+                    <div className="card-body">
+                      <p className="text-uppercase text-sm"> Mata Kuliah </p>
+                      <div className="row">
 
-                            
-                    
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="kode_matkul" className="form-control-label">
+                              Kode Mata kuliah
+                            </label>
+                            <input
+                              defaultValue={dataMatkul.kode_matkul}
+                              className="form-control"
+                              type="text"
+                              placeholder="Kode Matkul"
+                              id="kode_matkul"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="nama_matkul" className="form-control-label">
+                              Nama Mata kuliah
+                            </label>
+                            <input
+                              defaultValue={dataMatkul.nama_matkul}
+                              className="form-control"
+                              type="text"
+                              placeholder="Nama Matkul"
+                              id="nama_matkul"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="sks" className="form-control-label">
+                              SKS
+                            </label>
+                            <input
+                              defaultValue={dataMatkul.sks}
+                              className="form-control"
+                              type="text"
+                              placeholder="SKS"
+                              id="sks"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="prodi_id" className="form-control-label">
+                              Prodi ID
+                            </label>
+                            <input
+                              defaultValue={dataMatkul.prodi_id}
+                              className="form-control"
+                              type="text"
+                              placeholder="Prodi ID"
+                              id="prodi_id"
+                              required
+                            />
+                          </div>
+                        </div>
+
+
+
+
+                      </div>
+
                     </div>
-                  
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+        </LayoutForm>
       )}
     </>
   );

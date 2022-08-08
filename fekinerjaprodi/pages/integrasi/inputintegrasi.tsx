@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
@@ -15,12 +15,23 @@ export default function inputintegrasi() {
   const [userProfilDosens, setdataDosen] = useState([]);
   const [userPenelitians, setuserPenelitians] = useState([]);
   const [filebukti, setfilebuktis] = useState<File>([]);
+  const penelitianref = useRef(null);
+  const pkmref = useRef(null);
+
 
   const [PKMs, setPkMs] = useState([]);
   const [Matkuls, setMatkuls] = useState([]);
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
+
+  const handleChangePenelitian = (e) => {
+    pkmref.current.value = null
+  };
+
+  const handleChangePKM = (e) => {
+    penelitianref.current.value = null
+  };
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () =>{
@@ -245,7 +256,8 @@ export default function inputintegrasi() {
                           </label>
                           <select
                             className="form-select"
-                            aria-label="Default select example"
+                            aria-label="Default select example" 
+                            
                             defaultValue="0"
                             id="profil_dosen_id"
                           >
@@ -274,6 +286,8 @@ export default function inputintegrasi() {
                           <select
                             className="form-select"
                             aria-label="Default select example"
+                            ref={penelitianref}
+                            onChange = {handleChangePenelitian}
                             defaultValue="0"
                             id="penelitian"
                           >
@@ -302,6 +316,8 @@ export default function inputintegrasi() {
                           <select
                             className="form-select"
                             aria-label="Default select example"
+                            ref={pkmref}
+                            onChange = {handleChangePKM}
                             defaultValue="0"
                             id="pkm"
                           >

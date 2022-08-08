@@ -29,4 +29,12 @@ class Integrasi extends Model
     {
         return $this->belongsTo(Matkul::class,'matkul_id','id');
     }
+    public function anggotaMatkuls()
+    {
+        return $this->belongsToMany(Matkul::class,'relasi_int_matkuls','integrasi_id','matkul_id')->withPivot('keanggotaan');
+    }
+    public function anggotaDosens()
+    {
+        return $this->belongsToMany(profilDosen::class,'relasi_int_dos','integrasi_id','profil_dosen_id')->withPivot('keanggotaan');
+    }
 }

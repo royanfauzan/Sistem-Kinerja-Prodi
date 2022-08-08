@@ -17,7 +17,7 @@ class PKMController extends Controller
     {
         return response()->json([ //ngirim ke front end
             'success' => true,
-            'all_pkm' => Pkm::all()
+            'all_pkm' => Pkm::with(['anggotaDosens', 'anggotaMahasiswas'])->get(),
         ]);
     }
 
@@ -105,10 +105,9 @@ class PKMController extends Controller
     {
         return response()->json([
             'success' => true,
-            'all_pkm' => Pkm::find($id),
+            'all_pkm' => Pkm::with(['anggotaDosens', 'anggotaMahasiswas'])->where('id', $id)->first(),
             'id' => $id
         ]);
-    
     }
 
     /**

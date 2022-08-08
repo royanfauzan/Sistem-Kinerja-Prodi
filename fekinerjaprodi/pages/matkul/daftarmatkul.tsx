@@ -104,15 +104,6 @@ export default function daftarmatkul() {
                           </Link>
                         </div>
                       </div>
-                      <div className="col-4 d-flex flex-row-reverse">
-                        <div className="align-middle">
-                          <Link href={`/matkul/export/exportmatkul/`}>
-                            <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                              Export Tabel
-                            </button>
-                          </Link>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -125,6 +116,9 @@ export default function daftarmatkul() {
                         <tr>
                         <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
                             NO
+                          </th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
+                            Kode Mata Kuliah
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
                             Nama Mata Kuliah
@@ -142,6 +136,12 @@ export default function daftarmatkul() {
 
                               <td className="ps-2">
                                 <h6 className="mb-0 text-sm">{number + 1}</h6>
+                              </td>
+
+                              <td>
+                                <p className="text-xs font-weight-bold mb-0">
+                                  {matakuliah.kode_matkul}
+                                </p>
                               </td>
 
                               <td>

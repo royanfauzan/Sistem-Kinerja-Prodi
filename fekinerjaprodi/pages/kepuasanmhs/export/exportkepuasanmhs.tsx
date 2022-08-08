@@ -14,27 +14,49 @@ export default function kepuasanmahasiswa() {
 
   const [stadmin, setStadmin] = useState(false);
   const [tampilKepuasanmhs, settampilKepuasanmhs] = useState([]);
+  const [dataSelectTahun, setSelectTahun] = useState([]);
+
+  console.log(dataSelectTahun);
+
+  const [Listtahun, setListtahun] = useState([]);
+
+  const handleChangekepuasanMhs = (e) => {
+    const value = Array.from(
+      e.target.selectedOptions,
+      (options) => options.value
+    );
+    setListtahun(value);
+  };
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
 
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/KepuasanMHS",
-      headers: { Authorization: `Bearer ${lgToken}` },
-    })
-      .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { all_mhs } = response.data;
-        settampilKepuasanmhs(all_mhs);
+    
 
-        console.log(tampilKepuasanmhs);
+      axios({
+        method: "get",
+        url: "http://127.0.0.1:8000/api/KepuasanMHS_Tahun",
+        headers: { Authorization: `Bearer ${lgToken}` },
       })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+        .then(function (response) {
+          console.log(response);
+          console.log("Sukses");
+          const { tahunkepuasanmhs } = response.data;
+          setListtahun(tahunkepuasanmhs);
+          tampildata(tahunkepuasanmhs[0]);
+  
+          console.log(tampilKepuasanmhs);
+        })
+        .catch(function (err) {
+          console.log("gagal");
+          console.log(err.response);
+        });
+  };
+
+  
+  const handleChangeExportData = (e) => {
+    const value =  e.target.value
+    tampildata(value);
   };
 
   useEffect(() => {
@@ -69,19 +91,22 @@ export default function kepuasanmahasiswa() {
       });
   }, []);
 
-  // const deletePenerimaan = (id) => {
-  //   axios({
-  //     method: "post",
-  //     url: `http://127.0.0.1:8000/api/delete_penerimaan_mahasiswa/${id}`,
-  //   })
-  //     .then(function (response) {
-  //       router.reload();
-  //     })
-  //     .catch(function (err) {
-  //       console.log("gagal");
-  //       console.log(err.response);
-  //     });
-  // };
+  const tampildata = (tahun) => {
+    axios({
+      method: "get",
+      url: `http://127.0.0.1:8000/api/KepuasanMHS_Export/${tahun}`,
+    })
+      .then(function (response) {
+        const { exportkepuasanmhs } = response.data;
+        settampilKepuasanmhs(exportkepuasanmhs);
+        console.log(exportkepuasanmhs);
+      })
+      .catch(function (err) {
+        console.log("gagal");
+        console.log(err.response);
+      });
+  };
+
 
   return (
     <>
@@ -95,6 +120,46 @@ export default function kepuasanmahasiswa() {
                   <div className="row justify-content-between">
                     <div className="col-4">
                       <h6>Export Kepuasan Mahasiswa</h6>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <h5>Pilih Tahun</h5>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="row">
+                          <div className="col-7">
+                            <div className="form-group">
+                              <select
+                                className="form-select"
+                                aria-label="Default select example"
+                                defaultValue={dataSelectTahun}
+                                id="tahun"
+                                onChange={handleChangeExportData}
+                              >
+                                {Listtahun.map((dataTahun) => {
+                                  return (
+                                    <option
+                                      value={dataTahun}
+                                      key={dataTahun}
+                                    >
+                                      {dataTahun}
+                                    </option>
+                                  );
+                                })}
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-5 d-flex justify-content-end">
+                            <button
+                              className="btn btn-primary btn-sm ms-auto"
+                              type="submit"
+                              onClick={() => tampildata(dataSelectTahun)}
+                            >
+                              Tampil Data
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div className="row justify-content-between mb-4">
                       <div className="col-4">
@@ -152,189 +217,182 @@ export default function kepuasanmahasiswa() {
 
 
 
-                      {tampilKepuasanmhs.map((kepuasanmap) => {
-                        {
-                          return (
-                            <tbody key="aaaaa">
-                              <tr>
-                                <th>
-                                  <h6 className="mb-0 text-sm">1</h6>
-                                </th>
-                                <th>
-                                  <h6 className="mb-0 text-sm">2</h6>
-                                </th>
-                                <th>
-                                  <h6 className="mb-0 text-sm">3</h6>
-                                </th>
-                                <th>
-                                  <h6 className="mb-0 text-sm">4</h6>
-                                </th>
-                                <th>
-                                  <h6 className="mb-0 text-sm">5</h6>
-                                </th>
-                                <th>
-                                  <h6 className="mb-0 text-sm">6</h6>
-                                </th>
-                                <th>
-                                  <h6 className="mb-0 text-sm">7</h6>
-                                </th>
-                              </tr>
-                              <tr>
-                                <th>
-                                  <p className="mb-0 text-sm">1</p>
-                                </th>
-                                <th>
-                                  <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
-                                    Keandalan (<i data-f-italic="true">reliability</i>): kemampuan dosen, tenaga kependidikan, dan pengelolaan dalam memberikan pelayanan.
-                                  </p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm ">{kepuasanmap.keandalan_4}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.keandalan_3}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.keandalan_2}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.keandalan_1}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.tl_keandalan}</p>
-                                </th>
-                              </tr>
 
-                              <tr>
-                                <th>
-                                  <p className="mb-0 text-sm">2</p>
-                                </th>
-                                <th>
-                                  <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
-                                    Daya tanggap  (<i data-f-italic="true">responsiveness</i>): kemauan dari dosen, tenaga kependidikan, dan pengelola dalam membantu mahasiswa dan memberikan jasa dengan cepat.
-                                  </p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.dayatanggap_4}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.dayatanggap_3}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.dayatanggap_2}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.dayatanggap_1}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.tl_dayatanggap}</p>
-                                </th>
-                              </tr>
 
-                              <tr>
-                                <th>
-                                  <p className="mb-0 text-sm">3</p>
+                      <tr>
+                        <th>
+                          <h6 className="mb-0 text-sm">1</h6>
+                        </th>
+                        <th>
+                          <h6 className="mb-0 text-sm">2</h6>
+                        </th>
+                        <th>
+                          <h6 className="mb-0 text-sm">3</h6>
+                        </th>
+                        <th>
+                          <h6 className="mb-0 text-sm">4</h6>
+                        </th>
+                        <th>
+                          <h6 className="mb-0 text-sm">5</h6>
+                        </th>
+                        <th>
+                          <h6 className="mb-0 text-sm">6</h6>
+                        </th>
+                        <th>
+                          <h6 className="mb-0 text-sm">7</h6>
+                        </th>
+                      </tr>
+                      <tr>
+                        <th>
+                          <p className="mb-0 text-sm">1</p>
+                        </th>
+                        <th>
+                          <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
+                            Keandalan (<i data-f-italic="true">reliability</i>): kemampuan dosen, tenaga kependidikan, dan pengelolaan dalam memberikan pelayanan.
+                          </p>
+                        </th>
+                        <th>
+                                  <p className="mb-0 text-sm ">{tampilKepuasanmhs.keandalan_4}</p>
                                 </th>
                                 <th>
-                                  <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
-                                    Kepastian  (<i data-f-italic="true">assurance</i>): kemampuan dosen, tenaga kependidikan, dan pengelola untuk memberi keyakinan kepada mahasiswa bahwa pelayanan yang diberikan telah sesuai dengan ketentuan.
-                                  </p>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_3}</p>
                                 </th>
                                 <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.kepastian_4}</p>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_2}</p>
                                 </th>
                                 <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.kepastian_3}</p>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_1}</p>
                                 </th>
                                 <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.kepastian_2}</p>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_keandalan}</p>
                                 </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.kepastian_1}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.tl_kepastian}</p>
-                                </th>
-                              </tr>
+                      </tr>
 
-                              <tr>
-                                <th>
-                                  <p className="mb-0 text-sm">4</p>
-                                </th>
-                                <th>
-                                  <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
-                                    Empati  (<i data-f-italic="true">empathy</i>): kesediaan/kepedulian dosen, tenaga kependidikan, dan pengelola untuk memberi perhatian kepada mahasiswa.
-                                  </p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.empati_4}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.empati_3}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.empati_2}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.empati_1}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.tl_empati}</p>
-                                </th>
-                              </tr>
 
-                              <tr>
-                                <th>
-                                  <p className="mb-0 text-sm">5</p>
+                      <tr>
+                        <th>
+                          <p className="mb-0 text-sm">2</p>
+                        </th>
+                        <th>
+                          <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
+                            Daya tanggap  (<i data-f-italic="true">responsiveness</i>): kemauan dari dosen, tenaga kependidikan, dan pengelola dalam membantu mahasiswa dan memberikan jasa dengan cepat.
+                          </p>
+                        </th>
+                        <th>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_4}</p>
                                 </th>
                                 <th>
-                                  <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
-                                    (<i data-f-italic="true">Tangible</i>): penilaian mahasiswa terhadap kecukupan, aksesibitas, kualitas sarana dan prasarana.
-                                  </p>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_3}</p>
                                 </th>
                                 <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.tangible_4}</p>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_2}</p>
                                 </th>
                                 <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.tangible_3}</p>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_1}</p>
                                 </th>
                                 <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.tangible_2}</p>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_dayatanggap}</p>
+                                </th>
+                      </tr>
+
+                      <tr>
+                        <th>
+                          <p className="mb-0 text-sm">3</p>
+                        </th>
+                        <th>
+                          <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
+                            Kepastian  (<i data-f-italic="true">assurance</i>): kemampuan dosen, tenaga kependidikan, dan pengelola untuk memberi keyakinan kepada mahasiswa bahwa pelayanan yang diberikan telah sesuai dengan ketentuan.
+                          </p>
+                        </th>
+                        <th>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_4}</p>
                                 </th>
                                 <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.tangible_1}</p>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_3}</p>
                                 </th>
                                 <th>
-                                  <p className="mb-0 text-sm">{kepuasanmap.tl_tangible}</p>
-                                </th>
-                              </tr>
-                              <tr>
-                                <th colspan="2">
-                                  <h6 className="mb-0 text-sm">Jumlah</h6>
-                                </th>
-                                
-                                <th>
-                                  <h6 className="mb-0 text-sm">{kepuasanmap.keandalan_4 + kepuasanmap.dayatanggap_4 + kepuasanmap.kepastian_4 + kepuasanmap.empati_4 + kepuasanmap.tangible_4}</h6>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_2}</p>
                                 </th>
                                 <th>
-                                  <h6 className="mb-0 text-sm">{kepuasanmap.keandalan_3 + kepuasanmap.dayatanggap_3 + kepuasanmap.kepastian_3 + kepuasanmap.empati_3 + kepuasanmap.tangible_3}</h6>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_1}</p>
                                 </th>
                                 <th>
-                                  <h6 className="mb-0 text-sm">{kepuasanmap.keandalan_2 + kepuasanmap.dayatanggap_2 + kepuasanmap.kepastian_2 + kepuasanmap.empati_2 + kepuasanmap.tangible_2}</h6>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_kepastian}</p>
+                                </th>
+                      </tr>
+
+                      <tr>
+                        <th>
+                          <p className="mb-0 text-sm">4</p>
+                        </th>
+                        <th>
+                          <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
+                            Empati  (<i data-f-italic="true">empathy</i>): kesediaan/kepedulian dosen, tenaga kependidikan, dan pengelola untuk memberi perhatian kepada mahasiswa.
+                          </p>
+                        </th>
+                        <th>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_4}</p>
                                 </th>
                                 <th>
-                                  <h6 className="mb-0 text-sm">{kepuasanmap.keandalan_1 + kepuasanmap.dayatanggap_1 + kepuasanmap.kepastian_1 + kepuasanmap.empati_1 + kepuasanmap.tangible_1}</h6>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_3}</p>
+                                </th>
+                                <th>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_2}</p>
+                                </th>
+                                <th>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_1}</p>
+                                </th>
+                                <th>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_empati}</p>
+                                </th>
+                      </tr>
+
+                      <tr>
+                        <th>
+                          <p className="mb-0 text-sm">5</p>
+                        </th>
+                        <th>
+                          <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
+                            (<i data-f-italic="true">Tangible</i>): penilaian mahasiswa terhadap kecukupan, aksesibitas, kualitas sarana dan prasarana.
+                          </p>
+                        </th>
+                        <th>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_4}</p>
+                                </th>
+                                <th>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_3}</p>
+                                </th>
+                                <th>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_2}</p>
+                                </th>
+                                <th>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_1}</p>
+                                </th>
+                                <th>
+                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_tangible}</p>
+                                </th>
+                      </tr>
+                      <tr>
+                        <th colspan="2">
+                          <h6 className="mb-0 text-sm">Jumlah</h6>
+                        </th>
+
+                        <th>
+                                  <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_4 + tampilKepuasanmhs.dayatanggap_4 + tampilKepuasanmhs.kepastian_4 + tampilKepuasanmhs.empati_4 + tampilKepuasanmhs.tangible_4}</h6>
+                                </th>
+                                <th>
+                                  <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_3 + tampilKepuasanmhs.dayatanggap_3 + tampilKepuasanmhs.kepastian_3 + tampilKepuasanmhs.empati_3 + tampilKepuasanmhs.tangible_3}</h6>
+                                </th>
+                                <th>
+                                  <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_2 + tampilKepuasanmhs.dayatanggap_2 + tampilKepuasanmhs.kepastian_2 + tampilKepuasanmhs.empati_2 + tampilKepuasanmhs.tangible_2}</h6>
+                                </th>
+                                <th>
+                                  <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_1 + tampilKepuasanmhs.dayatanggap_1 + tampilKepuasanmhs.kepastian_1 + tampilKepuasanmhs.empati_1 + tampilKepuasanmhs.tangible_1}</h6>
                                 </th>
                                 <th>
                                   <h6 className="mb-0 text-sm"></h6>
                                 </th>
-                              </tr>
-                            </tbody>
-                          );
-                        }
-                      })}
-
-
+                      </tr>
                     </table>
                   </div>
                 </div>

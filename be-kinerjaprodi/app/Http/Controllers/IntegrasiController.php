@@ -17,7 +17,7 @@ class IntegrasiController extends Controller
     {
         return response()->json([ //ngirim ke front end
             'success' => true,
-            'all_integrasi' => Integrasi::with(['profil_dosen', 'penelitian', 'pkm', 'matkul'])->get(),
+            'all_integrasi' => Integrasi::with(['profil_dosen', 'penelitian', 'pkm', 'matkul', 'anggotaDosens', 'anggotaMatkuls'])->get(),
         ]);
     }
 
@@ -47,8 +47,6 @@ class IntegrasiController extends Controller
             'tahun' => 'required',
             'file_bukti' => "required|mimetypes:application/pdf|max:10000",
             'dosen_id' => 'required',
-            'penelitian_id' => 'required',
-            'PkM_id' => 'required',
             'matkul_id' => 'required'
 
         ]);
@@ -114,7 +112,7 @@ class IntegrasiController extends Controller
     {
         return response()->json([
             'success' => true,
-            'all_integrasi' => Integrasi::with(['profil_dosen', 'penelitian', 'pkm', 'matkul'])->where('id', $id)->first(),
+            'all_integrasi' => Integrasi::with(['profil_dosen', 'penelitian', 'pkm', 'matkul', 'anggotaDosens', 'anggotaMatkuls'])->where('id', $id)->first(),
             'id' => $id
         ]);
     }
@@ -148,8 +146,6 @@ class IntegrasiController extends Controller
             'tahun' => 'required',
             'file_bukti' => "required|mimetypes:application/pdf|max:10000",
             'dosen_id' => 'required',
-            'penelitian_id' => 'required',
-            'PkM_id' => 'required',
             'matkul_id' => 'required'
         ]);
 

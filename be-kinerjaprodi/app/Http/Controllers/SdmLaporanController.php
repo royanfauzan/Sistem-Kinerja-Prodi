@@ -361,25 +361,42 @@ class SdmLaporanController extends Controller
 
     public function testambildata(Request $request,$tahun)
     {
+        $tahunlist = $this->tahuntsgenerator($tahun,'akademik');
 
-        $profildos = profilDosen::with('mengajars.matkul.prodi','pendidikans','detaildosen.serkoms')->get();
+        $profildos = profilDosen::with('mengajars.matkul.prodi','pendidikans','detaildosen.serkoms')->where('StatusDosen','dosen tetap')
+        ->whereRelation('mengajars.matkul','tahun_akademik',$tahunlist->ts)
+        ->orWhereRelation('mengajars.matkul','tahun_akademik',$tahunlist->ts1)
+        ->orWhereRelation('mengajars.matkul','tahun_akademik',$tahunlist->ts2)->get();
 
         $listDosen = array();
+        $listMengajars = array();
 
         foreach ($profildos as $key => $profilds) {
             $profilSementara = $profilds;
             $profilmengajar = $profilds->mengajars;
-            $mengajars = $profilmengajar->filter(function ($mgj, $key) {
-                return $mgj->matkul->prodi_id == 1;
-            });
-            $mengajarUnique = $mengajars->unique('matkul.kode_matkul');
-            $profilSementara->mengajars = $mengajarUnique;
-            $listDosen[] = $mengajarUnique;
+            $listMengajars[] = $profilmengajar->where('matkul.prodi_id',1);
+            $mengajars = $listMengajars[$key];
+            // $mengajars = $profilmengajar->filter(function ($mgj, $key) {
+            //     return $mgj->matkul->prodi_id == 1;
+            // });
+            $mengajarUnique = collect($mengajars->unique('matkul.kode_matkul'));
+            $arrMengajar=array();
+            foreach ($mengajarUnique as $mUnikKey => $mUnik) {
+                if ($mUnik) {
+                    $arrMengajar[] = $mUnik;
+                }
+            }
+            $profilSementara->mengajars = $arrMengajar;
+            $profilSementara->mengajarUns = $arrMengajar;
+
+            // $profilLengkap = collect($profilSementara);
+            $listDosen[] = $profilSementara;
         }
 
         return response()->json([
             'success' => true,
             'all_data' => $listDosen,
+            'dataMengajar' => $listMengajars
         ]);
     }
 }

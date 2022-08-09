@@ -23,6 +23,7 @@ class CreateProfilDosensTable extends Migration
             $table->string('JenisKelamin');
             $table->string('StatusPerkawinan');
             $table->string('Agama');
+            $table->string('StatusDosen')->default("dosen tetap");
             $table->string('Golongan')->default("");
             $table->string('Pangkat')->default("");
             $table->string('JabatanAkademik')->default("");

@@ -39,11 +39,12 @@ class MatkulController extends Controller
      */
     public function store(Request $request)
     {
-        $datamatkul = $request->only('nama_matkul', 'sks', 'prodi_id');
+        $datamatkul = $request->only('nama_matkul', 'sks', 'prodi_id', 'kode_matkul');
 
        //valid credential
        $validator = Validator::make($datamatkul, [
            'nama_matkul' => 'required',
+           'kode_matkul' => 'required',
            'sks' => 'required',
            'prodi_id' => 'required'
        ]);
@@ -57,6 +58,7 @@ class MatkulController extends Controller
            [
                //yg kiri dari form, kanan dari database
                'nama_matkul' => $request->nama_matkul,
+               'kode_matkul' => $request->nama_matkul,
                'sks' => $request->sks,
                'prodi_id' => $request->prodi_id,
            ]
@@ -108,11 +110,12 @@ class MatkulController extends Controller
     public function update(Request $request, $id)
     {
         $matkul = Matkul::where('id', $id)->first();
-        $datamatkul = $request->only('nama_matkul', 'sks', 'prodi_id');
+        $datamatkul = $request->only('nama_matkul','kode_matkul', 'sks', 'prodi_id');
 
        //valid credential
        $validator = Validator::make($datamatkul, [
            'nama_matkul' => 'required',
+           'kode_matkul' => 'required',
            'sks' => 'required',
            'prodi_id' => 'required'
        ]);
@@ -123,6 +126,7 @@ class MatkulController extends Controller
        }
 
        $matkul->nama_matkul = $request->nama_matkul;
+       $matkul->kode_matkul = $request->kode_matkul;
         $matkul->sks = $request->sks;
         $matkul->prodi_id = $request->prodi_id;
         $matkul->save();

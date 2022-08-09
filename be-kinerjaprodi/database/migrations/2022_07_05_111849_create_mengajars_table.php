@@ -17,6 +17,7 @@ class CreateMengajarsTable extends Migration
             $table->id();
             $table->string('tahun_akademik');
             $table->string('semester');
+            $table->string('kesesuaian')->default('V');
             $table->foreignId('profil_dosen_id');
             $table->foreignId('matkul_id');
             $table->timestamps();

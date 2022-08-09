@@ -19,4 +19,9 @@ class CapKurikulum extends Model
     {
         return $this->belongsTo(Prodi::class,'prodi_ID','id');
     }
+
+    public function anggotaMatkuls()
+    {
+        return $this->belongsToMany(Matkul::class,'relasi_cap_matkuls','cap_kurikulum_id','matkul_ID')->withPivot('keanggotaan');
+    }
 }

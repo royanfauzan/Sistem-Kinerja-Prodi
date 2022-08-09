@@ -25,9 +25,9 @@ export default function inputipk() {
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_prodi } = response.data;
-        setuserDosens(all_prodi);
-        console.log(all_prodi);
+        const { Prodi } = response.data;
+        setuserDosens(Prodi);
+        console.log(Prodi);
       })
       .catch(function (err) {
         console.log("gagal");

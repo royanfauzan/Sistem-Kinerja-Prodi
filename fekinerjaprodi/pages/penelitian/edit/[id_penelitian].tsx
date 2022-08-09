@@ -129,7 +129,7 @@ export default function update_datapenelitian(props) {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(response.data);
-        // router.push("/");
+        router.push("../../penelitian/daftarpenelitian");
       })
       .catch(function (error) {
         //handle error
@@ -164,7 +164,6 @@ export default function update_datapenelitian(props) {
                       >
                         Simpan
                       </button>
-                     
                     </div>
                   </div>
                   <div className="card-body">

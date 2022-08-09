@@ -88,6 +88,7 @@ export default function inputmatkul() {
     const lgToken = localStorage.getItem("token");
 
     let formData = new FormData();
+    formData.append("kode_matkul", event.target.kode_matkul.value);
     formData.append("nama_matkul", event.target.nama_matkul.value);
     formData.append("sks", event.target.sks.value);
     formData.append("prodi_id", event.target.prodi_id.value);
@@ -151,6 +152,21 @@ export default function inputmatkul() {
                   <div className="card-body">
                     <p className="text-uppercase text-sm">Mata Kuliah</p>
                     <div className="row">
+
+                    <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="kode_matkul" className="form-control-label">
+                            Kode Mata kuliah
+                          </label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Kode Matkul"
+                            id="kode_matkul"
+                            required
+                          />
+                        </div>
+                      </div>
                       
                       <div className="col-md-6">
                         <div className="form-group">

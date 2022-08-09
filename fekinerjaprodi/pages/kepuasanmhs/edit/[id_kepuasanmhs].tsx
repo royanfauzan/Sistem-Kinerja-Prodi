@@ -154,7 +154,7 @@ export default function update_datakepuasanmhs(props) {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(response.data);
-        // router.push("/");
+        router.push("../../kepuasanmhs/daftarkepuasa");
       })
       .catch(function (error) {
         //handle error

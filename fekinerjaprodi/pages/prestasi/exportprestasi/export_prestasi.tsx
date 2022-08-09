@@ -129,13 +129,13 @@ export default function daftarprestasi() {
                         <thead>
                           <tr>
                             <th rowspan="2">No</th>
-                            <th  rowspan="2" >Nama Kegiatan</th>
+                            <th  rowspan="2">Nama Kegiatan</th>
                             <th rowspan="2">Waktu Pengelolaan</th>
                             <th colspan="3">Tingkat</th>
                             <th rowspan="2">Prestasi yang Dicapai</th>
                           </tr>
                           <tr>
-                            <th>Lokal / Wilayah</th>
+                            <th>Lokal / <br /> Wilayah</th>
                             <th>Nasional</th>
                             <th>Internasional</th>
                           </tr>

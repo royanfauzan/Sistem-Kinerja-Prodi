@@ -16,7 +16,7 @@ class MatkulController extends Controller
     public function index()
     {
         return response()->json([ //ngirim ke front end
-            'success' => true, 
+            'success' => true,
             'all_matkul' => Matkul::all()
         ]);
     }
@@ -39,39 +39,40 @@ class MatkulController extends Controller
      */
     public function store(Request $request)
     {
-        $datamatkul = $request->only('nama_matkul', 'sks', 'prodi_id', 'kode_matkul');
+        $datamatkul = $request->only('kode_matkul', 'nama_matkul', 'sks', 'prodi_id');
 
-       //valid credential
-       $validator = Validator::make($datamatkul, [
-           'nama_matkul' => 'required',
-           'kode_matkul' => 'required',
-           'sks' => 'required',
-           'prodi_id' => 'required'
-       ]);
+        //valid credential
+        $validator = Validator::make($datamatkul, [
+            'kode_matkul' => 'required',
+            'nama_matkul' => 'required',
+            'sks' => 'required',
+            'prodi_id' => 'required'
+        ]);
 
-       //Send failed response if request is not valid
-       if ($validator->fails()) {
-           return response()->json(['error' => $validator->errors()], 200);
-       }
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 200);
+        }
 
-       $datamatkul = Matkul::create( //ngirim ke database
-           [
-               //yg kiri dari form, kanan dari database
-               'nama_matkul' => $request->nama_matkul,
-               'kode_matkul' => $request->nama_matkul,
-               'sks' => $request->sks,
-               'prodi_id' => $request->prodi_id,
-           ]
-       );
+        $datamatkul = Matkul::create( //ngirim ke database
+            [
+                //yg kiri dari form, kanan dari database
+                'kode_matkul' => $request->kode_matkul,
+                'nama_matkul' => $request->nama_matkul,
+                'sks' => $request->sks,
+                'prodi_id' => $request->prodi_id,
+            ]
+        );
 
-       //Token created, return with success response and jwt token
-       return response()->json([ //ngirim ke front end
-           'success' => true, 
-           'nama_matkul' => $request->nama_matkul,
-           'sks' => $request->sks,
-           'prodi_id' => $request->prodi_id,
-           'all_matkul' => Matkul::all()
-       ]);
+        //Token created, return with success response and jwt token
+        return response()->json([ //ngirim ke front end
+            'success' => true,
+            'kode_matkul' => $request->kode_matkul,
+            'nama_matkul' => $request->nama_matkul,
+            'sks' => $request->sks,
+            'prodi_id' => $request->prodi_id,
+            'all_matkul' => Matkul::all()
+        ]);
     }
 
     /**
@@ -84,7 +85,7 @@ class MatkulController extends Controller
     {
         return response()->json([
             'success' => true,
-            'all_mhs' => Matkul::find($id),
+            'all_matkul' => Matkul::find($id),
             'id' => $id
         ]);
     }
@@ -110,20 +111,20 @@ class MatkulController extends Controller
     public function update(Request $request, $id)
     {
         $matkul = Matkul::where('id', $id)->first();
-        $datamatkul = $request->only('nama_matkul','kode_matkul', 'sks', 'prodi_id');
+        $datamatkul = $request->only('kode_matkul', 'nama_matkul', 'sks', 'prodi_id');
 
-       //valid credential
-       $validator = Validator::make($datamatkul, [
-           'nama_matkul' => 'required',
-           'kode_matkul' => 'required',
-           'sks' => 'required',
-           'prodi_id' => 'required'
-       ]);
+        //valid credential
+        $validator = Validator::make($datamatkul, [
+            'kode_matkul' => 'required',
+            'nama_matkul' => 'required',
+            'sks' => 'required',
+            'prodi_id' => 'required'
+        ]);
 
-       //Send failed response if request is not valid
-       if ($validator->fails()) {
-           return response()->json(['error' => $validator->errors()], 200);
-       }
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 200);
+        }
 
        $matkul->nama_matkul = $request->nama_matkul;
        $matkul->kode_matkul = $request->kode_matkul;
@@ -131,14 +132,15 @@ class MatkulController extends Controller
         $matkul->prodi_id = $request->prodi_id;
         $matkul->save();
 
-       //Token created, return with success response and jwt token
-       return response()->json([ //ngirim ke front end
-           'success' => true, 
-           'nama_matkul' => $request->nama_matkul,
-           'sks' => $request->sks,
-           'prodi_id' => $request->prodi_id,
-           'all_mhs' => Matkul::all()
-       ]);
+        //Token created, return with success response and jwt token
+        return response()->json([ //ngirim ke front end
+            'success' => true,
+            'kode_matkul' => $request->kode_matkul,
+            'nama_matkul' => $request->nama_matkul,
+            'sks' => $request->sks,
+            'prodi_id' => $request->prodi_id,
+            'all_matkul' => Matkul::all()
+        ]);
     }
 
     /**

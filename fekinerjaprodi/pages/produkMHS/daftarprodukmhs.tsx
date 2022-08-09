@@ -103,15 +103,6 @@ export default function daftarprodkmhs() {
                       </Link>
                     </div>
                   </div>
-                  <div className="col-4 d-flex flex-row-reverse">
-                    <div className="align-middle">
-                      <Link href={`/produkMHS/export/exportmatkul/`}>
-                        <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                          Export Tabel
-                        </button>
-                      </Link>
-                    </div>
-                  </div>
                 </div>
                 <div className="card-body p-3">
                   <div className="table-responsive p-0">

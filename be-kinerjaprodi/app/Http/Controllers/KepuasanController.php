@@ -138,6 +138,22 @@ class KepuasanController extends Controller
         ]);
     }
 
+
+    public function listtahun(Request $request)
+    {
+        //
+        $allewmps = Ewmp::all()->groupBy('tahun_akademik');
+        $arrTahun = array();
+        foreach ($allewmps as $key => $ewmp) {
+            $arrTahun[] = $ewmp[0]->tahun_akademik;
+        }
+        return response()->json([
+            'success' => true,
+            'tahunewmps' => $arrTahun,
+        ]);
+    }
+}
+
     /**
      * Remove the specified resource from storage.
      *
@@ -148,4 +164,5 @@ class KepuasanController extends Controller
     {
         //
     }
+
 }

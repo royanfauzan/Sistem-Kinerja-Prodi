@@ -14,13 +14,13 @@ export default function capkurikulum() {
 
   const [userProdis, setuserProdis] = useState([]);
   const [userMatkuls, setuserMatkuls] = useState([]);
-  
+
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
+  const pengambilData = async () => {
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/Prodi",
@@ -28,18 +28,18 @@ export default function capkurikulum() {
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_prodi } = response.data;
-        setuserProdis(all_prodi);
-        console.log(all_prodi);
+        const { Prodi } = response.data;
+        setuserProdis(Prodi);
+        console.log(Prodi);
       })
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
       });
 
-        
-   // pake ngambil data untuk halaman input
-   
+
+    // pake ngambil data untuk halaman input
+
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/Matkul",
@@ -56,16 +56,16 @@ export default function capkurikulum() {
         console.log(err.response);
       });
 
-    }
+  }
 
 
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
+  useEffect(() => {
     // cek token, kalo gaada disuruh login
     const lgToken = localStorage.getItem('token');
-    if(!lgToken){
+    if (!lgToken) {
       router.push('/login')
     }
 
@@ -75,24 +75,24 @@ export default function capkurikulum() {
       url: "http://127.0.0.1:8000/api/get_user",
       headers: { "Authorization": `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-    })
-    .catch(function (err) {
+      .then(function (response) {
+        console.log(response);
+        console.log('Sukses');
+        const { level_akses } = response.data.user;
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push('/');
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+      })
+      .catch(function (err) {
         console.log('gagal');
         console.log(err.response);
         return router.push('/');
-    })
-  },[]);
+      })
+  }, []);
 
 
 
@@ -155,292 +155,293 @@ export default function capkurikulum() {
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
         <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetailDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetailDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <p className="mb-0">Input Data</p>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Simpan
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="card-body">
-                    <p className="text-uppercase text-sm">Capaian Kurikulum</p>
-                    <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="prodi" className="form-control-label">
-                            Program Studi
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="prodi"
-                          >
-                            <option>Pilih Program Studi</option>
-                            {userProdis.map((userProdi) => {
-                              {
-                                return (
-                                  <option
-                                    value={userProdi.id}
-                                    key={userProdi.id}
-                                  >
-                                    {userProdi.prodi + ' ' + userProdi.nama_prodi}
-                                  </option>
-                                );
-                              }
-                            })}
-                          </select>
+                    <div className="card-body">
+                      <p className="text-uppercase text-sm">Capaian Kurikulum</p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="prodi" className="form-control-label">
+                              Program Studi
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
+                              id="prodi"
+                            >
+                              <option>Pilih Program Studi</option>
+                              {userProdis.map((userProdi) => {
+                                {
+                                  return (
+                                    <option
+                                      value={userProdi.id}
+                                      key={userProdi.id}
+                                    >
+                                      {userProdi.prodi + ' ' + userProdi.nama_prodi}
+                                    </option>
+                                  );
+                                }
+                              })}
+                            </select>
+                          </div>
                         </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="matkul" className="form-control-label">
-                            Mata Kuliah
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="matkul"
-                          >
-                            <option>Pilih Mata Kuliah</option>
-                            {userMatkuls.map((userMatkul) => {
-                               {
-                                return (
-                                  <option
-                                    value={userMatkul.id}
-                                    key={userMatkul.id}
-                                  >
-                                    {userMatkul.nama_matkul + ' ' + userMatkul.sks}
-                                  </option>
-                                );
-                              }
-                            })}
-                          </select>
-                        </div>
-                      </div>
-
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="semester" className="form-control-label">
-                            Semester
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Semester"
-                            id="semester"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tahun" className="form-control-label">
-                            Tahun
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tahun"
-                            id="tahun"
-                            required
-                          />
-                        </div>
-                      </div>   
-
-                         
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="matkul_kompetensi" className="form-control-label">
-                            Mata Kuliah Kompetensi
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Mata Kuliah Kompetensi"
-                            id="matkul_kompetensi"
-                            required
-                          />
-                        </div>
-                      </div>       
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="kuliah_responsi_tutorial" className="form-control-label">
-                            Kuliah Responsi Tutorial
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Kuliah Responsi Tutorial"
-                            id="kuliah_responsi_tutorial"
-                            required
-                          />
-                        </div>
-                      </div>             
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="seminar" className="form-control-label">
-                            Seminar
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Seminar"
-                            id="seminar"
-                            required
-                          />
-                        </div>
-                      </div>            
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="praktikum" className="form-control-label">
-                            Praktikum
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Praktikum"
-                            id="praktikum"
-                            required
-                          />
-                        </div>
-                      </div>     
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="konv_kredit_jam" className="form-control-label">
-                            Konversi Kredit Jam
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Konversi Kredit Jam"
-                            id="konv_kredit_jam"
-                            required
-                          />
-                        </div>
-                      </div>         
 
                         <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="sikap" className="form-control-label">
-                            Sikap
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Sikap"
-                            id="sikap"
-                            required
-                          />
+                          <div className="form-group">
+                            <label htmlFor="matkul" className="form-control-label">
+                              Mata Kuliah
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
+                              id="matkul"
+                            >
+                              <option>Pilih Mata Kuliah</option>
+                              {userMatkuls.map((userMatkul) => {
+                                {
+                                  return (
+                                    <option
+                                      value={userMatkul.id}
+                                      key={userMatkul.id}
+                                    >
+                                      {userMatkul.nama_matkul + ' ' + userMatkul.sks}
+                                    </option>
+                                  );
+                                }
+                              })}
+                            </select>
+                          </div>
                         </div>
-                      </div> 
 
-                       <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="pengetahuan" className="form-control-label">
-                            Pengetahuan
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Pengetahuan"
-                            id="pengetahuan"
-                            required
-                          />
-                        </div>
-                      </div>              
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="ketrampilan_umum" className="form-control-label">
-                            Ketrampilan Umum
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Ketrampilan Umum"
-                            id="ketrampilan_umum"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="semester" className="form-control-label">
+                              Semester
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Semester"
+                              id="semester"
+                              required
+                            />
+                          </div>
                         </div>
-                      </div>            
+                        
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="tahun" className="form-control-label">
+                              Tahun
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tahun"
+                              id="tahun"
+                              required
+                            />
+                          </div>
+                        </div>
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="khusus" className="form-control-label">
-                            Ketrampilan Khusus
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Ketrampilan Khusus"
-                            id="ketrampilan_khusus"
-                            required
-                          />
-                        </div>
-                      </div>          
 
-                         <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="dok_ren_pembelajaran" className="form-control-label">
-                            Dokumen Rencana Pembelajaran
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Dokumen Rencana Pembelajaran"
-                            id="dok_ren_pembelajaran"
-                            required
-                          />
-                        </div>
-                      </div>      
 
-                          <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="unit_penyelenggara" className="form-control-label">
-                            Unit Penyelenggara
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Unit Penyelenggara"
-                            id="unit_penyelenggara"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="matkul_kompetensi" className="form-control-label">
+                              Mata Kuliah Kompetensi
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Mata Kuliah Kompetensi"
+                              id="matkul_kompetensi"
+                              required
+                            />
+                          </div>
                         </div>
-                      </div>                          
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="kuliah_responsi_tutorial" className="form-control-label">
+                              Kuliah Responsi Tutorial
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Kuliah Responsi Tutorial"
+                              id="kuliah_responsi_tutorial"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="seminar" className="form-control-label">
+                              Seminar
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Seminar"
+                              id="seminar"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="praktikum" className="form-control-label">
+                              Praktikum
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Praktikum"
+                              id="praktikum"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="konv_kredit_jam" className="form-control-label">
+                              Konversi Kredit Jam
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Konversi Kredit Jam"
+                              id="konv_kredit_jam"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="sikap" className="form-control-label">
+                              Sikap
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Sikap"
+                              id="sikap"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="pengetahuan" className="form-control-label">
+                              Pengetahuan
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Pengetahuan"
+                              id="pengetahuan"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="ketrampilan_umum" className="form-control-label">
+                              Ketrampilan Umum
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Ketrampilan Umum"
+                              id="ketrampilan_umum"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="khusus" className="form-control-label">
+                              Ketrampilan Khusus
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Ketrampilan Khusus"
+                              id="ketrampilan_khusus"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="dok_ren_pembelajaran" className="form-control-label">
+                              Dokumen Rencana Pembelajaran
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Dokumen Rencana Pembelajaran"
+                              id="dok_ren_pembelajaran"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="unit_penyelenggara" className="form-control-label">
+                              Unit Penyelenggara
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Unit Penyelenggara"
+                              id="unit_penyelenggara"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+        </LayoutForm>
       )}
     </>
   );

@@ -27,9 +27,9 @@ export default function inputkepuasanmhs() {
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_prodi } = response.data;
-        setuserProdis(all_prodi);
-        console.log(all_prodi);
+        const { Prodi } = response.data;
+        setuserProdis(Prodi);
+        console.log(Prodi);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -124,13 +124,13 @@ export default function inputkepuasanmhs() {
       },
     })
       .then(function (response) {
-        const { all_capkurikulum } = response.data;
+        const { all_mhs } = response.data;
         //handle success
         toast.dismiss();
         toast.success("Input Sukses!");
         // console.log(token);
-        console.log(all_capkurikulum);
-        router.push("/");
+        console.log(all_mhs);
+        router.push("../kepuasanmhs/daftarkepuasanmhs");
       })
       .catch(function (error) {
         //handle error

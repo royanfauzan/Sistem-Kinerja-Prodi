@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
@@ -68,6 +68,8 @@ export default function update_dataintegrasi(props) {
   const [dataPKM, setdataPKM] = useState(PKM);
   const [datamatkul, setdatamatkul] = useState(matkul);
   const [filebukti, setfilebuktis] = useState<File>([]);
+  const penelitianref = useRef(null);
+  const pkmref = useRef(null);
 
 
   // state pake test user
@@ -78,6 +80,16 @@ export default function update_dataintegrasi(props) {
   const [selectPenelitian, setSelectPenelitian] = useState(integrasi.penelitian_id);
   const [selectPKM, setselectPKM] = useState(integrasi.PkM_id);
   const [selectMatkul, setselectMatkul] = useState(integrasi.matkul_id);
+
+  const handleChangepnltn= (e) => {
+    setSelectPenelitian(e.target.value);
+    pkmref.current.value = null
+  };
+
+  const handleChangepkm = (e) => {
+    setselectPKM(e.target.value);
+    penelitianref.current.value = null
+  };
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () => {
@@ -197,15 +209,7 @@ export default function update_dataintegrasi(props) {
 
   };
 
-  const handleChangePenelitian = (e) => {
-    setSelectPenelitian(e.target.value);
-
-  };
-
-  const handleChangePKM = (e) => {
-    setselectPKM(e.target.value);
-
-  };
+  
 
   const handleChangeMatkul = (e) => {
     setselectMatkul(e.target.value);
@@ -216,6 +220,8 @@ export default function update_dataintegrasi(props) {
     setfilebuktis(e.target.files[0]);
 
   };
+
+
 
   return (
     <>
@@ -280,9 +286,10 @@ export default function update_dataintegrasi(props) {
                             <select
                               className="form-select"
                               aria-label="Default select example"
-                              value={selectPenelitian}
+                              ref={penelitianref}
+                              defaultValue={selectPenelitian}
                               id="penelitian"
-                              onChange={handleChangePenelitian}
+                              onChange={handleChangepnltn}
                             >
                               <option>Pilih Penelitian</option>
                               {dataPenelitian.map((Integrasi) => {
@@ -309,9 +316,10 @@ export default function update_dataintegrasi(props) {
                             <select
                               className="form-select"
                               aria-label="Default select example"
-                              value={selectPKM}
+                              ref={pkmref}
+                              defaultValue={selectPKM}
                               id="pkm"
-                              onChange={handleChangePKM}
+                              onChange={handleChangepkm}
                             >
                               <option>Pilih NIDK User</option>
                               {dataPKM.map((dataPKM) => {

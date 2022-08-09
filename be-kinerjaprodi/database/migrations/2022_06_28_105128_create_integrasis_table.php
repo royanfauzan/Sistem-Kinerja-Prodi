@@ -19,8 +19,8 @@ class CreateIntegrasisTable extends Migration
             $table->string('tahun');
             $table->string('file_bukti');
             $table->foreignId('dosen_id');
-            $table->foreignId('penelitian_id');
-            $table->foreignId('PkM_id');
+            $table->foreignId('penelitian_id')->nullable();
+            $table->foreignId('PkM_id')->nullable();
             $table->foreignId('matkul_id');
             $table->timestamps();
         });

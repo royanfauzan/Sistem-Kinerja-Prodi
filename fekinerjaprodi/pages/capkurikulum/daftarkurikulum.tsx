@@ -105,7 +105,7 @@ export default function daftarkurikulum() {
                   </div>
                   <div className="col-4 d-flex flex-row-reverse">
                     <div className="align-middle">
-                      <Link href={`/produkMHS/export/exportmatkul/`}>
+                      <Link href={`/capkurikulum/export/exportcapkurikulum/`}>
                         <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                           Export Tabel
                         </button>
@@ -176,7 +176,7 @@ export default function daftarkurikulum() {
                             <tr key={`kurikulum` + kurikulum.id}>
 
                               <td className="ps-3">
-                                <h6 className="mb-0 text-sm ">{number + 1}</h6>
+                                <p className="mb-0 text-sm ">{number + 1}</p>
                               </td>
 
                               <td className="align-middle text-sm" >

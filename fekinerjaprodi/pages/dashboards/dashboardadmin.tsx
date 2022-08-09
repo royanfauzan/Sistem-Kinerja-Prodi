@@ -5,15 +5,15 @@ import toast from "react-hot-toast";
 import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import MenuCardUtama from "../../components/Molecule/MenuCard/MenuCardUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutForm";
+import LayoutForm from "../../components/Organism/Layout/LayoutDashboard";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 
 export default function dashboardadmin() {
   const router = useRouter();
 
   const linkKelola = {
-      profilDsn:"/profildosen/daftarprofil",
-  }
+    profilDsn: "/profildosen/daftarprofil",
+  };
 
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
@@ -79,11 +79,59 @@ export default function dashboardadmin() {
         <LayoutForm>
           <div className="container-fluid py-4">
             <div className="row">
-            <MenuCardUtama judul={`Tulisan Media`} jumlah={`5`} halaman={linkKelola.profilDsn} keterangan={'Data tulisan media yang dibuat oleh dosen'} />
+              <MenuCardUtama
+                judul={`Tulisan Media`}
+                jumlah={`5`}
+                halaman={linkKelola.profilDsn}
+                keterangan={"Data tulisan media yang dibuat oleh dosen"}
+              />
 
-            <MenuCardUtama judul={`Tulisan Media`} jumlah={`5`} halaman={`/TulisanMedia/`} keterangan={'Data tulisan media yang dibuat oleh dosen'} />
-            <MenuCardUtama judul={`Tulisan Media`} jumlah={`5`} halaman={`/TulisanMedia/`} keterangan={'Data tulisan media yang dibuat oleh dosen'} />
-            <MenuCardUtama judul={`Tulisan Media`} jumlah={`5`} halaman={`/TulisanMedia/`} keterangan={'Data tulisan media yang dibuat oleh dosen'} />
+              <MenuCardUtama
+                judul={`Tulisan Media`}
+                jumlah={`5`}
+                halaman={linkKelola.profilDsn}
+                keterangan={"Data tulisan media yang dibuat oleh dosen"}
+              />
+
+              <MenuCardUtama
+                judul={`Tulisan Media`}
+                jumlah={`5`}
+                halaman={linkKelola.profilDsn}
+                keterangan={"Data tulisan media yang dibuat oleh dosen"}
+              />
+
+              <MenuCardUtama
+                judul={`Tulisan Media`}
+                jumlah={`5`}
+                halaman={linkKelola.profilDsn}
+                keterangan={"Data tulisan media yang dibuat oleh dosen"}
+              />
+
+              <MenuCardUtama
+                judul={`Tulisan Media`}
+                jumlah={`5`}
+                halaman={linkKelola.profilDsn}
+                keterangan={"Data tulisan media yang dibuat oleh dosen"}
+              />
+
+              <MenuCardUtama
+                judul={`Tulisan Media`}
+                jumlah={`5`}
+                halaman={`/TulisanMedia/`}
+                keterangan={"Data tulisan media yang dibuat oleh dosen"}
+              />
+              <MenuCardUtama
+                judul={`Tulisan Media`}
+                jumlah={`5`}
+                halaman={`/TulisanMedia/`}
+                keterangan={"Data tulisan media yang dibuat oleh dosen"}
+              />
+              <MenuCardUtama
+                judul={`Tulisan Media`}
+                jumlah={`5`}
+                halaman={`/TulisanMedia/`}
+                keterangan={"Data tulisan media yang dibuat oleh dosen"}
+              />
             </div>
             <FooterUtama />
           </div>

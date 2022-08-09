@@ -112,7 +112,7 @@ export default function inputpenelitian() {
         toast.success("Input Sukses!");
         // console.log(token);
         console.log(all_mhs);
-        router.push("/");
+        router.push("../../penelitian/daftarpenelitian");
       })
       .catch(function (error) {
         //handle error

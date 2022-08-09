@@ -16,7 +16,7 @@ class MahasiswaController extends Controller
     public function index()
     {
         return response()->json([ //ngirim ke front end
-            'success' => true, 
+            'success' => true,
             'all_mhs' => Mahasiswa::all()
         ]);
     }
@@ -39,34 +39,34 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
-       $datamhs = $request->only('nim', 'nama');
+        $datamhs = $request->only('nim', 'nama');
 
-       //valid credential
-       $validator = Validator::make($datamhs, [
-           'nim' => 'required',
-           'nama' => 'required'
-       ]);
+        //valid credential
+        $validator = Validator::make($datamhs, [
+            'nim' => 'required',
+            'nama' => 'required'
+        ]);
 
-       //Send failed response if request is not valid
-       if ($validator->fails()) {
-           return response()->json(['error' => $validator->errors()], 200);
-       }
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 200);
+        }
 
-       $dataprodi = Mahasiswa::create( //ngirim ke database
-           [
-               //yg kiri dari form, kanan dari database
-               'nim' => $request->nim,
-               'nama' => $request->nama,
-           ]
-       );
+        $dataprodi = Mahasiswa::create( //ngirim ke database
+            [
+                //yg kiri dari form, kanan dari database
+                'nim' => $request->nim,
+                'nama' => $request->nama,
+            ]
+        );
 
-       //Token created, return with success response and jwt token
-       return response()->json([ //ngirim ke front end
-           'success' => true, 
-           'nim' => $request->nim,
-           'nama' => $request->nama,
-           'all_mhs' => Mahasiswa::all()
-       ]);
+        //Token created, return with success response and jwt token
+        return response()->json([ //ngirim ke front end
+            'success' => true,
+            'nim' => $request->nim,
+            'nama' => $request->nama,
+            'all_mhs' => Mahasiswa::all()
+        ]);
     }
 
     /**
@@ -107,29 +107,29 @@ class MahasiswaController extends Controller
         $mahasiswa = Mahasiswa::where('id', $id)->first();
         $datamhs = $request->only('nim', 'nama');
 
-       //valid credential
-       $validator = Validator::make($datamhs, [
-           'nim' => 'required',
-           'nama' => 'required'
-       ]);
+        //valid credential
+        $validator = Validator::make($datamhs, [
+            'nim' => 'required',
+            'nama' => 'required'
+        ]);
 
-       //Send failed response if request is not valid
-       if ($validator->fails()) {
-           return response()->json(['error' => $validator->errors()], 200);
-       }
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 200);
+        }
 
-       $mahasiswa->nim = $request->nim;
+        $mahasiswa->nim = $request->nim;
         $mahasiswa->nama = $request->nama;
         $mahasiswa->save();
 
-       
-       //Token created, return with success response and jwt token
-       return response()->json([ //ngirim ke front end
-           'success' => true, 
-           'nim' => $request->nim,
-           'nama' => $request->nama,
-           'all_mhs' => Mahasiswa::all()
-       ]);
+
+        //Token created, return with success response and jwt token
+        return response()->json([ //ngirim ke front end
+            'success' => true,
+            'nim' => $request->nim,
+            'nama' => $request->nama,
+            'all_mhs' => Mahasiswa::all()
+        ]);
     }
 
     /**
@@ -140,6 +140,18 @@ class MahasiswaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $mahasiswa = Mahasiswa::find($id);
+        $mahasiswa->delete();
+
+        if (!$mahasiswa) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

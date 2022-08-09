@@ -9,6 +9,7 @@ use App\Models\Pagelarandos;
 use App\Models\Penelitian;
 use App\Models\Pkm;
 use App\Models\Produk;
+use App\Models\profilDosen;
 use App\Models\Seminardos;
 use Illuminate\Http\Request;
 
@@ -358,14 +359,27 @@ class SdmLaporanController extends Controller
         ]);
     }
 
-    public function testambildata(Request $request)
+    public function testambildata(Request $request,$tahun)
     {
 
-        $produks = Produk::with('anggotaDosens','ketuaProduk')->get();
+        $profildos = profilDosen::with('mengajars.matkul.prodi','pendidikans','detaildosen.serkoms')->get();
+
+        $listDosen = array();
+
+        foreach ($profildos as $key => $profilds) {
+            $profilSementara = $profilds;
+            $profilmengajar = $profilds->mengajars;
+            $mengajars = $profilmengajar->filter(function ($mgj, $key) {
+                return $mgj->matkul->prodi_id == 1;
+            });
+            $mengajarUnique = $mengajars->unique('matkul.kode_matkul');
+            $profilSementara->mengajars = $mengajarUnique;
+            $listDosen[] = $mengajarUnique;
+        }
 
         return response()->json([
             'success' => true,
-            'all_data' => $produks,
+            'all_data' => $listDosen,
         ]);
     }
 }

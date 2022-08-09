@@ -212,6 +212,7 @@ Route::get('laporanpendos/{tahun}', [SdmLaporanController::class, 'exportpendos'
 Route::get('laporanpkmdos/{tahun}', [SdmLaporanController::class, 'exportpkmdos']);
 Route::get('laporanpublikasidos/{tahun}', [SdmLaporanController::class, 'exportpublikasidos']);
 Route::get('laporanprodukdos/{tahun}', [SdmLaporanController::class, 'exportprodukdos']);
+Route::get('laporantestdata/{tahun}', [SdmLaporanController::class, 'testambildata']);
 
 
 

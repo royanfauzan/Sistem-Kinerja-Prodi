@@ -24,4 +24,9 @@ class profilDosen extends Model
     {
         return $this->hasMany(Pendidikan::class,'profil_dosen_id','id');
     }
+
+    public function detaildosen()
+    {
+        return $this->hasOne(Detaildosen::class,'profil_dosen_id','id');
+    }
 }

@@ -22,11 +22,11 @@ export default function CardUtama() {
       </div>
       <div className="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
         <div className="d-flex justify-content-between">
-          <a className="btn btn-sm btn-info mb-0 d-none d-lg-block">Connect</a>
+          <a href="mailto:poltek@pnb.ac.id" className="btn btn-sm btn-info mb-0 d-none d-lg-block">Connect</a>
           <a className="btn btn-sm btn-info mb-0 d-block d-lg-none">
             <i className="ni ni-collection"></i>
           </a>
-          <a className="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">
+          <a href="https://wa.me/6285955122183?text=Sistem%20Informasi%20Kinerja%20Program%20Studi" className="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">
             Message
           </a>
           <a className="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none">

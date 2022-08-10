@@ -12,7 +12,6 @@ import ReactHTMLTableToExcel from "react-html-table-to-excel";
 export default function exportdtps() {
   const router = useRouter();
 
-  
   const [stadmin, setStadmin] = useState(false);
   const [dataSelectTahun, setSelectTahun] = useState(``);
 
@@ -25,8 +24,8 @@ export default function exportdtps() {
   const [dataProdis, setdataProdi] = useState([]);
 
   const handleChange = (e) => {
-    const value = e.target.value
-    console.log(e.target.value)
+    const value = e.target.value;
+    console.log(e.target.value);
     setSelectTahun(value);
     tampildata(value);
   };
@@ -156,22 +155,22 @@ export default function exportdtps() {
                     </div>
                     <div className="row">
                       <div className="col-12 d-flex flex-row-reverse">
-                          {dataDTPS&&(
-                              <ReactHTMLTableToExcel
-                              id="test-table-xls-button"
-                              className="download-table-xls-button btn btn-success ms-3"
-                              table="tableDTPS"
-                              filename={`tabelDTPS_TH${dataSelectTahun}`}
-                              sheet="3a3"
-                              buttonText="Export Excel"
-                              border="1"
-                            />
-                          )}
-                        
+                        {dataDTPS && (
+                          <ReactHTMLTableToExcel
+                            id="test-table-xls-button"
+                            className="download-table-xls-button btn btn-success ms-3"
+                            table="tableDTPS"
+                            filename={`tabelDTPS_TH${dataSelectTahun}`}
+                            sheet="3a3"
+                            buttonText="Export Excel"
+                            border="1"
+                          />
+                        )}
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col-12">
+                      <div className="card-body p-3">
+                        <div className="table-responsive p-0">
                         <style jsx>{`
                           table,
                           td,
@@ -188,53 +187,104 @@ export default function exportdtps() {
                         <table id="tableDTPS" border={1}>
                           <thead>
                             <tr>
-                              <td rowSpan={3}>No</td>
-                              <td rowSpan={3}>Nama Dosen</td>
-                              <td rowSpan={3}>DTPS</td>
-                              <td colSpan={6}>
-                                Ekuivalen Waktu Mengajar Penuh (EWMP) pada saat
-                                TS dalam satuan kredit semester (sks)
+                              <td rowSpan={2}>No</td>
+                              <td rowSpan={2}>Nama Dosen</td>
+                              <td rowSpan={2}>NIDN/NIDK</td>
+                              <td colSpan={2}>Pendidikan Pasca Sarjana</td>
+                              <td rowSpan={2}>BidangKeahlian</td>
+                              <td rowSpan={2}>
+                                Kesesuaian dengan Kompetensi Inti PS
                               </td>
-                              <td rowSpan={3}>Jumlah</td>
-                              <td rowSpan={3}>Rata Rata per semester</td>
+                              <td rowSpan={2}>Jabatan Akademik</td>
+                              <td rowSpan={2}>
+                                Sertifikat pendidik Profesional
+                              </td>
+                              <td rowSpan={2}>
+                                Sertifikat Kompetensi/ Profesi/Industri
+                              </td>
+                              <td rowSpan={2}>
+                                Mata Kuliah yang Diampu pada PS yang
+                                Diakreditasi
+                              </td>
+                              <td rowSpan={2}>
+                                Kesesuaian Bidang Keahlian dengan Mata Kuliah
+                                yang Diampu
+                              </td>
+                              <td rowSpan={2}>
+                                Mata Kuliah yang Diampu pada PS Lain
+                              </td>
                             </tr>
                             <tr>
-                              <td colSpan={3}>
-                                Pendidikan: Pembelajaran dan Pembimbingan
-                              </td>
-                              <td rowSpan={2}>Penelitian</td>
-                              <td rowSpan={2}>PKM</td>
-                              <td rowSpan={2}>Tugas</td>
-                            </tr>
-                            <tr>
-                              <td>Ps Diakreditasi</td>
-                              <td>Ps Lain Dalam PT</td>
-                              <td>Ps Lain Luar PT</td>
+                              <td>Magister/Magister Terapan/Spesialis</td>
+                              <td>Doktor/Doktor Terapan/Spesialis</td>
                             </tr>
                           </thead>
                           <tbody>
-                            {dataDTPS.map((ewmp, index) => {
-                              const dtps = ewmp.dtps ? "v" : "";
+                            {dataDTPS.map((dtps, index) => {
+                              const stats = dtps.mengajarUns[0].kesesuaian
+                                ? "V"
+                                : "";
                               return (
-                                <tr key={`tewmp` + ewmp.id}>
+                                <tr key={`tdtps` + dtps.id}>
                                   {/* no */}
                                   <td>{index + 1}</td>
                                   {/* prodi */}
-                                  <td>{ewmp.profil_dosen.NamaDosen}</td>
-                                  <td>{dtps}</td>
-                                  <td>{ewmp.sks_ps_akreditasi}</td>
-                                  <td>{ewmp.sks_ps_lain_pt}</td>
-                                  <td>{ewmp.sks_ps_luar_pt}</td>
-                                  <td>{ewmp.sks_penelitian}</td>
-                                  <td>{ewmp.sks_pengabdian}</td>
-                                  <td>{ewmp.sks_tugas}</td>
-                                  <td>{ewmp.total}</td>
-                                  <td>{ewmp.avg}</td>
+                                  <td>{dtps.NamaDosen}</td>
+                                  <td>{dtps.NIDK}</td>
+                                  <td>{dtps.pascasarjana.magister}</td>
+                                  <td>{dtps.pascasarjana.doktor}</td>
+                                  <td>{dtps.detaildosen.bidangKeahlian}</td>
+                                  <td>{dtps.detaildosen.kesesuaian}</td>
+                                  <td>{dtps.detaildosen.jabatanAkademik}</td>
+                                  <td>
+                                    <a
+                                      href={
+                                        `http://127.0.0.1:8000/` +
+                                        dtps.detaildosen.fileBukti
+                                      }
+                                    >
+                                      {dtps.detaildosen.noSertifPendidik}
+                                    </a>
+                                  </td>
+                                  <td>
+                                    {dtps.detaildosen.serkoms.map((serkom, indx) => {
+                                      return (
+                                        <>
+                                          {`${indx+1}.${serkom.nama_sertifikat}(${serkom.keterangan})`}
+                                          <br />
+                                        </>
+                                      );
+                                    })}
+                                  </td>
+                                  <td>
+                                    {dtps.mengajarUns.map((mengajars, indx) => {
+                                      return (
+                                        <>
+                                          {mengajars.matkul.nama_matkul}
+                                          <br />
+                                        </>
+                                      );
+                                    })}
+                                  </td>
+                                  <td>{stats}</td>
+                                  <td>
+                                    {dtps.mengajarLuar.map(
+                                      (mengajarlr, indx) => {
+                                        return (
+                                          <>
+                                            {mengajarlr.matkul.nama_matkul}
+                                            <br />
+                                          </>
+                                        );
+                                      }
+                                    )}
+                                  </td>
                                 </tr>
                               );
                             })}
                           </tbody>
                         </table>
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -139,4 +139,20 @@ class ProfildosenController extends Controller
     {
         //
     }
+
+    public function listtahun(Request $request)
+    {
+        //
+        $alldtps = profilDosen::with('mengajars')->get();
+        $arrTahun = array();
+        foreach ($alldtps as $key => $dtps) {
+            foreach ($dtps->mengajars as $key1 => $mengajar) {
+                $arrTahun[] = $mengajar->tahun_akademik;
+            }
+        }
+        return response()->json([
+            'success' => true,
+            'tahundtpss' => array_unique($arrTahun),
+        ]);
+    }
 }

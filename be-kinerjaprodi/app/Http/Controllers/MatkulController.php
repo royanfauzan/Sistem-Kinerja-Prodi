@@ -126,7 +126,8 @@ class MatkulController extends Controller
             return response()->json(['error' => $validator->errors()], 200);
         }
 
-        $matkul->nama_matkul = $request->nama_matkul;
+       $matkul->nama_matkul = $request->nama_matkul;
+       $matkul->kode_matkul = $request->kode_matkul;
         $matkul->sks = $request->sks;
         $matkul->prodi_id = $request->prodi_id;
         $matkul->save();

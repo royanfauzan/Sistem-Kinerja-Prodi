@@ -3,13 +3,18 @@
 namespace Database\Seeders;
 
 use App\Models\Bbjurnaldos;
+use App\Models\Detaildosen;
+use App\Models\Matkul;
+use App\Models\Mengajar;
 use App\Models\Pagelarandos;
+use App\Models\Pendidikan;
 use App\Models\Penelitian;
 use App\Models\Pkm;
 use App\Models\Produk;
 use App\Models\RelasiDosPen;
 use App\Models\RelasiDosProd;
 use App\Models\Seminardos;
+use App\Models\Serkom;
 use Illuminate\Database\Seeder;
 
 class SdmSeeder extends Seeder
@@ -557,6 +562,321 @@ class SdmSeeder extends Seeder
             ]
         );
 
+
+        // Data Pendidikan
+        #pendidikan profil 1
+        Pendidikan::create([
+            'tahun_lulus'=>'2017',
+            'program_pendidikan'=>'S2',
+            'perguruan_tinggi'=>'UNUD',
+            'jurusan'=>'Elektro',
+            'prodi'=>'IoT',
+            'profil_dosen_id'=>1
+        ]);
+        
+        Pendidikan::create([
+            'tahun_lulus'=>'2019',
+            'program_pendidikan'=>'S3',
+            'perguruan_tinggi'=>'UNUD',
+            'jurusan'=>'Elektro',
+            'prodi'=>'Spesialis IoT',
+            'profil_dosen_id'=>1
+        ]);
+
+        #pendidikan profil 2
+        Pendidikan::create([
+            'tahun_lulus'=>'2015',
+            'program_pendidikan'=>'S2',
+            'perguruan_tinggi'=>'UNUD',
+            'jurusan'=>'Informatika',
+            'prodi'=>'Sistem Informatika',
+            'profil_dosen_id'=>2
+        ]);
+
+        #pendidikan profil 3
+        Pendidikan::create([
+            'tahun_lulus'=>'2012',
+            'program_pendidikan'=>'S2',
+            'perguruan_tinggi'=>'UGM',
+            'jurusan'=>'Manajemen',
+            'prodi'=>'Manajemen Bisnis',
+            'profil_dosen_id'=>3
+        ]);
+        
+        #pendidikan profil 4
+        Pendidikan::create([
+            'tahun_lulus'=>'2012',
+            'program_pendidikan'=>'S2',
+            'perguruan_tinggi'=>'UNUD',
+            'jurusan'=>'Teknik',
+            'prodi'=>'IoT',
+            'profil_dosen_id'=>4
+        ]);
+        
+        Pendidikan::create([
+            'tahun_lulus'=>'2016',
+            'program_pendidikan'=>'S3',
+            'perguruan_tinggi'=>'UGM',
+            'jurusan'=>'Elektro',
+            'prodi'=>'Spesialis IoT',
+            'profil_dosen_id'=>4
+        ]);
+
+        // Detail Dosen
+        Detaildosen::create([
+            'profil_dosen_id'=>1,
+            'bidangKeahlian'=>'Teknik Elektro',
+            'kesesuaian'=>'V',
+            'jabatanAkademik'=>'Lektor Kepala',
+            'noSertifPendidik'=>'SerDos(16100501000821)',
+            "fileBukti" => 'storage/testarea/image.jpg',
+        ]);
+
+        Detaildosen::create([
+            'profil_dosen_id'=>2,
+            'bidangKeahlian'=>'Teknik Elektro',
+            'kesesuaian'=>'V',
+            'jabatanAkademik'=>'Lektor',
+            'noSertifPendidik'=>'SerDos(11100501016334)',
+            "fileBukti" => 'storage/testarea/image.jpg',
+        ]);
+
+        Detaildosen::create([
+            'profil_dosen_id'=>3,
+            'bidangKeahlian'=>'Manajemen',
+            'kesesuaian'=>'V',
+            'jabatanAkademik'=>'Lektor',
+            'noSertifPendidik'=>'SerDos(11100501016999)',
+            "fileBukti" => 'storage/testarea/image.jpg',
+        ]);
+
+        Detaildosen::create([
+            'profil_dosen_id'=>4,
+            'bidangKeahlian'=>'Pendidikan Matematika',
+            'kesesuaian'=>'V',
+            'jabatanAkademik'=>'Asisten Ahli',
+            'noSertifPendidik'=>'SerDos(11100501016999)',
+            "fileBukti" => 'storage/testarea/image.jpg',
+        ]);
+
+        // SertifikatKompetensi
+        Serkom::create([
+            'detaildosen_id'=>1,
+            'nama_sertifikat'=>'SerKom',
+            'keterangan'=>'Operator PLC dan Sistem SCADA BNSP, No Reg. ELM 21809175 2019',
+            "file_bukti" => 'storage/testarea/image.jpg',
+        ]);
+        Serkom::create([
+            'detaildosen_id'=>1,
+            'nama_sertifikat'=>'SerKom',
+            'keterangan'=>'Maintainer Sistem SCADA BNSP, No Reg. ELM 21809222 2020',
+            "file_bukti" => 'storage/testarea/image.jpg',
+        ]);
+        Serkom::create([
+            'detaildosen_id'=>2,
+            'nama_sertifikat'=>'SerKom',
+            'keterangan'=>'Developer Sistem BNSP, No Reg. ADB 21809222 2021',
+            "file_bukti" => 'storage/testarea/image.jpg',
+        ]);
+
+        // Data Matkul
+        Matkul::create(
+            [
+                'nama_matkul' => 'Bahasa Pemrograman',
+                'kode_matkul' => 'MK09888',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create( 
+            [
+                'nama_matkul' => 'Pemrograman Berbasis Objek',
+                'kode_matkul' => 'MK09777',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Pemrograman Dasar',
+                'kode_matkul' => 'MK09666',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Pemrograman Visual',
+                'kode_matkul' => 'MK09555',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        #id 5
+        Matkul::create(
+            [
+                'nama_matkul' => 'Manajemen Bisnis',
+                'kode_matkul' => 'MK09444',
+                'sks' => 2,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Kewirausahaan',
+                'kode_matkul' => 'MK09444',
+                'sks' => 2,
+                'prodi_id' => 1,
+            ]
+        );
+
+        #id 7
+        Matkul::create(
+            [
+                'nama_matkul' => 'Matematika Dasar',
+                'kode_matkul' => 'MK09333',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        #id 8
+        Matkul::create(
+            [
+                'nama_matkul' => 'Arsitektur Komputer',
+                'kode_matkul' => 'MK08777',
+                'sks' => 4,
+                'prodi_id' => 3,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Elektronika',
+                'kode_matkul' => 'MK08666',
+                'sks' => 4,
+                'prodi_id' => 3,
+            ]
+        );
+
+        #id 10
+        Matkul::create(
+            [
+                'nama_matkul' => 'Elektronika Daya',
+                'kode_matkul' => 'MK08555',
+                'sks' => 4,
+                'prodi_id' => 3,
+            ]
+        );
+
+        #id 11
+        Matkul::create(
+            [
+                'nama_matkul' => 'Matematika Terapan 1',
+                'kode_matkul' => 'MK08444',
+                'sks' => 4,
+                'prodi_id' => 3,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Matematika Terapan 2',
+                'kode_matkul' => 'MK08333',
+                'sks' => 4,
+                'prodi_id' => 3,
+            ]
+        );
+
+        // Data Pengalaman Mengajar
+        Mengajar::create([
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>'ganjil',
+            'matkul_id'=>1,
+            'profil_dosen_id'=>1,
+        ]);
+
+        Mengajar::create([
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>'genap',
+            'matkul_id'=>1,
+            'profil_dosen_id'=>1,
+        ]);
+
+        Mengajar::create([
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>'genap',
+            'matkul_id'=>2,
+            'profil_dosen_id'=>1,
+        ]);
+
+        Mengajar::create([
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>'ganjil',
+            'matkul_id'=>3,
+            'profil_dosen_id'=>2,
+        ]);
+
+        Mengajar::create([
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>'genap',
+            'matkul_id'=>4,
+            'profil_dosen_id'=>2,
+        ]);
+
+        Mengajar::create([
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>'ganjil',
+            'matkul_id'=>8,
+            'profil_dosen_id'=>2,
+        ]);
+
+        Mengajar::create([
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>'genap',
+            'matkul_id'=>9,
+            'profil_dosen_id'=>2,
+        ]);
+
+        Mengajar::create([
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>'ganjil',
+            'matkul_id'=>5,
+            'profil_dosen_id'=>3,
+        ]);
+
+        Mengajar::create([
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>'genap',
+            'matkul_id'=>6,
+            'profil_dosen_id'=>3,
+        ]);
+
+        Mengajar::create([
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>'ganjil',
+            'matkul_id'=>7,
+            'profil_dosen_id'=>4,
+        ]);
+
+        Mengajar::create([
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>'genap',
+            'matkul_id'=>11,
+            'profil_dosen_id'=>4,
+        ]);
+
+        Mengajar::create([
+            'tahun_akademik'=>'2020/2021',
+            'semester'=>'genap',
+            'matkul_id'=>12,
+            'profil_dosen_id'=>4,
+        ]);
 
     }
 }

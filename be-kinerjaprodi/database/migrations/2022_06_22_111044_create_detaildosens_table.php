@@ -15,10 +15,14 @@ class CreateDetaildosensTable extends Migration
     {
         Schema::create('detaildosens', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('profil_dosen_id');
+            $table->foreignId('profil_dosen_id')
+                    ->references('id')
+                    ->on('profil_dosens')
+                    ->onDelete('cascade');
             $table->string('bidangKeahlian');
             $table->string('kesesuaian');
             $table->string('jabatanAkademik');
+            $table->string('Perusahaan')->nullable();
             $table->string('noSertifPendidik');
             $table->string('fileBukti');
             $table->timestamps();

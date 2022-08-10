@@ -9,6 +9,7 @@ use App\Models\Pagelarandos;
 use App\Models\Penelitian;
 use App\Models\Pkm;
 use App\Models\Produk;
+use App\Models\profilDosen;
 use App\Models\Seminardos;
 use Illuminate\Http\Request;
 
@@ -358,14 +359,79 @@ class SdmLaporanController extends Controller
         ]);
     }
 
-    public function testambildata(Request $request)
+    public function testambildata(Request $request,$tahun)
     {
+        $tahunlist = $this->tahuntsgenerator($tahun,'akademik');
 
-        $produks = Produk::with('anggotaDosens','ketuaProduk')->get();
+        $profildos = profilDosen::with('mengajars.matkul.prodi','pendidikans','detaildosen.serkoms')->where('StatusDosen','dosen tetap')
+        ->whereRelation('mengajars.matkul','tahun_akademik',$tahunlist->ts)
+        ->orWhereRelation('mengajars.matkul','tahun_akademik',$tahunlist->ts1)
+        ->orWhereRelation('mengajars.matkul','tahun_akademik',$tahunlist->ts2)->get();
+
+        $listDosen = array();
+        $listMengajars = array();
+        $listMengajarLuars = array();
+        $dataSatuAdas2 = false;
+
+        foreach ($profildos as $key => $profilds) {
+            $profilSementara = $profilds;
+            $callProfilSementara = collect($profilSementara);
+            $profilmengajar = $profilds->mengajars;
+            $listMengajars[] = $profilmengajar->where('matkul.prodi_id',1);
+            $listMengajarLuars[] = $profilmengajar->where('matkul.prodi_id','!=',1);
+            $mengajars = $listMengajars[$key];
+            $mengajarLuars = $listMengajarLuars[$key];
+            // $mengajars = $profilmengajar->filter(function ($mgj, $key) {
+            //     return $mgj->matkul->prodi_id == 1;
+            // });
+            $mengajarUnique = collect($mengajars->unique('matkul.kode_matkul'));
+            $mengajarLuarUnique = collect($mengajarLuars->unique('matkul.kode_matkul'));
+            $arrMengajar=array();
+            foreach ($mengajarUnique as $mUnikKey => $mUnik) {
+                if ($mUnik) {
+                    $arrMengajar[] = $mUnik;
+                }
+            }
+
+
+
+            $pascasarjana = ['magister'=>'','doktor'=>''];
+            foreach ($profilds->pendidikans as $keypen => $pendidikan) {
+                if (!strcmp($pendidikan->program_pendidikan,'S2')) {
+                    $pascasarjana['magister'] = $pendidikan->program_pendidikan;
+                }
+                if (!strcmp($pendidikan->program_pendidikan,'S3')) {
+                    $pascasarjana['doktor'] = $pendidikan->program_pendidikan;
+                }
+            }
+
+            // if (!$dataSatuAdas2 && $callProfilSementara->contains('pendidikans.program_pendidikan','S2')) {
+            //     $dataSatuAdas2 = true;
+            // }
+
+            $dataSatuAdas2 = $callProfilSementara->contains('pendidikans.program_pendidikan','S2');
+
+            $arrMengajarLuar = array();
+            foreach ($mengajarLuarUnique as $mUnikKey => $mLuarUnik) {
+                if ($mLuarUnik) {
+                    $arrMengajarLuar[] = $mLuarUnik;
+                }
+            }
+
+            $profilSementara->mengajars = $arrMengajar;
+            $profilSementara->mengajarUns = $arrMengajar;
+            $profilSementara->mengajarLuar = $arrMengajarLuar;
+            $profilSementara->pascasarjana = collect($pascasarjana);
+
+            // $profilLengkap = collect($profilSementara);
+            $listDosen[] = $profilSementara;
+        }
 
         return response()->json([
             'success' => true,
-            'all_data' => $produks,
+            'all_data' => $listDosen,
+            'dataMengajar' => $listMengajars,
+            'CEKS2' => $dataSatuAdas2,
         ]);
     }
 }

@@ -157,7 +157,7 @@ class LuaranlainnyaController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $relasimahasiswa = relasi_luaran_mhs::create(

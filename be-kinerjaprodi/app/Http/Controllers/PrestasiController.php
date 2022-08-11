@@ -21,6 +21,23 @@ class PrestasiController extends Controller
         ]);
     }
 
+    // Serach
+    public function searchprestasi($search)
+    {
+        return response()->json([
+            'success' => true,
+            'searchprestasi' =>  Prestasi::with('prodi')
+                ->whereRelation('prodi', 'prodi','LIKE', "%{$search}%")
+                ->orWhereRelation('prodi','nama_prodi', 'LIKE', "%{$search}%")
+                ->orwhere('nm_kegiatan', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('tingkat', 'LIKE', "%{$search}%")
+                ->orwhere('prestasi_dicapai', 'LIKE', "%{$search}%")
+                ->orwhere('kategori', 'LIKE', "%{$search}%")
+                ->get()
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -43,7 +60,7 @@ class PrestasiController extends Controller
 
         //valid credential
         $validator = Validator::make($dataprestasi, [
-            'nm_kegiatan' => 'required',
+            'nm_kegiatan' => 'required|string|',
             'tahun' => 'required',
             'tingkat' => 'required',
             'prestasi_dicapai' => 'required',
@@ -53,10 +70,10 @@ class PrestasiController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
-        $datatempat = Prestasi::create(
+        $dataprestasi = Prestasi::create(
             [
                 'nm_kegiatan' => $request->nm_kegiatan,
                 'tahun' => $request->tahun,
@@ -67,16 +84,15 @@ class PrestasiController extends Controller
             ]
         );
 
-        //Token created, return with success response and jwt token
+        if (!$dataprestasi) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal"
+            ]);
+        }
         return response()->json([
             'success' => true,
-            'nm_kegiatan' => $request->nm_kegiatan,
-            'tahun' => $request->tahun,
-            'tingkat' => $request->tingkat,
-            'prestasi_dicapai' => $request->prestasi_dicapai,
-            'kategori' => $request->kategori,
-            'prodi_id' => $request->prodi_id,
-            'all_prestasi' => Prestasi::all()
+            'message' => "Berhasil"
         ]);
     }
 

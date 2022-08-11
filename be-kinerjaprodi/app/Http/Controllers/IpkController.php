@@ -16,6 +16,7 @@ class IpkController extends Controller
         $tslist->ts = '' . ($thnInt);
         $tslist->ts1 = '' . ($thnInt - 1);
         $tslist->ts2 = '' . ($thnInt - 2);
+        
         if (!strcmp($tipe, 'akademik')) {
             $tslist->ts = "" . ($thnInt - 1) . "/" . ($thnInt);
             $tslist->ts1 = "" . ($thnInt - 2) . "/" . ($thnInt - 1);
@@ -34,6 +35,22 @@ class IpkController extends Controller
         return response()->json([
             'success' => true,
             'all_ipk' => Ipk::with('prodi')->get(),
+        ]);
+    }
+
+    public function searchipk($search)
+    {
+        return response()->json([
+            'success' => true,
+            'searchipk' =>  Ipk::with('prodi')
+                ->whereRelation('prodi', 'prodi','LIKE', "%{$search}%")
+                ->orWhereRelation('prodi','nama_prodi', 'LIKE', "%{$search}%")
+                ->orwhere('jmlh_lulusan', 'LIKE', "%{$search}%")
+                ->orwhere('ipk_min', 'LIKE', "%{$search}%")
+                ->orwhere('ipk_max', 'LIKE', "%{$search}%")
+                ->orwhere('ipk_avg', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->get()
         ]);
     }
 
@@ -69,7 +86,7 @@ class IpkController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $dataipk = Ipk::create(
@@ -83,16 +100,15 @@ class IpkController extends Controller
             ]
         );
 
-        //Token created, return with success response and jwt token
+        if (!$dataipk) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal"
+            ]);
+        }
         return response()->json([
             'success' => true,
-            'tahun' => $request->tahun,
-            'jmlh_lulusan' => $request->jmlh_lulusan,
-            'ipk_min' => $request->ipk_max,
-            'ipk_avg' => $request->ipk_avg,
-            'ipk_max' => $request->ipk_min,
-            'prodi_id' => $request->prodi_id,
-            'all_prodi' => Ipk::all()
+            'message' => "Berhasil"
         ]);
     }
 
@@ -176,7 +192,7 @@ class IpkController extends Controller
         $penelitiants = collect([]);
 
 
-        $penelitianDosens = Ipk::where('tahun', $tahunlist->ts)
+        $ipks = Ipk::where('tahun', $tahunlist->ts)
             ->orWhere('tahun', $tahunlist->ts1)
             ->orWhere('tahun', $tahunlist->ts2)
             ->get();
@@ -184,17 +200,30 @@ class IpkController extends Controller
         $arrTahun = [$tahunlist->ts, $tahunlist->ts1, $tahunlist->ts2];
 
         foreach ($arrTahun as $key => $th) {
-            $listpenelitiants = $penelitianDosens->where('tahun', $th);
+            $listpenelitiants = $ipks->where('tahun', $th)->first();
 
             $sementara = collect(['ipkts' . $key => $listpenelitiants, 'ts' => $th]);
             $penelitiants->push(collect($sementara));
         }
 
-
         return response()->json([
             'success' => true,
-            'all_ipk' => $penelitianDosens,
+            'all_ipk' => $ipks,
             'penelitian_ts' => $penelitiants,
+        ]);
+    }
+
+    public function listtahun(Request $request)
+    {
+        //
+        $allipk = Ipk::all()->groupBy('tahun');
+        $arrTahun = array();
+        foreach ($allipk as $key => $ipkthn) {
+            $arrTahun[] = $ipkthn[0]->tahun;
+        }
+        return response()->json([
+            'success' => true,
+            'tahunipks' => $arrTahun,
         ]);
     }
 
@@ -206,6 +235,18 @@ class IpkController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ipk = Ipk::find($id);
+        $ipk->delete();
+
+        if (!$ipk) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

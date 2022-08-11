@@ -8,12 +8,15 @@ import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 import Link from "next/link";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export default function daftarprestasi() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
+  const MySwal = withReactContent(Swal);
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -83,6 +86,20 @@ export default function daftarprestasi() {
       });
   };
 
+  const searchdata = async (e) => {
+    if (e.target.value == "") {
+      const req = await axios.get(`http://127.0.0.1:8000/api/prestasi/`);
+      const res = await req.data.all_prestasi;
+      setprofilDosen(res);
+    } else {
+      const req = await axios.get(
+        `http://127.0.0.1:8000/api/prestasi/${e.target.value}`
+      );
+      const res = await req.data.searchprestasi;
+      setprofilDosen(res);
+    }
+  };
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -91,10 +108,27 @@ export default function daftarprestasi() {
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
-                <div className="card-header pb-0">
-                  <div className="col-4">
-                    <h6>Authors table</h6>
+                <div className="card-header pb-0 px-3">
+                  <div className="row">
+                    <div className="col-4">
+                      <h6>Authors table</h6>
+                    </div>
                   </div>
+
+                  <div className="row justify-content-end">
+                  <div className="col-2 d-flex flex-row-reverse pe-2">
+                    <input
+                      className="form-control d-flex flex-row-reverse me-2"
+                      type="search"
+                      placeholder="Search.."
+                      aria-label="Search"
+                      defaultValue=""
+                      id="search"
+                      onChange={searchdata}
+                    />
+                  </div>
+                  </div>
+
                   <div className="row justify-content-between mb-4">
                     <div className="col-4">
                       <td className="align-middle">
@@ -108,7 +142,7 @@ export default function daftarprestasi() {
                     <div className="col-4 d-flex flex-row-reverse">
                       <td className="align-middle">
                         <Link href={`/prestasi/exportprestasi/export_prestasi`}>
-                          <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-5 mt-3 mb-0">
+                          <button className=" btn btn-success border-0 shadow-sm ps-3 ps-3 me-2 mt-3 mb-0">
                             Export Excel
                           </button>
                         </Link>
@@ -125,7 +159,7 @@ export default function daftarprestasi() {
                     >
                       <thead>
                         <tr>
-                        <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
+                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             NO
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
@@ -154,7 +188,9 @@ export default function daftarprestasi() {
                           return (
                             <tr key={`kpsn` + kpsn.id}>
                               <td>
-                                <h6 className="mb-0 text-sm ps-2">{number + 1}</h6>
+                                <h6 className="mb-0 text-sm ps-2">
+                                  {number + 1}
+                                </h6>
                               </td>
 
                               <td className="align-middle  text-sm">

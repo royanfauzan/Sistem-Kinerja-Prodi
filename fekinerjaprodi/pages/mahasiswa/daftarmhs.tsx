@@ -7,12 +7,15 @@ import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 import Link from "next/link";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 export default function daftarmhs() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
   const [mahasiswa, setmahasiswa] = useState([]);
+  const MySwal = withReactContent(Swal)
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -82,6 +85,20 @@ export default function daftarmhs() {
       });
   };
 
+  const searchdata = async (e) => {
+    if (e.target.value == "") {
+      const req = await axios.get(`http://127.0.0.1:8000/api/Mahasiswa/`)
+      const res = await req.data.all_mhs
+      setmahasiswa(res)
+    } else {
+      const req = await axios.get(
+        `http://127.0.0.1:8000/api/Mahasiswa_search/${e.target.value}`
+      )
+      const res = await req.data.searchmahasiswa
+      setmahasiswa(res)
+    }
+  }
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -90,19 +107,30 @@ export default function daftarmhs() {
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
-                <div className="card-header pb-0">
+                <div className="card-header pb-0 mb-3">
                   <h6>Tabel Daftar Mahasiswa</h6>
                 </div>
                 <div className="row justify-content-between mb-4">
-                  <div className="col-4">
+                <div className="col-4">
                     <div className="align-middle">
-                      <Link href={`/matkul/inputmatkul/`}>
-                        <button className=" btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
+                      <Link href={`/mahasiswa/inputmhs/`}>
+                        <button className=" btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mb-0">
                           Tambah Data
                         </button>
                       </Link>
                     </div>
                   </div>
+                  <div className="col-3 d-flex flex-row-reverse me-3">
+                    <input
+                      className="form-control d-flex flex-row-reverse me-2"
+                      type="search"
+                      placeholder="search.."
+                      defaultValue=""
+                      id="search"
+                      onChange={searchdata}
+                    />
+                  </div>
+                  
                 </div>
                 <div className="card-body px-0 pt-0 pb-2">
                   <div className="table-responsive p-0">
@@ -127,7 +155,7 @@ export default function daftarmhs() {
                             <tr key={`kurikulum` + kurikulum.id}>
 
                               <td className="ps-2">
-                                <h6 className="mb-0 text-sm ms-3 ">{number + 1}</h6>
+                                <p className="mb-0 text-sm ms-3 ">{number + 1}</p>
                               </td>
 
                               <td>

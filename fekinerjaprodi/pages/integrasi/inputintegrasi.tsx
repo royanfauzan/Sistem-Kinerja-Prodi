@@ -6,6 +6,8 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 
 
@@ -17,6 +19,8 @@ export default function inputintegrasi() {
   const [filebukti, setfilebuktis] = useState<File>([]);
   const penelitianref = useRef(null);
   const pkmref = useRef(null);
+  const [dataError, setError] = useState([])
+  const MySwal = withReactContent(Swal)
 
 
   const [PKMs, setPkMs] = useState([]);
@@ -34,7 +38,7 @@ export default function inputintegrasi() {
   };
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
+  const pengambilData = async () => {
     // axios({
     //   method: "get",
     //   url: "http://127.0.0.1:8000/api/profildosens",
@@ -51,32 +55,32 @@ export default function inputintegrasi() {
     //     console.log(err.response);
     //   });
     const lgToken = localStorage.getItem('token');
-    if(!lgToken){
+    if (!lgToken) {
       router.push('/login')
     }
 
 
-      axios({
-        method: "get",
-        url: "http://127.0.0.1:8000/api/profildosens",
-        headers: { "Authorization": `Bearer ${lgToken}` },
-      })
+    axios({
+      method: "get",
+      url: "http://127.0.0.1:8000/api/profildosens",
+      headers: { "Authorization": `Bearer ${lgToken}` },
+    })
       .then(function (response) {
-              console.log(response);
-              console.log('Sukses');
-              const {profilDosens} = response.data;
-             setdataDosen(profilDosens);
+        console.log(response);
+        console.log('Sukses');
+        const { profilDosens } = response.data;
+        setdataDosen(profilDosens);
       })
       .catch(function (err) {
-          console.log('gagal');
-          console.log(err.response);
-          return router.push('/');
+        console.log('gagal');
+        console.log(err.response);
+        return router.push('/');
       })
 
-      
-  
-   // pake ngambil data untuk halaman input
-   
+
+
+    // pake ngambil data untuk halaman input
+
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/Penelitian",
@@ -92,10 +96,10 @@ export default function inputintegrasi() {
         console.log("gagal");
         console.log(err.response);
       });
-    
 
-     // pake ngambil data untuk halaman input
- 
+
+    // pake ngambil data untuk halaman input
+
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/PKM",
@@ -111,10 +115,10 @@ export default function inputintegrasi() {
         console.log("gagal");
         console.log(err.response);
       });
-    
 
-     // pake ngambil data untuk halaman input
-  
+
+    // pake ngambil data untuk halaman input
+
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/Matkul",
@@ -131,16 +135,16 @@ export default function inputintegrasi() {
         console.log(err.response);
       });
 
-    }
+  }
 
 
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
+  useEffect(() => {
     // cek token, kalo gaada disuruh login
     const lgToken = localStorage.getItem('token');
-    if(!lgToken){
+    if (!lgToken) {
       router.push('/login')
     }
 
@@ -150,24 +154,24 @@ export default function inputintegrasi() {
       url: "http://127.0.0.1:8000/api/get_user",
       headers: { "Authorization": `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-    })
-    .catch(function (err) {
+      .then(function (response) {
+        console.log(response);
+        console.log('Sukses');
+        const { level_akses } = response.data.user;
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push('/');
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+      })
+      .catch(function (err) {
         console.log('gagal');
         console.log(err.response);
         return router.push('/');
-    })
-  },[]);
+      })
+  }, []);
 
   const handleChangeFile = (e) => {
     setfilebuktis(e.target.files[0]);
@@ -189,7 +193,7 @@ export default function inputintegrasi() {
     formData.append("tahun", event.target.tahun.value);
     formData.append("file_bukti", filebukti);
 
-    
+
 
     console.log(formData);
 
@@ -203,223 +207,273 @@ export default function inputintegrasi() {
       },
     })
       .then(function (response) {
-        const { all_integrasi } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Input Sukses!");
-        // console.log(token);
-        console.log(all_integrasi);
-        router.push("../integrasi/daftarintegrasi");
+        MySwal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data Berhasil Di Input",
+        })
+
+        router.push("/integrasi/daftarintegrasi")
       })
       .catch(function (error) {
         //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
-        console.log(error.response);
-      });
+        setError(error.response.data.error)
+        console.log(error.response.data.error)
+        MySwal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Data Gagal Di Input",
+        })
+        console.log(error.response)
+      })
   };
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
         <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetailDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetailDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <h6 className="mb-0">Input Data Integrasi</h6>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Simpan
+                        </button>
+                      </div>
+                    </div>
+                    <div className="card-body">
+                      <div className="row">
+                      <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="profil_dosen_id"
+                              className={dataError.dosen_id ? "is-invalid" : ""}
+                            >
+                              Program Studi
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
+                              id="profil_dosen_id"
+                            >
+                              <option value="">Pilih Program Studi</option>
+                              {userProfilDosens.map((dataProfilDosen) => {
+                                return (
+                                  <option
+                                    value={dataProfilDosen.id}
+                                    key={dataProfilDosen.id}
+                                  >
+                                    {dataProfilDosen.NamaDosen + ' ' + dataProfilDosen.NIDK}
+                                  </option>
+                                )
+                              })}
+                            </select>
+                            {dataError.dosen_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.dosen_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="penelitian"
+                              className={dataError.tema_sesuai_roadmap ? "is-invalid" : ""}>
+                              Penelitian
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              ref={penelitianref}
+                              onChange={handleChangePenelitian}
+                              defaultValue="0"
+                              id="penelitian"
+                            >
+                              <option>Pilih Penelitian</option>
+                              {userPenelitians.map((userPenelitian) => {
+                                {
+                                  return (
+                                    <option
+                                      value={userPenelitian.id}
+                                      key={userPenelitian.id}
+                                    >
+                                      {userPenelitian.tema_sesuai_roadmap + ' ' + userPenelitian.judul}
+                                    </option>
+                                  );
+                                }
+                              })}
+                            </select>
+                            {dataError.tema_sesuai_roadmap ? (
+                              <div className="invalid-feedback">
+                                {dataError.tema_sesuai_roadmap}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="pkm"
+                              className={dataError.tema_sesuai_roadmap ? "is-invalid" : ""}>
+                              PKM
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              ref={pkmref}
+                              onChange={handleChangePKM}
+                              defaultValue="0"
+                              id="pkm"
+                            >
+                              <option>Pilih NIDK User</option>
+                              {PKMs.map((pkm) => {
+                                {
+                                  return (
+                                    <option
+                                      value={pkm.id}
+                                      key={pkm.id}
+                                    >
+                                      {pkm.tema_sesuai_roadmap + ' ' + pkm.judul_kegiatan}
+                                    </option>
+                                  );
+                                }
+                              })}
+                            </select>
+                            {dataError.tema_sesuai_roadmap ? (
+                              <div className="invalid-feedback">
+                                {dataError.tema_sesuai_roadmap}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="matkul"
+                              className={dataError.matkul_id ? "is-invalid" : ""}
+                            >
+                              Mata Kuliah
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
+                              id="matkul"
+                            >
+                              <option value="">Pilih Mata Kuliah</option>
+                              {Matkuls.map((dataMatkul) => {
+                                return (
+                                  <option
+                                    value={dataMatkul.id}
+                                    key={dataMatkul.id}
+                                  >
+                                    {dataMatkul.nama_matkul + ' ' + dataMatkul.sks}
+                                  </option>
+                                )
+                              })}
+                            </select>
+                            {dataError.matkul_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.matkul_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="bentuk"
+                              className={dataError.bentuk_integrasi ? "is-invalid" : ""}>
+                              Bentuk Integrasi
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Bentuk Integrasi"
+                              id="bentuk"
+                            />
+                            {dataError.bentuk_integrasi ? (
+                              <div className="invalid-feedback">
+                                {dataError.bentuk_integrasi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="tahun"
+                              className={dataError.tahun ? "is-invalid" : ""}>
+                              Tahun
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tahun"
+                              id="tahun"
+                            />
+                            {dataError.tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="bukti"
+                              className={dataError.file_bukti ? "is-invalid" : ""}>
+                              File Bukti
+                            </label>
+                            <input
+                              className="form-control"
+                              type="file"
+                              onChange={handleChangeFile}
+                              id="bukti"
+                            />
+                            {dataError.file_bukti ? (
+                              <div className="invalid-feedback">
+                                {dataError.file_bukti}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="card-body">
-                    <p className="text-uppercase text-sm">Integrasi</p>
-                    <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="profil_dosen_id" className="form-control-label">
-                            Profil Dosen
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example" 
-                            
-                            defaultValue="0"
-                            id="profil_dosen_id"
-                          >
-                            <option>Pilih NIDK User</option>
-                            {userProfilDosens.map((userProfilDosen) => {
-                              {
-                                return (
-                                  <option
-                                    value={userProfilDosen.id}
-                                    key={userProfilDosen.id}
-                                  >
-                                    {userProfilDosen.NamaDosen + ' ' + userProfilDosen.NIK}
-                                  </option>
-                                );
-                              }
-                            })}
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="penelitian" className="form-control-label">
-                            Penelitian
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            ref={penelitianref}
-                            onChange = {handleChangePenelitian}
-                            defaultValue="0"
-                            id="penelitian"
-                          >
-                            <option>Pilih Penelitian</option>
-                            {userPenelitians.map((userPenelitian) => {
-                               {
-                                return (
-                                  <option
-                                    value={userPenelitian.id}
-                                    key={userPenelitian.id}
-                                  >
-                                    {userPenelitian.tema_sesuai_roadmap + ' ' + userPenelitian.judul}
-                                  </option>
-                                );
-                              }
-                            })}
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="pkm" className="form-control-label">
-                            PKM
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            ref={pkmref}
-                            onChange = {handleChangePKM}
-                            defaultValue="0"
-                            id="pkm"
-                          >
-                            <option>Pilih NIDK User</option>
-                            {PKMs.map((pkm) => {
-                              {
-                                return (
-                                  <option
-                                    value={pkm.id}
-                                    key={pkm.id}
-                                  >
-                                    {pkm.tema_sesuai_roadmap + ' ' + pkm.judul_kegiatan}
-                                  </option>
-                                );
-                              }
-                            })}
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="matkul" className="form-control-label">
-                           Mata Kuliah
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="matkul"
-                          >
-                            <option>Pilih nama matkul</option>
-                            {Matkuls.map((matkul) => {
-                               {
-                                return (
-                                  <option
-                                    value={matkul.id}
-                                    key={matkul.id}
-                                  >
-                                    {matkul.nama_matkul}
-                                  </option>
-                                );
-                              }
-                            })}
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="bentuk" className="form-control-label">
-                            Bentuk Integrasi
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Bentuk Integrasi"
-                            id="bentuk"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tahun" className="form-control-label">
-                            Tahun
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tahun"
-                            id="tahun"
-                            required
-                          />
-                        </div>
-                      </div>   
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="bukti" className="form-control-label">
-                            File Bukti
-                          </label>
-                          <input
-                            className="form-control"
-                            type="file"
-                            onChange={handleChangeFile}
-                            id="bukti"
-                            required
-                          />
-                        </div>
-                      </div>                                                                                  
-                    </div>
-                  </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+        </LayoutForm>
       )}
     </>
   );

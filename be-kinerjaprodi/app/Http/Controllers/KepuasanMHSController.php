@@ -22,6 +22,45 @@ class KepuasanMHSController extends Controller
         ]);
     }
 
+    public function searchkepuasanmhs($search)
+    {
+
+
+        return response()->json([
+            'success' => true,
+            'searchkepuasanmhs' =>  Kepuasan_MHS::with('prodi')
+                ->whereRelation('prodi', 'prodi', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('keandalan_4', 'LIKE', "%{$search}%")
+                ->orwhere('keandalan_3', 'LIKE', "%{$search}%")
+                ->orwhere('keandalan_2', 'LIKE', "%{$search}%")
+                ->orwhere('keandalan_1', 'LIKE', "%{$search}%")
+                ->orwhere('tl_keandalan', 'LIKE', "%{$search}%")
+                ->orwhere('dayatanggap_4', 'LIKE', "%{$search}%")
+                ->orwhere('dayatanggap_3', 'LIKE', "%{$search}%")
+                ->orwhere('dayatanggap_2', 'LIKE', "%{$search}%")
+                ->orwhere('dayatanggap_1', 'LIKE', "%{$search}%")
+                ->orwhere('tl_dayatanggap', 'LIKE', "%{$search}%")
+                ->orwhere('kepastian_4', 'LIKE', "%{$search}%")
+                ->orwhere('kepastian_3', 'LIKE', "%{$search}%")
+                ->orwhere('kepastian_2', 'LIKE', "%{$search}%")
+                ->orwhere('kepastian_1', 'LIKE', "%{$search}%")
+                ->orwhere('tl_kepastian', 'LIKE', "%{$search}%")
+                ->orwhere('empati_4', 'LIKE', "%{$search}%")
+                ->orwhere('empati_3', 'LIKE', "%{$search}%")
+                ->orwhere('empati_2', 'LIKE', "%{$search}%")
+                ->orwhere('empati_1', 'LIKE', "%{$search}%")
+                ->orwhere('tl_empati', 'LIKE', "%{$search}%")
+                ->orwhere('tangible_4', 'LIKE', "%{$search}%")
+                ->orwhere('tangible_3', 'LIKE', "%{$search}%")
+                ->orwhere('tangible_2', 'LIKE', "%{$search}%")
+                ->orwhere('tangible_1', 'LIKE', "%{$search}%")
+                ->orwhere('tl_tangible', 'LIKE', "%{$search}%")
+                ->get()
+
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -75,7 +114,7 @@ class KepuasanMHSController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $datakepuasanmhs = Kepuasan_MHS::create( //ngirim ke database

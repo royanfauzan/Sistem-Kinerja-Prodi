@@ -17,7 +17,23 @@ class MatkulController extends Controller
     {
         return response()->json([ //ngirim ke front end
             'success' => true,
-            'all_matkul' => Matkul::all()
+            'all_matkul' => Matkul::with('prodi')->get(),
+        ]);
+    }
+
+    public function searchmatkul($search)
+    {
+
+
+        return response()->json([
+            'success' => true,
+            'searchmatkul' =>  Matkul::with('prodi')
+                ->whereRelation('prodi', 'prodi', 'LIKE', "%{$search}%")
+                ->orwhere('kode_matkul', 'LIKE', "%{$search}%")
+                ->orwhere('nama_matkul', 'LIKE', "%{$search}%")
+                ->orwhere('sks', 'LIKE', "%{$search}%")                
+                ->get()
+
         ]);
     }
 
@@ -51,7 +67,7 @@ class MatkulController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $datamatkul = Matkul::create( //ngirim ke database
@@ -64,15 +80,6 @@ class MatkulController extends Controller
             ]
         );
 
-        //Token created, return with success response and jwt token
-        return response()->json([ //ngirim ke front end
-            'success' => true,
-            'kode_matkul' => $request->kode_matkul,
-            'nama_matkul' => $request->nama_matkul,
-            'sks' => $request->sks,
-            'prodi_id' => $request->prodi_id,
-            'all_matkul' => Matkul::all()
-        ]);
     }
 
     /**
@@ -85,7 +92,7 @@ class MatkulController extends Controller
     {
         return response()->json([
             'success' => true,
-            'all_matkul' => Matkul::find($id),
+            'all_matkul' => Matkul::with(['prodi'])->where('id', $id)->first(),
             'id' => $id
         ]);
     }

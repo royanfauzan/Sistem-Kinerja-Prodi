@@ -22,6 +22,33 @@ class CapKurikulumController extends Controller
         ]);
     }
 
+    public function searchcapkurikulum($search)
+    {
+
+
+        return response()->json([
+            'success' => true,
+            'searchcapkurikulum' =>  CapKurikulum::with('matkul', 'prodi')
+                ->whereRelation('matkul', 'nama_matkul', 'LIKE', "%{$search}%")
+                ->orWhereRelation('prodi', 'prodi', 'LIKE', "%{$search}%")
+                ->orWhereRelation('prodi', 'nama_prodi', 'LIKE', "%{$search}%")
+                ->orwhere('semester', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('mata_kuliah_kompetensi', 'LIKE', "%{$search}%")
+                ->orwhere('kuliah_responsi_tutorial', 'LIKE', "%{$search}%")
+                ->orwhere('seminar', 'LIKE', "%{$search}%")
+                ->orwhere('praktikum', 'LIKE', "%{$search}%")
+                ->orwhere('konversi_kredit_jam', 'LIKE', "%{$search}%")
+                ->orwhere('pengetahuan', 'LIKE', "%{$search}%")
+                ->orwhere('ketrampilan_umum', 'LIKE', "%{$search}%")
+                ->orwhere('ketrampilan_khusus', 'LIKE', "%{$search}%")
+                ->orwhere('dok_ren_pembelajaran', 'LIKE', "%{$search}%")
+                ->orwhere('unit_penyelenggara', 'LIKE', "%{$search}%")
+                ->get()
+
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -63,7 +90,7 @@ class CapKurikulumController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $datacapkurikulum = CapKurikulum::create( //ngirim ke database

@@ -7,12 +7,15 @@ import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 import Link from "next/link";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 export default function daftarprodkmhs() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
   const [produkmhs, setprodukmhs] = useState([]);
+  const MySwal = withReactContent(Swal)
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -82,6 +85,20 @@ export default function daftarprodkmhs() {
       });
   };
 
+  const searchdata= async (e) => {
+    if (e.target.value == "") {
+      const req = await axios.get(`http://127.0.0.1:8000/api/ProdukMHS/`)
+      const res = await req.data.all_produk
+      setprodukmhs(res)
+    } else {
+      const req = await axios.get(
+        `http://127.0.0.1:8000/api/ProdukMHS_search/${e.target.value}`
+      )
+      const res = await req.data.searchprodukmhs
+      setprodukmhs(res)
+    }
+  }
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -93,6 +110,19 @@ export default function daftarprodkmhs() {
                 <div className="card-header pb-0">
                   <h6>Tabel Produk Mahasiswa</h6>
                 </div>
+                <div className="row justify-content-end">
+                  <div className="col-3 d-flex flex-row-reverse pe-2">
+                    <input
+                      className="form-control d-flex flex-row-reverse me-3"
+                      type="search"
+                      placeholder="Search.."
+                      aria-label="Search"
+                      defaultValue=""
+                      id="search"
+                      onChange={searchdata}
+                    />
+                  </div>
+                  </div>
                 <div className="row justify-content-between mb-4">
                   <div className="col-4 ms-3">
                     <div className="align-middle">

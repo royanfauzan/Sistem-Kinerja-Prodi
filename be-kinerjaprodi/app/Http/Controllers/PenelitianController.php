@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Penelitian;
+use App\Models\RelasiDosPen;
+use App\Models\RelasiPenMhs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,6 +20,29 @@ class PenelitianController extends Controller
         return response()->json([ //ngirim ke front end
             'success' => true,
             'all_penelitian' => Penelitian::with('anggotaDosens', 'anggotaMahasiswas')->get()
+        ]);
+    }
+
+    public function searchpenelitian($search)
+    {
+
+
+        return response()->json([
+            'success' => true,
+            'searchpenelitian' =>  Penelitian::with('anggotaDosens', 'anggotaMahasiswas')
+                ->whereRelation('anggotaDosens', 'NamaDosen', 'LIKE', "%{$search}%")
+                ->orwhereRelation('anggotaMahasiswas', 'nama', 'LIKE', "%{$search}%")
+                ->orwhere('tema_sesuai_roadmap', 'LIKE', "%{$search}%")
+                ->orwhere('judul', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('sumber_dana_PT_mandiri', 'LIKE', "%{$search}%")
+                ->orwhere('dana_PT_Mandiri', 'LIKE', "%{$search}%")
+                ->orwhere('sumber_dalam_negri', 'LIKE', "%{$search}%")
+                ->orwhere('dana_dalam_negri', 'LIKE', "%{$search}%")
+                ->orwhere('sumber_luar_negri', 'LIKE', "%{$search}%")
+                ->orwhere('dana_luar_negri', 'LIKE', "%{$search}%")
+                ->get()
+
         ]);
     }
 
@@ -56,7 +81,7 @@ class PenelitianController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $datapenelitian = Penelitian::create( //ngirim ke database
@@ -209,6 +234,77 @@ class PenelitianController extends Controller
         return response()->json([
             'success' => true,
             'tahunpenelitians' => $arrTahun,
+        ]);
+    }
+
+    public function pilihdosen(Request $request, $id)
+    {
+        $luaran = Penelitian::where('id', $id)->first();
+        $datapenelitian = $request->only('profil_dosen_id', 'penelitian_id', 'keanggotaan');
+
+        //valid credential
+        $validator = Validator::make($datapenelitian, [
+            'profil_dosen_id' => 'required',
+            'penelitian_id' => 'required',
+            'keanggotaan' => 'required',
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 200);
+        }
+
+        $relasimahasiswa = RelasiDosPen::create(
+            [
+                'profil_dosen_id' => $request->profil_dosen_id,
+                'penelitian_id' => $request->penelitian_id,
+                'keanggotaan' => $request->keanggotaan,
+            ]
+        );
+
+
+        //Token created, return with success response and jwt token
+        return response()->json([
+            'success' => true,
+            'profil_dosen_id' => $request->profil_dosen_id,
+            'penelitian_id' => $request->penelitian_id,
+            'keanggotaan' => $request->keanggotaan,
+            'all_penelitian' => Penelitian::all()
+        ]);
+    }
+    public function pilihmahasiswa(Request $request, $id)
+    {
+        $luaran = Penelitian::where('id', $id)->first();
+        $datapenelitian = $request->only('mahasiswa_id', 'penelitian_id', 'keanggotaan');
+
+        //valid credential
+        $validator = Validator::make($datapenelitian, [
+            'mahasiswa_id' => 'required',
+            'penelitian_id' => 'required',
+            'keanggotaan' => 'required',
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 200);
+        }
+
+        $relasimahasiswa = RelasiPenMhs::create(
+            [
+                'mahasiswa_id' => $request->mahasiswa_id,
+                'penelitian_id' => $request->penelitian_id,
+                'keanggotaan' => $request->keanggotaan,
+            ]
+        );
+
+
+        //Token created, return with success response and jwt token
+        return response()->json([
+            'success' => true,
+            'mahasiswa_id' => $request->mahasiswa_id,
+            'penelitian_id' => $request->penelitian_id,
+            'keanggotaan' => $request->keanggotaan,
+            'all_penelitian' => Penelitian::all()
         ]);
     }
 }

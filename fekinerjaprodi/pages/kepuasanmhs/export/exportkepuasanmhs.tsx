@@ -31,31 +31,31 @@ export default function kepuasanmahasiswa() {
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
 
-    
 
-      axios({
-        method: "get",
-        url: "http://127.0.0.1:8000/api/KepuasanMHS_Tahun",
-        headers: { Authorization: `Bearer ${lgToken}` },
+
+    axios({
+      method: "get",
+      url: "http://127.0.0.1:8000/api/KepuasanMHS_Tahun",
+      headers: { Authorization: `Bearer ${lgToken}` },
+    })
+      .then(function (response) {
+        console.log(response);
+        console.log("Sukses");
+        const { tahunkepuasanmhs } = response.data;
+        setListtahun(tahunkepuasanmhs);
+        tampildata(tahunkepuasanmhs[0]);
+
+        console.log(tampilKepuasanmhs);
       })
-        .then(function (response) {
-          console.log(response);
-          console.log("Sukses");
-          const { tahunkepuasanmhs } = response.data;
-          setListtahun(tahunkepuasanmhs);
-          tampildata(tahunkepuasanmhs[0]);
-  
-          console.log(tampilKepuasanmhs);
-        })
-        .catch(function (err) {
-          console.log("gagal");
-          console.log(err.response);
-        });
+      .catch(function (err) {
+        console.log("gagal");
+        console.log(err.response);
+      });
   };
 
-  
+
   const handleChangeExportData = (e) => {
-    const value =  e.target.value
+    const value = e.target.value
     tampildata(value);
   };
 
@@ -122,44 +122,7 @@ export default function kepuasanmahasiswa() {
                       <h6>Export Kepuasan Mahasiswa</h6>
                     </div>
                     <div className="row">
-                      <div className="col-md-6">
-                        <h5>Pilih Tahun</h5>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="row">
-                          <div className="col-7">
-                            <div className="form-group">
-                              <select
-                                className="form-select"
-                                aria-label="Default select example"
-                                defaultValue={dataSelectTahun}
-                                id="tahun"
-                                onChange={handleChangeExportData}
-                              >
-                                {Listtahun.map((dataTahun) => {
-                                  return (
-                                    <option
-                                      value={dataTahun}
-                                      key={dataTahun}
-                                    >
-                                      {dataTahun}
-                                    </option>
-                                  );
-                                })}
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-5 d-flex justify-content-end">
-                            <button
-                              className="btn btn-primary btn-sm ms-auto"
-                              type="submit"
-                              onClick={() => tampildata(dataSelectTahun)}
-                            >
-                              Tampil Data
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+
                     </div>
                     <div className="row justify-content-between mb-4">
                       <div className="col-4">
@@ -182,6 +145,38 @@ export default function kepuasanmahasiswa() {
                         />
                       </div>
                     </div>
+                    <div className="col-md-4 pe-0">
+                      <div className="row">
+                        <div className="col-6"><h5>Pilih Tahun</h5>
+                        </div>
+
+                        <div className="col-md-6 px-0">
+                          <div className="form-group">
+
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue={dataSelectTahun}
+                              id="tahun"
+                              onChange={handleChangeExportData}
+                            >
+                              {Listtahun.map((dataTahun) => {
+                                return (
+                                  <option
+                                    value={dataTahun}
+                                    key={dataTahun}
+                                  >
+                                    {dataTahun}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
                   </div>
                 </div>
                 <style jsx>{`
@@ -256,20 +251,20 @@ export default function kepuasanmahasiswa() {
                           </p>
                         </th>
                         <th>
-                                  <p className="mb-0 text-sm ">{tampilKepuasanmhs.keandalan_4}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_3}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_2}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_1}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_keandalan}</p>
-                                </th>
+                          <p className="mb-0 text-sm ">{tampilKepuasanmhs.keandalan_4}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_3}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_2}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_1}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_keandalan}</p>
+                        </th>
                       </tr>
 
 
@@ -283,20 +278,20 @@ export default function kepuasanmahasiswa() {
                           </p>
                         </th>
                         <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_4}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_3}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_2}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_1}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_dayatanggap}</p>
-                                </th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_4}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_3}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_2}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_1}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_dayatanggap}</p>
+                        </th>
                       </tr>
 
                       <tr>
@@ -309,20 +304,20 @@ export default function kepuasanmahasiswa() {
                           </p>
                         </th>
                         <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_4}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_3}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_2}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_1}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_kepastian}</p>
-                                </th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_4}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_3}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_2}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_1}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_kepastian}</p>
+                        </th>
                       </tr>
 
                       <tr>
@@ -335,20 +330,20 @@ export default function kepuasanmahasiswa() {
                           </p>
                         </th>
                         <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_4}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_3}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_2}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_1}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_empati}</p>
-                                </th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_4}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_3}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_2}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_1}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_empati}</p>
+                        </th>
                       </tr>
 
                       <tr>
@@ -361,20 +356,20 @@ export default function kepuasanmahasiswa() {
                           </p>
                         </th>
                         <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_4}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_3}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_2}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_1}</p>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_tangible}</p>
-                                </th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_4}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_3}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_2}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_1}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_tangible}</p>
+                        </th>
                       </tr>
                       <tr>
                         <th colspan="2">
@@ -382,22 +377,22 @@ export default function kepuasanmahasiswa() {
                         </th>
 
                         <th>
-                                  <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_4 + tampilKepuasanmhs.dayatanggap_4 + tampilKepuasanmhs.kepastian_4 + tampilKepuasanmhs.empati_4 + tampilKepuasanmhs.tangible_4}</h6>
-                                </th>
-                                <th>
-                                  <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_3 + tampilKepuasanmhs.dayatanggap_3 + tampilKepuasanmhs.kepastian_3 + tampilKepuasanmhs.empati_3 + tampilKepuasanmhs.tangible_3}</h6>
-                                </th>
-                                <th>
-                                  <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_2 + tampilKepuasanmhs.dayatanggap_2 + tampilKepuasanmhs.kepastian_2 + tampilKepuasanmhs.empati_2 + tampilKepuasanmhs.tangible_2}</h6>
-                                </th>
-                                <th>
-                                  <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_1 + tampilKepuasanmhs.dayatanggap_1 + tampilKepuasanmhs.kepastian_1 + tampilKepuasanmhs.empati_1 + tampilKepuasanmhs.tangible_1}</h6>
-                                </th>
-                                <th>
-                                  <p className="mb-0 text-sm">
-                                    {kepuasanmap.tl_keandalan}
-                                  </p>
-                                </th>
+                          <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_4 + tampilKepuasanmhs.dayatanggap_4 + tampilKepuasanmhs.kepastian_4 + tampilKepuasanmhs.empati_4 + tampilKepuasanmhs.tangible_4}</h6>
+                        </th>
+                        <th>
+                          <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_3 + tampilKepuasanmhs.dayatanggap_3 + tampilKepuasanmhs.kepastian_3 + tampilKepuasanmhs.empati_3 + tampilKepuasanmhs.tangible_3}</h6>
+                        </th>
+                        <th>
+                          <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_2 + tampilKepuasanmhs.dayatanggap_2 + tampilKepuasanmhs.kepastian_2 + tampilKepuasanmhs.empati_2 + tampilKepuasanmhs.tangible_2}</h6>
+                        </th>
+                        <th>
+                          <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_1 + tampilKepuasanmhs.dayatanggap_1 + tampilKepuasanmhs.kepastian_1 + tampilKepuasanmhs.empati_1 + tampilKepuasanmhs.tangible_1}</h6>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">
+                            {tampilKepuasanmhs.tl_keandalan}
+                          </p>
+                        </th>
                       </tr>
                     </table>
                   </div>

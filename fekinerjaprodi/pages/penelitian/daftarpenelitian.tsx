@@ -7,12 +7,15 @@ import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 import Link from "next/link";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 export default function daftarpenelitian() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
   const [penelitian, setpenelitian] = useState([]);
+  const MySwal = withReactContent(Swal)
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -82,6 +85,21 @@ export default function daftarpenelitian() {
       });
   };
 
+  const searchdata= async (e) => {
+    if (e.target.value == "") {
+      const req = await axios.get(`http://127.0.0.1:8000/api/Penelitian/`)
+      const res = await req.data.all_penelitian
+      setpenelitian(res)
+    } else {
+      const req = await axios.get(
+        `http://127.0.0.1:8000/api/Penelitian_search/${e.target.value}`
+      )
+      const res = await req.data.searchpenelitian
+      setpenelitian(res)
+    }
+  }
+
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -93,6 +111,19 @@ export default function daftarpenelitian() {
                 <div className="card-header pb-0">
                   <h6>Tabel Penelitian</h6>
                 </div>
+                <div className="row justify-content-end">
+                  <div className="col-3 d-flex flex-row-reverse pe-2">
+                    <input
+                      className="form-control d-flex flex-row-reverse me-3"
+                      type="search"
+                      placeholder="Search.."
+                      aria-label="Search"
+                      defaultValue=""
+                      id="search"
+                      onChange={searchdata}
+                    />
+                  </div>
+                  </div>
                 <div className="row justify-content-between mb-4">
                   <div className="col-4">
                     <div className="align-middle">
@@ -113,7 +144,7 @@ export default function daftarpenelitian() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="card-body px-0 pt-0 pb-2">
                   <div className="table-responsive p-0">
                     <table className="table align-items-center mb-0 table table-striped table-hover">
@@ -121,6 +152,12 @@ export default function daftarpenelitian() {
                         <tr>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-3">
                             NO
+                          </th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-3">
+                            Nama Dosen
+                          </th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-3">
+                            Nama Mahasiswa
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-3">
                             Tema Sesuai Roadmap
@@ -162,14 +199,35 @@ export default function daftarpenelitian() {
                                 <p className="mb-0 text-sm">{number + 1}</p>
                               </td>
 
+                              <td>
+                                {penelitian.anggota_dosens.map(
+                                  (anggota_dosens) => {
+                                    return (
+                                      <p className="mb-0 text-sm text-center" key='anggota.id'>
+                                        {anggota_dosens.NamaDosen}
+                                      </p>
+                                    );
+                                  })}
+                              </td>
+
+                              <td>
+                                {penelitian.anggota_mahasiswas.map((anggota_mahasiswas) => {
+                                  return (
+                                    <p className="mb-0 text-sm text-center" key='anggota.id'>
+                                      {anggota_mahasiswas.nama}
+                                    </p>
+                                  );
+                                })}
+                              </td>
+
                               <td >
-                                <p  className="text-xs font-weight-bold mb-0 ps-2 pe-3">
+                                <p className="text-xs font-weight-bold mb-0 ps-2 pe-3">
                                   {penelitian.tema_sesuai_roadmap}
                                 </p>
                               </td>
 
                               <td>
-                                <p  className="text-xs font-weight-bold mb-0 ps-2 pe-3">
+                                <p className="text-xs font-weight-bold mb-0 ps-2 pe-3">
                                   {penelitian.judul}
                                 </p>
                               </td>
@@ -177,43 +235,43 @@ export default function daftarpenelitian() {
 
 
                               <td>
-                                <p  className="text-xs font-weight-bold mb-0 ps-2 pe-3">
+                                <p className="text-xs font-weight-bold mb-0 ps-2 pe-3">
                                   {penelitian.tahun}
                                 </p>
                               </td>
 
                               <td>
-                                <p  className="text-xs font-weight-bold mb-0 ps-2 pe-3">
+                                <p className="text-xs font-weight-bold mb-0 ps-2 pe-3">
                                   {penelitian.sumber_dana_PT_mandiri}
                                 </p>
                               </td>
 
                               <td>
-                                <p  className="text-xs font-weight-bold mb-0 ps-2 pe-3">
+                                <p className="text-xs font-weight-bold mb-0 ps-2 pe-3">
                                   {penelitian.dana_PT_mandiri}
                                 </p>
                               </td>
 
                               <td>
-                                <p  className="text-xs font-weight-bold mb-0 ps-2 pe-3">
+                                <p className="text-xs font-weight-bold mb-0 ps-2 pe-3">
                                   {penelitian.sumber_dalam_negri}
                                 </p>
                               </td>
 
                               <td>
-                                <p  className="text-xs font-weight-bold mb-0 ps-2 pe-3">
+                                <p className="text-xs font-weight-bold mb-0 ps-2 pe-3">
                                   {penelitian.dana_dalam_negri}
                                 </p>
                               </td>
 
                               <td>
-                                <p  className="text-xs font-weight-bold mb-0 ps-2 pe-3">
+                                <p className="text-xs font-weight-bold mb-0 ps-2 pe-3">
                                   {penelitian.sumber_luar_negri}
                                 </p>
                               </td>
 
                               <td>
-                                <p  className="text-xs font-weight-bold mb-0 ps-2 pe-3">
+                                <p className="text-xs font-weight-bold mb-0 ps-2 pe-3">
                                   {penelitian.dana_luar_negri}
                                 </p>
                               </td>
@@ -222,6 +280,18 @@ export default function daftarpenelitian() {
                                 <Link href={`/penelitian/edit/${penelitian.id}`}>
                                   <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                     Edit
+                                  </button>
+                                </Link>
+
+                                <Link href={`/penelitian/pilih_dosen/${penelitian.id}`}>
+                                  <button className="btn btn-sm btn-success border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                    Pilih Dosen
+                                  </button>
+                                </Link>
+
+                                <Link href={`/penelitian/pilih_mahasiswa/${penelitian.id}`}>
+                                  <button className="btn btn-sm btn-success border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                    Pilih mahasiswa
                                   </button>
                                 </Link>
 

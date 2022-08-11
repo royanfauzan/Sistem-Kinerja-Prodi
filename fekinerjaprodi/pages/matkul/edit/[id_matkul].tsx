@@ -13,7 +13,7 @@ export async function getServerSideProps(context) {
 
   //http request
   const req = await axios.get(`http://127.0.0.1:8000/api/tampil_Matkul/${context.query.id_matkul}`)
-  const res = await req.data.all_mhs
+  const res = await req.data.all_matkul
 
   return {
     props: {
@@ -151,7 +151,7 @@ export default function update_datamatkul(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Edit Data Mata Kuliah</p>
+                        <h6 className="mb-0">Edit Data Mata Kuliah</h6>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -162,7 +162,6 @@ export default function update_datamatkul(props) {
                       </div>
                     </div>
                     <div className="card-body">
-                      <p className="text-uppercase text-sm"> Mata Kuliah </p>
                       <div className="row">
 
                         <div className="col-md-6">

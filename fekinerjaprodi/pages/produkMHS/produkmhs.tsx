@@ -6,6 +6,8 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 
 export default function inputmhs() {
@@ -13,12 +15,14 @@ export default function inputmhs() {
 
   const [userprodukmhss, setuserprodukmhss] = useState([]);
   const [filebukti, setfilebuktis] = useState<File>([]);
+  const [dataError, setError] = useState([])
+  const MySwal = withReactContent(Swal)
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
+  const pengambilData = async () => {
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/ProdukMHS",
@@ -40,10 +44,10 @@ export default function inputmhs() {
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
+  useEffect(() => {
     // cek token, kalo gaada disuruh login
     const lgToken = localStorage.getItem('token');
-    if(!lgToken){
+    if (!lgToken) {
       router.push('/login')
     }
 
@@ -53,24 +57,24 @@ export default function inputmhs() {
       url: "http://127.0.0.1:8000/api/get_user",
       headers: { "Authorization": `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-    })
-    .catch(function (err) {
+      .then(function (response) {
+        console.log(response);
+        console.log('Sukses');
+        const { level_akses } = response.data.user;
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push('/');
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+      })
+      .catch(function (err) {
         console.log('gagal');
         console.log(err.response);
         return router.push('/');
-    })
-  },[]);
+      })
+  }, []);
 
   const handleChangeFile = (e) => {
     setfilebuktis(e.target.files[0]);
@@ -87,7 +91,7 @@ export default function inputmhs() {
     formData.append("tahun", event.target.tahun.value);
     formData.append("deskripsi_bukti", event.target.deskripsi_bukti.value);
     formData.append("file_bukti", filebukti);
-    
+
 
     console.log(formData);
 
@@ -101,135 +105,168 @@ export default function inputmhs() {
       },
     })
       .then(function (response) {
-        const { all_mhs } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Input Sukses!");
-        // console.log(token);
-        console.log(all_mhs);
-        router.push("../produkMHS/daftarprodukmhs");
+        MySwal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data Berhasil Di Input",
+        })
+
+        router.push("/produkMHS/daftarprodukmhs")
       })
       .catch(function (error) {
         //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
-        console.log(error.response);
-      });
+        setError(error.response.data.error)
+        console.log(error.response.data.error)
+        MySwal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Data Gagal Di Input",
+        })
+        console.log(error.response)
+      })
   };
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
         <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetailDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetailDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <h6 className="mb-0">Input Data Produk Mahasiswa</h6>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Simpan
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="card-body">
-                    <p className="text-uppercase text-sm">Produk Mahasiswa</p>
-                    <div className="row">
-                      
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="nama_produk" className="form-control-label">
-                            Nama Produk
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Nama Produk"
-                            id="nama_produk"
-                            required
-                          />
+                    <div className="card-body">
+                      <div className="row">
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="nama_produk"
+                              className={dataError.nama_produk ? "is-invalid" : ""}>
+                              Nama Produk
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Nama Produk"
+                              id="nama_produk"
+                            />
+                            {dataError.nama_produk ? (
+                              <div className="invalid-feedback">
+                                {dataError.nama_produk}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="deskripsi"
+                              className={dataError.deskripsi ? "is-invalid" : ""}>
+                              Deskripsi
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Deskripsi"
+                              id="deskripsi"
+                            />
+                            {dataError.deskripsi ? (
+                              <div className="invalid-feedback">
+                                {dataError.deskripsi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="tahun"
+                              className={dataError.tahun ? "is-invalid" : ""}>
+                              Tahun
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tahun"
+                              id="tahun"
+                            />
+                            {dataError.tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="deskripsi_bukti"
+                              className={dataError.deskripsi_bukti ? "is-invalid" : ""}>
+                              Deskripsi Bukti
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Deskripsi Bukti"
+                              id="deskripsi_bukti"
+                            />
+                            {dataError.deskripsi_bukti ? (
+                              <div className="invalid-feedback">
+                                {dataError.deskripsi_bukti}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="file_bukti"
+                              className={dataError.file_bukti ? "is-invalid" : ""}>
+                              File Bukti
+                            </label>
+                            <input
+                              className="form-control"
+                              type="file"
+                              onChange={handleChangeFile}
+                              id="file_bukti"
+                            />
+                            {dataError.file_bukti ? (
+                              <div className="invalid-feedback">
+                                {dataError.file_bukti}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="deskripsi" className="form-control-label">
-                            Deskripsi
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Deskripsi"
-                            id="deskripsi"
-                            required
-                          />
-                        </div>
-                      </div>          
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="deskripsi" className="form-control-label">
-                            Tahun
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tahun"
-                            id="tahun"
-                            required
-                          />
-                        </div>
-                      </div>     
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="deskripsi_bukti" className="form-control-label">
-                            Deskripsi Bukti
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Deskripsi Bukti"
-                            id="deskripsi_bukti"
-                            required
-                          />
-                        </div>
-                      </div>   
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="file_bukti" className="form-control-label">
-                            File Bukti
-                          </label>
-                          <input
-                            className="form-control"
-                            type="file"
-                            onChange={handleChangeFile}
-                            id="file_bukti"
-                            required
-                          />
-                        </div>
-                      </div>                                                                                
                     </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+        </LayoutForm>
       )}
     </>
   );

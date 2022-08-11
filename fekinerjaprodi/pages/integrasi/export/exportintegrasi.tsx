@@ -14,8 +14,6 @@ export default function integrasi() {
 
     const [stadmin, setStadmin] = useState(false);
     const [tampilintegrasi, settampilintegrasi] = useState([]);
-    const [anggota_dosens, setdataDosen] = useState([]);
-    const [anggota_mahasiswas, setdataMahasiswa] = useState([]);
 
     const pengambilData = async () => {
         const lgToken = localStorage.getItem("token");
@@ -172,24 +170,16 @@ export default function integrasi() {
                                                         </td>
 
 
-                                                        <td>
-                                                            {tintegrasi.anggota_dosens.map((anggota_dosens) => {
-                                                                return (
-                                                                    <p className="mb-0 text-sm text-center" key='anggota.id'>
-                                                                        {anggota_dosens.NamaDosen}
-                                                                    </p>
-                                                                );
-                                                            })}
+                                                        <td className="align-middle ">
+                                                            <p className="mb-0 text-sm text-center">
+                                                                {tintegrasi.profil_dosen.NamaDosen}
+                                                            </p>
                                                         </td>
 
-                                                        <td>
-                                                            {tintegrasi.anggota_matkuls.map((anggota_matkuls) => {
-                                                                return (
-                                                                    <p className="mb-0 text-sm text-center" key='anggota.id'>
-                                                                        {anggota_matkuls.nama_matkul}
-                                                                    </p>
-                                                                );
-                                                            })}
+                                                        <td className="align-middle ">
+                                                            <p className="mb-0 text-sm text-center">
+                                                                {tintegrasi.matkul.nama_matkul}
+                                                            </p>
                                                         </td>
 
                                                         <td className="align-middle ">

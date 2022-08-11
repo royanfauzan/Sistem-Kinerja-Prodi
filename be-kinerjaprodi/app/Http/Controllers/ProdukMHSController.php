@@ -21,6 +21,22 @@ class ProdukMHSController extends Controller
         ]);
     }
 
+    public function searchprodukmhs($search)
+    {
+
+
+        return response()->json([
+            'success' => true,
+            'searchprodukmhs' =>  Produk_MHS::where('nama_produk', 'LIKE', "%{$search}%")
+                ->orwhere('deskripsi', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('deskripsi_bukti', 'LIKE', "%{$search}%")
+                ->orwhere('file_bukti', 'LIKE', "%{$search}%")
+                ->get()
+
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -52,7 +68,7 @@ class ProdukMHSController extends Controller
  
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $finalPathdokumen = "";

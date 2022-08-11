@@ -21,6 +21,30 @@ class PKMController extends Controller
         ]);
     }
 
+    public function searchpkm($search)
+    {
+
+
+        return response()->json([
+            'success' => true,
+            'searchpkm' =>  Pkm::with('anggotaDosens', 'anggotaMahasiswas')
+                ->whereRelation('anggotaDosens', 'NamaDosen', 'LIKE', "%{$search}%")
+                ->orwhereRelation('anggotaMahasiswas', 'nama', 'LIKE', "%{$search}%")
+                ->orwhere('tema_sesuai_roadmap', 'LIKE', "%{$search}%")
+                ->orwhere('judul_kegiatan', 'LIKE', "%{$search}%")
+                ->orwhere('lokasi', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('sumber_dana_PT_mandiri', 'LIKE', "%{$search}%")
+                ->orwhere('dana_PT_Mandiri', 'LIKE', "%{$search}%")
+                ->orwhere('sumber_dalam_negri', 'LIKE', "%{$search}%")
+                ->orwhere('dana_dalam_negri', 'LIKE', "%{$search}%")
+                ->orwhere('sumber_luar_negri', 'LIKE', "%{$search}%")
+                ->orwhere('dana_luar_negri', 'LIKE', "%{$search}%")
+                ->get()
+
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -57,7 +81,7 @@ class PKMController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $datapkm = Pkm::create( //ngirim ke database

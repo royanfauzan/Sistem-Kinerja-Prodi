@@ -6,6 +6,8 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 interface Udosen {
   id: number;
@@ -19,6 +21,8 @@ export default function inputmhs() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState<Udosen[]>([]);
+  const [dataError, setError] = useState([])
+  const MySwal = withReactContent(Swal)
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -103,27 +107,26 @@ export default function inputmhs() {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        const { all_mhs } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Input Sukses!");
-        // console.log(token);
-        console.log(all_mhs);
-        router.push("/");
+    .then(function (response) {
+      MySwal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Berhasil Di Input",
       })
-      .catch(function (error) {
-        //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
 
-        console.log("tidak success");
-        console.log(error.response);
-      });
+      router.push("/mahasiswa/daftarmhs")
+    })
+    .catch(function (error) {
+      //handle error
+      setError(error.response.data.error)
+      console.log(error.response.data.error)
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Data Gagal Di Input",
+      })
+      console.log(error.response)
+    })
   };
 
   return (
@@ -138,7 +141,7 @@ export default function inputmhs() {
                 <div className="card">
                   <div className="card-header pb-0">
                     <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
+                      <h6 className="mb-0">Input Data Mahasiswa</h6>
                       <button
                         className="btn btn-primary btn-sm ms-auto"
                         type="submit"
@@ -148,12 +151,12 @@ export default function inputmhs() {
                     </div>
                   </div>
                   <div className="card-body">
-                    <p className="text-uppercase text-sm">Mahasiswa</p>
                     <div className="row">
                       
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="nim" className="form-control-label">
+                          <label htmlFor="nim" 
+                          className={dataError.nim ? "is-invalid" : ""}>
                             NIM Mahasiswa
                           </label>
                           <input
@@ -161,13 +164,20 @@ export default function inputmhs() {
                             type="text"
                             placeholder="NIM Mahasiswa"
                             id="nim"
-                            required
                           />
+                           {dataError.nim ? (
+                              <div className="invalid-feedback">
+                                {dataError.nim}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="nama" className="form-control-label">
+                          <label htmlFor="nama" 
+                          className={dataError.nama ? "is-invalid" : ""}>
                             Nama Mahasiswa
                           </label>
                           <input
@@ -175,8 +185,14 @@ export default function inputmhs() {
                             type="text"
                             placeholder="Nama Mahasiswa"
                             id="nama"
-                            required
                           />
+                          {dataError.nama ? (
+                              <div className="invalid-feedback">
+                                {dataError.nama}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>                                                                                    
                     </div>

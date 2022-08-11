@@ -57,7 +57,7 @@ export default function index() {
         console.log(localStorage.getItem('token'));
         console.log("success");
         console.log(response);
-        router.push("/profildosen/inputprofil");
+        router.push("/dashboards_eva/dashboardpendidikan");
       })
       .catch(function (error) {
         //handle error

@@ -105,15 +105,9 @@ export default function penelitian() {
                                                     Daftar Tabel
                                                 </button>
                                             </Link>
-
-                                            <Link href={`/penelitian/daftarpenelitian/`}>
-                                                <button className=" btn btn-primary border-0 shadow-sm pe-3 ms-3 ps-3 me-3 mt-3 mb-0">
-                                                    Daftar Tabel
-                                                </button>
-                                            </Link>
                                         </div>
                                     </div>
-                                    
+
                                     <div className="col-4 d-flex flex-row-reverse">
                                         <ReactHTMLTableToExcel
                                             id="test-table-xls-button"
@@ -153,7 +147,8 @@ export default function penelitian() {
                                                             </td>
 
                                                             <td>
-                                                                {tpenelitian.anggota_dosens.map((anggota_dosens) => {
+                                                                {tpenelitian.anggota_dosens.map(
+                                                                    (anggota_dosens) => {
                                                                     return (
                                                                         <p className="mb-0 text-sm text-center" key='anggota.id'>
                                                                             {anggota_dosens.NamaDosen}

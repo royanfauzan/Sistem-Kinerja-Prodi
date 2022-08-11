@@ -121,7 +121,7 @@ export default function update_datamhs(props) {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(response.data);
-        // router.push("/");
+        router.push("../../mahasiswa/daftarmhs");
       })
       .catch(function (error) {
         //handle error
@@ -149,18 +149,16 @@ export default function update_datamhs(props) {
                 <div className="card">
                   <div className="card-header pb-0">
                     <div className="d-flex align-items-center">
-                      <p className="mb-0">Edit Data Mahasiswa</p>
+                      <h6 className="mb-0">Edit Data Mahasiswa</h6>
                       <button
                         className="btn btn-primary btn-sm ms-auto"
                         type="submit"
                       >
                         Simpan
                       </button>
-                     
                     </div>
                   </div>
                   <div className="card-body">
-                    <p className="text-uppercase text-sm"> MAHASISWA </p>
                     <div className="row">
 
                     <div className="col-md-6">
@@ -192,13 +190,8 @@ export default function update_datamhs(props) {
                             required
                           />
                         </div>
-                      </div>      
-                   
-
-                            
-                    
+                      </div>  
                     </div>
-                  
                   </div>
                 </div>
               </form>

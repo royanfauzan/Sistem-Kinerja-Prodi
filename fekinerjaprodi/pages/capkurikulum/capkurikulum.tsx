@@ -6,6 +6,8 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 
 
@@ -14,6 +16,8 @@ export default function capkurikulum() {
 
   const [userProdis, setuserProdis] = useState([]);
   const [userMatkuls, setuserMatkuls] = useState([]);
+  const [dataError, setError] = useState([])
+  const MySwal = withReactContent(Swal)
 
 
   // state pake test user
@@ -131,26 +135,25 @@ export default function capkurikulum() {
       },
     })
       .then(function (response) {
-        const { all_capkurikulum } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Input Sukses!");
-        // console.log(token);
-        console.log(all_capkurikulum);
-        router.push("../capkurikulum/daftarkurikulum");
+        MySwal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data Berhasil Di Input",
+        })
+
+        router.push("/capkurikulum/daftarkurikulum")
       })
       .catch(function (error) {
         //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
-        console.log(error.response);
-      });
+        setError(error.response.data.error)
+        console.log(error.response.data.error)
+        MySwal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Data Gagal Di Input",
+        })
+        console.log(error.response)
+      })
   };
 
   return (
@@ -165,7 +168,7 @@ export default function capkurikulum() {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Input Data</p>
+                        <h6 className="mb-0">Input Data Capaian Kurikulum</h6>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -175,11 +178,13 @@ export default function capkurikulum() {
                       </div>
                     </div>
                     <div className="card-body">
-                      <p className="text-uppercase text-sm">Capaian Kurikulum</p>
                       <div className="row">
-                        <div className="col-md-6">
+                      <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="prodi" className="form-control-label">
+                            <label
+                              htmlFor="prodi"
+                              className={dataError.prodi_ID ? "is-invalid" : ""}
+                            >
                               Program Studi
                             </label>
                             <select
@@ -188,26 +193,34 @@ export default function capkurikulum() {
                               defaultValue="0"
                               id="prodi"
                             >
-                              <option>Pilih Program Studi</option>
-                              {userProdis.map((userProdi) => {
-                                {
-                                  return (
-                                    <option
-                                      value={userProdi.id}
-                                      key={userProdi.id}
-                                    >
-                                      {userProdi.prodi + ' ' + userProdi.nama_prodi}
-                                    </option>
-                                  );
-                                }
+                              <option value="">Pilih Program Studi</option>
+                              {userProdis.map((dataProdi) => {
+                                return (
+                                  <option
+                                    value={dataProdi.id}
+                                    key={dataProdi.id}
+                                  >
+                                    {dataProdi.prodi + ' ' + dataProdi.nama_prodi}
+                                  </option>
+                                )
                               })}
                             </select>
+                            {dataError.prodi_ID ? (
+                              <div className="invalid-feedback">
+                                {dataError.prodi_ID}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="matkul" className="form-control-label">
+                            <label
+                              htmlFor="matkul"
+                              className={dataError.matkul_ID ? "is-invalid" : ""}
+                            >
                               Mata Kuliah
                             </label>
                             <select
@@ -216,27 +229,35 @@ export default function capkurikulum() {
                               defaultValue="0"
                               id="matkul"
                             >
-                              <option>Pilih Mata Kuliah</option>
-                              {userMatkuls.map((userMatkul) => {
-                                {
-                                  return (
-                                    <option
-                                      value={userMatkul.id}
-                                      key={userMatkul.id}
-                                    >
-                                      {userMatkul.nama_matkul + ' ' + userMatkul.sks}
-                                    </option>
-                                  );
-                                }
+                              <option value="">Pilih Mata Kuliah</option>
+                              {userMatkuls.map((dataMatkul) => {
+                                return (
+                                  <option
+                                    value={dataMatkul.id}
+                                    key={dataMatkul.id}
+                                  >
+                                    {dataMatkul.nama_matkul + ' ' + dataMatkul.sks}
+                                  </option>
+                                )
                               })}
                             </select>
+                            {dataError.matkul_ID ? (
+                              <div className="invalid-feedback">
+                                {dataError.matkul_ID}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="semester" className="form-control-label">
+                            <label htmlFor="semester"
+                              className={
+                                dataError.semester ? "is-invalid" : ""
+                              }>
                               Semester
                             </label>
                             <input
@@ -244,14 +265,23 @@ export default function capkurikulum() {
                               type="text"
                               placeholder="Semester"
                               id="semester"
-                              required
                             />
+                            {dataError.semester ? (
+                              <div className="invalid-feedback">
+                                {dataError.semester}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
-                        
+
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tahun" className="form-control-label">
+                            <label htmlFor="tahun"
+                              className={
+                                dataError.tahun ? "is-invalid" : ""
+                              }>
                               Tahun
                             </label>
                             <input
@@ -259,16 +289,23 @@ export default function capkurikulum() {
                               type="text"
                               placeholder="Tahun"
                               id="tahun"
-                              required
                             />
+                            {dataError.tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
-
-
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="matkul_kompetensi" className="form-control-label">
+                            <label htmlFor="matkul_kompetensi"
+                              className={
+                                dataError.mata_kuliah_kompetensi ? "is-invalid" : ""
+                              }>
                               Mata Kuliah Kompetensi
                             </label>
                             <input
@@ -276,29 +313,47 @@ export default function capkurikulum() {
                               type="text"
                               placeholder="Mata Kuliah Kompetensi"
                               id="matkul_kompetensi"
-                              required
                             />
+                            {dataError.mata_kuliah_kompetensi ? (
+                              <div className="invalid-feedback">
+                                {dataError.mata_kuliah_kompetensi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="kuliah_responsi_tutorial" className="form-control-label">
+                            <label htmlFor="kuliah_responsi_tutorial"
+                              className={
+                                dataError.kuliah_responsi_tutorial ? "is-invalid" : ""
+                              }>
                               Kuliah Responsi Tutorial
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Kuliah Responsi Tutorial"
                               id="kuliah_responsi_tutorial"
-                              required
                             />
+                            {dataError.kuliah_responsi_tutorial ? (
+                              <div className="invalid-feedback">
+                                {dataError.kuliah_responsi_tutorial}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="seminar" className="form-control-label">
+                            <label htmlFor="seminar"
+                              className={
+                                dataError.seminar ? "is-invalid" : ""
+                              }>
                               Seminar
                             </label>
                             <input
@@ -306,14 +361,23 @@ export default function capkurikulum() {
                               type="text"
                               placeholder="Seminar"
                               id="seminar"
-                              required
                             />
+                            {dataError.seminar ? (
+                              <div className="invalid-feedback">
+                                {dataError.seminar}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="praktikum" className="form-control-label">
+                            <label htmlFor="praktikum"
+                              className={
+                                dataError.praktikum ? "is-invalid" : ""
+                              }>
                               Praktikum
                             </label>
                             <input
@@ -321,29 +385,47 @@ export default function capkurikulum() {
                               type="text"
                               placeholder="Praktikum"
                               id="praktikum"
-                              required
                             />
+                            {dataError.praktikum ? (
+                              <div className="invalid-feedback">
+                                {dataError.praktikum}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="konv_kredit_jam" className="form-control-label">
+                            <label htmlFor="konv_kredit_jam"
+                              className={
+                                dataError.konversi_kredit_jam ? "is-invalid" : ""
+                              }>
                               Konversi Kredit Jam
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Konversi Kredit Jam"
                               id="konv_kredit_jam"
-                              required
                             />
+                            {dataError.konversi_kredit_jam ? (
+                              <div className="invalid-feedback">
+                                {dataError.konversi_kredit_jam}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="sikap" className="form-control-label">
+                            <label htmlFor="sikap"
+                              className={
+                                dataError.sikap ? "is-invalid" : ""
+                              }>
                               Sikap
                             </label>
                             <input
@@ -351,14 +433,23 @@ export default function capkurikulum() {
                               type="text"
                               placeholder="Sikap"
                               id="sikap"
-                              required
                             />
+                            {dataError.sikap ? (
+                              <div className="invalid-feedback">
+                                {dataError.sikap}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="pengetahuan" className="form-control-label">
+                            <label htmlFor="pengetahuan"
+                              className={
+                                dataError.pengetahuan ? "is-invalid" : ""
+                              }>
                               Pengetahuan
                             </label>
                             <input
@@ -366,14 +457,23 @@ export default function capkurikulum() {
                               type="text"
                               placeholder="Pengetahuan"
                               id="pengetahuan"
-                              required
                             />
+                            {dataError.pengetahuan ? (
+                              <div className="invalid-feedback">
+                                {dataError.pengetahuan}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="ketrampilan_umum" className="form-control-label">
+                            <label htmlFor="ketrampilan_umum"
+                              className={
+                                dataError.ketrampilan_umum ? "is-invalid" : ""
+                              }>
                               Ketrampilan Umum
                             </label>
                             <input
@@ -381,14 +481,23 @@ export default function capkurikulum() {
                               type="text"
                               placeholder="Ketrampilan Umum"
                               id="ketrampilan_umum"
-                              required
                             />
+                            {dataError.ketrampilan_umum ? (
+                              <div className="invalid-feedback">
+                                {dataError.ketrampilan_umum}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="khusus" className="form-control-label">
+                            <label htmlFor="khusus"
+                              className={
+                                dataError.ketrampilan_khusus ? "is-invalid" : ""
+                              }>
                               Ketrampilan Khusus
                             </label>
                             <input
@@ -396,14 +505,23 @@ export default function capkurikulum() {
                               type="text"
                               placeholder="Ketrampilan Khusus"
                               id="ketrampilan_khusus"
-                              required
                             />
+                            {dataError.ketrampilan_khusus ? (
+                              <div className="invalid-feedback">
+                                {dataError.ketrampilan_khusus}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="dok_ren_pembelajaran" className="form-control-label">
+                            <label htmlFor="dok_ren_pembelajaran"
+                              className={
+                                dataError.dok_ren_pembelajaran ? "is-invalid" : ""
+                              }>
                               Dokumen Rencana Pembelajaran
                             </label>
                             <input
@@ -411,14 +529,23 @@ export default function capkurikulum() {
                               type="text"
                               placeholder="Dokumen Rencana Pembelajaran"
                               id="dok_ren_pembelajaran"
-                              required
                             />
+                            {dataError.dok_ren_pembelajaran ? (
+                              <div className="invalid-feedback">
+                                {dataError.dok_ren_pembelajaran}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="unit_penyelenggara" className="form-control-label">
+                            <label htmlFor="unit_penyelenggara"
+                              className={
+                                dataError.unit_penyelenggara ? "is-invalid" : ""
+                              }>
                               Unit Penyelenggara
                             </label>
                             <input
@@ -426,8 +553,14 @@ export default function capkurikulum() {
                               type="text"
                               placeholder="Unit Penyelenggara"
                               id="unit_penyelenggara"
-                              required
                             />
+                            {dataError.unit_penyelenggara ? (
+                              <div className="invalid-feedback">
+                                {dataError.unit_penyelenggara}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                       </div>

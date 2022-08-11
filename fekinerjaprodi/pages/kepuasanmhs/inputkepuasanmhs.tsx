@@ -6,6 +6,8 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 
 
@@ -13,13 +15,15 @@ export default function inputkepuasanmhs() {
   const router = useRouter();
 
   const [userProdis, setuserProdis] = useState([]);
-  
+  const [dataError, setError] = useState([])
+  const MySwal = withReactContent(Swal)
+
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
+  const pengambilData = async () => {
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/Prodi",
@@ -36,17 +40,17 @@ export default function inputkepuasanmhs() {
         console.log(err.response);
       });
 
-        
-      }
+
+  }
 
 
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
+  useEffect(() => {
     // cek token, kalo gaada disuruh login
     const lgToken = localStorage.getItem('token');
-    if(!lgToken){
+    if (!lgToken) {
       router.push('/login')
     }
 
@@ -56,24 +60,24 @@ export default function inputkepuasanmhs() {
       url: "http://127.0.0.1:8000/api/get_user",
       headers: { "Authorization": `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-    })
-    .catch(function (err) {
+      .then(function (response) {
+        console.log(response);
+        console.log('Sukses');
+        const { level_akses } = response.data.user;
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push('/');
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+      })
+      .catch(function (err) {
         console.log('gagal');
         console.log(err.response);
         return router.push('/');
-    })
-  },[]);
+      })
+  }, []);
 
 
 
@@ -124,482 +128,668 @@ export default function inputkepuasanmhs() {
       },
     })
       .then(function (response) {
-        const { all_mhs } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Input Sukses!");
-        // console.log(token);
-        console.log(all_mhs);
-        router.push("../kepuasanmhs/daftarkepuasanmhs");
+        MySwal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data Berhasil Di Input",
+        })
+
+        router.push("/kepuasanmhs/daftarkepuasanmhs")
       })
       .catch(function (error) {
         //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
-        console.log(error.response);
-      });
+        setError(error.response.data.error)
+        console.log(error.response.data.error)
+        MySwal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Data Gagal Di Input",
+        })
+        console.log(error.response)
+      })
   };
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
         <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetailDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetailDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <h6 className="mb-0">Input Data Kepuasan Mahasiswa</h6>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Simpan
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="card-body">
-                    <p className="text-uppercase text-sm">Capaian Kurikulum</p>
-                    <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="prodi" className="form-control-label">
-                            Program Studi
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="prodi"
-                          >
-                            <option>Pilih Program Studi</option>
-                            {userProdis.map((userProdi) => {
-                              {
+                    <div className="card-body">
+                      <div className="row">
+                      <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="prodi"
+                              className={dataError.prodi_id ? "is-invalid" : ""}
+                            >
+                              Program Studi
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
+                              id="prodi"
+                            >
+                              <option value="">Pilih Program Studi</option>
+                              {userProdis.map((dataProdi) => {
                                 return (
                                   <option
-                                    value={userProdi.id}
-                                    key={userProdi.id}
+                                    value={dataProdi.id}
+                                    key={dataProdi.id}
                                   >
-                                    {userProdi.prodi + ' ' + userProdi.nama_prodi}
+                                    {dataProdi.prodi + ' ' + dataProdi.nama_prodi}
                                   </option>
-                                );
-                              }
-                            })}
-                          </select>
+                                )
+                              })}
+                            </select>
+                            {dataError.prodi_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.prodi_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tahun" className="form-control-label">
-                            Tahun
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tahun"
-                            id="tahun"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="keandalan_4" className="form-control-label">
-                            Keandalan : Buruk
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="4"
-                            id="keandalan_4"
-                            required
-                          />
-                        </div>
-                      </div>   
-
-                         
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="keandalan_3" className="form-control-label">
-                            Keandalan : Cukup
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="3"
-                            id="keandalan_3"
-                            required
-                          />
-                        </div>
-                      </div>       
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="keandalan_2" className="form-control-label">
-                            Keandalan : Baik
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="2"
-                            id="keandalan_2"
-                            required
-                          />
-                        </div>
-                      </div>             
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="keandalan_1" className="form-control-label">
-                            Keandalan : Sangat Baik
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="1"
-                            id="keandalan_1"
-                            required
-                          />
-                        </div>
-                      </div>            
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tl_keandalan" className="form-control-label">
-                            TL Keandalan
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tindakan yang Dilakukan"
-                            id="tl_keandalan"
-                            required
-                          />
-                        </div>
-                      </div>     
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="dayatanggap_4" className="form-control-label">
-                            Daya Tanggap : Buruk
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="4"
-                            id="dayatanggap_4"
-                            required
-                          />
-                        </div>
-                      </div>         
 
                         <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="dayatanggap_3" className="form-control-label">
-                            Daya Tanggap : Cukup
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="3"
-                            id="dayatanggap_3"
-                            required
-                          />
+                          <div className="form-group">
+                            <label htmlFor="tahun"
+                              className={dataError.tahun ? "is-invalid" : ""}>
+                              Tahun
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tahun"
+                              id="tahun"
+                            />
+                            {dataError.tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div> 
-
-                       <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="dayatanggap_2" className="form-control-label">
-                            Daya Tanggap : Baik
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="2"
-                            id="dayatanggap_2"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="keandalan_4"
+                              className={dataError.keandalan_4 ? "is-invalid" : ""}>
+                              Keandalan : Buruk
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="keandalan_4"
+                            />
+                            {dataError.keandalan_4 ? (
+                              <div className="invalid-feedback">
+                                {dataError.keandalan_4}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>              
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="dayatanggap_1" className="form-control-label">
-                            Daya Tanggap : Sangat Baik
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="1"
-                            id="dayatanggap_1"
-                            required
-                          />
-                        </div>
-                      </div>            
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tl_dayatanggap" className="form-control-label">
-                          TL Daya Tanggap
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tindakan yang Dilakukan"
-                            id="tl_dayatanggap"
-                            required
-                          />
-                        </div>
-                      </div>          
-
-                         <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="kepastian_4" className="form-control-label">
-                            Kepastian : Buruk
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="4"
-                            id="kepastian_4"
-                            required
-                          />
-                        </div>
-                      </div>      
 
                         <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="kepastian_3" className="form-control-label">
-                            Kepastian : Cukup
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="3"
-                            id="kepastian_3"
-                            required
-                          />
+                          <div className="form-group">
+                            <label htmlFor="keandalan_3"
+                              className={dataError.keandalan_3 ? "is-invalid" : ""}>
+                              Keandalan : Cukup
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="keandalan_3"
+                            />
+                            {dataError.keandalan_3 ? (
+                              <div className="invalid-feedback">
+                                {dataError.keandalan_3}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>         
 
-                       <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="kepastian_2" className="form-control-label">
-                            Kepastian : Baik
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="2"
-                            id="kepastian_2"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="keandalan_2"
+                              className={dataError.keandalan_2 ? "is-invalid" : ""}>
+                              Keandalan : Baik
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="keandalan_2"
+                            />
+                            {dataError.keandalan_2 ? (
+                              <div className="invalid-feedback">
+                                {dataError.keandalan_2}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>       
 
-                       <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="kepastian_1" className="form-control-label">
-                            Kepastian : Sangat Baik
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="1"
-                            id="kepastian_1"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="keandalan_1"
+                              className={dataError.keandalan_1 ? "is-invalid" : ""}>
+                              Keandalan : Sangat Baik
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="keandalan_1"
+                            />
+                            {dataError.keandalan_1 ? (
+                              <div className="invalid-feedback">
+                                {dataError.keandalan_1}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>       
 
-                       <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tl_kepastian" className="form-control-label">
-                            TL Kepastian
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tindakan yang Dilakukan"
-                            id="tl_kepastian"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="tl_keandalan"
+                              className={dataError.tl_keandalan ? "is-invalid" : ""}>
+                              TL Keandalan
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tindakan yang Dilakukan"
+                              id="tl_keandalan"
+                            />
+                            {dataError.tl_keandalan ? (
+                              <div className="invalid-feedback">
+                                {dataError.tl_keandalan}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>    
 
-                       <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="empati_4" className="form-control-label">
-                            Empati : Buruk
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="4"
-                            id="empati_4"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="dayatanggap_4"
+                              className={dataError.dayatanggap_4 ? "is-invalid" : ""}>
+                              Daya Tanggap : Buruk
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="dayatanggap_4"
+                            />
+                            {dataError.dayatanggap_4 ? (
+                              <div className="invalid-feedback">
+                                {dataError.dayatanggap_4}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>        
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="empati_3" className="form-control-label">
-                            Empati : Cukup
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="3"
-                            id="empati_3"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="dayatanggap_3"
+                              className={dataError.dayatanggap_3 ? "is-invalid" : ""}>
+                              Daya Tanggap : Cukup
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="dayatanggap_3"
+                            />
+                            {dataError.dayatanggap_3 ? (
+                              <div className="invalid-feedback">
+                                {dataError.dayatanggap_3}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>    
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="empati_2" className="form-control-label">
-                            Empati : Baik
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="2"
-                            id="empati_2"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="dayatanggap_2"
+                              className={dataError.dayatanggap_2 ? "is-invalid" : ""}>
+                              Daya Tanggap : Baik
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="dayatanggap_2"
+                            />
+                            {dataError.dayatanggap_2 ? (
+                              <div className="invalid-feedback">
+                                {dataError.dayatanggap_2}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>  
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="empati_1" className="form-control-label">
-                            Empati : Sangat Baik
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="1"
-                            id="empati_1"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="dayatanggap_1"
+                              className={dataError.dayatanggap_1 ? "is-invalid" : ""}>
+                              Daya Tanggap : Sangat Baik
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="dayatanggap_1"
+                            />
+                            {dataError.dayatanggap_1 ? (
+                              <div className="invalid-feedback">
+                                {dataError.dayatanggap_1}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>  
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tl_empati" className="form-control-label">
-                           Tl Empati 
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tindakan yang Dilakukan"
-                            id="tl_empati"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="tl_dayatanggap"
+                              className={dataError.tl_dayatanggap ? "is-invalid" : ""}>
+                              TL Daya Tanggap
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tindakan yang Dilakukan"
+                              id="tl_dayatanggap"
+                            />
+                            {dataError.tl_dayatanggap ? (
+                              <div className="invalid-feedback">
+                                {dataError.tl_dayatanggap}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>   
-                      
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tangible_4" className="form-control-label">
-                          Tangible : Buruk
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="4"
-                            id="tangible_4"
-                            required
-                          />
-                        </div>
-                      </div>   
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tangible_3" className="form-control-label">
-                          Tangible : Cukup
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="3"
-                            id="tangible_3"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="kepastian_4"
+                              className={dataError.kepastian_4 ? "is-invalid" : ""}>
+                              Kepastian : Buruk
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="kepastian_4"
+                            />
+                            {dataError.kepastian_4 ? (
+                              <div className="invalid-feedback">
+                                {dataError.kepastian_4}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>   
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tangible_2" className="form-control-label">
-                          Tangible : Baik
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="2"
-                            id="tangible_2"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="kepastian_3"
+                              className={dataError.kepastian_3 ? "is-invalid" : ""}>
+                              Kepastian : Cukup
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="kepastian_3"
+                            />
+                            {dataError.kepastian_3 ? (
+                              <div className="invalid-feedback">
+                                {dataError.kepastian_3}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>   
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tangible_1" className="form-control-label">
-                          Tangible : Sangat Baik
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="1"
-                            id="tangible_1"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="kepastian_2"
+                              className={dataError.kepastian_2 ? "is-invalid" : ""}>
+                              Kepastian : Baik
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="kepastian_2"
+                            />
+                            {dataError.kepastian_2 ? (
+                              <div className="invalid-feedback">
+                                {dataError.kepastian_2}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>   
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tl_tangible" className="form-control-label">
-                          TL Tangible 
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tindakan yang Dilakukan"
-                            id="tl_tangible"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="kepastian_1"
+                              className={dataError.kepastian_1 ? "is-invalid" : ""}>
+                              Kepastian : Sangat Baik
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="kepastian_1"
+                            />
+                            {dataError.kepastian_1 ? (
+                              <div className="invalid-feedback">
+                                {dataError.kepastian_1}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>   
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="tl_kepastian"
+                              className={dataError.tl_kepastian ? "is-invalid" : ""}>
+                              TL Kepastian
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tindakan yang Dilakukan"
+                              id="tl_kepastian"
+                            />
+                            {dataError.tl_kepastian ? (
+                              <div className="invalid-feedback">
+                                {dataError.tl_kepastian}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="empati_4"
+                              className={dataError.empati_4 ? "is-invalid" : ""}>
+                              Empati : Buruk
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="empati_4"
+                            />
+                            {dataError.empati_4 ? (
+                              <div className="invalid-feedback">
+                                {dataError.empati_4}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="empati_3"
+                              className={dataError.empati_3 ? "is-invalid" : ""}>
+                              Empati : Cukup
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="empati_3"
+                            />
+                            {dataError.empati_3 ? (
+                              <div className="invalid-feedback">
+                                {dataError.empati_3}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="empati_2"
+                              className={dataError.empati_2 ? "is-invalid" : ""}>
+                              Empati : Baik
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="empati_2"
+                            />
+                            {dataError.empati_2 ? (
+                              <div className="invalid-feedback">
+                                {dataError.empati_2}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="empati_1"
+                              className={dataError.empati_1 ? "is-invalid" : ""}>
+                              Empati : Sangat Baik
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="empati_1"
+                            />
+                            {dataError.empati_1 ? (
+                              <div className="invalid-feedback">
+                                {dataError.empati_1}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="tl_empati"
+                              className={dataError.tl_empati ? "is-invalid" : ""}>
+                              Tl Empati
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tindakan yang Dilakukan"
+                              id="tl_empati"
+                            />
+                            {dataError.tl_empati ? (
+                              <div className="invalid-feedback">
+                                {dataError.tl_empati}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="tangible_4"
+                              className={dataError.tangible_4 ? "is-invalid" : ""}>
+                              Tangible : Buruk
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="tangible_4"
+                            />
+                            {dataError.tangible_4 ? (
+                              <div className="invalid-feedback">
+                                {dataError.tangible_4}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="tangible_3"
+                              className={dataError.tangible_3 ? "is-invalid" : ""}>
+                              Tangible : Cukup
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="tangible_3"
+                            />
+                            {dataError.tangible_3 ? (
+                              <div className="invalid-feedback">
+                                {dataError.tangible_3}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="tangible_2"
+                              className={dataError.tangible_2 ? "is-invalid" : ""}>
+                              Tangible : Baik
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="tangible_2"
+                            />
+                            {dataError.tangible_2 ? (
+                              <div className="invalid-feedback">
+                                {dataError.tangible_2}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="tangible_1"
+                              className={dataError.tangible_1 ? "is-invalid" : ""}>
+                              Tangible : Sangat Baik
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Nilai"
+                              id="tangible_1"
+                            />
+                            {dataError.tangible_1 ? (
+                              <div className="invalid-feedback">
+                                {dataError.tangible_1}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="tl_tangible"
+                              className={dataError.tl_tangible ? "is-invalid" : ""}>
+                              TL Tangible
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tindakan yang Dilakukan"
+                              id="tl_tangible"
+                            />
+                            {dataError.tl_tangible ? (
+                              <div className="invalid-feedback">
+                                {dataError.tl_tangible}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+        </LayoutForm>
       )}
     </>
   );

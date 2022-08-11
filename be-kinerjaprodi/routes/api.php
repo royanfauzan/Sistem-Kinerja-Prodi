@@ -44,6 +44,7 @@ use App\Http\Controllers\SdmLaporanController;
 use App\Http\Controllers\RelasiLuaranController;
 use App\Models\MahasiswaAsing;
 use App\Models\PenggunaanDana;
+use App\Models\profilDosen;
 use App\Models\Rekognisi;
 
 
@@ -208,9 +209,11 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 Route::get('ewmps', [EwmpController::class, 'index']);
 // Dev area Laporan
 Route::get('ewmplisttahun', [EwmpController::class, 'listtahun']);
+Route::get('dtpslisttahun', [ProfildosenController::class, 'listtahun']);
 Route::get('penelitianlisttahun', [PenelitianController::class, 'listtahun']);
 Route::get('pengabdianlisttahun', [PKMController::class, 'listtahun']);
 Route::get('laporanewmp/{tahun}', [SdmLaporanController::class, 'exportewmp']);
+Route::get('laporandtps/{tahun}', [SdmLaporanController::class, 'exportdtps']);
 Route::get('laporanpendos/{tahun}', [SdmLaporanController::class, 'exportpendos']);
 Route::get('laporanpkmdos/{tahun}', [SdmLaporanController::class, 'exportpkmdos']);
 Route::get('laporanpublikasidos/{tahun}', [SdmLaporanController::class, 'exportpublikasidos']);

@@ -212,12 +212,14 @@ Route::get('ewmplisttahun', [EwmpController::class, 'listtahun']);
 Route::get('dtpslisttahun', [ProfildosenController::class, 'listtahun']);
 Route::get('penelitianlisttahun', [PenelitianController::class, 'listtahun']);
 Route::get('pengabdianlisttahun', [PKMController::class, 'listtahun']);
+Route::get('bimbinganlisttahun', [BimbinganController::class, 'listtahun']);
 Route::get('laporanewmp/{tahun}', [SdmLaporanController::class, 'exportewmp']);
 Route::get('laporandtps/{tahun}', [SdmLaporanController::class, 'exportdtps']);
 Route::get('laporanpendos/{tahun}', [SdmLaporanController::class, 'exportpendos']);
 Route::get('laporanpkmdos/{tahun}', [SdmLaporanController::class, 'exportpkmdos']);
 Route::get('laporanpublikasidos/{tahun}', [SdmLaporanController::class, 'exportpublikasidos']);
 Route::get('laporanprodukdos/{tahun}', [SdmLaporanController::class, 'exportprodukdos']);
+Route::get('laporanbimbingan/{tahun}', [SdmLaporanController::class, 'exportbimbingan']);
 Route::get('laporantestdata/{tahun}', [SdmLaporanController::class, 'testambildata']);
 
 

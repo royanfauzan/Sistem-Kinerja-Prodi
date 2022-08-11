@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Bbjurnaldos;
+use App\Models\Bimbingan;
 use App\Models\Detaildosen;
+use App\Models\Mahasiswa;
 use App\Models\Matkul;
 use App\Models\Mengajar;
 use App\Models\Pagelarandos;
@@ -875,6 +877,176 @@ class SdmSeeder extends Seeder
             'tahun_akademik'=>'2020/2021',
             'semester'=>'genap',
             'matkul_id'=>12,
+            'profil_dosen_id'=>4,
+        ]);
+
+        // DATA BIMBINGAN
+        Mahasiswa::factory(20)->create();
+
+        Bimbingan::create([
+            'tahun_akademik'=>'2020/2021',
+            'judul_ta'=>'JUDUL TA 1',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>1,
+            'mahasiswa_id'=>1,
+            'profil_dosen_id'=>1,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2019/2020',
+            'judul_ta'=>'JUDUL TA 2',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>1,
+            'mahasiswa_id'=>2,
+            'profil_dosen_id'=>1,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2021/2022',
+            'judul_ta'=>'JUDUL TA 3',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>1,
+            'mahasiswa_id'=>3,
+            'profil_dosen_id'=>1,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2021/2022',
+            'judul_ta'=>'JUDUL TA 4',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>2,
+            'mahasiswa_id'=>4,
+            'profil_dosen_id'=>1,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2021/2022',
+            'judul_ta'=>'JUDUL TA 5',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>2,
+            'mahasiswa_id'=>5,
+            'profil_dosen_id'=>1,
+        ]);
+        
+        ###Bimbingan dos 2
+        Bimbingan::create([
+            'tahun_akademik'=>'2020/2021',
+            'judul_ta'=>'JUDUL TA 6',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>1,
+            'mahasiswa_id'=>6,
+            'profil_dosen_id'=>2,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2019/2020',
+            'judul_ta'=>'JUDUL TA 7',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>1,
+            'mahasiswa_id'=>7,
+            'profil_dosen_id'=>2,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2021/2022',
+            'judul_ta'=>'JUDUL TA 8',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>1,
+            'mahasiswa_id'=>8,
+            'profil_dosen_id'=>2,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2021/2022',
+            'judul_ta'=>'JUDUL TA 9',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>2,
+            'mahasiswa_id'=>9,
+            'profil_dosen_id'=>2,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2021/2022',
+            'judul_ta'=>'JUDUL TA 10',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>2,
+            'mahasiswa_id'=>10,
+            'profil_dosen_id'=>2,
+        ]);
+
+        ### BIMBINGAN DOSEN 3
+        Bimbingan::create([
+            'tahun_akademik'=>'2020/2021',
+            'judul_ta'=>'JUDUL TA 11',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>1,
+            'mahasiswa_id'=>11,
+            'profil_dosen_id'=>3,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2019/2020',
+            'judul_ta'=>'JUDUL TA 12',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>1,
+            'mahasiswa_id'=>12,
+            'profil_dosen_id'=>3,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2021/2022',
+            'judul_ta'=>'JUDUL TA 13',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>1,
+            'mahasiswa_id'=>13,
+            'profil_dosen_id'=>3,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2021/2022',
+            'judul_ta'=>'JUDUL TA 14',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>2,
+            'mahasiswa_id'=>14,
+            'profil_dosen_id'=>3,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2021/2022',
+            'judul_ta'=>'JUDUL TA 15',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>2,
+            'mahasiswa_id'=>15,
+            'profil_dosen_id'=>3,
+        ]);
+        
+        ###Bimbingan dos 4
+        Bimbingan::create([
+            'tahun_akademik'=>'2020/2021',
+            'judul_ta'=>'JUDUL TA 16',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>1,
+            'mahasiswa_id'=>16,
+            'profil_dosen_id'=>4,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2019/2020',
+            'judul_ta'=>'JUDUL TA 17',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>1,
+            'mahasiswa_id'=>17,
+            'profil_dosen_id'=>4,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2021/2022',
+            'judul_ta'=>'JUDUL TA 18',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>1,
+            'mahasiswa_id'=>18,
+            'profil_dosen_id'=>4,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2021/2022',
+            'judul_ta'=>'JUDUL TA 19',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>2,
+            'mahasiswa_id'=>19,
+            'profil_dosen_id'=>4,
+        ]);
+        Bimbingan::create([
+            'tahun_akademik'=>'2021/2022',
+            'judul_ta'=>'JUDUL TA 20',
+            'fileBukti'=>'storage/testarea/image.jpg',
+            'prodi_id'=>2,
+            'mahasiswa_id'=>20,
             'profil_dosen_id'=>4,
         ]);
 

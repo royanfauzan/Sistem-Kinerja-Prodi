@@ -237,7 +237,7 @@ class EwmpController extends Controller
         }
         return response()->json([
             'success' => true,
-            'tahunewmps' => $arrTahun,
+            'tahunewmps' => array_unique($arrTahun),
         ]);
     }
 }

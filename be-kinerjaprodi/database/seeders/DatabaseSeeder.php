@@ -284,9 +284,6 @@ class DatabaseSeeder extends Seeder
                 'dana_dalam_negri' => 0, 
                 'sumber_luar_negri' => '', 
                 'dana_luar_negri' => 0,
-                'profil_dosen_id' => 1,
-                'penelitian_id' => 1,
-                'keanggotaan' => 'Ketua',
             ]
         );
 

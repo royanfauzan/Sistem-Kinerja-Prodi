@@ -141,4 +141,18 @@ class BimbinganController extends Controller
     {
         //
     }
+
+    public function listtahun(Request $request)
+    {
+        //
+        $allbimbingans = Bimbingan::all()->groupBy('tahun_akademik');
+        $arrTahun = array();
+        foreach ($allbimbingans as $key => $bimbingan) {
+            $arrTahun[] = $bimbingan[0]->tahun_akademik;
+        }
+        return response()->json([
+            'success' => true,
+            'tahunbimbingans' => array_unique($arrTahun),
+        ]);
+    }
 }

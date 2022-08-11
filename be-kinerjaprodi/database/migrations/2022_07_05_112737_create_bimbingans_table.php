@@ -19,7 +19,7 @@ class CreateBimbingansTable extends Migration
             $table->string('judul_ta');
             $table->string('fileBukti');
             $table->foreignId('profil_dosen_id');
-            $table->foreignId('matkul_id');
+            $table->foreignId('prodi_id');
             $table->foreignId('mahasiswa_id');
             $table->timestamps();
         });

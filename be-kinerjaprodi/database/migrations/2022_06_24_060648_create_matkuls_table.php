@@ -17,7 +17,6 @@ class CreateMatkulsTable extends Migration
             $table->id();
             $table->String('kode_matkul');
             $table->String('nama_matkul');
-            $table->String('kode_matkul');
             $table->Integer('sks');
             $table->foreignId('prodi_id');
             $table->timestamps();

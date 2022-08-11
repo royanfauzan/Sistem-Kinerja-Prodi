@@ -163,7 +163,7 @@ console.log(ipk);
                     </div>
                   </div>
                   <div className="card-body">
-                    <p className="text-uppercase text-sm">Prestasi Mahasiswa</p>
+                    <p className="text-uppercase text-sm mb-3"><h6>IPK Lulusan</h6></p>
                     <div className="row">
                       <div className="col-md-6">
                         <div className="form-group">

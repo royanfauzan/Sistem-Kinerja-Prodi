@@ -73,7 +73,7 @@ class PendidikanController extends Controller
 
         return response()->json([
             'success' => true,
-            'rekognisi' => $pendidikan,
+            'pendidikans' => $pendidikan,
             'dosenId'=> $dosenId
         ]);
     }

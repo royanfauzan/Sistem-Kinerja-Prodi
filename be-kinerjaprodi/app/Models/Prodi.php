@@ -17,4 +17,14 @@ class Prodi extends Model
     public function penerimaan_mahasiswa() {
         return $this->hasMany(Penerimaan::class);
     }
+
+    public function matkuls()
+    {
+        return $this->hasMany(Matkul::class,'prodi_id','id');
+    }
+
+    public function bimbingans()
+    {
+        return $this->hasMany(Bimbingan::class,'prodi_id','id');
+    }
 }

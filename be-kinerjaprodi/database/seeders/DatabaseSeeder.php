@@ -31,6 +31,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // DATA PRODI
+        Prodi::create( //ngirim ke database
+            [
+                //yg kiri dari form, kanan dari database
+                'prodi' => 'D3',
+                'nama_prodi' => 'Manajemen Informatika',
+            ]
+        );
+
+        Prodi::create( //ngirim ke database
+            [
+                //yg kiri dari form, kanan dari database
+                'prodi' => 'D3',
+                'nama_prodi' => 'Teknik Listrik',
+            ]
+        );
+
+        Prodi::create( //ngirim ke database
+            [
+                //yg kiri dari form, kanan dari database
+                'prodi' => 'D4',
+                'nama_prodi' => 'Teknik Otomasi',
+            ]
+        );
         // \App\Models\User::factory(10)->create();
         User::create([
             'NIDK' => '12345678',

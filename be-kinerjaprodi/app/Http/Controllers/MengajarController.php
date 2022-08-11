@@ -46,7 +46,7 @@ class MengajarController extends Controller
             $dosenId = $request->dosenId;
         }
 
-        $data = $request->only('matkul_id','tahun_akademik', 'semester');
+        $data = $request->only('matkul_id','tahun_akademik', 'semester', 'semester');
         $validator = Validator::make($data, [
             'matkul_id'=>'required|numeric',
             'tahun_akademik'=>'required|string',
@@ -66,6 +66,11 @@ class MengajarController extends Controller
             'matkul_id'=>$request->matkul_id,
             'profil_dosen_id'=>$dosenId,
         ]);
+
+        if (!$request->kesesuaian) {
+            $mengajar->kesesuaian='';
+            $mengajar->save();
+        }
 
 
         return response()->json([

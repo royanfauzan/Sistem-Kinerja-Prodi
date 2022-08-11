@@ -46,7 +46,7 @@ class BimbinganController extends Controller
             $dosenId = $request->dosenId;
         }
 
-        $data = $request->only('prodi_id','tahun_akademik', 'judul_ta', 'mahasiswa_id');
+        $data = $request->only('prodi_id','tahun_akademik', 'judul_ta', 'mahasiswa_id','fileBukti');
         $validator = Validator::make($data, [
             'prodi_id'=>'required|numeric',
             'tahun_akademik'=>'required|string',

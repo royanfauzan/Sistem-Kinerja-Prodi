@@ -9,7 +9,7 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import Link from "next/link";
 
-export default function exportbidang() {
+export default function daftaripk() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
@@ -34,15 +34,15 @@ export default function exportbidang() {
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/bidanglisttahun",
+      url: "http://127.0.0.1:8000/api/ipklisttahun",
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { tahunbidangs } = response.data;
-        setListTahun(tahunbidangs);
-        setSelectTahun(tahunbidangs[0]);
-        tampildata(tahunbidangs[0]);
+        const { tahunipks } = response.data;
+        setListTahun(tahunipks);
+        setSelectTahun(tahunipks[0]);
+        tampildata(tahunipks[0]);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -85,13 +85,13 @@ export default function exportbidang() {
   const tampildata = (tahun) => {
     axios({
       method: "get",
-      url: `http://127.0.0.1:8000/api/kesesuaian/laporan/${tahun}`,
+      url: `http://127.0.0.1:8000/api/ipk/laporan/${tahun}`,
     })
       .then(function (response) {
-        const { bidang_ts } = response.data;
-        setPenelitianTs(bidang_ts);
+        const { penelitian_ts } = response.data;
+        setPenelitianTs(penelitian_ts);
         setisLoaded(true);
-        console.log(bidang_ts);
+        console.log(penelitian_ts);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -113,7 +113,7 @@ export default function exportbidang() {
                 <div className="row">
                   <div className="col-6 mb-2">
                     <td className="align-middle">
-                      <Link href={`/bidang/daftarbidang/`}>
+                      <Link href={`/ipk/daftaripk/`}>
                         <button className=" btn btn-primary border-0 shadow-sm ps-3 ms-3 pe-3 ps-3 me-3 mt-3 mb-3">
                           Daftar Tabel
                         </button>
@@ -126,7 +126,7 @@ export default function exportbidang() {
                           id="test-table-xls-button"
                           className="download-table-xls-button btn btn-success m-3"
                           table="tablePenelitianDosen"
-                          filename={`Tabel bidang ${dataSelectTahun}`}
+                          filename={`Tabel IPK ${dataSelectTahun}`}
                           sheet="3a3"
                           buttonText="Export Excel"
                           border="1"
@@ -188,14 +188,13 @@ export default function exportbidang() {
                             <td rowSpan={2}>No</td>
                             <td rowSpan={2}>Tahun Lulus</td>
                             <td rowSpan={2}>Jumlah Lulusan</td>
-                            <td rowSpan={2}>Jumlah Lulusan Yang Terlacak</td>
-                            <td colSpan={3}>Jumalh Lulusan Yang Terlacak Dengan Tingakat <br /> Kesesuaiian Bidangnya</td>
+                            <td colSpan={3}>Index Prestasi Kumulatif</td>
                           </tr>
 
                           <tr>
-                            <td>Rendah</td>
-                            <td>Sedang</td>
-                            <td>Tinggi</td>
+                            <td>Min.</td>
+                            <td>Rata-rata</td>
+                            <td>Maks</td>
                           </tr>
                         </thead>
                         <tbody>
@@ -204,27 +203,23 @@ export default function exportbidang() {
                               <tr>
                                 <td>{1}</td>
                                 <td>TS-2</td>
-                                {dataPenelitianTs[2].bidangts2 ? (
+                                {dataPenelitianTs[2].ipkts2 ? (
                                   <>
                                     <td>
-                                      {dataPenelitianTs[2].bidangts2.jmlh_lulusan}
+                                      {dataPenelitianTs[2].ipkts2.jmlh_lulusan}
                                     </td>
                                     <td>
-                                      {dataPenelitianTs[2].bidangts2.jmlh_terlacak}
+                                      {dataPenelitianTs[2].ipkts2.ipk_min}
                                     </td>
                                     <td>
-                                      {dataPenelitianTs[2].bidangts2.kesesuaian.rendah}
+                                      {dataPenelitianTs[2].ipkts2.ipk_avg}
                                     </td>
                                     <td>
-                                      {dataPenelitianTs[2].bidangts2.kesesuaian.sedang}
-                                    </td>
-                                    <td>
-                                      {dataPenelitianTs[2].bidangts2.kesesuaian.tinggi}
+                                      {dataPenelitianTs[2].ipkts2.ipk_max}
                                     </td>
                                   </>
                                 ) : (
                                   <>
-                                    <td>{0}</td>
                                     <td>{0}</td>
                                     <td>{0}</td>
                                     <td>{0}</td>
@@ -235,27 +230,23 @@ export default function exportbidang() {
                               <tr>
                                 <td>{2}</td>
                                 <td>TS-1</td>
-                                {dataPenelitianTs[1].bidangts1 ? (
-                                 <>
-                                 <td>
-                                   {dataPenelitianTs[1].bidangts1.jmlh_lulusan}
-                                 </td>
-                                 <td>
-                                   {dataPenelitianTs[1].bidangts1.jmlh_terlacak}
-                                 </td>
-                                 <td>
-                                   {dataPenelitianTs[1].bidangts1.kesesuaian.rendah}
-                                 </td>
-                                 <td>
-                                   {dataPenelitianTs[1].bidangts1.kesesuaian.sedang}
-                                 </td>
-                                 <td>
-                                   {dataPenelitianTs[1].bidangts1.kesesuaian.tinggi}
-                                 </td>
-                               </>
+                                {dataPenelitianTs[1].ipkts1 ? (
+                                  <>
+                                    <td>
+                                      {dataPenelitianTs[1].ipkts1.jmlh_lulusan}
+                                    </td>
+                                    <td>
+                                      {dataPenelitianTs[1].ipkts1.ipk_min}
+                                    </td>
+                                    <td>
+                                      {dataPenelitianTs[1].ipkts1.ipk_avg}
+                                    </td>
+                                    <td>
+                                      {dataPenelitianTs[1].ipkts1.ipk_max}
+                                    </td>
+                                  </>
                                 ) : (
                                   <>
-                                    <td>{0}</td>
                                     <td>{0}</td>
                                     <td>{0}</td>
                                     <td>{0}</td>
@@ -266,27 +257,23 @@ export default function exportbidang() {
                               <tr>
                                 <td>{3}</td>
                                 <td>TS</td>
-                                {dataPenelitianTs[0].bidangts0 ? (
+                                {dataPenelitianTs[0].ipkts0 ? (
                                   <>
-                                  <td>
-                                    {dataPenelitianTs[0].bidangts0.jmlh_lulusan}
-                                  </td>
-                                  <td>
-                                    {dataPenelitianTs[0].bidangts0.jmlh_terlacak}
-                                  </td>
-                                  <td>
-                                    {dataPenelitianTs[0].bidangts0.kesesuaian.rendah}
-                                  </td>
-                                  <td>
-                                    {dataPenelitianTs[0].bidangts0.kesesuaian.sedang}
-                                  </td>
-                                  <td>
-                                    {dataPenelitianTs[0].bidangts0.kesesuaian.tinggi}
-                                  </td>
-                                </>
+                                    <td>
+                                      {dataPenelitianTs[0].ipkts0.jmlh_lulusan}
+                                    </td>
+                                    <td>
+                                      {dataPenelitianTs[0].ipkts0.ipk_min}
+                                    </td>
+                                    <td>
+                                      {dataPenelitianTs[0].ipkts0.ipk_avg}
+                                    </td>
+                                    <td>
+                                      {dataPenelitianTs[0].ipkts0.ipk_max}
+                                    </td>
+                                  </>
                                 ) : (
                                   <>
-                                    <td>{0}</td>
                                     <td>{0}</td>
                                     <td>{0}</td>
                                     <td>{0}</td>

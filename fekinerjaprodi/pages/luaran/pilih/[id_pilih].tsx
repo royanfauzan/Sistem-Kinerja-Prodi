@@ -177,7 +177,7 @@ export default function editluaran(props) {
                               value={selectLuaran}
                               onChange={handleChangeLuaran}
                             >
-                              <option>Pilih Prodi</option>
+                              <option>Mahasiswa</option>
                               {dataLuarans.map((usermahasiswa) => {
                                 {
                                   return (

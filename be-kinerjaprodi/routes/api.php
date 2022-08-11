@@ -44,6 +44,7 @@ use App\Http\Controllers\SdmLaporanController;
 use App\Http\Controllers\RelasiLuaranController;
 use App\Models\MahasiswaAsing;
 use App\Models\PenggunaanDana;
+use App\Models\profilDosen;
 use App\Models\Rekognisi;
 
 
@@ -81,8 +82,12 @@ Route::get('ipk', [IpkController::class, 'index']);
 Route::post('ipk', [IpkController::class, 'store']);
 Route::put('update_ipk/{id}', [IpkController::class, 'update']);
 Route::get('show_ipk/{id}', [IpkController::class, 'show']);
+Route::get('ipklisttahun', [IpkController::class, 'listtahun']);
+Route::get('cari_ipk/{search}', [IpkController::class, 'searchipk']);
+Route::post('ipk_delete/{id}', [IpkController::class, 'destroy']);
 
 //Prestasi
+Route::get('prestasi/{search}', [PrestasiController::class, 'searchprestasi']);
 Route::get('prestasi', [PrestasiController::class, 'index']);
 Route::post('prestasi', [PrestasiController::class, 'store']);
 Route::put('edit_prestasi/{id}', [PrestasiController::class, 'update']);
@@ -90,6 +95,8 @@ Route::get('show_prestasi/{id}', [PrestasiController::class, 'show']);
 Route::post('delete_prestasi/{id}', [PrestasiController::class, 'destroy']);
 
 //Kesesuaian bidang kerja
+Route::get('bidanglisttahun', [KesesuaianController::class, 'listtahun']);
+Route::get('kesesuaian/laporan/{tahun}', [KesesuaianController::class, 'exportbidang']);
 Route::get('kesesuaian', [KesesuaianController::class, 'index']);
 Route::post('kesesuaian', [KesesuaianController::class, 'store']);
 Route::put('edit_kesesuaian/{id}', [KesesuaianController::class, 'update']);
@@ -208,13 +215,16 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 Route::get('ewmps', [EwmpController::class, 'index']);
 // Dev area Laporan
 Route::get('ewmplisttahun', [EwmpController::class, 'listtahun']);
+Route::get('dtpslisttahun', [ProfildosenController::class, 'listtahun']);
 Route::get('penelitianlisttahun', [PenelitianController::class, 'listtahun']);
 Route::get('pengabdianlisttahun', [PKMController::class, 'listtahun']);
 Route::get('laporanewmp/{tahun}', [SdmLaporanController::class, 'exportewmp']);
+Route::get('laporandtps/{tahun}', [SdmLaporanController::class, 'exportdtps']);
 Route::get('laporanpendos/{tahun}', [SdmLaporanController::class, 'exportpendos']);
 Route::get('laporanpkmdos/{tahun}', [SdmLaporanController::class, 'exportpkmdos']);
 Route::get('laporanpublikasidos/{tahun}', [SdmLaporanController::class, 'exportpublikasidos']);
 Route::get('laporanprodukdos/{tahun}', [SdmLaporanController::class, 'exportprodukdos']);
+Route::get('laporantestdata/{tahun}', [SdmLaporanController::class, 'testambildata']);
 
 
 

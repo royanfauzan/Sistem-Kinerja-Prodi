@@ -6,18 +6,21 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export default function inputipk() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState([]);
+  const [dataError, setError] = useState([]);
+  const MySwal = withReactContent(Swal);
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
+  const pengambilData = async () => {
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/Prodi",
@@ -33,43 +36,41 @@ export default function inputipk() {
         console.log("gagal");
         console.log(err.response);
       });
-  }
+  };
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
+  useEffect(() => {
     // cek token, kalo gaada disuruh login
-    const lgToken = localStorage.getItem('token');
-    if(!lgToken){
-      router.push('/login')
+    const lgToken = localStorage.getItem("token");
+    if (!lgToken) {
+      router.push("/login");
     }
 
-    // perjalanan validasi token 
+    // perjalanan validasi token
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/get_user",
-      headers: { "Authorization": `Bearer ${lgToken}` },
+      headers: { Authorization: `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-    })
-    .catch(function (err) {
-        console.log('gagal');
+      .then(function (response) {
+        console.log(response);
+        console.log("Sukses");
+        const { level_akses } = response.data.user;
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push("/");
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+      })
+      .catch(function (err) {
+        console.log("gagal");
         console.log(err.response);
-        return router.push('/');
-    })
-  },[]);
-
-
+        return router.push("/");
+      });
+  }, []);
 
   const submitForm = async (event) => {
     event.preventDefault();
@@ -97,163 +98,221 @@ export default function inputipk() {
       },
     })
       .then(function (response) {
-        const { all_ipk } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(all_ipk);
-        router.push("/");
+        MySwal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data Berhasil Di Input",
+        });
+
+        router.push("../ipk/daftaripk");
       })
+
       .catch(function (error) {
         //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
+        setError(error.response.data.error);
+        console.log(error.response.data.error);
+        MySwal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Data Gagal Di Input",
+        });
         console.log(error.response);
       });
   };
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
         <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetilDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetilDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <p className="mb-0">Input Data</p>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Simpan
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="card-body">
-                    <p className="text-uppercase text-sm">Prestasi Mahasiswa</p>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="prodi" className="form-control-label">
-                            Prodi
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="prodi"
-                          >
-                            <option>Pilih Prodi</option>
-                            {userDosens.map((userprodi) => {
-                               {
+                    <div className="card-body">
+                      <p className="text-uppercase text-sm">IPK Mahasiswa</p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="prodi"
+                              className={dataError.prodi_id ? "is-invalid" : ""}
+                            >
+                              Prodi
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
+                              id="prodi"
+                            >
+                              <option value="">Pilih Prodi</option>
+                              {userDosens.map((userprodi) => {
                                 return (
                                   <option
                                     value={userprodi.id}
                                     key={userprodi.id}
                                   >
-                                    {userprodi.prodi + ` ` + userprodi.nama_prodi}
+                                    {userprodi.prodi +
+                                      ` ` +
+                                      userprodi.nama_prodi}
                                   </option>
                                 );
+                              })}
+                            </select>
+                            {dataError.prodi_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.prodi_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="tahun"
+                              className={dataError.tahun ? "is-invalid" : ""}
+                            >
+                              Tahun
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tahun"
+                              id="tahun"
+                            />
+                            {dataError.tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="jmlh_lulusan"
+                              className={
+                                dataError.jmlh_lulusan ? "is-invalid" : ""
                               }
-                            })}
-                          </select>
+                            >
+                              Jumlah Lulusan
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Jumlah Lulusan"
+                              id="jmlh_lulusan"
+                            />
+                            {dataError.jmlh_lulusan ? (
+                              <div className="invalid-feedback">
+                                {dataError.jmlh_lulusan}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tahun" className="form-control-label">
-                            Tahun
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tahun"
-                            id="tahun"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="jmlh_lulusan" className="form-control-label">
-                            Jumlah Lulusan
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Jumlah Lulusan"
-                            id="jmlh_lulusan"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="min" className="form-control-label">
-                            IPK Minimal
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="IPK Minimal"
-                            id="min"
-                            required
-                          />
-                        </div>
-                      </div>
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="max" className="form-control-label">
-                            IPK Maksimal
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="IPK Maksimal"
-                            id="max"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="min"
+                              className={
+                                dataError.ipk_min ? "is-invalid" : ""
+                              }
+                            >
+                              IPK Minimal
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="IPK Minimal"
+                              id="min"
+                            />
+                            {dataError.ipk_min ? (
+                              <div className="invalid-feedback">
+                                {dataError.ipk_min}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="avg" className="form-control-label">
-                          IPK Rata - rata
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="IPK Rata - rata"
-                            id="avg"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="max" className={
+                                dataError.ipk_max ? "is-invalid" : ""
+                              }>
+                              IPK Maksimal
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="IPK Maksimal"
+                              id="max"
+                            />{dataError.ipk_max ? (
+                              <div className="invalid-feedback">
+                                {dataError.ipk_max}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="avg" className={
+                                dataError.ipk_avg ? "is-invalid" : ""
+                              }>
+                              IPK Rata - rata
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="IPK Rata - rata"
+                              id="avg"
+                            />
+                            {dataError.ipk_avg ? (
+                              <div className="invalid-feedback">
+                                {dataError.ipk_avg}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+        </LayoutForm>
       )}
     </>
   );

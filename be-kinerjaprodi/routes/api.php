@@ -81,8 +81,12 @@ Route::get('ipk', [IpkController::class, 'index']);
 Route::post('ipk', [IpkController::class, 'store']);
 Route::put('update_ipk/{id}', [IpkController::class, 'update']);
 Route::get('show_ipk/{id}', [IpkController::class, 'show']);
+Route::get('ipklisttahun', [IpkController::class, 'listtahun']);
+Route::get('cari_ipk/{search}', [IpkController::class, 'searchipk']);
+Route::post('ipk_delete/{id}', [IpkController::class, 'destroy']);
 
 //Prestasi
+Route::get('prestasi/{search}', [PrestasiController::class, 'searchprestasi']);
 Route::get('prestasi', [PrestasiController::class, 'index']);
 Route::post('prestasi', [PrestasiController::class, 'store']);
 Route::put('edit_prestasi/{id}', [PrestasiController::class, 'update']);
@@ -90,6 +94,8 @@ Route::get('show_prestasi/{id}', [PrestasiController::class, 'show']);
 Route::post('delete_prestasi/{id}', [PrestasiController::class, 'destroy']);
 
 //Kesesuaian bidang kerja
+Route::get('bidanglisttahun', [KesesuaianController::class, 'listtahun']);
+Route::get('kesesuaian/laporan/{tahun}', [KesesuaianController::class, 'exportbidang']);
 Route::get('kesesuaian', [KesesuaianController::class, 'index']);
 Route::post('kesesuaian', [KesesuaianController::class, 'store']);
 Route::put('edit_kesesuaian/{id}', [KesesuaianController::class, 'update']);

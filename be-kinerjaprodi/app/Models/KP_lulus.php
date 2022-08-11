@@ -13,4 +13,9 @@ class KP_lulus extends Model
     {
         return $this->belongsTo(Prodi::class,'prodi_id','id');
     }
+
+    public function kesesuaian()
+    {
+        return $this->hasOne(Kasesuaian::class,'kepuasan_id','id');
+    }
 }

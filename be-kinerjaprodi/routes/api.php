@@ -209,6 +209,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('ewmps', [EwmpController::class, 'store']);
     Route::post('mengajars', [MengajarController::class, 'store']);
     Route::post('bimbingans', [BimbinganController::class, 'store']);
+    Route::get('logout', [ApiController::class, 'logout']);
 });
 
 // Dev area EWMP

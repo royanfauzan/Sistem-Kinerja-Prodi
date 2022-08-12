@@ -6,18 +6,21 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export default function inputtempat() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState([]);
+  const [dataError, setError] = useState([]);
+  const MySwal = withReactContent(Swal);
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
+  const pengambilData = async () => {
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/kepuasan",
@@ -33,43 +36,41 @@ export default function inputtempat() {
         console.log("gagal");
         console.log(err.response);
       });
-  }
+  };
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
+  useEffect(() => {
     // cek token, kalo gaada disuruh login
-    const lgToken = localStorage.getItem('token');
-    if(!lgToken){
-      router.push('/login')
+    const lgToken = localStorage.getItem("token");
+    if (!lgToken) {
+      router.push("/login");
     }
 
-    // perjalanan validasi token 
+    // perjalanan validasi token
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/get_user",
-      headers: { "Authorization": `Bearer ${lgToken}` },
+      headers: { Authorization: `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-    })
-    .catch(function (err) {
-        console.log('gagal');
+      .then(function (response) {
+        console.log(response);
+        console.log("Sukses");
+        const { level_akses } = response.data.user;
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push("/");
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+      })
+      .catch(function (err) {
+        console.log("gagal");
         console.log(err.response);
-        return router.push('/');
-    })
-  },[]);
-
-
+        return router.push("/");
+      });
+  }, []);
 
   const submitForm = async (event) => {
     event.preventDefault();
@@ -95,66 +96,72 @@ export default function inputtempat() {
       },
     })
       .then(function (response) {
-        const { all_tempat } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(all_tempat);
-        router.push("/");
+        MySwal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data Berhasil Di Input",
+        });
+
+        router.push("../tempat/daftartempat");
       })
+
       .catch(function (error) {
         //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
+        setError(error.response.data.error);
+        console.log(error.response.data.error);
+        MySwal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Data Gagal Di Input",
+        });
         console.log(error.response);
       });
   };
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
         <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetilDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetilDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <p className="mb-0">Input Data</p>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Simpan
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="card-body">
-                    <p className="text-uppercase text-sm">Prestasi Mahasiswa</p>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="kepuasan" className="form-control-label">
-                            Tahun Kepuasan Lulusan
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="kepuasan"
-                          >
-                            <option>Pilih Tahun Lulusan</option>
-                            {userDosens.map((userkepuasan) => {
-                               {
+                    <div className="card-body">
+                      <p className="text-uppercase text-sm">
+                        Prestasi Mahasiswa
+                      </p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="kepuasan"
+                              className={
+                                dataError.kepuasan_id ? "is-invalid" : ""
+                              }
+                            >
+                              Tahun Kepuasan
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
+                              id="kepuasan"
+                            >
+                              <option value="">Pilih Tahun Kepuasan</option>
+                              {userDosens.map((userkepuasan) => {
                                 return (
                                   <option
                                     value={userkepuasan.id}
@@ -163,65 +170,102 @@ export default function inputtempat() {
                                     {userkepuasan.tahun}
                                   </option>
                                 );
+                              })}
+                            </select>
+                            {dataError.kepuasan_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.kepuasan_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="lokal"
+                              className={
+                                dataError.kepuasan_id ? "is-invalid" : ""
                               }
-                            })}
-                          </select>
+                            >
+                              Tempat Kerja Lokal
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Jumlah kerja lokal"
+                              id="lokal"
+                            />
+                            {dataError.lokal ? (
+                              <div className="invalid-feedback">
+                                {dataError.lokal}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="lokal" className="form-control-label">
-                            Tempat Kerja Lokal
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Jumlah kerja lokal"
-                            id="lokal"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="nasional"
+                              className={dataError.lokal ? "is-invalid" : ""}
+                            >
+                              Tempat Kerja Nasional
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Jumlah kerja nasional"
+                              id="nasional"
+                            />
+                            {dataError.lokal ? (
+                              <div className="invalid-feedback">
+                                {dataError.lokal}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="nasional" className="form-control-label">
-                            Tempat Kerja Nasional
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Jumlah kerja nasional"
-                            id="nasional"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="multinasional" className="form-control-label">
-                            Tempat Kerja Multinasional
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Jumlah kerja multi masional"
-                            id="multinasional"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="multinasional"
+                              className={
+                                dataError.multinasional ? "is-invalid" : ""
+                              }
+                            >
+                              Tempat Kerja Multinasional
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Jumlah kerja multi masional"
+                              id="multinasional"
+                            />
+                            {dataError.multinasional ? (
+                              <div className="invalid-feedback">
+                                {dataError.multinasional}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+        </LayoutForm>
       )}
     </>
   );

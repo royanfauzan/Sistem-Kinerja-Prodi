@@ -2,10 +2,10 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
-import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutForm";
-import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
+import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
+import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
+import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
 import Link from "next/link";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
@@ -18,23 +18,26 @@ export default function daftarluaran() {
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
 
+
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/luaran",
+      url: "http://127.0.0.1:8000/api/tampil_relasi",
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_luaran } = response.data;
-        setprofilDosen(all_luaran);
+        const { all_relasi } = response.data;
+        setprofilDosen(all_relasi);
 
-        console.log(all_luaran);
+        console.log(all_relasi);
       })
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
       });
+
+      
   };
 
   useEffect(() => {
@@ -72,7 +75,7 @@ export default function daftarluaran() {
   const deleteluaran = (id) => {
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/delete_luaran/${id}`,
+      url: `http://127.0.0.1:8000/api/deletemahasiswa/${id}`,
     })
       .then(function (response) {
         router.reload();
@@ -132,16 +135,10 @@ export default function daftarluaran() {
                             Nama Mahasiswa
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            judul
+                            Judul
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Keterangan
-                          </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Tahun
-                          </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Jenis Luaran
+                            NIM
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2 pe-0"></th>
                         </tr>
@@ -156,64 +153,19 @@ export default function daftarluaran() {
                                 </h6>
                               </td>
 
-                              <td>
-                                {lurn.anggota_mahasiswas.map(
-                                  (anggota_mahasiswas) => {
-                                    return (
-                                      <p
-                                        className="mb-0 text-sm"
-                                        key="anggota.id"
-                                      >
-                                        {anggota_mahasiswas.nama}
-                                      </p>
-                                    );
-                                  }
-                                )}
-                              </td>
-
                               <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {lurn.judul}
+                                  {lurn.mahasiswa.nama }
                                 </p>
                               </td>
 
                               <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {lurn.keterangan}
-                                </p>
-                              </td>
-
-                              <td className="align-middle  text-sm">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {lurn.tahun}
-                                </p>
-                              </td>
-
-                              <td className="align-middle ">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {lurn.jenis_luaran}
+                                {lurn.mahasiswa.nim }
                                 </p>
                               </td>
 
                               <td className="align-middle pe-0">
-                                <tr>
-                                <Link href={`/luaran/edit/${lurn.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
-
-                                <Link href={`/luaran/pilih/${lurn.id}`}>
-                                  <button className="btn btn-sm btn-success border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Pilih mahasiswa
-                                  </button>
-                                </Link>
-
-                                <Link href={`/luaran/hapusmahasiswa`}>
-                                  <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                   Hapus mahasiswa
-                                  </button>
-                                </Link>
 
                                 <button
                                   onClick={() => deleteluaran(lurn.id)}
@@ -221,33 +173,6 @@ export default function daftarluaran() {
                                 >
                                   Hapus
                                 </button>
-                                </tr>
-                                <tr>
-                                <Link href={`/luaran/edit/${lurn.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
-
-                                <Link href={`/luaran/pilih/${lurn.id}`}>
-                                  <button className="btn btn-sm btn-success border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Pilih mahasiswa
-                                  </button>
-                                </Link>
-
-                                <Link href={`/luaran/hapusmahasiswa`}>
-                                  <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                   Hapus mahasiswa
-                                  </button>
-                                </Link>
-
-                                <button
-                                  onClick={() => deleteluaran(lurn.id)}
-                                  className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
-                                >
-                                  Hapus
-                                </button>
-                                </tr>
                               </td>
                             </tr>
                           );

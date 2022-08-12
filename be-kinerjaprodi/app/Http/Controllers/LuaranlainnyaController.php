@@ -22,6 +22,14 @@ class LuaranlainnyaController extends Controller
         ]);
     }
 
+    public function tampilrelasi()
+    {
+        return response()->json([
+            'success' => true,
+            'all_relasi' => relasi_luaran_mhs::with('mahasiswa')->get(),
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -188,6 +196,23 @@ class LuaranlainnyaController extends Controller
     public function destroy($id)
     {
         $luaran = Luaranlainnya::find($id);
+        $luaran->delete();
+
+        if (!$luaran) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
+    }
+
+    public function deletemahasiswa($id)
+    {
+        $luaran = relasi_luaran_mhs::find($id);
         $luaran->delete();
 
         if (!$luaran) {

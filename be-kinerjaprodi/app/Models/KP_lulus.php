@@ -18,4 +18,14 @@ class KP_lulus extends Model
     {
         return $this->hasOne(Kasesuaian::class,'kepuasan_id','id');
     }
+
+    public function tempat()
+    {
+        return $this->hasOne(Tempat::class,'kepuasan_id','id');
+    }
+
+    public function waktu()
+    {
+        return $this->hasOne(Waktutunggu::class,'kepuasan_id','id');
+    }
 }

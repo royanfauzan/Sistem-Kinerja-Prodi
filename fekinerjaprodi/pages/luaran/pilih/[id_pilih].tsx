@@ -121,7 +121,7 @@ export default function editluaran(props) {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(all_luaran);
-        // router.push("../../luaran/daftarluaran");
+        router.push("../../luaran/daftarluaran");
         console.log(response.data);
       })
       .catch(function (error) {

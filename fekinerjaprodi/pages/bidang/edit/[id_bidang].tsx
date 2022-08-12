@@ -9,32 +9,36 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 
 // Untuk Ngambil Data Berdasarkan ID
 export async function getServerSideProps(context) {
+  //http request
+  const req = await axios.get(
+    `http://127.0.0.1:8000/api/show_kesesuaian/${context.query.id_bidang}`
+  );
+  const res = await req.data.all_kesesuaian;
 
-    //http request
-    const req  = await axios.get(`http://127.0.0.1:8000/api/show_kesesuaian/${context.query.id_bidang}`)
-    const res  = await req.data.all_kesesuaian
-  
-    return {
-      props: {
-        kesesuaian: res // <-- assign response
-      },
-    }
-  }
+  return {
+    props: {
+      kesesuaian: res, // <-- assign response
+    },
+  };
+}
 
 export default function editkesesuaian(props) {
   const router = useRouter();
-  const {kesesuaian}=props;
+  const { kesesuaian } = props;
   const [dataKesesuaians, setKesesuaian] = useState(kesesuaian);
- 
-console.log(kesesuaian);
 
-   // State Select
+  console.log(kesesuaian);
+
+  // State Select
   const [stadmin, setStadmin] = useState(false);
   const [dataKesesuaian, setKesesuaians] = useState([]);
-  const [selectKesesuaian, setSelectKesesuaian] = useState(kesesuaian.kepuasan_id);
+  const [selectKesesuaian, setSelectKesesuaian] = useState(
+    kesesuaian.kepuasan_id
+  );
+  const [dataRole, setRole] = useState("");
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
+  const pengambilData = async () => {
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/kepuasan",
@@ -42,7 +46,7 @@ console.log(kesesuaian);
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_prodi} = response.data;
+        const { all_prodi } = response.data;
         setKesesuaians(all_prodi);
         console.log(dataKesesuaians);
       })
@@ -50,47 +54,48 @@ console.log(kesesuaian);
         console.log("gagal");
         console.log(err.response);
       });
-  }
-
+  };
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
+  useEffect(() => {
     // cek token, kalo gaada disuruh login
-    const lgToken = localStorage.getItem('token');
-    if(!lgToken){
-      router.push('/login')
+    const lgToken = localStorage.getItem("token");
+    if (!lgToken) {
+      router.push("/login");
     }
- 
-    // perjalanan validasi token 
+
+    // perjalanan validasi token
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/get_user",
-      headers: { "Authorization": `Bearer ${lgToken}` },
+      headers: { Authorization: `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-           
-    })
-    .catch(function (err) {
-        console.log('gagal');
+      .then(function (response) {
+        console.log(response);
+        console.log("Sukses");
+        const { level_akses } = response.data.user;
+
+        const { role } = response.data.user;
+        setRole(role);
+
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push("/");
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+      })
+      .catch(function (err) {
+        console.log("gagal");
         console.log(err.response);
-        return router.push('/');
-    })
-  },[]);
+        return router.push("/");
+      });
+  }, []);
 
   const handleChangeKesesuaian = (e) => {
     setSelectKesesuaian(e.target.value);
-   
   };
 
   const submitForm = async (event) => {
@@ -107,7 +112,9 @@ console.log(kesesuaian);
 
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/edit_kesesuaian/${dataKesesuaians.id}` + `?_method=PUT`,
+      url:
+        `http://127.0.0.1:8000/api/edit_kesesuaian/${dataKesesuaians.id}` +
+        `?_method=PUT`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -140,26 +147,26 @@ console.log(kesesuaian);
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
-        <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetilDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
+        <LayoutForm rlUser={dataRole}>
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetilDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <p className="mb-0">Input Data</p>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Simpan
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="card-body">
+                    <div className="card-body">
                       <p className="text-uppercase text-sm">
                         Kesesuaian Bidang Kerja
                       </p>
@@ -246,19 +253,18 @@ console.log(kesesuaian);
                             />
                           </div>
                         </div>
-
                       </div>
                     </div>
-                </div>
-              </form>
+                  </div>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+        </LayoutForm>
       )}
     </>
   );

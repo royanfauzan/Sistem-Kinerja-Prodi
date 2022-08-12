@@ -17,6 +17,8 @@ export default function dashboardadmin() {
 
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
+  const [dataRole, setRole] = useState('');
+
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -57,6 +59,9 @@ export default function dashboardadmin() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const {role} = response.data.user;
+        setRole(role);
+        
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -76,7 +81,7 @@ export default function dashboardadmin() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <MenuCardUtama

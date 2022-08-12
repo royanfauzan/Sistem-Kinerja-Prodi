@@ -6,12 +6,18 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 
 export default function inputprestasi() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState([]);
   const [fileBukti, setfileBuktis] = useState<File>([]);
+  const [dataError, setError] = useState([]);
+  const MySwal = withReactContent(Swal);
+
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -96,27 +102,27 @@ export default function inputprestasi() {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        const { all_kesesuaian } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(all_kesesuaian);
-        router.push("/");
-      })
-      .catch(function (error) {
-        //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
-        console.log(error.response);
+    .then(function (response) {
+      MySwal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Berhasil Di Input",
       });
+
+      router.push("../bidang/daftarbidang");
+    })
+
+    .catch(function (error) {
+      //handle error
+      setError(error.response.data.error);
+      console.log(error.response.data.error);
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Data Gagal Di Input",
+      });
+      console.log(error.response);
+    });
   };
 
   return (
@@ -145,13 +151,13 @@ export default function inputprestasi() {
                         Kesesuaian Bidang Kerja
                       </p>
                       <div className="row">
-                        <div className="col-md-6">
+                      <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="kepuasan"
-                              className="form-control-label"
+                              className={dataError.kepuasan_id ? "is-invalid" : ""}
                             >
-                              Tahun Kepuasan Lulusan
+                              Tahun Kepuasan
                             </label>
                             <select
                               className="form-select"
@@ -159,54 +165,71 @@ export default function inputprestasi() {
                               defaultValue="0"
                               id="kepuasan"
                             >
-                              <option>Pilih Tahun Lulusan</option>
+                              <option value="">Pilih Tahun Kepuasan</option>
                               {userDosens.map((userkepuasan) => {
-                                {
-                                  return (
-                                    <option
-                                      value={userkepuasan.id}
-                                      key={userkepuasan.id}
-                                    >
-                                      {userkepuasan.tahun}
-                                    </option>
-                                  );
-                                }
+                                return (
+                                  <option
+                                    value={userkepuasan.id}
+                                    key={userkepuasan.id}
+                                  >
+                                    {userkepuasan.tahun}
+                                  </option>
+                                );
                               })}
                             </select>
+                            {dataError.kepuasan_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.kepuasan_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="rendah"
-                              className="form-control-label"
+                              className={dataError.rendah ? "is-invalid" : ""}
                             >
                               Tingkat Kepuasan Rendah
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="Nama Kegiatan"
+                              placeholder="Sesuai jumlah lulusan terlacak"
                               id="rendah"
-                              required
                             />
+                            {dataError.rendah ? (
+                              <div className="invalid-feedback">
+                                {dataError.rendah}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="sedang"
-                              className="form-control-label"
+                              className={dataError.sedang ? "is-invalid" : ""}
                             >
                               Tingkat Kespuasan Sedang
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="sedang"
+                              placeholder="Sesuai jumlah lulusan terlacak"
                               id="sedang"
-                              required
                             />
+                            {dataError.sedang ? (
+                              <div className="invalid-feedback">
+                                {dataError.sedang}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -214,17 +237,23 @@ export default function inputprestasi() {
                           <div className="form-group">
                             <label
                               htmlFor="tinggi"
-                              className="form-control-label"
+                              className={dataError.tinggi ? "is-invalid" : ""}
                             >
                               Tingkat Kespuasan Tinggi
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="tinggi"
+                              placeholder="Sesuai jumlah lulusan terlacak"
                               id="tinggi"
-                              required
                             />
+                            {dataError.tinggi ? (
+                              <div className="invalid-feedback">
+                                {dataError.tinggi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 

@@ -9,7 +9,7 @@ import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 import Link from "next/link";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
-export default function daftarbidang() {
+export default function daftarluaran() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
@@ -18,23 +18,26 @@ export default function daftarbidang() {
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
 
+
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/kesesuaian",
+      url: "http://127.0.0.1:8000/api/tampil_relasi",
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_kesesuaian } = response.data;
-        setprofilDosen(all_kesesuaian);
+        const { all_relasi } = response.data;
+        setprofilDosen(all_relasi);
 
-        console.log(all_kesesuaian);
+        console.log(all_relasi);
       })
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
       });
+
+      
   };
 
   useEffect(() => {
@@ -69,24 +72,10 @@ export default function daftarbidang() {
       });
   }, []);
 
-  const searchdata = async (e) => {
-    if (e.target.value == "") {
-      const req = await axios.get(`http://127.0.0.1:8000/api/kesesuaian/`);
-      const res = await req.data.all_kesesuaian;
-      setprofilDosen(res);
-    } else {
-      const req = await axios.get(
-        `http://127.0.0.1:8000/api/bidang/${e.target.value}`
-      );
-      const res = await req.data.searchbidang;
-      setprofilDosen(res);
-    }
-  };
-
-  const deletekesesuaian = (id) => {
+  const deleteluaran = (id) => {
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/delete_kesesuaian/${id}`,
+      url: `http://127.0.0.1:8000/api/deletemahasiswa/${id}`,
     })
       .then(function (response) {
         router.reload();
@@ -105,31 +94,14 @@ export default function daftarbidang() {
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
-                <div className="card-header pb-0 px-3">
-                  <div className="row">
-                    <div className="col-4">
-                      <h6>Authors table</h6>
-                    </div>
+                <div className="card-header pb-0">
+                  <div className="col-4">
+                    <h6>Authors table</h6>
                   </div>
-
-                  <div className="row justify-content-end">
-                  <div className="col-2 d-flex flex-row-reverse pe-2">
-                    <input
-                      className="form-control d-flex flex-row-reverse me-2"
-                      type="search"
-                      placeholder="Search.."
-                      aria-label="Search"
-                      defaultValue=""
-                      id="search"
-                      onChange={searchdata}
-                    />
-                  </div>
-                  </div>
-
                   <div className="row justify-content-between mb-4">
                     <div className="col-4">
                       <td className="align-middle">
-                        <Link href={`/bidang/inputbidang/`}>
+                        <Link href={`/luaran/inputluaran/`}>
                           <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                             Tambah Data
                           </button>
@@ -138,8 +110,8 @@ export default function daftarbidang() {
                     </div>
                     <div className="col-4 d-flex flex-row-reverse">
                       <td className="align-middle">
-                        <Link href={`/bidang/exportbidang/export_bidang`}>
-                          <button className=" btn btn-success border-0 shadow-sm ps-3 ps-3 me-2 mt-3 mb-0">
+                        <Link href={`/luaran/exportluaran/export_luaran`}>
+                          <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-5 mt-3 mb-0">
                             Export Excel
                           </button>
                         </Link>
@@ -156,65 +128,47 @@ export default function daftarbidang() {
                     >
                       <thead>
                         <tr>
-                        <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
+                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             NO
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Tahun Kepuasan lulusan
+                            Nama Mahasiswa
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Rendah
+                            Judul
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Sedang
-                          </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Tinggi
+                            NIM
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2 pe-0"></th>
                         </tr>
                       </thead>
                       <tbody>
-                        {profilDosen.map((ksn, number) => {
+                        {profilDosen.map((lurn, number) => {
                           return (
-                            <tr key={`ksn` + ksn.id}>
+                            <tr key={`lurn` + lurn.id}>
                               <td>
-                                <h6 className="mb-0 text-sm ps-2">{number + 1}</h6>
+                                <h6 className="mb-0 text-sm ps-2">
+                                  {number + 1}
+                                </h6>
                               </td>
 
                               <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {ksn.kepuasan.tahun}
+                                  {lurn.mahasiswa.nama }
                                 </p>
                               </td>
 
                               <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {ksn.rendah}
-                                </p>
-                              </td>
-
-                              <td className="align-middle  text-sm">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {ksn.sedang}
-                                </p>
-                              </td>
-
-                              <td className="align-middle ">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {ksn.tinggi}
+                                {lurn.mahasiswa.nim }
                                 </p>
                               </td>
 
                               <td className="align-middle pe-0">
-                                <Link href={`/bidang/edit/${ksn.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
 
                                 <button
-                                  onClick={() => deletekesesuaian(ksn.id)}
+                                  onClick={() => deleteluaran(lurn.id)}
                                   className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
                                   Hapus

@@ -6,12 +6,16 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 
 export default function inputkepuasan_lls() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState([]);
+  const [dataError, setError] = useState([]);
+  const MySwal = withReactContent(Swal);
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -94,27 +98,27 @@ export default function inputkepuasan_lls() {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        const { profil } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(profil);
-        router.push("/");
-      })
-      .catch(function (error) {
-        //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
-        console.log(error.response);
+    .then(function (response) {
+      MySwal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Berhasil Di Input",
       });
+
+      router.push("../kepuasan_LLS/daftar_kepuasan_lls");
+    })
+
+    .catch(function (error) {
+      //handle error
+      setError(error.response.data.error);
+      console.log(error.response.data.error);
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Data Gagal Di Input",
+      });
+      console.log(error.response);
+    });
   };
 
   return (
@@ -142,35 +146,46 @@ export default function inputkepuasan_lls() {
                     <p className="text-uppercase text-sm">Kepuasan Lulusan</p>
                     <div className="row">
                     <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="prodi" className="form-control-label">
-                            Prodi
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="prodi"
-                          >
-                            <option>Pilih Prodi</option>
-                            {userDosens.map((userprodi) => {
-                               {
+                          <div className="form-group">
+                            <label
+                              htmlFor="prodi"
+                              className={dataError.prodi_id ? "is-invalid" : ""}
+                            >
+                              Prodi
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
+                              id="prodi"
+                            >
+                              <option value="">Pilih Prodi</option>
+                              {userDosens.map((userprodi) => {
                                 return (
                                   <option
                                     value={userprodi.id}
                                     key={userprodi.id}
                                   >
-                                    {userprodi.prodi + ` ` + userprodi.nama_prodi}
+                                    {userprodi.prodi +
+                                      ` ` +
+                                      userprodi.nama_prodi}
                                   </option>
                                 );
-                              }
-                            })}
-                          </select>
+                              })}
+                            </select>
+                            {dataError.prodi_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.prodi_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="tahun" className="form-control-label">
+                          <label htmlFor="tahun" 
+                          className={dataError.tahun ? "is-invalid" : ""}>
                             Tahun
                           </label>
                           <input
@@ -178,13 +193,20 @@ export default function inputkepuasan_lls() {
                             type="text"
                             placeholder="Tahun"
                             id="tahun"
-                            required
                           />
+                          {dataError.tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="jmlh_lulusan" className="form-control-label">
+                          <label htmlFor="jmlh_lulusan" 
+                          className={dataError.jmlh_lulusan ? "is-invalid" : ""}>
                             Jumlah Lulusan
                           </label>
                           <input
@@ -192,13 +214,20 @@ export default function inputkepuasan_lls() {
                             type="text"
                             placeholder="Jumlah Lulusan"
                             id="jmlh_lulusan"
-                            required
                           />
+                          {dataError.jmlh_lulusan ? (
+                              <div className="invalid-feedback">
+                                {dataError.jmlh_lulusan}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="jmlh_terlacak" className="form-control-label">
+                          <label htmlFor="jmlh_terlacak" 
+                          className={dataError.jmlh_terlacak ? "is-invalid" : ""}>
                             Jumlah Terlacak
                           </label>
                           <input
@@ -206,8 +235,14 @@ export default function inputkepuasan_lls() {
                             type="text"
                             placeholder="Jumlah Terlacak"
                             id="jmlh_terlacak"
-                            required
                           />
+                          {dataError.jmlh_terlacak ? (
+                              <div className="invalid-feedback">
+                                {dataError.jmlh_terlacak}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
                     </div>

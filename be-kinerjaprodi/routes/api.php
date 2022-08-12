@@ -66,15 +66,24 @@ use App\Models\Rekognisi;
 Route::post('login', [ApiController::class, 'authenticate']);
 
 // Kepuasan lulusan
+Route::get('kepuasan/{search}', [KepuasanController::class, 'searchkepuasan']);
+Route::get('kepuasan/laporan/{tahun}', [KepuasanController::class, 'exportkepuasan']);
+Route::get('kepuasanlisttahun', [KepuasanController::class, 'listtahunkepuasan']);
 Route::get('kepuasan', [KepuasanController::class, 'index']);
 Route::post('kepuasan', [KepuasanController::class, 'store']);
 Route::put('update_kepuasan/{id}', [KepuasanController::class, 'update']);
+Route::get('show_kepuasan/{id}', [KepuasanController::class, 'show']);
+Route::post('delete_kepuasan/{id}', [KepuasanController::class, 'destroy']);
 
 // Tempat kerja lulusan
+Route::get('tempat/{search}', [TempatController::class, 'searchtempat']);
+Route::get('tempatlisttahun', [TempatController::class, 'listtahun']);
+Route::get('tempat/laporan/{tahun}', [TempatController::class, 'exporttempat']);
 Route::get('tempat', [TempatController::class, 'index']);
 Route::post('tempat', [TempatController::class, 'store']);
 Route::put('update_tempat/{id}', [TempatController::class, 'update']);
 Route::get('show_tempat/{id}', [TempatController::class, 'show']);
+Route::post('delete_tempat/{id}', [TempatController::class, 'destroy']);
 
 // IPK
 Route::get('ipk/laporan/{tahun}', [IpkController::class, 'exportpendos']);
@@ -95,6 +104,7 @@ Route::get('show_prestasi/{id}', [PrestasiController::class, 'show']);
 Route::post('delete_prestasi/{id}', [PrestasiController::class, 'destroy']);
 
 //Kesesuaian bidang kerja
+Route::get('bidang/{search}', [KesesuaianController::class, 'searchbidang']);
 Route::get('bidanglisttahun', [KesesuaianController::class, 'listtahun']);
 Route::get('kesesuaian/laporan/{tahun}', [KesesuaianController::class, 'exportbidang']);
 Route::get('kesesuaian', [KesesuaianController::class, 'index']);
@@ -111,6 +121,9 @@ Route::get('show_masastudi/{id}', [MasastudiController::class, 'show']);
 Route::post('delete_masastudi/{id}', [MasastudiController::class, 'destroy']);
 
 //Waktu tunggu
+Route::get('waktutunggu/{search}', [WaktutungguController::class, 'searchwaktutunggu']);
+Route::get('waktutunggulisttahun', [WaktutungguController::class, 'listtahun']);
+Route::get('waktutunggu/laporan/{tahun}', [WaktutungguController::class, 'exportwaktutunggu']);
 Route::get('waktutunggu', [WaktutungguController::class, 'index']);
 Route::post('waktutunggu', [WaktutungguController::class, 'store']);
 Route::put('edit_waktutunggu/{id}', [WaktutungguController::class, 'update']);
@@ -120,10 +133,12 @@ Route::post('delete_waktutunggu/{id}', [WaktutungguController::class, 'destroy']
 //Luaran lainnya
 Route::post('luaran_mhs/{id}', [LuaranlainnyaController::class, 'pilihmahasiswa']);
 Route::get('luaran', [LuaranlainnyaController::class, 'index']);
+Route::get('tampil_relasi', [LuaranlainnyaController::class, 'tampilrelasi']);
 Route::post('luaran', [LuaranlainnyaController::class, 'store']);
 Route::put('edit_luaran/{id}', [LuaranlainnyaController::class, 'update']);
 Route::get('show_luaran/{id}', [LuaranlainnyaController::class, 'show']);
 Route::post('delete_luaran/{id}', [LuaranlainnyaController::class, 'destroy']);
+Route::post('deletemahasiswa/{id}', [LuaranlainnyaController::class, 'deletemahasiswa']);
 
 
 //Pagelaran MHS

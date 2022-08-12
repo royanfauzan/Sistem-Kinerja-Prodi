@@ -224,6 +224,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('ewmps', [EwmpController::class, 'store']);
     Route::post('mengajars', [MengajarController::class, 'store']);
     Route::post('bimbingans', [BimbinganController::class, 'store']);
+    Route::get('logout', [ApiController::class, 'logout']);
 });
 
 // Dev area EWMP
@@ -233,12 +234,14 @@ Route::get('ewmplisttahun', [EwmpController::class, 'listtahun']);
 Route::get('dtpslisttahun', [ProfildosenController::class, 'listtahun']);
 Route::get('penelitianlisttahun', [PenelitianController::class, 'listtahun']);
 Route::get('pengabdianlisttahun', [PKMController::class, 'listtahun']);
+Route::get('bimbinganlisttahun', [BimbinganController::class, 'listtahun']);
 Route::get('laporanewmp/{tahun}', [SdmLaporanController::class, 'exportewmp']);
 Route::get('laporandtps/{tahun}', [SdmLaporanController::class, 'exportdtps']);
 Route::get('laporanpendos/{tahun}', [SdmLaporanController::class, 'exportpendos']);
 Route::get('laporanpkmdos/{tahun}', [SdmLaporanController::class, 'exportpkmdos']);
 Route::get('laporanpublikasidos/{tahun}', [SdmLaporanController::class, 'exportpublikasidos']);
 Route::get('laporanprodukdos/{tahun}', [SdmLaporanController::class, 'exportprodukdos']);
+Route::get('laporanbimbingan/{tahun}', [SdmLaporanController::class, 'exportbimbingan']);
 Route::get('laporantestdata/{tahun}', [SdmLaporanController::class, 'testambildata']);
 
 
@@ -262,11 +265,12 @@ Route::put('Prodi/{id}', [ProdiController::class, 'update']);
 Route::get('Prodi', [ProdiController::class, 'tampilprodi']);
 
 //route mahasiswa
+Route::get('Mahasiswa_search/{id}', [MahasiswaController::class, 'searchmahasiswa']);
 Route::get('tampil_Mahasiswa/{id}', [MahasiswaController::class, 'show']);
 Route::get('Mahasiswa', [MahasiswaController::class, 'index']);
 Route::post('Mahasiswa', [MahasiswaController::class, 'store']);
 Route::put('Mahasiswa_Update/{id}', [MahasiswaController::class, 'update']);
-Route::put('Mahasiswa_Delete/{id}', [MahasiswaController::class, 'destroy']);
+Route::post('Mahasiswa_Delete/{id}', [MahasiswaController::class, 'destroy']);
 
 //Relasi Luaran
 Route::get('relasiluaran', [RelasiluaranController::class, 'index']);
@@ -274,6 +278,7 @@ Route::put('edit_relasiluaran/{id}', [RelasiluaranController::class, 'update']);
 Route::post('relasiluaran', [RelasiLuaranController::class, 'store']);
 
 //route matkul
+Route::get('Matkul_search/{id}', [MatkulController::class, 'searchmatkul']);
 Route::get('tampil_Matkul/{id}', [MatkulController::class, 'show']);
 Route::get('Matkul', [MatkulController::class, 'index']);
 Route::post('Matkul', [MatkulController::class, 'store']);
@@ -281,6 +286,7 @@ Route::put('Matkul_Update/{id}', [MatkulController::class, 'update']);
 Route::post('Matkul_Delete/{id}', [MatkulController::class, 'destroy']);
 
 //route kepuasan mahasiswa
+Route::get('KepuasanMHS_search/{id}', [KepuasanMHSController::class, 'searchkepuasanmhs']);
 Route::get('tampil_KepuasanMHS/{id}', [KepuasanMHSController::class, 'show']);
 Route::get('KepuasanMHS', [KepuasanMHSController::class, 'index']);
 Route::post('KepuasanMHS', [KepuasanMHSController::class, 'store']);
@@ -289,6 +295,7 @@ Route::get('KepuasanMHS_Tahun', [KepuasanMHSController::class, 'listtahun']);
 Route::get('KepuasanMHS_Export/{tahun}', [KepuasanMHSController::class, 'exporttahun']);
 
 //route produk mahasiswa
+Route::get('ProdukMHS_search/{id}', [ProdukMHSController::class, 'searchprodukmhs']);
 Route::get('tampil_ProdukMHS/{id}', [ProdukMHSController::class, 'show']);
 Route::get('ProdukMHS', [ProdukMHSController::class, 'index']);
 Route::post('ProdukMHS', [ProdukMHSController::class, 'store']);
@@ -296,6 +303,7 @@ Route::put('ProdukMHS_Update/{id}', [ProdukMHSController::class, 'update']);
 Route::post('ProdukMHS_Delete/{id}', [ProdukMHSController::class, 'destroy']);
 
 //route data capaian kurikulum
+Route::get('CapaianKurikulum_search/{id}', [CapKurikulumController::class, 'searchcapkurikulum']);
 Route::get('tampil_CapaianKurikulum/{id}', [CapKurikulumController::class, 'show']);
 Route::get('CapaianKurikulum', [CapKurikulumController::class, 'index']);
 Route::post('CapaianKurikulum', [CapKurikulumController::class, 'store']);
@@ -303,6 +311,7 @@ Route::put('CapaianKurikulum_Update/{id}', [CapKurikulumController::class, 'upda
 Route::post('CapaianKurikulum_Delete/{id}', [CapKurikulumController::class, 'destroy']);
 
 //route data PKM
+Route::get('PKM_search/{id}', [PKMController::class, 'searchpkm']);
 Route::get('tampil_PKM/{id}', [PKMController::class, 'show']);
 Route::get('PKM', [PKMController::class, 'index']);
 Route::post('PKM', [PKMController::class, 'store']);
@@ -310,6 +319,9 @@ Route::put('PKM_Update/{id}', [PKMController::class, 'update']);
 Route::post('PKM_Delete/{id}', [PKMController::class, 'destroy']);
 
 //route penelitian
+Route::get('Penelitian_search/{id}', [PenelitianController::class, 'searchpenelitian']);
+Route::post('Penelitian_dosen/{id}', [PenelitianController::class, 'pilihdosen']);
+Route::post('Penelitian_mahasiswa/{id}', [PenelitianController::class, 'pilihmahasiswa']);
 Route::get('tampil_Penelitian/{id}', [PenelitianController::class, 'show']);
 Route::get('Penelitian', [PenelitianController::class, 'index']);
 Route::post('Penelitian', [PenelitianController::class, 'store']);
@@ -317,6 +329,7 @@ Route::put('Penelitian_Update/{id}', [PenelitianController::class, 'update']);
 Route::post('Penelitian_Delete/{id}', [PenelitianController::class, 'destroy']);
 
 //route integrasi
+Route::get('Integrasi_search/{id}', [IntegrasiController::class, 'searchintegrasi']);
 Route::get('tampil_Integrasi/{id}', [IntegrasiController::class, 'show']);
 Route::get('Integrasi', [IntegrasiController::class, 'index']);
 Route::post('Integrasi', [IntegrasiController::class, 'store']);

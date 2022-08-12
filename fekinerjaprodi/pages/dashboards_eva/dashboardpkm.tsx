@@ -17,8 +17,6 @@ export default function dashboardadmin() {
 
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
-  const [dataRole, setRole] = useState('');
-
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -59,9 +57,6 @@ export default function dashboardadmin() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
-        const {role} = response.data.user;
-        setRole(role);
-        
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -81,62 +76,24 @@ export default function dashboardadmin() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm rlUser={dataRole}>
+        <LayoutForm>
           <div className="container-fluid py-4">
             <div className="row">
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={`/TulisanMedia/`}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={`/TulisanMedia/`}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={`/TulisanMedia/`}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
+              <div className="col-4 mt-3">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">Data Pengabdian <br /> Kepada Masyarakat</h5>
+                    <p className="card-text">
+                      With supporting text below as a natural lead-in to
+                      additional content.
+                    </p>
+                    <a href="/PkM/daftarpkm" className="btn btn-primary">
+                      Kelola Data
+                    </a>
+                  </div>
+                </div>
+              </div>
+              
             </div>
             <FooterUtama />
           </div>

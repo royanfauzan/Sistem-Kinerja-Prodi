@@ -7,12 +7,15 @@ import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 import Link from "next/link";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 export default function daftarintgrs() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
   const [integrasi, setintegrasi] = useState([]);
+  const MySwal = withReactContent(Swal)
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -82,6 +85,20 @@ export default function daftarintgrs() {
       });
   };
 
+  const searchdata= async (e) => {
+    if (e.target.value == "") {
+      const req = await axios.get(`http://127.0.0.1:8000/api/Integrasi/`)
+      const res = await req.data.all_integrasi
+      setintegrasi(res)
+    } else {
+      const req = await axios.get(
+        `http://127.0.0.1:8000/api/Integrasi_search/${e.target.value}`
+      )
+      const res = await req.data.searchintegrasi
+      setintegrasi(res)
+    }
+  }
+
 
   return (
     <>
@@ -92,8 +109,21 @@ export default function daftarintgrs() {
             <div className="col-12">
               <div className="card mb-4">
                 <div className="col-4 ms-3 mt-3">
-                  <h6>Tabel Mata Kuliah</h6>
+                  <h6>Daftar Tabel Integrasi</h6>
                 </div>
+                <div className="row justify-content-end">
+                  <div className="col-3 d-flex flex-row-reverse pe-2">
+                    <input
+                      className="form-control d-flex flex-row-reverse me-3"
+                      type="search"
+                      placeholder="Search.."
+                      aria-label="Search"
+                      defaultValue=""
+                      id="search"
+                      onChange={searchdata}
+                    />
+                  </div>
+                  </div>
                 <div className="row justify-content-between mb-4">
                   <div className="col-4">
                     <div className="align-middle">
@@ -159,7 +189,7 @@ export default function daftarintgrs() {
 
                               <td>
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {intgrs.profil_dosen.NamaDosen + ' ' + intgrs.profil_dosen.NIK}
+                                  {intgrs.profil_dosen.NamaDosen + ' ' + intgrs.profil_dosen.NIDK}
                                 </p>
                               </td>
 

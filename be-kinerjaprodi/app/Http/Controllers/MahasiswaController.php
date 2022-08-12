@@ -21,6 +21,19 @@ class MahasiswaController extends Controller
         ]);
     }
 
+    public function searchmahasiswa($search)
+    {
+
+
+        return response()->json([
+            'success' => true,
+            'searchmahasiswa' =>  Mahasiswa::where('nim', 'LIKE', "%{$search}%")
+                ->orwhere('nama', 'LIKE', "%{$search}%")
+                ->get()
+
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -49,7 +62,7 @@ class MahasiswaController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $dataprodi = Mahasiswa::create( //ngirim ke database

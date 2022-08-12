@@ -21,6 +21,25 @@ class IntegrasiController extends Controller
         ]);
     }
 
+    public function searchintegrasi($search)
+    {
+
+
+        return response()->json([
+            'success' => true,
+            'searchintegrasi' =>  Integrasi::with('profil_dosen', 'penelitian', 'pkm' ,'matkul')
+                ->whereRelation('profil_dosen', 'NamaDosen', 'LIKE', "%{$search}%")
+                ->orWhereRelation('penelitian', 'judul', 'LIKE', "%{$search}%")
+                ->orWhereRelation('pkm', 'judul_kegiatan', 'LIKE', "%{$search}%")
+                ->orWhereRelation('matkul', 'nama_matkul', 'LIKE', "%{$search}%")
+                ->orwhere('bentuk_integrasi', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('file_bukti', 'LIKE', "%{$search}%")
+                ->get()
+
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -53,7 +72,7 @@ class IntegrasiController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $finalPathdokumen = "";

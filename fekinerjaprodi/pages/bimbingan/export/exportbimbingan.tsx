@@ -9,25 +9,27 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 import Link from "next/link";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
-export default function exportdtps() {
+export default function exportbimbingan() {
   const router = useRouter();
 
+  
   const [stadmin, setStadmin] = useState(false);
   const [dataSelectTahun, setSelectTahun] = useState(``);
 
   // console.log(dataSelectTahun);
 
-  const [dataDTPS, setdataDTPS] = useState([]);
+  const [dataBimbingans, setdataBimbingans] = useState([]);
   const [dataListTahun, setListTahun] = useState([]);
 
   const [tampilMhsAsing, settampilMhsAsing] = useState([]);
   const [dataProdis, setdataProdi] = useState([]);
-  const [dataRole, setRole] = useState('');
   
+const [dataRole, setRole] = useState('');
+
 
   const handleChange = (e) => {
-    const value = e.target.value;
-    console.log(e.target.value);
+    const value = e.target.value
+    console.log(e.target.value)
     setSelectTahun(value);
     tampildata(value);
   };
@@ -36,15 +38,15 @@ export default function exportdtps() {
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/dtpslisttahun",
+      url: "http://127.0.0.1:8000/api/bimbinganlisttahun",
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { tahundtpss } = response.data;
-        setListTahun(tahundtpss);
-        setSelectTahun(tahundtpss[0].split("/")[1]);
-        tampildata(tahundtpss[0].split("/")[1]);
+        const { tahunbimbingans } = response.data;
+        setListTahun(tahunbimbingans);
+        setSelectTahun(tahunbimbingans[0].split("/")[1]);
+        tampildata(tahunbimbingans[0].split("/")[1]);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -71,6 +73,7 @@ export default function exportdtps() {
         const { level_akses } = response.data.user;
         const {role} = response.data.user;
         setRole(role);
+
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -89,12 +92,12 @@ export default function exportdtps() {
   const tampildata = (tahun) => {
     axios({
       method: "get",
-      url: `http://127.0.0.1:8000/api/laporandtps/${tahun}`,
+      url: `http://127.0.0.1:8000/api/laporanbimbingan/${tahun}`,
     })
       .then(function (response) {
-        const { dtps } = response.data;
-        setdataDTPS(dtps);
-        console.log(dtps);
+        const { list_bimbingan } = response.data;
+        setdataBimbingans(list_bimbingan);
+        console.log(list_bimbingan);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -113,7 +116,7 @@ export default function exportdtps() {
                 <div className="card">
                   <div className="card-header pb-0">
                     <div className="d-flex align-items-center">
-                      <h4>DTPS</h4>
+                      <h4>EWMP</h4>
                     </div>
                   </div>
                   <div className="card-body">
@@ -159,22 +162,22 @@ export default function exportdtps() {
                     </div>
                     <div className="row">
                       <div className="col-12 d-flex flex-row-reverse">
-                        {dataDTPS && (
-                          <ReactHTMLTableToExcel
-                            id="test-table-xls-button"
-                            className="download-table-xls-button btn btn-success ms-3"
-                            table="tableDTPS"
-                            filename={`tabelDTPS_TH${dataSelectTahun}`}
-                            sheet="3a3"
-                            buttonText="Export Excel"
-                            border="1"
-                          />
-                        )}
+                          {dataBimbingans&&(
+                              <ReactHTMLTableToExcel
+                              id="test-table-xls-button"
+                              className="download-table-xls-button btn btn-success ms-3"
+                              table="tableBimbingan"
+                              filename={`tabelBimbingan_TH${dataSelectTahun}`}
+                              sheet="3a3"
+                              buttonText="Export Excel"
+                              border="1"
+                            />
+                          )}
+                        
                       </div>
                     </div>
                     <div className="row">
-                      <div className="card-body p-3">
-                        <div className="table-responsive p-0">
+                      <div className="col-12">
                         <style jsx>{`
                           table,
                           td,
@@ -188,107 +191,54 @@ export default function exportdtps() {
                             border-collapse: collapse;
                           }
                         `}</style>
-                        <table id="tableDTPS" border={1}>
+                        <table id="tableEWMP" border={1}>
                           <thead>
                             <tr>
-                              <td rowSpan={2}>No</td>
-                              <td rowSpan={2}>Nama Dosen</td>
-                              <td rowSpan={2}>NIDN/NIDK</td>
-                              <td colSpan={2}>Pendidikan Pasca Sarjana</td>
-                              <td rowSpan={2}>BidangKeahlian</td>
-                              <td rowSpan={2}>
-                                Kesesuaian dengan Kompetensi Inti PS
+                              <td rowSpan={3}>No</td>
+                              <td rowSpan={3}>Nama Dosen</td>
+                              <td colSpan={8}>
+                                Jumlah Mahasiswa Dibimbing
                               </td>
-                              <td rowSpan={2}>Jabatan Akademik</td>
-                              <td rowSpan={2}>
-                                Sertifikat pendidik Profesional
-                              </td>
-                              <td rowSpan={2}>
-                                Sertifikat Kompetensi/ Profesi/Industri
-                              </td>
-                              <td rowSpan={2}>
-                                Mata Kuliah yang Diampu pada PS yang
-                                Diakreditasi
-                              </td>
-                              <td rowSpan={2}>
-                                Kesesuaian Bidang Keahlian dengan Mata Kuliah
-                                yang Diampu
-                              </td>
-                              <td rowSpan={2}>
-                                Mata Kuliah yang Diampu pada PS Lain
-                              </td>
+                              <td rowSpan={3}>Rata-rata Jumlah Bimbingan di semua Program/ Semester</td>
+                            </tr>
+                            <tr>                    
+                              <td colSpan={4}>Pada PS Diakreditasi</td>
+                              <td colSpan={4}>Pada PS Lain di PT</td>
                             </tr>
                             <tr>
-                              <td>Magister/Magister Terapan/Spesialis</td>
-                              <td>Doktor/Doktor Terapan/Spesialis</td>
+                              <td>TS-2</td>
+                              <td>TS-1</td>
+                              <td>TS</td>
+                              <td>Rata-Rata</td>
+                              <td>TS-2</td>
+                              <td>TS-1</td>
+                              <td>TS</td>
+                              <td>Rata-Rata</td>
                             </tr>
                           </thead>
                           <tbody>
-                            {dataDTPS.map((dtps, index) => {
-                              const stats = dtps.mengajarUns[0].kesesuaian
-                                ? "V"
-                                : "";
+                            {dataBimbingans.map((bimbing, index) => {
+                              
                               return (
-                                <tr key={`tdtps` + dtps.id}>
+                                <tr key={`tbimbing` + bimbing.id}>
                                   {/* no */}
                                   <td>{index + 1}</td>
                                   {/* prodi */}
-                                  <td>{dtps.NamaDosen}</td>
-                                  <td>{dtps.NIDK}</td>
-                                  <td>{dtps.pascasarjana.magister}</td>
-                                  <td>{dtps.pascasarjana.doktor}</td>
-                                  <td>{dtps.detaildosen.bidangKeahlian}</td>
-                                  <td>{dtps.detaildosen.kesesuaian}</td>
-                                  <td>{dtps.detaildosen.jabatanAkademik}</td>
-                                  <td>
-                                    <a
-                                      href={
-                                        `http://127.0.0.1:8000/` +
-                                        dtps.detaildosen.fileBukti
-                                      }
-                                    >
-                                      {dtps.detaildosen.noSertifPendidik}
-                                    </a>
-                                  </td>
-                                  <td>
-                                    {dtps.detaildosen.serkoms.map((serkom, indx) => {
-                                      return (
-                                        <>
-                                          {`${indx+1}.${serkom.nama_sertifikat}(${serkom.keterangan})`}
-                                          <br />
-                                        </>
-                                      );
-                                    })}
-                                  </td>
-                                  <td>
-                                    {dtps.mengajarUns.map((mengajars, indx) => {
-                                      return (
-                                        <>
-                                          {mengajars.matkul.nama_matkul}
-                                          <br />
-                                        </>
-                                      );
-                                    })}
-                                  </td>
-                                  <td>{stats}</td>
-                                  <td>
-                                    {dtps.mengajarLuar.map(
-                                      (mengajarlr, indx) => {
-                                        return (
-                                          <>
-                                            {mengajarlr.matkul.nama_matkul}
-                                            <br />
-                                          </>
-                                        );
-                                      }
-                                    )}
-                                  </td>
+                                  <td>{bimbing.NamaDosen}</td>
+                                  <td>{bimbing.listBimbing[2].bimbingan_dalam}</td>
+                                  <td>{bimbing.listBimbing[1].bimbingan_dalam}</td>
+                                  <td>{bimbing.listBimbing[0].bimbingan_dalam}</td>
+                                  <td>{bimbing.avgDalam}</td>
+                                  <td>{bimbing.listBimbing[2].bimbingan_luar}</td>
+                                  <td>{bimbing.listBimbing[1].bimbingan_luar}</td>
+                                  <td>{bimbing.listBimbing[0].bimbingan_luar}</td>
+                                  <td>{bimbing.avgLuar}</td> 
+                                  <td>{bimbing.avgSemester}</td>
                                 </tr>
                               );
                             })}
                           </tbody>
                         </table>
-                        </div>
                       </div>
                     </div>
                   </div>

@@ -11,44 +11,43 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 export async function getServerSideProps(context) {
   //http request
   const req = await axios.get(
-    `http://127.0.0.1:8000/api/show_kesesuaian/${context.query.id_bidang}`
+    `http://127.0.0.1:8000/api/tampil_Penelitian/${context.query.id_pilih_mhs}`
   );
-  const res = await req.data.all_kesesuaian;
+  const res = await req.data.all_penelitian;
 
   return {
     props: {
-      kesesuaian: res, // <-- assign response
+      penelitian: res, // <-- assign response
     },
   };
 }
 
-export default function editkesesuaian(props) {
+export default function editPenelitian(props) {
   const router = useRouter();
-  const { kesesuaian } = props;
-  const [dataKesesuaians, setKesesuaian] = useState(kesesuaian);
+  const { id_pilih_mhs } = router.query;
+  const { penelitian } = props;
+  const [dataPenelitian, setPenelitian] = useState(penelitian);
 
-  console.log(kesesuaian);
+  console.log(penelitian);
 
   // State Select
   const [stadmin, setStadmin] = useState(false);
-  const [dataKesesuaian, setKesesuaians] = useState([]);
-  const [selectKesesuaian, setSelectKesesuaian] = useState(
-    kesesuaian.kepuasan_id
-  );
-  const [dataRole, setRole] = useState("");
+  const [dataPenelitians, setPenelitians] = useState([]);
+  const [selectPenelitian, setSelectPenelitian] = useState(penelitian.mahasiswa_id);
+  const [selectId, setSelectId] = useState(id_pilih_mhs);
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () => {
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/kepuasan",
+      url: "http://127.0.0.1:8000/api/Mahasiswa",
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_prodi } = response.data;
-        setKesesuaians(all_prodi);
-        console.log(dataKesesuaians);
+        const { all_mhs } = response.data;
+        setPenelitians(all_mhs);
+        console.log(dataPenelitians);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -75,10 +74,6 @@ export default function editkesesuaian(props) {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
-
-        const { role } = response.data.user;
-        setRole(role);
-
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -94,8 +89,8 @@ export default function editkesesuaian(props) {
       });
   }, []);
 
-  const handleChangeKesesuaian = (e) => {
-    setSelectKesesuaian(e.target.value);
+  const handleChangePenelitian = (e) => {
+    setSelectPenelitian(e.target.value);
   };
 
   const submitForm = async (event) => {
@@ -105,16 +100,14 @@ export default function editkesesuaian(props) {
     const lgToken = localStorage.getItem("token");
 
     let formData = new FormData();
-    formData.append("kepuasan_id", event.target.kepuasan.value);
-    formData.append("rendah", event.target.rendah.value);
-    formData.append("sedang", event.target.sedang.value);
-    formData.append("tinggi", event.target.tinggi.value);
+    formData.append("mahasiswa_id", event.target.mahasiswa.value);
+    formData.append("keanggotaan", event.target.anggota.value);
+    formData.append("penelitian_id", selectId);
 
     axios({
       method: "post",
       url:
-        `http://127.0.0.1:8000/api/edit_kesesuaian/${dataKesesuaians.id}` +
-        `?_method=PUT`,
+        `http://127.0.0.1:8000/api/Penelitian_mahasiswa/${dataPenelitian.id}`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -122,13 +115,13 @@ export default function editkesesuaian(props) {
       },
     })
       .then(function (response) {
-        const { profil } = response.data;
+        const { all_luaran } = response.data;
         //handle success
         toast.dismiss();
         toast.success("Login Sugses!!");
         // console.log(token);
-        console.log(profil);
-        router.push("../../bidang/daftarbidang");
+        console.log(all_luaran);
+        // router.push("../../penelitian/daftarluaran");
         console.log(response.data);
       })
       .catch(function (error) {
@@ -149,7 +142,7 @@ export default function editkesesuaian(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm rlUser={dataRole}>
+        <LayoutForm>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -167,33 +160,32 @@ export default function editkesesuaian(props) {
                       </div>
                     </div>
                     <div className="card-body">
-                      <p className="text-uppercase text-sm">
-                        Kesesuaian Bidang Kerja
-                      </p>
+                      <p className="text-uppercase text-sm">penelitian Lainnya</p>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
-                              htmlFor="kepuasan"
+                              htmlFor="mahasiswa"
                               className="form-control-label"
                             >
-                              Tahun Kepuasan Lulusan
+                              Nama Mahasiswa
                             </label>
                             <select
                               className="form-select"
                               aria-label="Default select example"
-                              defaultValue="0"
-                              id="kepuasan"
+                              id="mahasiswa"
+                              value={selectPenelitian}
+                              onChange={handleChangePenelitian}
                             >
-                              <option>Pilih Tahun Lulusan</option>
-                              {dataKesesuaian.map((userkepuasan) => {
+                              <option>Pilih Prodi</option>
+                              {dataPenelitians.map((usermahasiswa) => {
                                 {
                                   return (
                                     <option
-                                      value={userkepuasan.id}
-                                      key={userkepuasan.id}
+                                      value={usermahasiswa.id}
+                                      key={usermahasiswa.id}
                                     >
-                                      {userkepuasan.tahun}
+                                      {usermahasiswa.nama}
                                     </option>
                                   );
                                 }
@@ -201,58 +193,26 @@ export default function editkesesuaian(props) {
                             </select>
                           </div>
                         </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label
-                              htmlFor="rendah"
-                              className="form-control-label"
-                            >
-                              Tingkat Kepuasan Rendah
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Nama Kegiatan"
-                              id="rendah"
-                              required
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label
-                              htmlFor="sedang"
-                              className="form-control-label"
-                            >
-                              Tingkat Kespuasan Sedang
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="sedang"
-                              id="sedang"
-                              required
-                            />
-                          </div>
-                        </div>
 
                         <div className="col-md-6">
-                          <div className="form-group">
-                            <label
-                              htmlFor="tinggi"
-                              className="form-control-label"
-                            >
-                              Tingkat Kespuasan Tinggi
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="tinggi"
-                              id="tinggi"
-                              required
-                            />
-                          </div>
+                        <div className="form-group">
+                          <label htmlFor="anggota" className="form-control-label">
+                            Keanggotaan
+                          </label>
+                          <select
+                            className="form-select"
+                            aria-label="Default select example"
+                            defaultValue="0"
+                            id="anggota"
+                          >
+                            <option >Keanggotaan</option>
+                            <option value="Anggota"> Anggota</option>
+                            <option value="Ketua"> Ketua</option>
+                            
+                          </select>
                         </div>
+                      </div>
+                      
                       </div>
                     </div>
                   </div>

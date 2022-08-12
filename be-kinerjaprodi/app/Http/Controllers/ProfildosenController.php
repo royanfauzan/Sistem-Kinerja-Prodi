@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\profilDosen;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -41,50 +42,56 @@ class ProfildosenController extends Controller
     public function store(Request $request)
     {
         //
-        $data = $request->only('NIDK', 'NamaDosen', 'NIK', 'TempatLahir', 'TanggalLahir', 'JenisKelamin', 'StatusPerkawinan', 'Agama');
+        $data = $request->only('NIDK', 'NamaDosen', 'NIK', 'TempatLahir', 'TanggalLahir', 'StatusDosen', 'JenisKelamin', 'StatusPerkawinan', 'Agama');
         $validator = Validator::make($data, [
-            'NIDK'=>'required|string',
-            'NamaDosen'=>'required|string',
-            'NIK'=>"required|string",
-            'TempatLahir'=>'required|string',
-            'TanggalLahir'=>'required|string',
-            'JenisKelamin'=>'required|string',
-            'StatusPerkawinan'=>'required|string',
-            'Agama'=>'required|string',
+            'NIDK' => 'required|string',
+            'NamaDosen' => 'required|string',
+            'NIK' => "required|string",
+            'TempatLahir' => 'required|string',
+            'TanggalLahir' => 'required|string',
+            'JenisKelamin' => 'required|string',
+            'StatusPerkawinan' => 'required|string',
+            'Agama' => 'required|string',
+            'StatusDosen' => 'required|string',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors(),
-            ], 400);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
-        if (profilDosen::where('NIDK',$request->NIDK)->first()) {
+        if (profilDosen::where('NIDK', $request->NIDK)->first()) {
             return response()->json([
                 'success' => false,
                 'message' => "Profil Sudah Tersimpan",
             ], 400);
         }
 
-        //Request is valid, create new profil
-        $profil = profilDosen::create([
-            'NIDK'=>$request->NIDK,
-            'NamaDosen'=>$request->NamaDosen,
-            'NIK'=>$request->NIK,
-            'TempatLahir'=>$request->TempatLahir,
-            'TanggalLahir'=>$request->TanggalLahir,
-            'JenisKelamin'=>$request->JenisKelamin,
-            'StatusPerkawinan'=>$request->StatusPerkawinan,
-            'Agama'=>$request->Agama,
+        $userBaru = User::create([
+            'NIDK' => $request->NIDK,
+            'role' => 'dosen',
+            'level_akses' => 2,
+            'password' => bcrypt('dosen123'),
         ]);
 
-        $profil->Golongan = isset($request->Golongan)?$request->Golongan:'';
-        $profil->Pangkat = isset($request->Pangkat)?$request->Pangkat:'';
-        $profil->JabatanAkademik = isset($request->JabatanAkademik)?$request->JabatanAkademik:'';
-        $profil->Alamat = isset($request->Alamat)?$request->Alamat:'';
-        $profil->NoTelepon = isset($request->NoTelepon)?$request->NoTelepon:'';
-        $profil->Email = isset($request->Email)?$request->Email:'';
+        //Request is valid, create new profil
+        $profil = profilDosen::create([
+            'NIDK' => $request->NIDK,
+            'NamaDosen' => $request->NamaDosen,
+            'NIK' => $request->NIK,
+            'TempatLahir' => $request->TempatLahir,
+            'TanggalLahir' => $request->TanggalLahir,
+            'JenisKelamin' => $request->JenisKelamin,
+            'StatusPerkawinan' => $request->StatusPerkawinan,
+            'Agama' => $request->Agama,
+            'StatusDosen' => $request->StatusDosen,
+        ]);
+
+        $profil->Golongan = isset($request->Golongan) ? $request->Golongan : '';
+        $profil->Pangkat = isset($request->Pangkat) ? $request->Pangkat : '';
+        $profil->JabatanAkademik = isset($request->JabatanAkademik) ? $request->JabatanAkademik : '';
+        $profil->Alamat = isset($request->Alamat) ? $request->Alamat : '';
+        $profil->NoTelepon = isset($request->NoTelepon) ? $request->NoTelepon : '';
+        $profil->Email = isset($request->Email) ? $request->Email : '';
 
         $profil->save();
 
@@ -103,7 +110,11 @@ class ProfildosenController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'profil_dosen' => profilDosen::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -127,6 +138,48 @@ class ProfildosenController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $profilDosen = profilDosen::find($id);
+        $data = $request->only('NamaDosen', 'NIK', 'TempatLahir', 'TanggalLahir', 'StatusDosen', 'JenisKelamin', 'StatusPerkawinan', 'Agama');
+        $validator = Validator::make($data, [
+            'NamaDosen' => 'required|string',
+            'NIK' => "required|string",
+            'TempatLahir' => 'required|string',
+            'TanggalLahir' => 'required|string',
+            'JenisKelamin' => 'required|string',
+            'StatusPerkawinan' => 'required|string',
+            'Agama' => 'required|string',
+            'StatusDosen' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+
+
+        $profilDosen->NamaDosen = $request->NamaDosen;
+        $profilDosen->NIK = $request->NIK;
+        $profilDosen->TempatLahir = $request->TempatLahir;
+        $profilDosen->TanggalLahir = $request->TanggalLahir;
+        $profilDosen->JenisKelamin = $request->JenisKelamin;
+        $profilDosen->StatusPerkawinan = $request->StatusPerkawinan;
+        $profilDosen->Agama = $request->Agama;
+        $profilDosen->StatusDosen = $request->StatusDosen;
+
+        $profilDosen->Golongan = isset($request->Golongan) ? $request->Golongan : '';
+        $profilDosen->Pangkat = isset($request->Pangkat) ? $request->Pangkat : '';
+        $profilDosen->JabatanAkademik = isset($request->JabatanAkademik) ? $request->JabatanAkademik : '';
+        $profilDosen->Alamat = isset($request->Alamat) ? $request->Alamat : '';
+        $profilDosen->NoTelepon = isset($request->NoTelepon) ? $request->NoTelepon : '';
+        $profilDosen->Email = isset($request->Email) ? $request->Email : '';
+
+        $profilDosen->save();
+
+
+        return response()->json([
+            'success' => true,
+            'profil' => $profilDosen,
+        ]);
     }
 
     /**
@@ -153,6 +206,42 @@ class ProfildosenController extends Controller
         return response()->json([
             'success' => true,
             'tahundtpss' => array_unique($arrTahun),
+        ]);
+    }
+
+    public function allprofil()
+    {
+        //
+        return response()->json([
+            'success' => true,
+            'profilDosens' => profilDosen::all(),
+        ]);
+    }
+
+    public function searchprofil(Request $request,$search)
+    {
+        //
+        $profilDosens = profilDosen::where('NamaDosen', 'LIKE', "%{$search}%")
+        ->orWhere('NIDK', 'LIKE', "%{$search}%")
+        ->orWhere('StatusDosen', 'LIKE', "%{$search}%")
+        ->orWhere('Golongan', 'LIKE', "%{$search}%")
+        ->orWhere('Pangkat', 'LIKE', "%{$search}%")
+        ->orWhere('JabatanAkademik', 'LIKE', "%{$search}%")
+        ->get();
+        return response()->json([
+            'success' => true,
+            'profilDosens' => $profilDosens,
+        ]);
+    }
+
+    public function get_dtps(Request $request)
+    {
+        //
+        $profilDosens = profilDosen::where('StatusDosen', "Dosen Tetap")
+        ->get();
+        return response()->json([
+            'success' => true,
+            'profilDosens' => $profilDosens,
         ]);
     }
 }

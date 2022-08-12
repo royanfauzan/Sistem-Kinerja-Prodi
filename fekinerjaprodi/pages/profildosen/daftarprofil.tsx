@@ -6,13 +6,14 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
-import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
 export default function daftarprofil() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
+  const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -53,6 +54,8 @@ export default function daftarprofil() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -72,34 +75,36 @@ export default function daftarprofil() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
                 <div className="card-header pb-0">
-                <div className="row justify-content-between">
-                  <div className="col-4">
-                  <h6>Authors table</h6>
-                  </div>
+                  <div className="row justify-content-between">
+                    <div className="col-4">
+                      <h6>Authors table</h6>
+                    </div>
                     <div className="col-4 d-flex flex-row-reverse">
-                    <ReactHTMLTableToExcel
-                    id="test-table-xls-button"
-                    className="download-table-xls-button btn btn-success ms-3"
-                    table="tableprint"
-                    filename="tablexls"
-                    sheet="tablexls"
-                    buttonText="Export Excel"/>
+                      <ReactHTMLTableToExcel
+                        id="test-table-xls-button"
+                        className="download-table-xls-button btn btn-success ms-3"
+                        table="tableprint"
+                        filename="tablexls"
+                        sheet="tablexls"
+                        buttonText="Export Excel"
+                      />
                     </div>
                   </div>
-                  
                 </div>
                 <div className="card-body px-0 pt-0 pb-2">
                   <div className="table-responsive p-0">
-                  
-                    <table className="table align-items-center mb-0" id="tableprint">
+                    <table
+                      className="table align-items-center mb-0"
+                      id="tableprint"
+                    >
                       <thead>
                         <tr>
-                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                             NIDK
                           </th>
                           <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -120,15 +125,14 @@ export default function daftarprofil() {
                       <tbody>
                         {profilDosen.map((pDsn) => {
                           return (
-                            <tr key={`pdsn`+pDsn.id}>
+                            <tr key={`pdsn` + pDsn.id}>
                               <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
-                              {pDsn.NIDK}
+                                <p className="text-xs font-weight-bold mb-0">
+                                  {pDsn.NIDK}
                                 </p>
                               </td>
                               <td>
                                 <div className="d-flex px-2 py-1">
-                                  
                                   <div className="d-flex flex-column justify-content-center">
                                     <h6 className="mb-0 text-sm">
                                       {pDsn.NamaDosen}
@@ -141,20 +145,19 @@ export default function daftarprofil() {
                               </td>
                               <td>
                                 <p className="text-xs font-weight-bold mb-0">
-                                {pDsn.JabatanAkademik}
+                                  {pDsn.JabatanAkademik}
                                 </p>
-                                
                               </td>
                               <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
-                                {pDsn.JenisKelamin}
+                                <p className="text-xs font-weight-bold mb-0">
+                                  {pDsn.JenisKelamin}
                                 </p>
                               </td>
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
-                                <p className="text-xs font-weight-bold mb-0">
-                                {pDsn.Agama}
-                                </p>
+                                  <p className="text-xs font-weight-bold mb-0">
+                                    {pDsn.Agama}
+                                  </p>
                                 </span>
                               </td>
                               <td className="align-middle">
@@ -169,7 +172,7 @@ export default function daftarprofil() {
                             </tr>
                           );
                         })}
-                        </tbody>
+                      </tbody>
                     </table>
                   </div>
                 </div>

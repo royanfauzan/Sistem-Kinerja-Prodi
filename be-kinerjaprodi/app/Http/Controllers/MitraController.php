@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Mitra;
 use Illuminate\Support\Facades\Validator;
-
 class MitraController extends Controller
 {
     public function tampil_mitra()

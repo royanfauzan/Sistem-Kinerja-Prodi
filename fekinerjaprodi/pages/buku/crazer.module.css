@@ -1,0 +1,6 @@
+button.btn.btn-sm.btn-primary.border-0.shadow-sm.mb-2.me-3.mt-2 {
+    --bs-btn-padding-y: 0.5rem !important;
+    --bs-btn-padding-x: 1.3rem !important;
+    --bs-btn-font-size: 0.75rem !important;
+    --bs-btn-border-radius: 0.5rem !important;
+}

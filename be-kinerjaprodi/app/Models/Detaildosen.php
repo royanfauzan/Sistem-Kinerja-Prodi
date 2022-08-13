@@ -9,4 +9,9 @@ class Detaildosen extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function serkoms()
+    {
+        return $this->hasMany(Serkom::class,'detaildosen_id','id');
+    }
 }

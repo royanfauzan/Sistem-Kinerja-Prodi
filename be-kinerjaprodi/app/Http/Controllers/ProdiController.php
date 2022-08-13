@@ -15,7 +15,6 @@ class ProdiController extends Controller
      */
     public function tampilprodi()
     {
-
         return response()->json([
             'success' => true,
             'Prodi' => Prodi::all(),

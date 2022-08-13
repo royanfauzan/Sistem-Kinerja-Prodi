@@ -9,4 +9,9 @@ class Mahasiswa extends Model
 {
     use HasFactory;
     protected $guarded = ["id"];
+
+    public function bimbingans()
+    {
+        return $this->hasMany(Bimbingan::class,'mahasiswa_id','id');
+    }
 }

@@ -6,12 +6,16 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Link from "next/link";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 export default function daftarprodkmhs() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
   const [produkmhs, setprodukmhs] = useState([]);
+  const MySwal = withReactContent(Swal)
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -67,6 +71,34 @@ export default function daftarprodkmhs() {
       });
   }, []);
 
+  const deleteprodukMHS = (id) => {
+    axios({
+      method: "post",
+      url: `http://127.0.0.1:8000/api/ProdukMHS_Delete/${id}`,
+    })
+      .then(function (response) {
+        router.reload();
+      })
+      .catch(function (err) {
+        console.log("gagal");
+        console.log(err.response);
+      });
+  };
+
+  const searchdata= async (e) => {
+    if (e.target.value == "") {
+      const req = await axios.get(`http://127.0.0.1:8000/api/ProdukMHS/`)
+      const res = await req.data.all_produk
+      setprodukmhs(res)
+    } else {
+      const req = await axios.get(
+        `http://127.0.0.1:8000/api/ProdukMHS_search/${e.target.value}`
+      )
+      const res = await req.data.searchprodukmhs
+      setprodukmhs(res)
+    }
+  }
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -78,78 +110,113 @@ export default function daftarprodkmhs() {
                 <div className="card-header pb-0">
                   <h6>Tabel Produk Mahasiswa</h6>
                 </div>
-                <div className="card-body px-0 pt-0 pb-2">
+                <div className="row justify-content-end">
+                  <div className="col-3 d-flex flex-row-reverse pe-2">
+                    <input
+                      className="form-control d-flex flex-row-reverse me-3"
+                      type="search"
+                      placeholder="Search.."
+                      aria-label="Search"
+                      defaultValue=""
+                      id="search"
+                      onChange={searchdata}
+                    />
+                  </div>
+                  </div>
+                <div className="row justify-content-between mb-4">
+                  <div className="col-4 ms-3">
+                    <div className="align-middle">
+                      <Link href={`/produkMHS/produkmhs/`}>
+                        <button className=" btn btn-primary border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
+                          Tambah Data
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                <div className="card-body p-3">
                   <div className="table-responsive p-0">
-                    <table className="table align-items-center mb-0">
+                    <table  className="table align-items-center mb-0 table table-striped table-hover">
                       <thead>
                         <tr>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-7 ps-3">
+                            NO
+                          </th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-7 ps-2">
                             Nama Produk
                           </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-7 ps-2">
                             Deskripsi
                           </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-7 ps-2">
                             Tahun
                           </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-7 ps-2">
                             Deskripsi Bukti
                           </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-7 ps-2">
                             File Bukti
                           </th>
-                          <th className="text-secondary opacity-7"></th>
+                          <th className="text-dark opacity-7"></th>
                         </tr>
                       </thead>
                       <tbody>
-                      {produkmhs.map((prodkmhs) => {
+                        {produkmhs.map((prodkmhs, number) => {
                           return (
-                            <tr key={`prodkmhs`+prodkmhs.id}>
-                            
-                              <td>
+                            <tr key={`prodkmhs` + prodkmhs.id}>
+
+                              <td className="ps-3">
+                                <p className="mb-0 text-sm ">{number + 1}</p>
+                              </td>
+
+                              <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
-                                {prodkmhs.nama_produk}
+                                  {prodkmhs.nama_produk}
                                 </p>
                               </td>
 
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
-                                {prodkmhs.deskripsi}
+                              <td className="align-middle text-sm">
+                                <p className="text-xs font-weight-bold mb-0">
+                                  {prodkmhs.deskripsi}
                                 </p>
                               </td>
 
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
-                                {prodkmhs.tahun}
+                              <td className="align-middle text-sm">
+                                <p className="text-xs font-weight-bold mb-0">
+                                  {prodkmhs.tahun}
                                 </p>
                               </td>
 
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
-                                {prodkmhs.deskripsi_bukti}
+                              <td className="align-middle text-sm">
+                                <p className="text-xs font-weight-bold mb-0">
+                                  {prodkmhs.deskripsi_bukti}
                                 </p>
                               </td>
 
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
-                                {prodkmhs.file_bukti}
+                              <td className="align-middle text-sm">
+                                <p className="text-xs font-weight-bold mb-0">
+                                  {prodkmhs.file_bukti}
                                 </p>
                               </td>
-                             
-                             
-                              <td className="align-middle">
-                                <a
-                                  className="text-secondary font-weight-bold text-xs"
-                                  data-toggle="tooltip"
-                                  data-original-title="Edit user"
+
+                              <td className="align-middle pe-3 text-end">
+                                <Link href={`/produkMHS/edit/${prodkmhs.id}`}>
+                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                    Edit
+                                  </button>
+                                </Link>
+
+                                <button
+                                  onClick={() => deleteprodukMHS(prodkmhs.id)}
+                                  className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
-                                  Edit
-                                </a>
+                                  Hapus
+                                </button>
                               </td>
                             </tr>
                           );
                         })}
-                        </tbody>
+                      </tbody>
                     </table>
                   </div>
                 </div>

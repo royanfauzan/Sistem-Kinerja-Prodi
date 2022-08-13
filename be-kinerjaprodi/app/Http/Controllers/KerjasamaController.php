@@ -109,7 +109,6 @@ class KerjasamaController extends Controller
         }
 
 
-
         $model = Kerjasama::create([
             'mitra_id' => $request->idmitra,
             'tingkat' => $request->tingkat,

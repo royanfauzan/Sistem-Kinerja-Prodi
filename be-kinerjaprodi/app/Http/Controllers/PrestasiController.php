@@ -15,7 +15,27 @@ class PrestasiController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_prestasi' => Prestasi::with('prodi')->get(),
+        ]);
+    }
+
+    // Serach
+    public function searchprestasi($search)
+    {
+        return response()->json([
+            'success' => true,
+            'searchprestasi' =>  Prestasi::with('prodi')
+                ->whereRelation('prodi', 'prodi','LIKE', "%{$search}%")
+                ->orWhereRelation('prodi','nama_prodi', 'LIKE', "%{$search}%")
+                ->orwhere('nm_kegiatan', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('tingkat', 'LIKE', "%{$search}%")
+                ->orwhere('prestasi_dicapai', 'LIKE', "%{$search}%")
+                ->orwhere('kategori', 'LIKE', "%{$search}%")
+                ->get()
+        ]);
     }
 
     /**
@@ -40,7 +60,7 @@ class PrestasiController extends Controller
 
         //valid credential
         $validator = Validator::make($dataprestasi, [
-            'nm_kegiatan' => 'required',
+            'nm_kegiatan' => 'required|string|',
             'tahun' => 'required',
             'tingkat' => 'required',
             'prestasi_dicapai' => 'required',
@@ -50,10 +70,10 @@ class PrestasiController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
-        $datatempat = Prestasi::create(
+        $dataprestasi = Prestasi::create(
             [
                 'nm_kegiatan' => $request->nm_kegiatan,
                 'tahun' => $request->tahun,
@@ -64,16 +84,15 @@ class PrestasiController extends Controller
             ]
         );
 
-        //Token created, return with success response and jwt token
+        if (!$dataprestasi) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal"
+            ]);
+        }
         return response()->json([
             'success' => true,
-            'nm_kegiatan' => $request->nm_kegiatan,
-            'tahun' => $request->tahun,
-            'tingkat' => $request->tingkat,
-            'prestasi_dicapai' => $request->prestasi_dicapai,
-            'kategori' => $request->kategori,
-            'prodi_id' => $request->prodi_id,
-            'all_prodi' => Prestasi::all()
+            'message' => "Berhasil"
         ]);
     }
 
@@ -85,7 +104,11 @@ class PrestasiController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_prestasi' => Prestasi::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -143,7 +166,7 @@ class PrestasiController extends Controller
             'prestasi_dicapai' => $request->prestasi_dicapai,
             'kategori' => $request->kategori,
             'prodi_id' => $request->prodi_id,
-            'all_prodi' => Prestasi::all()
+            'all_prestasi' => Prestasi::all()
         ]);
     }
 
@@ -155,6 +178,18 @@ class PrestasiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $prestasi = Prestasi::find($id);
+        $prestasi->delete();
+
+        if (!$prestasi) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

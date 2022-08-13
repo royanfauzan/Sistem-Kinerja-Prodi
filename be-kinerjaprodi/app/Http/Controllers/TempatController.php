@@ -2,12 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KP_lulus;
 use App\Models\Tempat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class TempatController extends Controller
 {
+    private function tahuntsgenerator($tahun, $tipe = 'biasa')
+    {
+        $tslist = collect();
+        $thnInt = intval($tahun);
+        $tslist->ts = '' . ($thnInt);
+        $tslist->ts1 = '' . ($thnInt - 1);
+        $tslist->ts2 = '' . ($thnInt - 2);
+
+        if (!strcmp($tipe, 'akademik')) {
+            $tslist->ts = "" . ($thnInt - 1) . "/" . ($thnInt);
+            $tslist->ts1 = "" . ($thnInt - 2) . "/" . ($thnInt - 1);
+            $tslist->ts2 = "" . ($thnInt - 3) . "/" . ($thnInt - 2);
+        }
+        return $tslist;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,9 +32,24 @@ class TempatController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_tempat' => Tempat::with('kepuasan')->get(),
+        ]);
     }
 
+    public function searchtempat($search)
+    {
+        return response()->json([
+            'success' => true,
+            'searchtempat' =>  Tempat::with('kepuasan')
+                ->whereRelation('kepuasan', 'tahun','LIKE', "%{$search}%")
+                ->orwhere('lokal', 'LIKE', "%{$search}%")
+                ->orwhere('nasional', 'LIKE', "%{$search}%")
+                ->orwhere('multinasional', 'LIKE', "%{$search}%")
+                ->get()
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -48,7 +80,7 @@ class TempatController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $datatempat = Tempat::create(
@@ -67,7 +99,7 @@ class TempatController extends Controller
             'nasional' => $request->nasional,
             'multinasional' => $request->multinasional,
             'kepuasan_id' => $request->kepuasan_id,
-            'all_prodi' => Tempat::all()
+            'all_tempat' => Tempat::all()
         ]);
     }
 
@@ -79,7 +111,11 @@ class TempatController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_tempat' => Tempat::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -132,7 +168,7 @@ class TempatController extends Controller
             'nasional' => $request->nasional,
             'multinasional' => $request->multinasional,
             'kepuasan_id' => $request->kepuasan_id,
-            'all_prodi' => Tempat::all()
+            'all_tempat' => Tempat::all()
         ]);
     }
 
@@ -144,6 +180,59 @@ class TempatController extends Controller
      */
     public function destroy($id)
     {
+        $prestasi = Tempat::find($id);
+        $prestasi->delete();
+
+        if (!$prestasi) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
+    }
+
+    public function exporttempat(Request $request, $tahun)
+    {
+        $tahunlist = $this->tahuntsgenerator($tahun);
+        $tempatts = collect([]);
+
+
+        $tempats = KP_lulus::with('tempat')->where('tahun', $tahunlist->ts)
+            ->orWhere('tahun', $tahunlist->ts1)
+            ->orWhere('tahun', $tahunlist->ts2)
+            ->get();
+
+        $arrTahun = [$tahunlist->ts, $tahunlist->ts1, $tahunlist->ts2];
+
+        foreach ($arrTahun as $key => $th) {
+            $listtempatts = $tempats->where('tahun', $th)->first();
+
+            $sementara = collect(['tempatts' . $key => $listtempatts, 'ts' => $th]);
+            $tempatts->push(collect($sementara));
+        }
+
+        return response()->json([
+            'success' => true,
+            'all_tempat' => $tempats,
+            'tempat_ts' => $tempatts,
+        ]);
+    }
+
+    public function listtahun(Request $request)
+    {
         //
+        $alltempat = KP_lulus::all()->groupBy('tahun');
+        $arrTahun = array();
+        foreach ($alltempat as $key => $tempatthn) {
+            $arrTahun[] = $tempatthn[0]->tahun;
+        }
+        return response()->json([
+            'success' => true,
+            'tahuntempats' => $arrTahun,
+        ]);
     }
 }

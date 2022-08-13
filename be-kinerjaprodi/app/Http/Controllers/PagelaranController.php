@@ -15,7 +15,10 @@ class PagelaranController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_pagelaran' => Pagelaran::all()
+        ]);
     }
 
     /**
@@ -52,13 +55,31 @@ class PagelaranController extends Controller
             return response()->json(['error' => $validator->errors()], 200);
         }
 
+        $finalPathdokumen = "";
+        try {
+            $folderdokumen = "storage/pagelaran/";
+
+            $dokumen = $request->file('file_bukti');
+
+            $namaFiledokumen = $dokumen->getClientOriginalName();
+
+            $dokumen->move($folderdokumen, $namaFiledokumen);
+
+            $finalPathdokumen = $folderdokumen . $namaFiledokumen;
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Menyimpan Dokumen" . $th,
+            ], 400);
+        }
+
         $datapagelaran = Pagelaran::create(
             [
                 'judul' => $request->judul,
                 'tahun' => $request->tahun,
                 'penyelenggara' => $request->penyelenggara,
                 'ruang_lingkup' => $request->ruang_lingkup,
-                'file_bukti' => $request->file_bukti
+                'file_bukti' => $finalPathdokumen,
             ]
         );
 
@@ -69,8 +90,8 @@ class PagelaranController extends Controller
             'tahun' => $request->tahun,
             'penyelenggara' => $request->penyelenggara,
             'ruang_lingkup' => $request->ruang_lingkup,
-            'file_bukti' => $request->file_bukti,
-            'all_prodi' => Pagelaran::all()
+            'file_bukti' => $finalPathdokumen,
+            'all_pagelaran' => Pagelaran::all()
         ]);
     }
 
@@ -82,7 +103,11 @@ class PagelaranController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_pagelaran' => Pagelaran::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -122,11 +147,29 @@ class PagelaranController extends Controller
             return response()->json(['error' => $validator->errors()], 200);
         }
 
+        $finalPathdokumen = "";
+        try {
+            $folderdokumen = "storage/pagelaran/";
+
+            $dokumen = $request->file('file_bukti');
+
+            $namaFiledokumen = $dokumen->getClientOriginalName();
+
+            $dokumen->move($folderdokumen, $namaFiledokumen);
+
+            $finalPathdokumen = $folderdokumen . $namaFiledokumen;
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Menyimpan Dokumen" . $th,
+            ], 400);
+        }
+
         $pagelaran->judul = $request->judul;
         $pagelaran->tahun = $request->tahun;
         $pagelaran->penyelenggara = $request->penyelenggara;
         $pagelaran->ruang_lingkup = $request->ruang_lingkup;
-        $pagelaran->file_bukti = $request->file_bukti;
+        $pagelaran->file_bukti = $finalPathdokumen;;
         $pagelaran->save();
 
 
@@ -137,8 +180,8 @@ class PagelaranController extends Controller
             'tahun' => $request->tahun,
             'penyelenggara' => $request->penyelenggara,
             'ruang_lingkup' => $request->ruang_lingkup,
-            'file_bukti' => $request->file_bukti,
-            'all_prodi' => Pagelaran::all()
+            'file_bukti' => $finalPathdokumen,
+            'all_pagelaran' => Pagelaran::all()
         ]);
     }
 
@@ -150,6 +193,18 @@ class PagelaranController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $pagelaran = Pagelaran::find($id);
+        $pagelaran->delete();
+
+        if (!$pagelaran) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

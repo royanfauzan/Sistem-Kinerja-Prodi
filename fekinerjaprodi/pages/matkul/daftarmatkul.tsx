@@ -6,12 +6,17 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Link from "next/link";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
+
 
 export default function daftarmatkul() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
   const [matkul, setmatkul] = useState([]);
+  const MySwal = withReactContent(Swal)
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -67,6 +72,34 @@ export default function daftarmatkul() {
       });
   }, []);
 
+  const deletematkul = (id) => {
+    axios({
+      method: "post",
+      url: `http://127.0.0.1:8000/api/Matkul_Delete/${id}`,
+    })
+      .then(function (response) {
+        router.reload();
+      })
+      .catch(function (err) {
+        console.log("gagal");
+        console.log(err.response);
+      });
+  };
+
+  const searchdata= async (e) => {
+    if (e.target.value == "") {
+      const req = await axios.get(`http://127.0.0.1:8000/api/Matkul/`)
+      const res = await req.data.all_matkul
+      setmatkul(res)
+    } else {
+      const req = await axios.get(
+        `http://127.0.0.1:8000/api/Matkul_search/${e.target.value}`
+      )
+      const res = await req.data.searchmatkul
+      setmatkul(res)
+    }
+  }
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -76,53 +109,113 @@ export default function daftarmatkul() {
             <div className="col-12">
               <div className="card mb-4">
                 <div className="card-header pb-0">
-                  <h6>Tabel Daftar Mata Kuliah</h6>
+                  <div className="row justify-content-between">
+                    <div className="col-4">
+                      <h6>Tabel Mata Kuliah</h6>
+                    </div>
+                    <div className="row justify-content-end">
+                  <div className="col-3 d-flex flex-row-reverse pe-2">
+                    <input
+                      className="form-control d-flex flex-row-reverse me-3"
+                      type="search"
+                      placeholder="Search.."
+                      aria-label="Search"
+                      defaultValue=""
+                      id="search"
+                      onChange={searchdata}
+                    />
+                  </div>
+                  </div>
+                    <div className="row justify-content-between mb-4">
+                      <div className="col-4">
+                        <div className="align-middle">
+                          <Link href={`/matkul/inputmatkul/`}>
+                            <button className=" btn btn-primary border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
+                              Tambah Data
+                            </button>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="card-body px-0 pt-0 pb-2">
+
+
+                <div className="card-body p-3">
                   <div className="table-responsive p-0">
-                    <table className="table align-items-center mb-0">
+                    <table id="tabelmatkul" className="table align-items-center mb-0 table table-striped table-hover">
                       <thead>
                         <tr>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
+                            NO
+                          </th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
+                            Kode Mata Kuliah
+                          </th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
                             Nama Mata Kuliah
                           </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
                             SKS
+                          </th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
+                            Prodi ID
                           </th>
                           <th className="text-secondary opacity-7"></th>
                         </tr>
                       </thead>
                       <tbody>
-                        {matkul.map((matakuliah) => {
+                        {matkul.map((matakuliah, number) => {
                           return (
-                            <tr key={`matakuliah`+matakuliah.id}>
-                            
+                            <tr key={`matakuliah` + matakuliah.id}>
+
+                              <td className="ps-2">
+                                <p className="mb-0 text-sm">{number + 1}</p>
+                              </td>
+
                               <td>
                                 <p className="text-xs font-weight-bold mb-0">
-                                {matakuliah.nama_matkul}
+                                  {matakuliah.kode_matkul}
                                 </p>
                               </td>
 
-                              <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
-                                {matakuliah.sks}
+                              <td>
+                                <p className="text-xs font-weight-bold mb-0">
+                                  {matakuliah.nama_matkul}
                                 </p>
                               </td>
-                             
-                             
-                              <td className="align-middle">
-                                <a
-                                  className="text-secondary font-weight-bold text-xs"
-                                  data-toggle="tooltip"
-                                  data-original-title="Edit user"
+
+                              <td className="align-middle text-sm ps-2">
+                                <p className="text-xs font-weight-bold mb-0">
+                                  {matakuliah.sks}
+                                </p>
+                              </td>
+
+                              <td className="align-middle text-sm ps-2">
+                                <p className="text-xs font-weight-bold mb-0">
+                                  {matakuliah.prodi_id}
+                                </p>
+                              </td>
+
+
+                              <td className="align-middle pe-3 text-end">
+                                <Link href={`/matkul/edit/${matakuliah.id}`}>
+                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                    Edit
+                                  </button>
+                                </Link>
+
+                                <button
+                                  onClick={() => deletematkul(matakuliah.id)}
+                                  className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
-                                  Edit
-                                </a>
+                                  Hapus
+                                </button>
                               </td>
                             </tr>
                           );
                         })}
-                        </tbody>
+                      </tbody>
                     </table>
                   </div>
                 </div>

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Penerimaan;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;

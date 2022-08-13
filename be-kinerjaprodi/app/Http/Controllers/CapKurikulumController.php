@@ -17,8 +17,35 @@ class CapKurikulumController extends Controller
     public function index()
     {
         return response()->json([ //ngirim ke front end
-            'success' => true, 
-            'all_capkurikulum' => CapKurikulum::with(['matkul', 'prodi'])->get(),
+            'success' => true,
+            'all_capkurikulum' => CapKurikulum::with(['matkul', 'prodi', 'anggotaMatkuls'])->get(),
+        ]);
+    }
+
+    public function searchcapkurikulum($search)
+    {
+
+
+        return response()->json([
+            'success' => true,
+            'searchcapkurikulum' =>  CapKurikulum::with('matkul', 'prodi')
+                ->whereRelation('matkul', 'nama_matkul', 'LIKE', "%{$search}%")
+                ->orWhereRelation('prodi', 'prodi', 'LIKE', "%{$search}%")
+                ->orWhereRelation('prodi', 'nama_prodi', 'LIKE', "%{$search}%")
+                ->orwhere('semester', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('mata_kuliah_kompetensi', 'LIKE', "%{$search}%")
+                ->orwhere('kuliah_responsi_tutorial', 'LIKE', "%{$search}%")
+                ->orwhere('seminar', 'LIKE', "%{$search}%")
+                ->orwhere('praktikum', 'LIKE', "%{$search}%")
+                ->orwhere('konversi_kredit_jam', 'LIKE', "%{$search}%")
+                ->orwhere('pengetahuan', 'LIKE', "%{$search}%")
+                ->orwhere('ketrampilan_umum', 'LIKE', "%{$search}%")
+                ->orwhere('ketrampilan_khusus', 'LIKE', "%{$search}%")
+                ->orwhere('dok_ren_pembelajaran', 'LIKE', "%{$search}%")
+                ->orwhere('unit_penyelenggara', 'LIKE', "%{$search}%")
+                ->get()
+
         ]);
     }
 
@@ -41,7 +68,6 @@ class CapKurikulumController extends Controller
     public function store(Request $request)
     {
         $datacapkurikulum = $request->only('semester', 'tahun', 'mata_kuliah_kompetensi', 'kuliah_responsi_tutorial', 'seminar', 'praktikum', 'konversi_kredit_jam', 'sikap', 'pengetahuan', 'ketrampilan_umum', 'ketrampilan_khusus', 'dok_ren_pembelajaran', 'unit_penyelenggara', 'prodi_ID', 'matkul_ID');
-        
         //valid credential
         $validator = Validator::make($datacapkurikulum, [
             'semester' => 'required',
@@ -50,59 +76,59 @@ class CapKurikulumController extends Controller
             'kuliah_responsi_tutorial' => 'required',
             'seminar' => 'required',
             'praktikum' => 'required',
-            'konversi_kredit_jam' => 'required', 
+            'konversi_kredit_jam' => 'required',
             'sikap' => 'required',
-            'pengetahuan' => 'required', 
-            'ketrampilan_umum' => 'required', 
-            'ketrampilan_khusus' => 'required', 
-            'dok_ren_pembelajaran' => 'required', 
-            'unit_penyelenggara' => 'required',             
-            'prodi_ID' => 'required',            
+            'pengetahuan' => 'required',
+            'ketrampilan_umum' => 'required',
+            'ketrampilan_khusus' => 'required',
+            'dok_ren_pembelajaran' => 'required',
+            'unit_penyelenggara' => 'required',
+            'prodi_ID' => 'required',
             'matkul_ID' => 'required'
         ]);
- 
+
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
- 
+
         $datacapkurikulum = CapKurikulum::create( //ngirim ke database
             [
                 //yg kiri dari form, kanan dari database
                 'semester' => $request->semester,
                 'tahun' => $request->tahun,
-                'mata_kuliah_kompetensi' => $request->mata_kuliah_kompetensi, 
-                'kuliah_responsi_tutorial' => $request->kuliah_responsi_tutorial, 
-                'seminar' => $request->seminar, 
-                'praktikum' => $request->praktikum, 
-                'konversi_kredit_jam' => $request->konversi_kredit_jam, 
-                'sikap' => $request->sikap, 
-                'pengetahuan' => $request->pengetahuan, 
-                'ketrampilan_umum' => $request->ketrampilan_umum, 
-                'ketrampilan_khusus' => $request->ketrampilan_khusus, 
-                'dok_ren_pembelajaran' => $request->dok_ren_pembelajaran, 
-                'unit_penyelenggara' => $request->unit_penyelenggara, 
+                'mata_kuliah_kompetensi' => $request->mata_kuliah_kompetensi,
+                'kuliah_responsi_tutorial' => $request->kuliah_responsi_tutorial,
+                'seminar' => $request->seminar,
+                'praktikum' => $request->praktikum,
+                'konversi_kredit_jam' => $request->konversi_kredit_jam,
+                'sikap' => $request->sikap,
+                'pengetahuan' => $request->pengetahuan,
+                'ketrampilan_umum' => $request->ketrampilan_umum,
+                'ketrampilan_khusus' => $request->ketrampilan_khusus,
+                'dok_ren_pembelajaran' => $request->dok_ren_pembelajaran,
+                'unit_penyelenggara' => $request->unit_penyelenggara,
                 'prodi_ID' => $request->prodi_ID,
                 'matkul_ID' => $request->matkul_ID
             ]
         );
- 
+
         //Token created, return with success response and jwt token
         return response()->json([ //ngirim ke front end
-            'success' => true, 
+            'success' => true,
             'semester' => $request->semester,
             'tahun' => $request->tahun,
-            'mata_kuliah_kompetensi' => $request->mata_kuliah_kompetensi, 
-            'kuliah_responsi_tutorial' => $request->kuliah_responsi_tutorial, 
-            'seminar' => $request->seminar, 
-            'praktikum' => $request->praktikum, 
-            'konversi_kredit_jam' => $request->konversi_kredit_jam, 
-            'sikap' => $request->sikap, 
-            'pengetahuan' => $request->pengetahuan, 
-            'ketrampilan_umum' => $request->ketrampilan_umum, 
-            'ketrampilan_khusus' => $request->ketrampilan_khusus, 
-            'dok_ren_pembelajaran' => $request->dok_ren_pembelajaran, 
-            'unit_penyelenggara' => $request->unit_penyelenggara, 
+            'mata_kuliah_kompetensi' => $request->mata_kuliah_kompetensi,
+            'kuliah_responsi_tutorial' => $request->kuliah_responsi_tutorial,
+            'seminar' => $request->seminar,
+            'praktikum' => $request->praktikum,
+            'konversi_kredit_jam' => $request->konversi_kredit_jam,
+            'sikap' => $request->sikap,
+            'pengetahuan' => $request->pengetahuan,
+            'ketrampilan_umum' => $request->ketrampilan_umum,
+            'ketrampilan_khusus' => $request->ketrampilan_khusus,
+            'dok_ren_pembelajaran' => $request->dok_ren_pembelajaran,
+            'unit_penyelenggara' => $request->unit_penyelenggara,
             'prodi_ID' => $request->prodi_ID,
             'matkul_ID' => $request->matkul_ID,
             'all_capkurikulum' => CapKurikulum::all()
@@ -117,7 +143,11 @@ class CapKurikulumController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_capkurikulum' => CapKurikulum::with(['matkul', 'prodi', 'anggotaMatkuls'])->where('id', $id)->first(),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -143,66 +173,67 @@ class CapKurikulumController extends Controller
         $capkurikulum = CapKurikulum::where('id', $id)->first();
         $datamhs = $request->only('semester', 'tahun', 'mata_kuliah_kompetensi', 'kuliah_responsi_tutorial', 'seminar', 'praktikum', 'konversi_kredit_jam', 'sikap', 'pengetahuan', 'ketrampilan_umum', 'ketrampilan_khusus', 'dok_ren_pembelajaran', 'unit_penyelenggara', 'prodi_ID', 'matkul_ID');
 
-       //valid credential
-       $validator = Validator::make($datamhs, [
-        'semester' => 'required',
-        'tahun' => 'required',
-        'mata_kuliah_kompetensi' => 'required',
-        'kuliah_responsi_tutorial' => 'required',
-        'seminar' => 'required',
-        'praktikum' => 'required',
-        'konversi_kredit_jam' => 'required', 
-        'sikap', 'pengetahuan' => 'required', 
-        'ketrampilan_umum' => 'required', 
-        'ketrampilan_khusus' => 'required', 
-        'dok_ren_pembelajaran' => 'required', 
-        'unit_penyelenggara' => 'required',             
-        'prodi_ID' => 'required',            
-        'matkul_ID' => 'required'
-       ]);
+        //valid credential
+        $validator = Validator::make($datamhs, [
+            'semester' => 'required',
+            'tahun' => 'required',
+            'mata_kuliah_kompetensi' => 'required',
+            'kuliah_responsi_tutorial' => 'required',
+            'seminar' => 'required',
+            'praktikum' => 'required',
+            'konversi_kredit_jam' => 'required',
+            'sikap' => 'required',
+            'pengetahuan' => 'required',
+            'ketrampilan_umum' => 'required',
+            'ketrampilan_khusus' => 'required',
+            'dok_ren_pembelajaran' => 'required',
+            'unit_penyelenggara' => 'required',
+            'prodi_ID' => 'required',
+            'matkul_ID' => 'required'
+        ]);
 
-       //Send failed response if request is not valid
-       if ($validator->fails()) {
-           return response()->json(['error' => $validator->errors()], 200);
-       }
-       $capkurikulum-> semester = $request->semester;
-       $capkurikulum-> tahun = $request->tahun;
-       $capkurikulum-> mata_kuliah_kompetensi = $request->mata_kuliah_kompetensi;
-       $capkurikulum-> kuliah_responsi_tutorial = $request->kuliah_responsi_tutorial;
-       $capkurikulum-> seminar = $request->seminar;
-       $capkurikulum-> praktikum = $request->praktikum;
-       $capkurikulum-> konversi_kredit_jam = $request->konversi_kredit_jam;
-       $capkurikulum-> sikap = $request->sikap;
-       $capkurikulum-> pengetahuan  = $request->pengetahuan;
-       $capkurikulum-> ketrampilan_umum = $request->ketrampilan_umum;
-       $capkurikulum-> ketrampilan_khusus = $request->ketrampilan_khusus;
-       $capkurikulum-> dok_ren_pembelajaran = $request->dok_ren_pembelajaran;
-       $capkurikulum-> unit_penyelenggara = $request->unit_penyelenggara;
-       $capkurikulum-> prodi_ID = $request->prodi_ID;
-       $capkurikulum-> matkul_ID = $request->matkul_ID;
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 200);
+        }
+        $capkurikulum->semester = $request->semester;
+        $capkurikulum->tahun = $request->tahun;
+        $capkurikulum->mata_kuliah_kompetensi = $request->mata_kuliah_kompetensi;
+        $capkurikulum->kuliah_responsi_tutorial = $request->kuliah_responsi_tutorial;
+        $capkurikulum->seminar = $request->seminar;
+        $capkurikulum->praktikum = $request->praktikum;
+        $capkurikulum->konversi_kredit_jam = $request->konversi_kredit_jam;
+        $capkurikulum->sikap = $request->sikap;
+        $capkurikulum->pengetahuan  = $request->pengetahuan;
+        $capkurikulum->ketrampilan_umum = $request->ketrampilan_umum;
+        $capkurikulum->ketrampilan_khusus = $request->ketrampilan_khusus;
+        $capkurikulum->dok_ren_pembelajaran = $request->dok_ren_pembelajaran;
+        $capkurikulum->unit_penyelenggara = $request->unit_penyelenggara;
+        $capkurikulum->prodi_ID = $request->prodi_ID;
+        $capkurikulum->matkul_ID = $request->matkul_ID;
         $capkurikulum->save();
 
-       
-       //Token created, return with success response and jwt token
-       return response()->json([ //ngirim ke front end
-           'success' => true, 
-           'semester' => $request->semester,
-           'tahun' => $request->tahun,
-           'mata_kuliah_kompetensi' => $request->mata_kuliah_kompetensi, 
-           'kuliah_responsi_tutorial' => $request->kuliah_responsi_tutorial, 
-           'seminar' => $request->seminar, 
-           'praktikum' => $request->praktikum, 
-           'konversi_kredit_jam' => $request->konversi_kredit_jam, 
-           'sikap' => $request->sikap, 
-           'pengetahuan' => $request->pengetahuan, 
-           'ketrampilan_umum' => $request->ketrampilan_umum, 
-           'ketrampilan_khusus' => $request->ketrampilan_khusus, 
-           'dok_ren_pembelajaran' => $request->dok_ren_pembelajaran, 
-           'unit_penyelenggara' => $request->unit_penyelenggara, 
-           'prodi_ID' => $request->prodi_ID,
-           'matkul_ID' => $request->matkul_ID,
-           'all_capkurikulum' => CapKurikulum::all()
-       ]);
+
+        //Token created, return with success response and jwt token
+        return response()->json([ //ngirim ke front end
+            'success' => true,
+            'semester' => $request->semester,
+            'tahun' => $request->tahun,
+            'mata_kuliah_kompetensi' => $request->mata_kuliah_kompetensi,
+            'kuliah_responsi_tutorial' => $request->kuliah_responsi_tutorial,
+            'seminar' => $request->seminar,
+            'praktikum' => $request->praktikum,
+            'konversi_kredit_jam' => $request->konversi_kredit_jam,
+            'sikap' => $request->sikap,
+            'pengetahuan' => $request->pengetahuan,
+            'ketrampilan_umum' => $request->ketrampilan_umum,
+            'ketrampilan_khusus' => $request->ketrampilan_khusus,
+            'dok_ren_pembelajaran' => $request->dok_ren_pembelajaran,
+            'unit_penyelenggara' => $request->unit_penyelenggara,
+            'prodi_ID' => $request->prodi_ID,
+            'matkul_ID' => $request->matkul_ID,
+            'all_capkurikulum' => CapKurikulum::all()
+        ]);
     }
 
     /**
@@ -213,6 +244,18 @@ class CapKurikulumController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $capkurikulum = CapKurikulum::find($id);
+        $capkurikulum->delete();
+
+        if (!$capkurikulum) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

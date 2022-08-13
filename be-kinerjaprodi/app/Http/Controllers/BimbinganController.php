@@ -46,7 +46,7 @@ class BimbinganController extends Controller
             $dosenId = $request->dosenId;
         }
 
-        $data = $request->only('prodi_id','tahun_akademik', 'judul_ta', 'mahasiswa_id');
+        $data = $request->only('prodi_id','tahun_akademik', 'judul_ta', 'mahasiswa_id','fileBukti');
         $validator = Validator::make($data, [
             'prodi_id'=>'required|numeric',
             'tahun_akademik'=>'required|string',
@@ -140,5 +140,19 @@ class BimbinganController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function listtahun(Request $request)
+    {
+        //
+        $allbimbingans = Bimbingan::all()->groupBy('tahun_akademik');
+        $arrTahun = array();
+        foreach ($allbimbingans as $key => $bimbingan) {
+            $arrTahun[] = $bimbingan[0]->tahun_akademik;
+        }
+        return response()->json([
+            'success' => true,
+            'tahunbimbingans' => array_unique($arrTahun),
+        ]);
     }
 }

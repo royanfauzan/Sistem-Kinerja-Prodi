@@ -6,6 +6,8 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 interface Udosen {
   id: number;
@@ -20,12 +22,14 @@ export default function inputmatkul() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState<Udosen[]>([]);
+  const [dataError, setError] = useState([])
+  const MySwal = withReactContent(Swal)
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
+  const pengambilData = async () => {
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/testuser",
@@ -47,10 +51,10 @@ export default function inputmatkul() {
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
+  useEffect(() => {
     // cek token, kalo gaada disuruh login
     const lgToken = localStorage.getItem('token');
-    if(!lgToken){
+    if (!lgToken) {
       router.push('/login')
     }
 
@@ -60,24 +64,24 @@ export default function inputmatkul() {
       url: "http://127.0.0.1:8000/api/get_user",
       headers: { "Authorization": `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-    })
-    .catch(function (err) {
+      .then(function (response) {
+        console.log(response);
+        console.log('Sukses');
+        const { level_akses } = response.data.user;
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push('/');
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+      })
+      .catch(function (err) {
         console.log('gagal');
         console.log(err.response);
         return router.push('/');
-    })
-  },[]);
+      })
+  }, []);
 
 
 
@@ -88,10 +92,11 @@ export default function inputmatkul() {
     const lgToken = localStorage.getItem("token");
 
     let formData = new FormData();
+    formData.append("kode_matkul", event.target.kode_matkul.value);
     formData.append("nama_matkul", event.target.nama_matkul.value);
     formData.append("sks", event.target.sks.value);
     formData.append("prodi_id", event.target.prodi_id.value);
-    
+
 
     console.log(formData);
 
@@ -105,107 +110,159 @@ export default function inputmatkul() {
       },
     })
       .then(function (response) {
-        const { all_matkul } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Input Sukses!");
-        // console.log(token);
-        console.log(all_matkul);
-        router.push("/");
+        MySwal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data Berhasil Di Input",
+        })
+
+        router.push("../matkul/daftarmatkul")
       })
       .catch(function (error) {
         //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
-        console.log(error.response);
-      });
+        setError(error.response.data.error)
+        console.log(error.response.data.error)
+        MySwal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Data Gagal Di Input",
+        })
+        console.log(error.response)
+      })
   };
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
         <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetailDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetailDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <h6 className="mb-0">Input Data Mata Kuliah</h6>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Simpan
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="card-body">
-                    <p className="text-uppercase text-sm">Mata Kuliah</p>
-                    <div className="row">
+                    <div className="card-body">
                       
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="nama_matkul" className="form-control-label">
-                            Nama Mata kuliah
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Nama Matkul"
-                            id="nama_matkul"
-                            required
-                          />
+                      <div className="row">
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="kode_matkul"
+                              className={
+                                dataError.kode_matkul ? "is-invalid" : ""
+                              }
+                            >
+                              Kode Mata Kuliah
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="kode matkul"
+                              id="kode_matkul"
+                            />
+                            {dataError.kode_matkul ? (
+                              <div className="invalid-feedback">
+                                {dataError.kode_matkul}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="nama_matkul"
+                              className={
+                                dataError.nama_matkul ? "is-invalid" : ""
+                              }>
+                              Nama Mata kuliah
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Nama Matkul"
+                              id="nama_matkul"
+                            />
+                            {dataError.nama_matkul ? (
+                              <div className="invalid-feedback">
+                                {dataError.nama_matkul}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="sks"
+                              className={
+                                dataError.sks ? "is-invalid" : ""
+                              }>
+                              SKS
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="SKS"
+                              id="sks"
+                            />
+                            {dataError.sks ? (
+                              <div className="invalid-feedback">
+                                {dataError.sks}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="prodi_id"
+                              className={
+                                dataError.prodi_id ? "is-invalid" : ""
+                              }>
+                              Prodi ID
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              placeholder="Prodi ID"
+                              id="prodi_id"
+                            />
+                            {dataError.prodi_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.prodi_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="sks" className="form-control-label">
-                            SKS
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="SKS"
-                            id="sks"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="prodi_id" className="form-control-label">
-                            Prodi ID
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Prodi ID"
-                            id="prodi_id"
-                            required
-                          />
-                        </div>
-                      </div>                                                               
                     </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+        </LayoutForm>
       )}
     </>
   );

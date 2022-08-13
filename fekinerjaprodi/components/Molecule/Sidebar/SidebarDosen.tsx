@@ -6,6 +6,8 @@ import style from "./sideb.module.css"
 export default function SidebarDosen() {
   const router = useRouter();
 
+  // const arrMenuSDM =['']
+
   const Logout = async () => {
     const lgToken = localStorage.getItem("token");
 

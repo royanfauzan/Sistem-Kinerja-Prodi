@@ -1,0 +1,7 @@
+.zi_belakang{
+    z-index: -10 !important;
+}
+
+.stik{
+    position: sticky!important;
+}

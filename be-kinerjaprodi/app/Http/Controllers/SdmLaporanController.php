@@ -367,7 +367,7 @@ class SdmLaporanController extends Controller
     {
         $tahunlist = $this->tahuntsgenerator($tahun, 'akademik');
 
-        $profildos = profilDosen::with('mengajars.matkul.prodi', 'pendidikans', 'detaildosen.serkoms')->where('StatusDosen', 'dosen tetap')
+        $profildos = profilDosen::with('mengajars.matkul.prodi', 'pendidikans', 'detaildosen.serkoms')->where('StatusDosen', 'Dosen Tetap')
             ->whereRelation('mengajars.matkul', 'tahun_akademik', $tahunlist->ts)
             ->orWhereRelation('mengajars.matkul', 'tahun_akademik', $tahunlist->ts1)
             ->orWhereRelation('mengajars.matkul', 'tahun_akademik', $tahunlist->ts2)->get();
@@ -379,7 +379,7 @@ class SdmLaporanController extends Controller
 
         foreach ($profildos as $key => $profilds) {
             $profilSementara = $profilds;
-            if (!strcmp($profilSementara->StatusDosen, 'dosen tetap')) {
+            if (!strcmp($profilSementara->StatusDosen, 'Dosen Tetap')) {
                 $callProfilSementara = collect($profilSementara);
                 $profilmengajar = $profilds->mengajars;
                 $listMengajars[] = $profilmengajar->where('matkul.prodi_id', 1);
@@ -456,7 +456,7 @@ class SdmLaporanController extends Controller
 
         foreach ($profildos as $key => $profilds) {
             $profilSementara = $profilds;
-            if (!strcmp($profilSementara->StatusDosen, 'dosen tetap')) {
+            if (!strcmp($profilSementara->StatusDosen, 'Dosen Tetap')) {
                 $callProfilSementara = collect($profilSementara);
 
                 $profilmembimbing = $profilds->bimbingans;
@@ -525,7 +525,7 @@ class SdmLaporanController extends Controller
 
         foreach ($profildos as $key => $profilds) {
             $profilSementara = $profilds;
-            if (!strcmp($profilSementara->StatusDosen, 'dosen tetap')) {
+            if (!strcmp($profilSementara->StatusDosen, 'Dosen Tetap')) {
                 $callProfilSementara = collect($profilSementara);
 
                 $profilmembimbing = $profilds->bimbingans;

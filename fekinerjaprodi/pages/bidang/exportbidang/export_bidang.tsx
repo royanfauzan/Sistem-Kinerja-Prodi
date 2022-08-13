@@ -16,6 +16,7 @@ export default function exportbidang() {
   const [isLoaded, setisLoaded] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
   const [dataSelectTahun, setSelectTahun] = useState(``);
+  const [dataRole, setRole] = useState("");
 
   // console.log(dataSelectTahun);
 
@@ -67,6 +68,8 @@ export default function exportbidang() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -103,7 +106,7 @@ export default function exportbidang() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
@@ -121,18 +124,18 @@ export default function exportbidang() {
                     </td>
                   </div>
                   <div className="col-6 d-flex flex-row-reverse">
-                      {dataPenelitianTs && (
-                        <ReactHTMLTableToExcel
-                          id="test-table-xls-button"
-                          className="download-table-xls-button btn btn-success m-3"
-                          table="tablePenelitianDosen"
-                          filename={`Tabel bidang ${dataSelectTahun}`}
-                          sheet="3a3"
-                          buttonText="Export Excel"
-                          border="1"
-                        />
-                      )}
-                    </div>
+                    {dataPenelitianTs && (
+                      <ReactHTMLTableToExcel
+                        id="test-table-xls-button"
+                        className="download-table-xls-button btn btn-success m-3"
+                        table="tablePenelitianDosen"
+                        filename={`Tabel bidang ${dataSelectTahun}`}
+                        sheet="3a3"
+                        buttonText="Export Excel"
+                        border="1"
+                      />
+                    )}
+                  </div>
                 </div>
                 <div className="card-body px-0 pt-0 pb-2">
                   <div className="row">
@@ -189,7 +192,10 @@ export default function exportbidang() {
                             <td rowSpan={2}>Tahun Lulus</td>
                             <td rowSpan={2}>Jumlah Lulusan</td>
                             <td rowSpan={2}>Jumlah Lulusan Yang Terlacak</td>
-                            <td colSpan={3}>Jumalh Lulusan Yang Terlacak Dengan Tingakat <br /> Kesesuaiian Bidangnya</td>
+                            <td colSpan={3}>
+                              Jumalh Lulusan Yang Terlacak Dengan Tingakat{" "}
+                              <br /> Kesesuaiian Bidangnya
+                            </td>
                           </tr>
 
                           <tr>
@@ -207,19 +213,34 @@ export default function exportbidang() {
                                 {dataPenelitianTs[2].bidangts2 ? (
                                   <>
                                     <td>
-                                      {dataPenelitianTs[2].bidangts2.jmlh_lulusan}
+                                      {
+                                        dataPenelitianTs[2].bidangts2
+                                          .jmlh_lulusan
+                                      }
                                     </td>
                                     <td>
-                                      {dataPenelitianTs[2].bidangts2.jmlh_terlacak}
+                                      {
+                                        dataPenelitianTs[2].bidangts2
+                                          .jmlh_terlacak
+                                      }
                                     </td>
                                     <td>
-                                      {dataPenelitianTs[2].bidangts2.kesesuaian.rendah}
+                                      {
+                                        dataPenelitianTs[2].bidangts2.kesesuaian
+                                          .rendah
+                                      }
                                     </td>
                                     <td>
-                                      {dataPenelitianTs[2].bidangts2.kesesuaian.sedang}
+                                      {
+                                        dataPenelitianTs[2].bidangts2.kesesuaian
+                                          .sedang
+                                      }
                                     </td>
                                     <td>
-                                      {dataPenelitianTs[2].bidangts2.kesesuaian.tinggi}
+                                      {
+                                        dataPenelitianTs[2].bidangts2.kesesuaian
+                                          .tinggi
+                                      }
                                     </td>
                                   </>
                                 ) : (
@@ -236,23 +257,38 @@ export default function exportbidang() {
                                 <td>{2}</td>
                                 <td>TS-1</td>
                                 {dataPenelitianTs[1].bidangts1 ? (
-                                 <>
-                                 <td>
-                                   {dataPenelitianTs[1].bidangts1.jmlh_lulusan}
-                                 </td>
-                                 <td>
-                                   {dataPenelitianTs[1].bidangts1.jmlh_terlacak}
-                                 </td>
-                                 <td>
-                                   {dataPenelitianTs[1].bidangts1.kesesuaian.rendah}
-                                 </td>
-                                 <td>
-                                   {dataPenelitianTs[1].bidangts1.kesesuaian.sedang}
-                                 </td>
-                                 <td>
-                                   {dataPenelitianTs[1].bidangts1.kesesuaian.tinggi}
-                                 </td>
-                               </>
+                                  <>
+                                    <td>
+                                      {
+                                        dataPenelitianTs[1].bidangts1
+                                          .jmlh_lulusan
+                                      }
+                                    </td>
+                                    <td>
+                                      {
+                                        dataPenelitianTs[1].bidangts1
+                                          .jmlh_terlacak
+                                      }
+                                    </td>
+                                    <td>
+                                      {
+                                        dataPenelitianTs[1].bidangts1.kesesuaian
+                                          .rendah
+                                      }
+                                    </td>
+                                    <td>
+                                      {
+                                        dataPenelitianTs[1].bidangts1.kesesuaian
+                                          .sedang
+                                      }
+                                    </td>
+                                    <td>
+                                      {
+                                        dataPenelitianTs[1].bidangts1.kesesuaian
+                                          .tinggi
+                                      }
+                                    </td>
+                                  </>
                                 ) : (
                                   <>
                                     <td>{0}</td>
@@ -268,22 +304,37 @@ export default function exportbidang() {
                                 <td>TS</td>
                                 {dataPenelitianTs[0].bidangts0 ? (
                                   <>
-                                  <td>
-                                    {dataPenelitianTs[0].bidangts0.jmlh_lulusan}
-                                  </td>
-                                  <td>
-                                    {dataPenelitianTs[0].bidangts0.jmlh_terlacak}
-                                  </td>
-                                  <td>
-                                    {dataPenelitianTs[0].bidangts0.kesesuaian.rendah}
-                                  </td>
-                                  <td>
-                                    {dataPenelitianTs[0].bidangts0.kesesuaian.sedang}
-                                  </td>
-                                  <td>
-                                    {dataPenelitianTs[0].bidangts0.kesesuaian.tinggi}
-                                  </td>
-                                </>
+                                    <td>
+                                      {
+                                        dataPenelitianTs[0].bidangts0
+                                          .jmlh_lulusan
+                                      }
+                                    </td>
+                                    <td>
+                                      {
+                                        dataPenelitianTs[0].bidangts0
+                                          .jmlh_terlacak
+                                      }
+                                    </td>
+                                    <td>
+                                      {
+                                        dataPenelitianTs[0].bidangts0.kesesuaian
+                                          .rendah
+                                      }
+                                    </td>
+                                    <td>
+                                      {
+                                        dataPenelitianTs[0].bidangts0.kesesuaian
+                                          .sedang
+                                      }
+                                    </td>
+                                    <td>
+                                      {
+                                        dataPenelitianTs[0].bidangts0.kesesuaian
+                                          .tinggi
+                                      }
+                                    </td>
+                                  </>
                                 ) : (
                                   <>
                                     <td>{0}</td>

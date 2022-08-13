@@ -23,6 +23,9 @@ export default function exportewmp() {
 
   const [tampilMhsAsing, settampilMhsAsing] = useState([]);
   const [dataProdis, setdataProdi] = useState([]);
+  
+const [dataRole, setRole] = useState('');
+
 
   const handleChange = (e) => {
     const value = e.target.value
@@ -68,9 +71,12 @@ export default function exportewmp() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const {role} = response.data.user;
+        setRole(role);
+
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
-          return router.push("/");
+          return router.push("/dashboards/dashboarddosen");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         setStadmin(true);
@@ -79,7 +85,7 @@ export default function exportewmp() {
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
-        return router.push("/");
+        return router.push("/ewmp/tabelewmp");
       });
   }, []);
 
@@ -103,7 +109,7 @@ export default function exportewmp() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-12">

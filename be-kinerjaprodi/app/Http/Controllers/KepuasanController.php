@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ewmp;
 use App\Models\KP_lulus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -152,9 +153,8 @@ class KepuasanController extends Controller
             'tahunewmps' => $arrTahun,
         ]);
     }
-}
 
-    /**
+        /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -166,3 +166,6 @@ class KepuasanController extends Controller
     }
 
 }
+
+
+

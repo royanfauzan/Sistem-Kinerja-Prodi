@@ -1,6 +1,19 @@
+import { useRouter } from "next/router";
 import React from "react";
 
 export default function NavbarUtama() {
+  const router = useRouter();
+  const pathHalaman = router.asPath;
+  const arrHalaman = pathHalaman.split("/");
+
+  const listHalaman = ['dashboardadmin','tabelewmp','tabelewmpdsn'];
+  const namaHalaman = ['Dashboard Admin','Tabel List Ewmp','List Ewmp Dosen'];
+  const indexNama = listHalaman.findIndex((a)=>{return a == arrHalaman.slice(-1)[0]});
+  let namaHalamanIni = namaHalaman[indexNama];
+  if (!namaHalamanIni) {
+    namaHalamanIni = arrHalaman.slice(-1)[0];
+  }
+
   return (
     <nav
       className="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl "
@@ -10,19 +23,28 @@ export default function NavbarUtama() {
       <div className="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-            <li className="breadcrumb-item text-sm">
-              <a className="opacity-5 text-white" href="#">
-                Pages
-              </a>
-            </li>
-            <li
-              className="breadcrumb-item text-sm text-white active"
-              aria-current="page"
-            >
-              Tables
-            </li>
+            {arrHalaman.map((hal, key, arrHalaman) => {
+              if (key + 1 === arrHalaman.length) {
+                return (
+                  <li className="breadcrumb-item text-sm">
+                    <a className="text-white text-bold" href="#">
+                      {hal}
+                    </a>
+                  </li>
+                );
+              } else {
+                return (
+                  <li className="breadcrumb-item text-sm">
+                    <a className="opacity-5 text-white" href="#">
+                      {hal}
+                    </a>
+                  </li>
+                );
+              }
+              
+            })}
           </ol>
-          <h6 className="font-weight-bolder text-white mb-0">Tables</h6>
+          <h6 className="font-weight-bolder text-white mb-0">{namaHalamanIni}</h6>
         </nav>
         <div
           className="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
@@ -42,10 +64,7 @@ export default function NavbarUtama() {
           </div>
           <ul className="navbar-nav  justify-content-end">
             <li className="nav-item d-flex align-items-center">
-              <a
-                href="#"
-                className="nav-link text-white font-weight-bold px-0"
-              >
+              <a href="#" className="nav-link text-white font-weight-bold px-0">
                 <i className="fa fa-user me-sm-1"></i>
                 <span className="d-sm-inline d-none">Sign In</span>
               </a>
@@ -83,10 +102,7 @@ export default function NavbarUtama() {
                 aria-labelledby="dropdownMenuButton"
               >
                 <li className="mb-2">
-                  <a
-                    className="dropdown-item border-radius-md"
-                    href="#"
-                  >
+                  <a className="dropdown-item border-radius-md" href="#">
                     <div className="d-flex py-1">
                       <div className="my-auto">
                         <img
@@ -108,10 +124,7 @@ export default function NavbarUtama() {
                   </a>
                 </li>
                 <li className="mb-2">
-                  <a
-                    className="dropdown-item border-radius-md"
-                    href="#"
-                  >
+                  <a className="dropdown-item border-radius-md" href="#">
                     <div className="d-flex py-1">
                       <div className="my-auto">
                         <img
@@ -132,14 +145,9 @@ export default function NavbarUtama() {
                   </a>
                 </li>
                 <li>
-                  <a
-                    className="dropdown-item border-radius-md"
-                    href="#"
-                  >
+                  <a className="dropdown-item border-radius-md" href="#">
                     <div className="d-flex py-1">
-                      <div className="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
-
-                      </div>
+                      <div className="avatar avatar-sm bg-gradient-secondary  me-3  my-auto"></div>
                       <div className="d-flex flex-column justify-content-center">
                         <h6 className="text-sm font-weight-normal mb-1">
                           Payment successfully completed

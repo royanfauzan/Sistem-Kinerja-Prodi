@@ -200,19 +200,34 @@ Route::post('delete_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'd
 
 
 Route::get('profildosens', [ProfildosenController::class, 'index']);
+Route::get('search_profil/', [ProfildosenController::class, 'allprofil']);
+Route::get('getprofil_dtps/', [ProfildosenController::class, 'get_dtps']);
+Route::get('search_profil/{search}', [ProfildosenController::class, 'searchprofil']);
+Route::get('tampil_profildosen/{id}', [ProfildosenController::class, 'show']);
+Route::get('get_profildosen/{nidk}', [ProfildosenController::class, 'get_profil']);
+Route::put('update_profildosen/{id}', [ProfildosenController::class, 'update']);
 Route::get('testuser', [ApiController::class, 'get_alluser']);
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('testmid', [ApiController::class, 'tester']);
     Route::get('get_user', [ApiController::class, 'get_user']);
     Route::post('penelitiandosens', [PenelitianController::class, 'store']);
     Route::post('pengabdiandosens', [PengabdianController::class, 'store']);
-    Route::post('ewmps', [EwmpController::class, 'store']);
+    
     Route::post('mengajars', [MengajarController::class, 'store']);
     Route::post('bimbingans', [BimbinganController::class, 'store']);
+    Route::get('logout', [ApiController::class, 'logout']);
 });
 
 // Dev area EWMP
 Route::get('ewmps', [EwmpController::class, 'index']);
+Route::get('search_ewmp/', [EwmpController::class, 'allewmp']);
+Route::get('search_ewmpdsn/', [EwmpController::class, 'allewmpdsn']);
+Route::get('search_ewmp/{search}', [EwmpController::class, 'searchewmp']);
+Route::get('search_ewmpdsn/{search}', [EwmpController::class, 'searchewmpdsn']);
+Route::get('tampil_ewmp/{id}', [EwmpController::class, 'show']);
+Route::put('update_ewmp/{id}', [EwmpController::class, 'update']);
+Route::post('delete_ewmp/{id}', [EwmpController::class, 'destroy']);
+Route::post('ewmps', [EwmpController::class, 'store']);
 // Dev area Laporan
 Route::get('ewmplisttahun', [EwmpController::class, 'listtahun']);
 Route::get('dtpslisttahun', [ProfildosenController::class, 'listtahun']);
@@ -227,6 +242,7 @@ Route::get('laporanpublikasidos/{tahun}', [SdmLaporanController::class, 'exportp
 Route::get('laporanprodukdos/{tahun}', [SdmLaporanController::class, 'exportprodukdos']);
 Route::get('laporanbimbingan/{tahun}', [SdmLaporanController::class, 'exportbimbingan']);
 Route::get('laporantestdata/{tahun}', [SdmLaporanController::class, 'testambildata']);
+Route::get('data_dashboard', [ApiController::class, 'get_dashboardAdmin']);
 
 
 

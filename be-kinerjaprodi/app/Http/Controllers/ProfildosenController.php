@@ -244,4 +244,15 @@ class ProfildosenController extends Controller
             'profilDosens' => $profilDosens,
         ]);
     }
+
+    public function get_profil(Request $request,$nidk)
+    {
+        //
+        $profilDosen = profilDosen::where('NIDK', $nidk)
+        ->first();
+        return response()->json([
+            'success' => true,
+            'profilDosen' => $profilDosen,
+        ]);
+    }
 }

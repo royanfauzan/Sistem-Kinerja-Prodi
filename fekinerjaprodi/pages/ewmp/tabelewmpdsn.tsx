@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
@@ -23,7 +23,7 @@ export default function tabelewmp() {
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/search_ewmp",
+      url: "http://127.0.0.1:8000/api/search_ewmpdsn",
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
@@ -62,8 +62,8 @@ export default function tabelewmp() {
         setRole(role);
 
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 3) {
-          return router.push("/ewmp/tabelewmpdsn");
+        if (level_akses == 3) {
+          return router.push("/ewmp/tabelewmp");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         setStadmin(true);
@@ -72,7 +72,7 @@ export default function tabelewmp() {
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
-        return router.push("/ewmp/tabelewmpdsn");
+        return router.push("/");
       });
 
     
@@ -109,16 +109,26 @@ export default function tabelewmp() {
   };
  
   const searchdata = async (e) => {
+    const lgToken = localStorage.getItem("token");
     if (e.target.value == "") {
-      const req = await axios.get(`http://127.0.0.1:8000/api/search_ewmp/`);
+      const req = await axios.get(`http://127.0.0.1:8000/api/search_ewmpdsn/`, {
+        headers: {
+          Authorization: `Bearer ${lgToken}`
+        }
+      });
       const res = await req.data.dataewmps;
       setdataEwmps(res);
     } else {
       const req = await axios.get(
-        `http://127.0.0.1:8000/api/search_ewmp/${e.target.value}`
+        `http://127.0.0.1:8000/api/search_ewmpdsn/${e.target.value}`, {
+          headers: {
+            Authorization: `Bearer ${lgToken}`
+          }
+        }
       );
       const res = await req.data.dataewmps;
       setdataEwmps(res);
+      console.log(res);
     }
   };
   return (
@@ -126,7 +136,7 @@ export default function tabelewmp() {
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
         <LayoutForm rlUser={dataRole}>
-          <div className=" container-fluid pb-4">
+          <div className=" container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
                 <div className="card-header pb-0">
@@ -300,7 +310,6 @@ export default function tabelewmp() {
             </div>
             <FooterUtama />
           </div>
-          <Toaster />
         </LayoutForm>
       )}
     </>

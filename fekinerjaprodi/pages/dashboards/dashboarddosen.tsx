@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import MenuCardUtama from "../../components/Molecule/MenuCard/MenuCardUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutDashboard";
+import LayoutDashboardBlue from "../../components/Organism/Layout/LayoutDashboardBlue";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 
 export default function dashboarddosen() {
@@ -17,8 +17,7 @@ export default function dashboarddosen() {
 
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
-  const [dataRole, setRole] = useState('');
-
+  const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -59,9 +58,12 @@ export default function dashboarddosen() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
-        const {role} = response.data.user;
+        const { role } = response.data.user;
         setRole(role);
 
+        if (level_akses == 3) {
+          return router.push("/dashboards/darboardadmin");
+        }
         setStadmin(true);
         pengambilData();
       })
@@ -76,7 +78,7 @@ export default function dashboarddosen() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm rlUser={dataRole}>
+        <LayoutDashboardBlue rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <MenuCardUtama
@@ -132,10 +134,29 @@ export default function dashboarddosen() {
                 halaman={`/TulisanMedia/`}
                 keterangan={"Data tulisan media yang dibuat oleh dosen"}
               />
+
+              <MenuCardUtama
+                judul={`Tulisan Media`}
+                jumlah={`5`}
+                halaman={`/TulisanMedia/`}
+                keterangan={"Data tulisan media yang dibuat oleh dosen"}
+              />
+              <MenuCardUtama
+                judul={`Tulisan Media`}
+                jumlah={`5`}
+                halaman={`/TulisanMedia/`}
+                keterangan={"Data tulisan media yang dibuat oleh dosen"}
+              />
+              <MenuCardUtama
+                judul={`Tulisan Media`}
+                jumlah={`5`}
+                halaman={`/TulisanMedia/`}
+                keterangan={"Data tulisan media yang dibuat oleh dosen"}
+              />
             </div>
             <FooterUtama />
           </div>
-        </LayoutForm>
+        </LayoutDashboardBlue>
       )}
     </>
   );

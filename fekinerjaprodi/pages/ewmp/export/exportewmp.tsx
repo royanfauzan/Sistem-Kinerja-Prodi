@@ -72,11 +72,11 @@ const [dataRole, setRole] = useState('');
         console.log("Sukses");
         const { level_akses } = response.data.user;
         const {role} = response.data.user;
-setRole(role);
+        setRole(role);
 
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
-          return router.push("/");
+          return router.push("/dashboards/dashboarddosen");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         setStadmin(true);
@@ -85,7 +85,7 @@ setRole(role);
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
-        return router.push("/");
+        return router.push("/ewmp/tabelewmp");
       });
   }, []);
 

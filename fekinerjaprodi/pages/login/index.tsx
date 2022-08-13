@@ -22,10 +22,10 @@ export default function index() {
           console.log("Sukses")
           const { role } = response.data.user
           // kalo ga admin dipindah ke halaman lain
-          if (role.localeCompare('admin')) {
+          if (role == 'admin') {
             return router.push("/dashboards/dashboardadmin")
           }
-          if (role.localeCompare('dosen')) {
+          if (role=='dosen') {
             return router.push("/dashboards/dashboarddosen")
           }
         })
@@ -74,7 +74,15 @@ export default function index() {
         console.log(localStorage.getItem('token'));
         console.log("success");
         console.log(response);
-        router.push("/dashboards_eva/dashboardpendidikan");
+        // router.push("/dashboards_eva/dashboardpendidikan");
+        const { role } = response.data.user
+          // kalo ga admin dipindah ke halaman lain
+          if (role == 'admin') {
+            return router.push("/dashboards/dashboardadmin")
+          }
+          if (role=='dosen') {
+            return router.push("/dashboards/dashboarddosen")
+          }
       })
       .catch(function (error) {
         //handle error

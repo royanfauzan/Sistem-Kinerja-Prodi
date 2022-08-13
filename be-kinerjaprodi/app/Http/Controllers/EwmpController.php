@@ -198,6 +198,12 @@ class EwmpController extends Controller
     public function show($id)
     {
         //
+        $Ewmp = Ewmp::with('profilDosen')->find($id);
+        return response()->json([
+            'success' => true,
+            'dataewmp' => $Ewmp,
+            // 'dosenId'=> $dosenId
+        ]);
     }
 
     /**
@@ -243,10 +249,12 @@ class EwmpController extends Controller
             ], 400);
         }
 
-        if (Ewmp::where([['profil_dosen_id', $request->profil_dosen_id],['tahun_akademik', $request->tahun_akademik],['semester', $request->semester]])->where([['id','!=',$id]])->get()) {
+        $ewmpExist = Ewmp::where([['profil_dosen_id', $request->profil_dosen_id],['tahun_akademik', $request->tahun_akademik],['semester', $request->semester]])->where([['id','!=',$id]])->get()->count();
+        if ($ewmpExist) {
             return response()->json([
                 'success' => false,
                 'message' => "EWMP Sudah Tersimpan",
+                'EWMPEXIST' => $ewmpExist,
             ], 400);
         }
 
@@ -284,7 +292,8 @@ class EwmpController extends Controller
 
         return response()->json([
             'success' => true,
-            'dataewmps' => $Ewmp,
+            'dataewmp' => $Ewmp,
+            'exist' => $ewmpExist,
             // 'dosenId'=> $dosenId
         ]);
     }
@@ -342,6 +351,7 @@ class EwmpController extends Controller
     public function searchewmp(Request $request,$search)
     {
         //
+        
         $ewmps = Ewmp::with('profilDosen')->whereRelation('profilDosen', 'NamaDosen', 'LIKE', "%{$search}%")
         ->orWhere('Semester', 'LIKE', "%{$search}%")
         ->orWhere('tahun_akademik', 'LIKE', "%{$search}%")
@@ -350,6 +360,49 @@ class EwmpController extends Controller
         return response()->json([
             'success' => true,
             'dataewmps' => $ewmps,
+        ]);
+    }
+
+    public function allewmpdsn()
+    {
+        //
+        $user = JWTAuth::parseToken()->authenticate();
+        $dosenId=$user->profilDosen->id;
+
+        $ewmps = Ewmp::where('profil_dosen_id',$dosenId)->with('profilDosen')->orderBy('tahun_akademik','DESC')->get();
+        $arrEwmp=array();
+        foreach ($ewmps as $key => $ewmp) {
+            if ($ewmp->profil_dosen_id == $dosenId) {
+                $arrEwmp[]=$ewmp;
+            }
+        }
+        return response()->json([
+            'success' => true,
+            'dataewmps' => $arrEwmp,
+            // 'dataewmps' => Ewmp::where([['profil_dosen_id', '2'],['tahun_akademik', '2020/2021'],['semester', 'Genap']])->where([['id','!=',5]])->get(),
+        ]);
+    }
+
+    public function searchewmpdsn(Request $request,$search)
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+        $dosenId=$user->profilDosen->id;
+        //
+        $ewmps = Ewmp::with('profilDosen')->whereRelation('profilDosen', 'NamaDosen', 'LIKE', "%{$search}%")
+        ->orWhere('Semester', 'LIKE', "%{$search}%")
+        ->orWhere('tahun_akademik', 'LIKE', "%{$search}%")
+        ->orderBy('tahun_akademik','DESC')
+        ->get();
+        $arrEwmp=array();
+        foreach ($ewmps as $key => $ewmp) {
+            if ($ewmp->profil_dosen_id == $dosenId) {
+                $arrEwmp[]=$ewmp;
+            }
+        }
+        // $ewmpsfilter = $ewmps->where('profil_dosen_id',$dosenId);
+        return response()->json([
+            'success' => true,
+            'dataewmps' => $arrEwmp,
         ]);
     }
 }

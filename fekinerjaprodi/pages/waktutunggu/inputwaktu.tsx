@@ -6,12 +6,16 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 
 export default function inputwaktu() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState([]);
+  const [dataError, setError] = useState([]);
+  const MySwal = withReactContent(Swal);
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -95,27 +99,27 @@ export default function inputwaktu() {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        const { all_waktu } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(all_waktu);
-        router.push("../waktutunggu/daftarwaktu");
-      })
-      .catch(function (error) {
-        //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
-        console.log(error.response);
+    .then(function (response) {
+      MySwal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Berhasil Di Input",
       });
+
+      router.push("../waktutunggu/daftarwaktu");
+    })
+
+    .catch(function (error) {
+      //handle error
+      setError(error.response.data.error);
+      console.log(error.response.data.error);
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Data Gagal Di Input",
+      });
+      console.log(error.response);
+    });
   };
 
   return (
@@ -142,20 +146,24 @@ export default function inputwaktu() {
                   <div className="card-body">
                     <p className="text-uppercase text-sm">Prestasi Mahasiswa</p>
                     <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="kepuasan" className="form-control-label">
-                            Tahun Kepuasan Lulusan
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="kepuasan"
-                          >
-                            <option>Pilih Tahun Lulusan</option>
-                            {userDosens.map((userkepuasan) => {
-                               {
+                    <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="kepuasan"
+                              className={
+                                dataError.kepuasan_id ? "is-invalid" : ""
+                              }
+                            >
+                              Tahun Kepuasan
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
+                              id="kepuasan"
+                            >
+                              <option value="">Pilih Tahun Kepuasan</option>
+                              {userDosens.map((userkepuasan) => {
                                 return (
                                   <option
                                     value={userkepuasan.id}
@@ -164,14 +172,23 @@ export default function inputwaktu() {
                                     {userkepuasan.tahun}
                                   </option>
                                 );
-                              }
-                            })}
-                          </select>
+                              })}
+                            </select>
+                            {dataError.kepuasan_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.kepuasan_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="dipesan" className="form-control-label">
+                          <label htmlFor="dipesan" 
+                           className={
+                            dataError.jmlh_lls_dipesan ? "is-invalid" : ""
+                          }>
                             Jumlah Lulusan Dipesan
                           </label>
                           <input
@@ -179,13 +196,22 @@ export default function inputwaktu() {
                             type="text"
                             placeholder="Jumlah Lulusan Dipesan"
                             id="dipesan"
-                            required
                           />
+                          {dataError.jmlh_lls_dipesan ? (
+                              <div className="invalid-feedback">
+                                {dataError.jmlh_lls_dipesan}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="tiga" className="form-control-label">
+                          <label htmlFor="tiga" 
+                          className={
+                            dataError.jmlh_tunggu_lls_3bln ? "is-invalid" : ""
+                          }>
                             Jumlah tunggu lulusan 3 bulan
                           </label>
                           <input
@@ -193,13 +219,22 @@ export default function inputwaktu() {
                             type="text"
                             placeholder="Jumlah tunggu lulusan 3 bulan"
                             id="tiga"
-                            required
                           />
+                          {dataError.jmlh_tunggu_lls_3bln ? (
+                              <div className="invalid-feedback">
+                                {dataError.jmlh_tunggu_lls_3bln}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="enam" className="form-control-label">
+                          <label htmlFor="enam" 
+                          className={
+                            dataError.jmlh_tunggu_lls_6bln ? "is-invalid" : ""
+                          }>
                           Jumlah tunggu lulusan 6 bulan
                           </label>
                           <input
@@ -207,14 +242,22 @@ export default function inputwaktu() {
                             type="text"
                             placeholder="Jumlah tunggu lulusan 6 bulan"
                             id="enam"
-                            required
                           />
+                          {dataError.jmlh_tunggu_lls_6bln ? (
+                              <div className="invalid-feedback">
+                                {dataError.jmlh_tunggu_lls_6bln}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
 
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="enamlebih" className="form-control-label">
+                          <label htmlFor="enamlebih" className={
+                            dataError.jmlh_tunggu_lls_lebih_6bln ? "is-invalid" : ""
+                          }>
                           Jumlah tunggu lulusan lebih 6 bulan
                           </label>
                           <input
@@ -222,8 +265,14 @@ export default function inputwaktu() {
                             type="text"
                             placeholder="Jumlah tunggu lulusan lebih 6 bulan"
                             id="enamlebih"
-                            required
                           />
+                          {dataError.jmlh_tunggu_lls_lebih_6bln ? (
+                              <div className="invalid-feedback">
+                                {dataError.jmlh_tunggu_lls_lebih_6bln}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
 

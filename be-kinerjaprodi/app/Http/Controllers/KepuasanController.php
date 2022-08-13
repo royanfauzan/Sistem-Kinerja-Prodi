@@ -9,6 +9,22 @@ use Illuminate\Support\Facades\Validator;
 
 class KepuasanController extends Controller
 {
+    private function tahuntsgenerator($tahun, $tipe = 'biasa')
+    {
+        $tslist = collect();
+        $thnInt = intval($tahun);
+        $tslist->ts = '' . ($thnInt);
+        $tslist->ts1 = '' . ($thnInt - 1);
+        $tslist->ts2 = '' . ($thnInt - 2);
+
+        if (!strcmp($tipe, 'akademik')) {
+            $tslist->ts = "" . ($thnInt - 1) . "/" . ($thnInt);
+            $tslist->ts1 = "" . ($thnInt - 2) . "/" . ($thnInt - 1);
+            $tslist->ts2 = "" . ($thnInt - 3) . "/" . ($thnInt - 2);
+        }
+        return $tslist;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,6 +35,20 @@ class KepuasanController extends Controller
         return response()->json([
             'success' => true,
             'all_prodi' => KP_lulus::with('prodi')->get(),
+        ]);
+    }
+
+    public function searchkepuasan($search)
+    {
+        return response()->json([
+            'success' => true,
+            'searchkepuasan' =>  KP_lulus::with('prodi')
+                ->whereRelation('prodi', 'prodi','LIKE', "%{$search}%")
+                ->orWhereRelation('prodi', 'nama_prodi','LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('jmlh_lulusan', 'LIKE', "%{$search}%")
+                ->orwhere('jmlh_terlacak', 'LIKE', "%{$search}%")
+                ->get()
         ]);
     }
 
@@ -52,7 +82,7 @@ class KepuasanController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $datakepuasan = KP_lulus::create(
@@ -83,7 +113,11 @@ class KepuasanController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_kepuasan' => KP_lulus::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -140,19 +174,20 @@ class KepuasanController extends Controller
     }
 
 
-    public function listtahun(Request $request)
-    {
-        //
-        $allewmps = Ewmp::all()->groupBy('tahun_akademik');
-        $arrTahun = array();
-        foreach ($allewmps as $key => $ewmp) {
-            $arrTahun[] = $ewmp[0]->tahun_akademik;
-        }
-        return response()->json([
-            'success' => true,
-            'tahunewmps' => $arrTahun,
-        ]);
-    }
+    // public function listtahun(Request $request)
+    // {
+    //     //
+    //     $allewmps = Ewmp::all()->groupBy('tahun_akademik');
+    //     $arrTahun = array();
+    //     foreach ($allewmps as $key => $ewmp) {
+    //         $arrTahun[] = $ewmp[0]->tahun_akademik;
+    //     }
+    //     return response()->json([
+    //         'success' => true,
+    //         'tahunewmps' => $arrTahun,
+    //     ]);
+    // }
+
 
         /**
      * Remove the specified resource from storage.
@@ -162,7 +197,60 @@ class KepuasanController extends Controller
      */
     public function destroy($id)
     {
+        $prestasi = KP_lulus::find($id);
+        $prestasi->delete();
+
+        if (!$prestasi) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
+    }
+
+    public function exportkepuasan(Request $request, $tahun)
+    {
+        $tahunlist = $this->tahuntsgenerator($tahun);
+        $kepuasants = collect([]);
+
+
+        $kepuasans = KP_lulus::where('tahun', $tahunlist->ts)
+            ->orWhere('tahun', $tahunlist->ts1)
+            ->orWhere('tahun', $tahunlist->ts2)
+            ->get();
+
+        $arrTahun = [$tahunlist->ts, $tahunlist->ts1, $tahunlist->ts2];
+
+        foreach ($arrTahun as $key => $th) {
+            $listkepuasants = $kepuasans->where('tahun', $th)->first();
+
+            $sementara = collect(['kepuasants' . $key => $listkepuasants, 'ts' => $th]);
+            $kepuasants->push(collect($sementara));
+        }
+
+        return response()->json([
+            'success' => true,
+            'all_kepuasan' => $kepuasans,
+            'kepuasan_ts' => $kepuasants,
+        ]);
+    }
+
+    public function listtahunkepuasan(Request $request)
+    {
         //
+        $allkepuasan = KP_lulus::all()->groupBy('tahun');
+        $arrTahun = array();
+        foreach ($allkepuasan as $key => $kepuasanthn) {
+            $arrTahun[] = $kepuasanthn[0]->tahun;
+        }
+        return response()->json([
+            'success' => true,
+            'tahunkepuasans' => $arrTahun,
+        ]);
     }
 
 }

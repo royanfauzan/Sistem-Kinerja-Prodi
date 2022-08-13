@@ -152,6 +152,12 @@ export default function daftarpkm() {
                             NO
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
+                            Nama Dosen
+                          </th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
+                            Nama Mahasiswa
+                          </th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
                             Tema Sesuai Roadmap
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
@@ -191,6 +197,27 @@ export default function daftarpkm() {
 
                               <td className="ps-2">
                                 <p className="mb-0 text-sm">{number + 1}</p>
+                              </td>
+
+                              <td>
+                                {pkm.anggota_dosens.map(
+                                  (anggota_dosens) => {
+                                    return (
+                                      <p className="text-xs font-weight-bold mb-0 ps-2 pe-3 " key='anggota.id'>
+                                        {anggota_dosens.NamaDosen}
+                                      </p>
+                                    );
+                                  })}
+                              </td>
+
+                              <td>
+                                {pkm.anggota_mahasiswas.map((anggota_mahasiswas) => {
+                                  return (
+                                    <p className="text-xs font-weight-bold mb-0 ps-2 pe-3 " key='anggota.id'>
+                                      {anggota_mahasiswas.nama}
+                                    </p>
+                                  );
+                                })}
                               </td>
 
                               <td className="align-middle text-sm ps-2">
@@ -254,9 +281,10 @@ export default function daftarpkm() {
                               </td>
 
                               <td className="align-middle pe-3">
+                                <tr>
                                 <Link href={`/PkM/edit/${pkm.id}`}>
                                   <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
+                                    Edit PKM
                                   </button>
                                 </Link>
 
@@ -264,8 +292,37 @@ export default function daftarpkm() {
                                   onClick={() => deletepkm(pkm.id)}
                                   className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
-                                  Hapus
-                                </button>
+                                  Hapus PKM
+                                </button>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                  <Link href={`/PkM/pilihdosen/${pkm.id}`}>
+                                    <button className="btn btn-sm btn-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                      Pilih Dosen
+                                    </button>
+                                  </Link>
+                                </tr>
+
+                                <tr>
+                                  <Link href={`/PkM/pilih_mhs/${pkm.id}`}>
+                                    <button className="btn btn-sm btn-dark border-0 shadow-sm  ps-3 pe-3 mb-3 me-3 mt-3">
+                                      Pilih mahasiswa
+                                    </button>
+                                  </Link>
+
+                                  <Link href={`/penelitian/hapus/hapusmhs`}>
+                                    <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                      Hapus mahasiswa
+                                    </button>
+                                  </Link>
+
+                                  <Link href={`/penelitian/hapus/hapusmhs`}>
+                                    <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                      Hapus Dosen
+                                    </button>
+                                  </Link>
+
+                                </tr>
+
                               </td>
                             </tr>
                           );

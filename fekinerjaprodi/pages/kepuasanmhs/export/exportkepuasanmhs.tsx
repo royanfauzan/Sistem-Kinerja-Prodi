@@ -147,7 +147,7 @@ export default function kepuasanmahasiswa() {
                     </div>
                     <div className="col-md-4 pe-0">
                       <div className="row">
-                        <div className="col-6"><h5>Pilih Tahun</h5>
+                        <div className="col-6"><h6>Pilih Tahun</h6>
                         </div>
 
                         <div className="col-md-6 px-0">
@@ -243,13 +243,13 @@ export default function kepuasanmahasiswa() {
                       </tr>
                       <tr>
                         <th>
-                          <p className="mb-0 text-sm">1</p>
+                          <p className="mb-0 text-sm" >1</p>
                         </th>
-                        <th>
+                        <td>
                           <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
                             Keandalan (<i data-f-italic="true">reliability</i>): kemampuan dosen, tenaga kependidikan, dan pengelolaan dalam memberikan pelayanan.
                           </p>
-                        </th>
+                        </td>
                         <th>
                           <p className="mb-0 text-sm ">{tampilKepuasanmhs.keandalan_4}</p>
                         </th>
@@ -272,11 +272,11 @@ export default function kepuasanmahasiswa() {
                         <th>
                           <p className="mb-0 text-sm">2</p>
                         </th>
-                        <th>
+                        <td>
                           <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
                             Daya tanggap  (<i data-f-italic="true">responsiveness</i>): kemauan dari dosen, tenaga kependidikan, dan pengelola dalam membantu mahasiswa dan memberikan jasa dengan cepat.
                           </p>
-                        </th>
+                        </td>
                         <th>
                           <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_4}</p>
                         </th>
@@ -298,11 +298,11 @@ export default function kepuasanmahasiswa() {
                         <th>
                           <p className="mb-0 text-sm">3</p>
                         </th>
-                        <th>
+                        <td>
                           <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
                             Kepastian  (<i data-f-italic="true">assurance</i>): kemampuan dosen, tenaga kependidikan, dan pengelola untuk memberi keyakinan kepada mahasiswa bahwa pelayanan yang diberikan telah sesuai dengan ketentuan.
                           </p>
-                        </th>
+                        </td>
                         <th>
                           <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_4}</p>
                         </th>
@@ -324,11 +324,11 @@ export default function kepuasanmahasiswa() {
                         <th>
                           <p className="mb-0 text-sm">4</p>
                         </th>
-                        <th>
+                        <td>
                           <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
                             Empati  (<i data-f-italic="true">empathy</i>): kesediaan/kepedulian dosen, tenaga kependidikan, dan pengelola untuk memberi perhatian kepada mahasiswa.
                           </p>
-                        </th>
+                        </td>
                         <th>
                           <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_4}</p>
                         </th>
@@ -350,11 +350,11 @@ export default function kepuasanmahasiswa() {
                         <th>
                           <p className="mb-0 text-sm">5</p>
                         </th>
-                        <th>
+                        <td>
                           <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
                             (<i data-f-italic="true">Tangible</i>): penilaian mahasiswa terhadap kecukupan, aksesibitas, kualitas sarana dan prasarana.
                           </p>
-                        </th>
+                        </td>
                         <th>
                           <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_4}</p>
                         </th>
@@ -388,11 +388,7 @@ export default function kepuasanmahasiswa() {
                         <th>
                           <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_1 + tampilKepuasanmhs.dayatanggap_1 + tampilKepuasanmhs.kepastian_1 + tampilKepuasanmhs.empati_1 + tampilKepuasanmhs.tangible_1}</h6>
                         </th>
-                        <th>
-                          <p className="mb-0 text-sm">
-                            {tampilKepuasanmhs.tl_keandalan}
-                          </p>
-                        </th>
+
                       </tr>
                     </table>
                   </div>

@@ -166,7 +166,7 @@ export default function daftarprodkmhs() {
                             <tr key={`prodkmhs` + prodkmhs.id}>
 
                               <td className="ps-3">
-                                <h6 className="mb-0 text-sm ">{number + 1}</h6>
+                                <p className="mb-0 text-sm ">{number + 1}</p>
                               </td>
 
                               <td className="align-middle text-sm">

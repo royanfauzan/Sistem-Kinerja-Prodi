@@ -4,6 +4,7 @@ use App\Http\Controllers\CapKurikulumController;
 use App\Http\Controllers\IntegrasiController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MatkulController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProdiController;
@@ -178,6 +179,7 @@ Route::put('presentase/{id}', [PresentaseController::class, 'update']);
 Route::post('created', [MitraController::class, 'insertmitra']);
 Route::get('read_mitra', [MitraController::class, 'tampil_mitra']);
 Route::get('show_mitra/{id}', [MitraController::class, 'tampil_editmitra']);
+Route::get('readMitra/{search}', [MitraController::class, 'searchmitra']);
 Route::post('update_mitra/{id}', [MitraController::class, 'editmitra']);
 Route::post('delete_mitra/{id}', [MitraController::class, 'deletemitra']);
 
@@ -190,8 +192,16 @@ Route::post('update_kjs/{id}', [KerjasamaController::class, 'editkerjasama']);
 Route::post('delete_kjs/{id}', [KerjasamaController::class, 'delete_kjs']);
 
 
+Route::get('read_user', [UserController::class, 'index']);
+Route::get('search_user/{search}', [UserController::class, 'search']);
+Route::get('read_user/{id}', [UserController::class, 'show']);
+Route::post('store_user', [UserController::class, 'store']);
+Route::post('update_user/{id}', [UserController::class, 'update']);
+Route::post('delete_user/{id}', [UserController::class, 'destroy']);
+
 Route::post('create_penggunaan_dana', [PenggunaanDanaController::class, 'insert_penggunaan_dana']);
 Route::get('read_penggunaan_dana', [PenggunaanDanaController::class, 'tampil_penggunaan_dana']);
+Route::get('read_penggunaan_dana/{search}', [PenggunaanDanaController::class, 'search_penggunaandana']);
 Route::post('update_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'edit_penggunaan_dana']);
 Route::get('export_penggunaan_dana/{tahun}', [PenggunaanDanaController::class, 'export_penggunaan_dana']);
 Route::get('show_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'tampil_edit_dana']);
@@ -199,6 +209,7 @@ Route::post('delete_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'de
 
 Route::post('create_mahasiswa_asing', [MahasiswaAsingController::class, 'insert_mahasiswa_asing']);
 Route::get('read_mahasiswa_asing', [MahasiswaAsingController::class, 'tampil_mahasiswa_asing']);
+Route::get('tampilprodi_mahasiswa_asing/{prodi}', [MahasiswaAsingController::class, 'tampilprodi_mahasiswa_asing']);
 Route::get('search_mahasiswa_asing/{search}', [MahasiswaAsingController::class, 'search_mahasiswa_asing']);
 Route::get('export_mahasiswa_asing/{tahun}', [MahasiswaAsingController::class, 'tampilexport_mahasiswa_asing']);
 Route::get('show_mahasiswa_asing/{id}', [MahasiswaAsingController::class, 'tampil_edit_mahasiswa_asing']);

@@ -194,7 +194,6 @@ export default function inputintegrasi() {
     formData.append("file_bukti", filebukti);
 
 
-
     console.log(formData);
 
     axios({

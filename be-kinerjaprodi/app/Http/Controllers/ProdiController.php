@@ -15,13 +15,19 @@ class ProdiController extends Controller
      */
     public function tampilprodi()
     {
-        
         return response()->json([
             'success' => true,
             'Prodi' => Prodi::all(),
         ]);
-    
     }
+    // public function tampilprodii($prodi)
+    // {
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'TampilProdi' => Prodi::where('nama_prodi', $prodi)->get(),
+    //     ]);
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -65,7 +71,7 @@ class ProdiController extends Controller
 
         //Token created, return with success response and jwt token
         return response()->json([ //ngirim ke front end
-            'success' => true, 
+            'success' => true,
             'prodi' => $request->prodi,
             'nama_prodi' => $request->nama_prodi,
             'all_prodi' => Prodi::all()

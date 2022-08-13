@@ -1,13 +1,12 @@
-import axios from "axios";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
-import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
-import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
-import Link from "next/link";
-import TableToExcel from "@linways/table-to-excel";
+import axios from "axios"
+import { useRouter } from "next/router"
+import React, { useEffect, useState } from "react"
+import toast from "react-hot-toast"
+import FooterUtama from "../../../components/Molecule/Footer/FooterUtama"
+import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama"
+import LayoutForm from "../../../components/Organism/Layout/LayoutForm"
+import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
+import Link from "next/link"
 
 export default function penerimaanMahasiswa() {
   const router = useRouter()
@@ -69,15 +68,6 @@ export default function penerimaanMahasiswa() {
       })
   }, [])
 
-  const exportExcel = () => {
-    TableToExcel.convert(document.getElementById("table1"), {
-      name: "table1.xlsx",
-      sheet: {
-        name: "Sheet 1"
-      }
-    });
-  };
-
   const deletePenerimaan = (id) => {
     axios({
       method: "post",
@@ -100,7 +90,18 @@ export default function penerimaanMahasiswa() {
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
-              <button onClick={() => exportExcel()} className="btn btn-sm btn-danger border-0 shadow-sm mb-3 me-3">HAPUS</button>
+                <div className="card-header pb-0">
+                  <div className="row justify-content-between">
+                    <div className="col-4">
+                      <h6>Authors table</h6>
+                    </div>
+                    <div className="col-4 d-flex flex-row-reverse">
+                      <button className="btn btn-sm btn-success border-0 shadow-sm mb-3 me-3">
+                        EXPORT
+                      </button>
+                    </div>
+                  </div>
+                </div>
                 <style jsx>{`
                   table,
                   td,
@@ -114,9 +115,10 @@ export default function penerimaanMahasiswa() {
                     border-collapse: collapse;
                   }
                 `}</style>
-                <table id="table1">
+                <table>
                   <thead>
                     <tr>
+                      <th rowspan="2">Program Studi</th>
                       <th rowspan="2">Tahun Akademik</th>
                       <th rowspan="2">Daya Tampung</th>
                       <th colspan="2">Jumlah Calon Mahasiswa</th>
@@ -136,6 +138,11 @@ export default function penerimaanMahasiswa() {
                     {tampilPenerimaan.map((tPenerimaan) => {
                       return (
                         <tr key={`tpenerimaan` + tPenerimaan.id}>
+                          <td>
+                            <h6 className="mb-0 text-sm">
+                              {tPenerimaan.prodi.nama_prodi}
+                            </h6>
+                          </td>
                           <td>
                             <h6 className="mb-0 text-sm">
                               {tPenerimaan.Tahun_Akademik}

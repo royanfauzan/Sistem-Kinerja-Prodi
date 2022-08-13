@@ -68,7 +68,6 @@ class CapKurikulumController extends Controller
     public function store(Request $request)
     {
         $datacapkurikulum = $request->only('semester', 'tahun', 'mata_kuliah_kompetensi', 'kuliah_responsi_tutorial', 'seminar', 'praktikum', 'konversi_kredit_jam', 'sikap', 'pengetahuan', 'ketrampilan_umum', 'ketrampilan_khusus', 'dok_ren_pembelajaran', 'unit_penyelenggara', 'prodi_ID', 'matkul_ID');
-
         //valid credential
         $validator = Validator::make($datacapkurikulum, [
             'semester' => 'required',

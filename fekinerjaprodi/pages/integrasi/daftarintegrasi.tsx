@@ -239,7 +239,7 @@ export default function daftarintgrs() {
                               </td>
 
                               <td className="align-middle pe-3 text-end">
-                                <Link href={`/integrasi/pilih/${intgrs.id}`}>
+                                <Link href={`/integrasi/edit/${intgrs.id}`}>
                                   <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                     Edit
                                   </button>

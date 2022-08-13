@@ -23,6 +23,14 @@ class PenelitianController extends Controller
         ]);
     }
 
+    public function relasipenmhs()
+    {
+        return response()->json([ //ngirim ke front end
+            'success' => true,
+            'all_relasi' => RelasiPenMhs::with('mahasiswa')->get(),
+        ]);
+    }
+
     public function searchpenelitian($search)
     {
 
@@ -305,6 +313,23 @@ class PenelitianController extends Controller
             'penelitian_id' => $request->penelitian_id,
             'keanggotaan' => $request->keanggotaan,
             'all_penelitian' => Penelitian::all()
+        ]);
+    }
+
+    public function deletemhs($id)
+    {
+        $penelitian = RelasiPenMhs::find($id);
+        $penelitian->delete();
+
+        if (!$penelitian) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
         ]);
     }
 }

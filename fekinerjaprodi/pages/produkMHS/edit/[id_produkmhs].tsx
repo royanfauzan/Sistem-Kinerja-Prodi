@@ -13,12 +13,12 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 export async function getServerSideProps(context) {
 
   //http request
-  const req  = await axios.get(`http://127.0.0.1:8000/api/tampil_ProdukMHS/${context.query.id_produkmhs}`)
-  const res  = await req.data.all_produk
+  const req = await axios.get(`http://127.0.0.1:8000/api/tampil_ProdukMHS/${context.query.id_produkmhs}`)
+  const res = await req.data.all_produk
 
   return {
-    props: { 
-        produkmhs: res // <-- assign response
+    props: {
+      produkmhs: res // <-- assign response
     },
   }
 }
@@ -31,9 +31,9 @@ export async function getServerSideProps(context) {
 
 
 export default function update_dataprodukmhs(props) {
-  const {produkmhs} = props;
+  const { produkmhs } = props;
   console.log(produkmhs);
-  
+
   const router = useRouter();
 
   const [dataprodukmhs, setdataprodukmhs] = useState(produkmhs);
@@ -41,57 +41,57 @@ export default function update_dataprodukmhs(props) {
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
-  const url="http://127.0.0.1:8000/";
+  const url = "http://127.0.0.1:8000/";
   const [dataurl, setUrl] = useState(url);
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
-  
+  const pengambilData = async () => {
+
   }
 
 
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
-    
-    
+  useEffect(() => {
+
+
     // cek token, kalo gaada disuruh login
     const lgToken = localStorage.getItem('token');
-    if(!lgToken){
+    if (!lgToken) {
       router.push('/login')
 
-      
+
     }
-    
+
     // perjalanan validasi token 
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/get_user",
       headers: { "Authorization": `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-    })
-    .catch(function (err) {
+      .then(function (response) {
+        console.log(response);
+        console.log('Sukses');
+        const { level_akses } = response.data.user;
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push('/');
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+      })
+      .catch(function (err) {
         console.log('gagal');
         console.log(err.response);
         return router.push('/');
-    })
-  },[]);
-  
+      })
+  }, []);
+
   const handleChangeFile = (e) => {
     setfilebuktis(e.target.files[0]);
-   
+
   };
   // Insert Update Data
   const submitForm = async (event) => {
@@ -112,7 +112,7 @@ export default function update_dataprodukmhs(props) {
 
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/ProdukMHS_Update/${dataprodukmhs.id}`+`?_method=PUT`,
+      url: `http://127.0.0.1:8000/api/ProdukMHS_Update/${dataprodukmhs.id}` + `?_method=PUT`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -144,123 +144,122 @@ export default function update_dataprodukmhs(props) {
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
         <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetilDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <p className="mb-0">Edit Data Produk Mahasiswa</p>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
-                     
-                    </div>
-                  </div>
-                  <div className="card-body">
-                    <p className="text-uppercase text-sm"> Produk Mahasiswa </p>
-                    <div className="row">
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetilDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <h6 className="mb-0">Edit Data Produk Mahasiswa</h6>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Simpan
+                        </button>
 
-                    <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="nama_produk" className="form-control-label">
-                            Nama Produk
-                          </label>
-                          <input
-                          defaultValue={dataprodukmhs.nama_produk}
-                            className="form-control"
-                            type="text"
-                            placeholder="Nama Produk"
-                            id="nama_produk"
-                            required
-                          />
-                        </div>
                       </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="deskripsi" className="form-control-label">
-                            Deskripsi
-                          </label>
-                          <input
-                          defaultValue={dataprodukmhs.deskripsi}
-                            className="form-control"
-                            type="text"
-                            placeholder="Deskripsi"
-                            id="deskripsi"
-                            required
-                          />
-                        </div>
-                      </div>          
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="deskripsi" className="form-control-label">
-                            Tahun
-                          </label>
-                          <input
-                          defaultValue={dataprodukmhs.tahun}
-                            className="form-control"
-                            type="text"
-                            placeholder="Tahun"
-                            id="tahun"
-                            required
-                          />
-                        </div>
-                      </div>     
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="deskripsi_bukti" className="form-control-label">
-                            Deskripsi Bukti
-                          </label>
-                          <input
-                          defaultValue={dataprodukmhs.deskripsi_bukti}
-                            className="form-control"
-                            type="text"
-                            placeholder="Deskripsi Bukti"
-                            id="deskripsi_bukti"
-                            required
-                          />
-                        </div>
-                      </div>   
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="file_bukti" className="form-control-label">
-                            File Bukti
-                          </label>
-                          <div>
-                          <a href={dataurl+dataprodukmhs.file_bukti}> {dataprodukmhs.file_bukti}</a> </div>
-                          <input
-                            className="form-control"
-                            type="file"
-                            onChange={handleChangeFile}
-                            id="file_bukti"
-                          
-                          />
-                        </div>
-                      </div>   
-                   
-
-                            
-                    
                     </div>
-                  
+                    <div className="card-body">
+                      <div className="row">
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="nama_produk" className="form-control-label">
+                              Nama Produk
+                            </label>
+                            <input
+                              defaultValue={dataprodukmhs.nama_produk}
+                              className="form-control"
+                              type="text"
+                              placeholder="Nama Produk"
+                              id="nama_produk"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="deskripsi" className="form-control-label">
+                              Deskripsi
+                            </label>
+                            <input
+                              defaultValue={dataprodukmhs.deskripsi}
+                              className="form-control"
+                              type="text"
+                              placeholder="Deskripsi"
+                              id="deskripsi"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="deskripsi" className="form-control-label">
+                              Tahun
+                            </label>
+                            <input
+                              defaultValue={dataprodukmhs.tahun}
+                              className="form-control"
+                              type="text"
+                              placeholder="Tahun"
+                              id="tahun"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="deskripsi_bukti" className="form-control-label">
+                              Deskripsi Bukti
+                            </label>
+                            <input
+                              defaultValue={dataprodukmhs.deskripsi_bukti}
+                              className="form-control"
+                              type="text"
+                              placeholder="Deskripsi Bukti"
+                              id="deskripsi_bukti"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="file_bukti" className="form-control-label">
+                              File Bukti
+                            </label>
+                            <div>
+                              <a href={dataurl + dataprodukmhs.file_bukti}> {dataprodukmhs.file_bukti}</a> </div>
+                            <input
+                              className="form-control"
+                              type="file"
+                              onChange={handleChangeFile}
+                              id="file_bukti"
+
+                            />
+                          </div>
+                        </div>
+
+
+
+
+                      </div>
+
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+        </LayoutForm>
       )}
     </>
   );

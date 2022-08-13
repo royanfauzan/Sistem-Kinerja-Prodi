@@ -358,7 +358,7 @@ export default function capkurikulum() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Seminar"
                               id="seminar"
                             />
@@ -382,7 +382,7 @@ export default function capkurikulum() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Praktikum"
                               id="praktikum"
                             />

@@ -85,7 +85,7 @@ export default function daftarpenelitian() {
       });
   };
 
-  const searchdata= async (e) => {
+  const searchdata = async (e) => {
     if (e.target.value == "") {
       const req = await axios.get(`http://127.0.0.1:8000/api/Penelitian/`)
       const res = await req.data.all_penelitian
@@ -123,7 +123,7 @@ export default function daftarpenelitian() {
                       onChange={searchdata}
                     />
                   </div>
-                  </div>
+                </div>
                 <div className="row justify-content-between mb-4">
                   <div className="col-4">
                     <div className="align-middle">
@@ -203,7 +203,7 @@ export default function daftarpenelitian() {
                                 {penelitian.anggota_dosens.map(
                                   (anggota_dosens) => {
                                     return (
-                                      <p className="mb-0 text-sm text-center" key='anggota.id'>
+                                      <p className="text-xs font-weight-bold mb-0 ps-2 pe-3 " key='anggota.id'>
                                         {anggota_dosens.NamaDosen}
                                       </p>
                                     );
@@ -213,7 +213,7 @@ export default function daftarpenelitian() {
                               <td>
                                 {penelitian.anggota_mahasiswas.map((anggota_mahasiswas) => {
                                   return (
-                                    <p className="mb-0 text-sm text-center" key='anggota.id'>
+                                    <p className="text-xs font-weight-bold mb-0 ps-2 pe-3 " key='anggota.id'>
                                       {anggota_mahasiswas.nama}
                                     </p>
                                   );
@@ -276,31 +276,48 @@ export default function daftarpenelitian() {
                                 </p>
                               </td>
 
-                              <td className="align-middle pe-3 text-end">
-                                <Link href={`/penelitian/edit/${penelitian.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
+                              <td className="align-middle pe-3 justify-content-evenly">
+                                <tr>
+                                  <Link href={`/penelitian/edit/${penelitian.id}`}>
+                                    <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                      Edit Penelitian
+                                    </button>
+                                  </Link>
 
-                                <Link href={`/penelitian/pilih_dosen/${penelitian.id}`}>
-                                  <button className="btn btn-sm btn-success border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Pilih Dosen
+                                  <button
+                                    onClick={() => deletepenelitian(penelitian.id)}
+                                    className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
+                                  >
+                                    Hapus Pnelitian
                                   </button>
-                                </Link>
 
-                                <Link href={`/penelitian/pilih_mahasiswa/${penelitian.id}`}>
-                                  <button className="btn btn-sm btn-success border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Pilih mahasiswa
-                                  </button>
-                                </Link>
+                                  <Link href={`/penelitian/pilih_dosen/${penelitian.id}`}>
+                                    <button className="btn btn-sm btn-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                      Pilih Dosen
+                                    </button>
+                                  </Link>
+                                </tr>
 
-                                <button
-                                  onClick={() => deletepenelitian(penelitian.id)}
-                                  className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
-                                >
-                                  Hapus
-                                </button>
+                                <tr>
+                                  <Link href={`/penelitian/pilih_mahasiswa/${penelitian.id}`}>
+                                    <button className="btn btn-sm btn-dark border-0 shadow-sm  ps-3 pe-3 mb-3 me-3 mt-3">
+                                      Pilih mahasiswa
+                                    </button>
+                                  </Link>
+
+                                  <Link href={`/penelitian/hapus/hapusmhs`}>
+                                    <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                      Hapus mahasiswa
+                                    </button>
+                                  </Link>
+
+                                  <Link href={`/penelitian/hapus/hapusmhs`}>
+                                    <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                      Hapus Dosen
+                                    </button>
+                                  </Link>
+
+                                </tr>
                               </td>
                             </tr>
                           );

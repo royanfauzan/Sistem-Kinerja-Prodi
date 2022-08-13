@@ -11,9 +11,9 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 export async function getServerSideProps(context) {
   //http request
   const req = await axios.get(
-    `http://127.0.0.1:8000/api/tampil_Penelitian/${context.query.id_pilih_mhs}`
+    `http://127.0.0.1:8000/api/tampil_PKM/${context.query.id_pilih_mhs}`
   );
-  const res = await req.data.all_penelitian;
+  const res = await req.data.all_pkm;
 
   return {
     props: {
@@ -26,14 +26,14 @@ export default function editPenelitian(props) {
   const router = useRouter();
   const { id_pilih_mhs } = router.query;
   const { penelitian } = props;
-  const [dataPenelitian, setPenelitian] = useState(penelitian);
+  const [dataPKM, setPKM] = useState(penelitian);
 
   console.log(penelitian);
 
   // State Select
   const [stadmin, setStadmin] = useState(false);
-  const [dataPenelitians, setPenelitians] = useState([]);
-  const [selectPenelitian, setSelectPenelitian] = useState(penelitian.mahasiswa_id);
+  const [dataPKMs, setPKMs] = useState([]);
+  const [selectPKM, setSelectPKM] = useState(penelitian.mahasiswa_id);
   const [selectId, setSelectId] = useState(id_pilih_mhs);
 
   // pake ngambil data untuk halaman input
@@ -46,8 +46,8 @@ export default function editPenelitian(props) {
         console.log(response);
         console.log("Sukses");
         const { all_mhs } = response.data;
-        setPenelitians(all_mhs);
-        console.log(dataPenelitians);
+        setPKMs(all_mhs);
+        console.log(dataPKMs);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -89,8 +89,8 @@ export default function editPenelitian(props) {
       });
   }, []);
 
-  const handleChangePenelitian = (e) => {
-    setSelectPenelitian(e.target.value);
+  const handleChangePKM = (e) => {
+    setSelectPKM(e.target.value);
   };
 
   const submitForm = async (event) => {
@@ -102,12 +102,12 @@ export default function editPenelitian(props) {
     let formData = new FormData();
     formData.append("mahasiswa_id", event.target.mahasiswa.value);
     formData.append("keanggotaan", event.target.anggota.value);
-    formData.append("penelitian_id", selectId);
+    formData.append("pkm_id", selectId);
 
     axios({
       method: "post",
       url:
-        `http://127.0.0.1:8000/api/Penelitian_mahasiswa/${dataPenelitian.id}`,
+        `http://127.0.0.1:8000/api/PKM_mahasiswa/${dataPKM.id}`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -121,7 +121,7 @@ export default function editPenelitian(props) {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(all_luaran);
-        router.push("../../penelitian/daftarpenelitian");
+        router.push("../../PkM/daftarpkm");
         console.log(response.data);
       })
       .catch(function (error) {
@@ -150,7 +150,7 @@ export default function editPenelitian(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Pilih Mahasiswa</p>
+                        <h6 className="mb-0">Pilih Mahasiswa</h6>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -173,11 +173,11 @@ export default function editPenelitian(props) {
                               className="form-select"
                               aria-label="Default select example"
                               id="mahasiswa"
-                              value={selectPenelitian}
-                              onChange={handleChangePenelitian}
+                              value={selectPKM}
+                              onChange={handleChangePKM}
                             >
                               <option>Pilih Mahasiswa</option>
-                              {dataPenelitians.map((usermahasiswa) => {
+                              {dataPKMs.map((usermahasiswa) => {
                                 {
                                   return (
                                     <option
@@ -205,8 +205,8 @@ export default function editPenelitian(props) {
                             id="anggota"
                           >
                             <option >Keanggotaan</option>
-                            <option value="Anggota"> Anggota</option>
                             <option value="Ketua"> Ketua</option>
+                            <option value="Anggota"> Anggota</option>
                             
                           </select>
                         </div>

@@ -273,7 +273,7 @@ export default function inputpkm() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Dana PT Mandiri"
                               id="dana_pt_mandiri"
                             />
@@ -317,7 +317,7 @@ export default function inputpkm() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Dana Dalam Negri"
                               id="dana_dlm_negri"
                             />
@@ -361,7 +361,7 @@ export default function inputpkm() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Dana Luar Negri"
                               id="dana_luar_negri"
                             />

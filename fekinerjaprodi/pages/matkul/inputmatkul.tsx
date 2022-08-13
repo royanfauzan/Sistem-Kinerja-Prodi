@@ -215,7 +215,7 @@ export default function inputmatkul() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="SKS"
                               id="sks"
                             />
@@ -238,7 +238,7 @@ export default function inputmatkul() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Prodi ID"
                               id="prodi_id"
                             />

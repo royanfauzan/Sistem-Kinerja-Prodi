@@ -143,7 +143,7 @@ export default function inputpenelitian() {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <h6 className="mb-0">Input Data Pengabdian Kepada Masyarakat (PkM)</h6>
+                        <h6 className="mb-0">Input Data Penelitian</h6>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -250,7 +250,7 @@ export default function inputpenelitian() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Dana PT Mandiri"
                               id="dana_pt_mandiri"
                             />
@@ -294,7 +294,7 @@ export default function inputpenelitian() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Dana Dalam Negri"
                               id="dana_dlm_negri"
                             />
@@ -338,7 +338,7 @@ export default function inputpenelitian() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Dana Luar Negri"
                               id="dana_luar_negri"
                             />

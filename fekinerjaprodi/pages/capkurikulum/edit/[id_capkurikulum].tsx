@@ -188,7 +188,7 @@ export default function update_datacapkurikulum(props) {
                 <div className="card">
                   <div className="card-header pb-0">
                     <div className="d-flex align-items-center">
-                      <p className="mb-0">Edit Data Capaian Kurikulum</p>
+                      <h6 className="mb-0">Edit Data Capaian Kurikulum</h6>
                       <button
                         className="btn btn-primary btn-sm ms-auto"
                         type="submit"
@@ -198,7 +198,6 @@ export default function update_datacapkurikulum(props) {
                     </div>
                   </div>
                   <div className="card-body">
-                    <p className="text-uppercase text-sm"> CAPAIAN KURIKULUM </p>
                     <div className="row">
 
                     <div className="col-md-6">
@@ -316,7 +315,7 @@ export default function update_datacapkurikulum(props) {
                           <input
                           defaultValue={datacapkurikulum.kuliah_responsi_tutorial}
                             className="form-control"
-                            type="text"
+                            type="number"
                             placeholder="Kuliah Responsi Tutorial"
                             id="kuliah_responsi_tutorial"
                             required
@@ -332,7 +331,7 @@ export default function update_datacapkurikulum(props) {
                           <input
                           defaultValue={datacapkurikulum.seminar}
                             className="form-control"
-                            type="text"
+                            type="number"
                             placeholder="Seminar"
                             id="seminar"
                             required
@@ -348,7 +347,7 @@ export default function update_datacapkurikulum(props) {
                           <input
                           defaultValue={datacapkurikulum.praktikum}
                             className="form-control"
-                            type="text"
+                            type="number"
                             placeholder="Praktikum"
                             id="praktikum"
                             required
@@ -364,7 +363,7 @@ export default function update_datacapkurikulum(props) {
                           <input
                           defaultValue={datacapkurikulum.konversi_kredit_jam}
                             className="form-control"
-                            type="text"
+                            type="number"
                             placeholder="Konversi Kredit Jam"
                             id="konv_kredit_jam"
                             required

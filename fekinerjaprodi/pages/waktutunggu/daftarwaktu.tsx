@@ -83,6 +83,20 @@ export default function daftarbidang() {
       });
   };
 
+  const searchdata = async (e) => {
+    if (e.target.value == "") {
+      const req = await axios.get(`http://127.0.0.1:8000/api/waktutunggu/`);
+      const res = await req.data.all_waktu;
+      setprofilDosen(res);
+    } else {
+      const req = await axios.get(
+        `http://127.0.0.1:8000/api/waktutunggu/${e.target.value}`
+      );
+      const res = await req.data.searchwaktu;
+      setprofilDosen(res);
+    }
+  };
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -94,6 +108,19 @@ export default function daftarbidang() {
                 <div className="card-header pb-0">
                   <div className="col-4">
                     <h6>Authors table</h6>
+                  </div>
+                  <div className="row justify-content-end">
+                    <div className="col-2 d-flex flex-row-reverse pe-2">
+                      <input
+                        className="form-control d-flex flex-row-reverse me-2"
+                        type="search"
+                        placeholder="Search.."
+                        aria-label="Search"
+                        defaultValue=""
+                        id="search"
+                        onChange={searchdata}
+                      />
+                    </div>
                   </div>
                   <div className="row justify-content-between mb-4">
                     <div className="col-4">
@@ -107,7 +134,7 @@ export default function daftarbidang() {
                     </div>
                     <div className="col-4 d-flex flex-row-reverse">
                       <td className="align-middle">
-                        <Link href={`/waktutunggu/exportwaktu/export_waktu`}>
+                        <Link href={`/waktutunggu/export/export_waktu`}>
                           <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-5 mt-3 mb-0">
                             Export Excel
                           </button>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pkm;
+use App\Models\RelasiPkmDos;
+use App\Models\RelasiPkmMhs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -239,6 +241,77 @@ class PKMController extends Controller
         return response()->json([
             'success' => true,
             'tahunpenelitians' => $arrTahun,
+        ]);
+    }
+
+    public function pilihdosen(Request $request, $id)
+    {
+        $luaran = Pkm::where('id', $id)->first();
+        $datapkm = $request->only('profil_dosen_id', 'pkm_id', 'keanggotaan');
+
+        //valid credential
+        $validator = Validator::make($datapkm, [
+            'profil_dosen_id' => 'required',
+            'pkm_id' => 'required',
+            'keanggotaan' => 'required',
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 200);
+        }
+
+        $relasimahasiswa = RelasiPkmDos::create(
+            [
+                'profil_dosen_id' => $request->profil_dosen_id,
+                'pkm_id' => $request->pkm_id,
+                'keanggotaan' => $request->keanggotaan,
+            ]
+        );
+
+
+        //Token created, return with success response and jwt token
+        return response()->json([
+            'success' => true,
+            'profil_dosen_id' => $request->profil_dosen_id,
+            'pkm_id' => $request->pkm_id,
+            'keanggotaan' => $request->keanggotaan,
+            'all_pkm' => Pkm::all()
+        ]);
+    }
+    public function pilihmhs(Request $request, $id)
+    {
+        $luaran = Pkm::where('id', $id)->first();
+        $datapkm = $request->only('mahasiswa_id', 'pkm_id', 'keanggotaan');
+
+        //valid credential
+        $validator = Validator::make($datapkm, [
+            'mahasiswa_id' => 'required',
+            'pkm_id' => 'required',
+            'keanggotaan' => 'required',
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 200);
+        }
+
+        $relasimahasiswa = RelasiPkmMhs::create(
+            [
+                'mahasiswa_id' => $request->mahasiswa_id,
+                'pkm_id' => $request->pkm_id,
+                'keanggotaan' => $request->keanggotaan,
+            ]
+        );
+
+
+        //Token created, return with success response and jwt token
+        return response()->json([
+            'success' => true,
+            'mahasiswa_id' => $request->mahasiswa_id,
+            'pkm_id' => $request->pkm_id,
+            'keanggotaan' => $request->keanggotaan,
+            'all_pkm' => Pkm::all()
         ]);
     }
 }

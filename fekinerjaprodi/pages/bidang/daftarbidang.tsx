@@ -72,6 +72,20 @@ export default function daftarbidang() {
       });
   }, []);
 
+  const searchdata = async (e) => {
+    if (e.target.value == "") {
+      const req = await axios.get(`http://127.0.0.1:8000/api/kesesuaian/`);
+      const res = await req.data.all_kesesuaian;
+      setprofilDosen(res);
+    } else {
+      const req = await axios.get(
+        `http://127.0.0.1:8000/api/bidang/${e.target.value}`
+      );
+      const res = await req.data.searchbidang;
+      setprofilDosen(res);
+    }
+  };
+
   const deletekesesuaian = (id) => {
     axios({
       method: "post",
@@ -94,10 +108,27 @@ export default function daftarbidang() {
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
-                <div className="card-header pb-0">
-                  <div className="col-4">
-                    <h6>Authors table</h6>
+                <div className="card-header pb-0 px-3">
+                  <div className="row">
+                    <div className="col-4">
+                      <h6>Authors table</h6>
+                    </div>
                   </div>
+
+                  <div className="row justify-content-end">
+                  <div className="col-2 d-flex flex-row-reverse pe-2">
+                    <input
+                      className="form-control d-flex flex-row-reverse me-2"
+                      type="search"
+                      placeholder="Search.."
+                      aria-label="Search"
+                      defaultValue=""
+                      id="search"
+                      onChange={searchdata}
+                    />
+                  </div>
+                  </div>
+
                   <div className="row justify-content-between mb-4">
                     <div className="col-4">
                       <td className="align-middle">
@@ -111,7 +142,7 @@ export default function daftarbidang() {
                     <div className="col-4 d-flex flex-row-reverse">
                       <td className="align-middle">
                         <Link href={`/bidang/exportbidang/export_bidang`}>
-                          <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-5 mt-3 mb-0">
+                          <button className=" btn btn-success border-0 shadow-sm ps-3 ps-3 me-2 mt-3 mb-0">
                             Export Excel
                           </button>
                         </Link>

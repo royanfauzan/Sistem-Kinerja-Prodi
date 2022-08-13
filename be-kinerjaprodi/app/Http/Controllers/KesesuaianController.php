@@ -38,6 +38,19 @@ class KesesuaianController extends Controller
         ]);
     }
 
+    public function searchbidang($search)
+    {
+        return response()->json([
+            'success' => true,
+            'searchbidang' =>  Kasesuaian::with('kepuasan')
+                ->whereRelation('kepuasan', 'tahun','LIKE', "%{$search}%")
+                ->orwhere('rendah', 'LIKE', "%{$search}%")
+                ->orwhere('sedang', 'LIKE', "%{$search}%")
+                ->orwhere('tinggi', 'LIKE', "%{$search}%")
+                ->get()
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

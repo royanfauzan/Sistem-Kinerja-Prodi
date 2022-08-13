@@ -235,7 +235,7 @@ export default function update_dataintegrasi(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Input Data Mitra</p>
+                        <h6 className="mb-0">Input Data Integrasi</h6>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -246,7 +246,6 @@ export default function update_dataintegrasi(props) {
                       </div>
                     </div>
                     <div className="card-body">
-                      <p className="text-uppercase text-sm"> Integrasi </p>
                       <div className="row">
 
                         <div className="col-md-6">
@@ -410,13 +409,9 @@ export default function update_dataintegrasi(props) {
                               type="file"
                               onChange={handleChangeFile}
                               id="file_bukti"
-
                             />
                           </div>
                         </div>
-
-
-
                       </div>
 
                     </div>

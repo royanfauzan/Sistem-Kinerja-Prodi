@@ -128,7 +128,7 @@ export default function editluaran(props) {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(all_luaran);
-        // router.push("../../luaran/daftarluaran");
+        router.push("../../penelitian/daftarpenelitian");
         console.log(response.data);
       })
       .catch(function (error) {
@@ -157,7 +157,7 @@ export default function editluaran(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Pilih ID Dosen</p>
+                        <h6 className="mb-0">Pilih ID Dosen</h6>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"

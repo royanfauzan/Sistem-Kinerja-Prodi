@@ -81,17 +81,17 @@ export default function penelitian() {
                         <div className="col-12">
                             <div className="card mb-4">
                                 <style jsx>{`
-                                     table,
-                                     td,
-                                     th {
-                                       border: 1px solid !important ;
-                                       text-align: center;
-                                     }
-                   
-                                     table {
-                                       width: 100%;
-                                       border-collapse: collapse;
-                                     }
+                                        table,
+                                        td,
+                                        th {
+                                        border: 1px solid !important ;
+                                        text-align: center;
+                                        }
+                    
+                                        table {
+                                        width: 100%;
+                                        border-collapse: collapse;
+                                        }
                                     
                                 `}</style>
                                 <div className="card-header">
@@ -142,28 +142,28 @@ export default function penelitian() {
                                                     return (
                                                         <tr key={`tpenelitian` + tpenelitian.id}>
 
-                                                            <td>
+                                                            <th>
                                                                 <p className="mb-0 text-sm">{number + 1}</p>
-                                                            </td>
+                                                            </th>
 
-                                                            <td>
+                                                            <th>
                                                                 {tpenelitian.anggota_dosens.map(
                                                                     (anggota_dosens) => {
-                                                                    return (
-                                                                        <p className="mb-0 text-sm text-center" key='anggota.id'>
-                                                                            {anggota_dosens.NamaDosen}
-                                                                        </p>
-                                                                    );
-                                                                })}
-                                                            </td>
+                                                                        return (
+                                                                            <p className="mb-0 text-sm text-center" key='anggota.id'>
+                                                                                {anggota_dosens.NamaDosen}
+                                                                            </p>
+                                                                        );
+                                                                    })}
+                                                            </th>
 
-                                                            <td className="align-middle ">
+                                                            <th className="align-middle ">
                                                                 <p className="mb-0 text-sm text-center">
                                                                     {tpenelitian.tema_sesuai_roadmap}
                                                                 </p>
-                                                            </td>
+                                                            </th>
 
-                                                            <td>
+                                                            <th>
                                                                 {tpenelitian.anggota_mahasiswas.map((anggota_mahasiswas) => {
                                                                     return (
                                                                         <p className="mb-0 text-sm text-center" key='anggota.id'>
@@ -171,25 +171,25 @@ export default function penelitian() {
                                                                         </p>
                                                                     );
                                                                 })}
-                                                            </td>
+                                                            </th>
 
-                                                            <td>
+                                                            <th>
                                                                 <p className="mb-0 text-sm text-center">
                                                                     {tpenelitian.judul}
                                                                 </p>
-                                                            </td>
+                                                            </th>
 
-                                                            <td>
+                                                            <th>
                                                                 <p className="mb-0 text-sm text-center">
                                                                     {tpenelitian.judul_kegiatan}
                                                                 </p>
-                                                            </td>
+                                                            </th>
 
-                                                            <td className="mb-0 text-sm text-center">
+                                                            <th className="mb-0 text-sm text-center">
                                                                 <p className="mb-0 text-sm">
                                                                     {tpenelitian.tahun}
                                                                 </p>
-                                                            </td>
+                                                            </th>
 
 
                                                         </tr>

@@ -210,7 +210,7 @@ export default function daftarkepuasanmhs() {
                           return (
                             <tr>
                               <td className="ps-3 pe-3">
-                                <h6 className="mb-0 text-sm ">{number + 1}</h6>
+                                <p className="mb-0 text-sm ">{number + 1}</p>
                               </td>
                               <td><p className="text-xs font-weight-bold mb-0">
                                 {kpsnmhs.prodi.prodi + ' ' + kpsnmhs.prodi.nama_prodi}
@@ -296,7 +296,7 @@ export default function daftarkepuasanmhs() {
                               </p></td>
 
                               <td className="align-middle pe-3">
-                                <Link href={`/prestasi/edit/${kpsnmhs.id}`}>
+                                <Link href={`/kepuasanmhs/edit/${kpsnmhs.id}`}>
                                   <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                     Edit
                                   </button>

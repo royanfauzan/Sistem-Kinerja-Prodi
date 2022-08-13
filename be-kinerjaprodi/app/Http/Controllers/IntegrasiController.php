@@ -163,7 +163,6 @@ class IntegrasiController extends Controller
         $validator = Validator::make($dataintegrasi, [
             'bentuk_integrasi' => 'required',
             'tahun' => 'required',
-            'file_bukti' => "required|mimetypes:application/pdf|max:10000",
             'dosen_id' => 'required',
             'matkul_id' => 'required'
         ]);

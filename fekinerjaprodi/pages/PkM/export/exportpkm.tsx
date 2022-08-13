@@ -140,12 +140,12 @@ export default function pkm() {
                       {tampilPKM.map((tPKM, number) => {
                         return (
                           <tr key={`tPKM` + tPKM.id}>
-                            <td>
+                            <th>
                               <p className="mb-0 text-sm">{number + 1}</p>
-                            </td>
+                            </th>
 
 
-                            <td>
+                            <th>
                               {tPKM.anggota_dosens.map((anggota_dosens) => {
                                 return (
                                   <p className="mb-0 text-sm text-center" key='anggota.id'>
@@ -153,15 +153,15 @@ export default function pkm() {
                                   </p>
                                 );
                               })}
-                            </td>
+                            </th>
 
-                            <td className="align-middle ">
+                            <th className="align-middle ">
                               <p className="mb-0 text-sm text-center">
                                 {tPKM.tema_sesuai_roadmap}
                               </p>
-                            </td>
+                            </th>
 
-                            <td>
+                            <th>
                               {tPKM.anggota_mahasiswas.map((anggota_mahasiswas) => {
                                 return (
                                   <p className="mb-0 text-sm text-center" key='anggota.id'>
@@ -169,19 +169,19 @@ export default function pkm() {
                                   </p>
                                 );
                               })}
-                            </td>
+                            </th>
 
-                            <td>
+                            <th>
                               <p className="mb-0 text-sm text-center">
                                 {tPKM.judul_kegiatan}
                               </p>
-                            </td>
+                            </th>
 
-                            <td className="mb-0 text-sm text-center">
+                            <th className="mb-0 text-sm text-center">
                               <p className="mb-0 text-sm">
                                 {tPKM.tahun}
                               </p>
-                            </td>
+                            </th>
 
 
                           </tr>

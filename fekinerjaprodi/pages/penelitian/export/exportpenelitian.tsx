@@ -16,6 +16,7 @@ export default function penelitian() {
     const [tampilpenelitian, settampilpenelitian] = useState([]);
     const [anggota_dosens, setdataDosen] = useState([]);
     const [anggota_mahasiswas, setdataMahasiswa] = useState([]);
+    const [dataRole, setRole] = useState("");
 
     const pengambilData = async () => {
         const lgToken = localStorage.getItem("token");
@@ -56,6 +57,8 @@ export default function penelitian() {
                 console.log(response);
                 console.log("Sukses");
                 const { level_akses } = response.data.user;
+                const { role } = response.data.user;
+                setRole(role);
                 // kalo ga admin dipindah ke halaman lain
                 if (level_akses !== 3) {
                     return router.push("/");
@@ -76,7 +79,7 @@ export default function penelitian() {
         <>
             <LoadingUtama loadStatus={stadmin} />
             {stadmin && (
-                <LayoutForm>
+                <LayoutForm rlUser={dataRole}>
                     <div className="container-fluid py-4">
                         <div className="col-12">
                             <div className="card mb-4">
@@ -127,13 +130,9 @@ export default function penelitian() {
                                                     <th rowspan="2">Nama Dosen</th>
                                                     <th rowspan="2">Tema Penelitian Sesuai Roadmap</th>
                                                     <th rowspan="2">Nama Mahasiswa</th>
-                                                    <th colspan="2">Judul</th>
+                                                    <th rowspan="2">Judul Kegiatan</th>
                                                     <th rowspan="2">Tahun <br />(YYYY)</th>
 
-                                                </tr>
-                                                <tr>
-                                                    <th >Judul Kegiatan</th>
-                                                    <th >Judul Tesis/Disertasi</th>
                                                 </tr>
                                             </thead>
 
@@ -176,12 +175,6 @@ export default function penelitian() {
                                                             <th>
                                                                 <p className="mb-0 text-sm text-center">
                                                                     {tpenelitian.judul}
-                                                                </p>
-                                                            </th>
-
-                                                            <th>
-                                                                <p className="mb-0 text-sm text-center">
-                                                                    {tpenelitian.judul_kegiatan}
                                                                 </p>
                                                             </th>
 

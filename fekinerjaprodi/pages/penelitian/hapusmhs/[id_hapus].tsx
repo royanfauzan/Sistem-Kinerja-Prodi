@@ -10,19 +10,39 @@ import Link from "next/link";
 import Swal from "sweetalert2"
 import withReactContent from "sweetalert2-react-content"
 
-export default function hapusmhs() {
+
+export async function getServerSideProps(context) {
+
+    //http request
+    const req = await axios.get(`http://127.0.0.1:8000/api/Penelitian_relasimhs/${context.query.id_hapus}`)
+    const res = await req.data.all_relasi
+
+    return {
+        props: {
+            penelitianmhs: res // <-- assign response
+        },
+    }
+}
+
+export default function hapusmhs(props) {
     const router = useRouter();
+    const { id_hapus } = router.query;
+    const { penelitianmhs } = props;
 
     const [stadmin, setStadmin] = useState(false);
-    const [penelitian, setpenelitian] = useState([]);
-    const MySwal = withReactContent(Swal)
+    const [penelitian, setpenelitian] = useState(penelitianmhs);
+    const [id_penelitian, setid_penelitian] = useState(id_hapus);
+    const MySwal = withReactContent(Swal);
+    const [dataRole, setRole] = useState("");
+
+    
 
     const pengambilData = async () => {
         const lgToken = localStorage.getItem("token");
 
         axios({
             method: "get",
-            url: "http://127.0.0.1:8000/api/Penelitian_relasimhs",
+            url: `http://127.0.0.1:8000/api/Penelitian_relasimhs/${id_penelitian}`,
             headers: { Authorization: `Bearer ${lgToken}` },
         })
             .then(function (response) {
@@ -31,7 +51,7 @@ export default function hapusmhs() {
                 const { all_relasi } = response.data;
                 setpenelitian(all_relasi);
 
-                console.log(all_relasi);
+                console.log(id_hapus);
             })
             .catch(function (err) {
                 console.log("gagal");
@@ -56,6 +76,8 @@ export default function hapusmhs() {
                 console.log(response);
                 console.log("Sukses");
                 const { level_akses } = response.data.user;
+                const { role } = response.data.user;
+                setRole(role);
                 // kalo ga admin dipindah ke halaman lain
                 if (level_akses !== 3) {
                     return router.push("/");
@@ -104,7 +126,7 @@ export default function hapusmhs() {
         <>
             <LoadingUtama loadStatus={stadmin} />
             {stadmin && (
-                <LayoutForm>
+                <LayoutForm rlUser={dataRole}>
                     <div className="container-fluid py-4">
                         <div className="col-12">
                             <div className="card mb-4">
@@ -168,14 +190,14 @@ export default function hapusmhs() {
 
                                                             <td className="align-middle  text-sm">
                                                                 <p className="text-xs font-weight-bold mb-0">
-                                                                    {penelitian.mahasiswa.nama }
+                                                                    {penelitian.mahasiswa.nama}
                                                                 </p>
                                                             </td>
 
 
                                                             <td className="align-middle  text-sm">
                                                                 <p className="text-xs font-weight-bold mb-0">
-                                                                    {penelitian.mahasiswa.nim }
+                                                                    {penelitian.mahasiswa.nim}
                                                                 </p>
                                                             </td>
 

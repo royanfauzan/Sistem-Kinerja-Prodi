@@ -13,5 +13,10 @@ class RelasiPenMhs extends Model
     {
         return $this->belongsTo(Mahasiswa::class,'mahasiswa_id','id');
     }
+
+    public function penelitian()
+    {
+        return $this->belongsTo(Penelitian::class,'penelitian_id','id');
+    }
 }
 

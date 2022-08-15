@@ -15,7 +15,9 @@ export default function daftarintgrs() {
 
   const [stadmin, setStadmin] = useState(false);
   const [integrasi, setintegrasi] = useState([]);
-  const MySwal = withReactContent(Swal)
+  const MySwal = withReactContent(Swal);
+
+  const [dataRole, setRole] = useState('');
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -56,6 +58,9 @@ export default function daftarintgrs() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+
+        const {role} = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -104,7 +109,7 @@ export default function daftarintgrs() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
@@ -184,7 +189,7 @@ export default function daftarintgrs() {
                             <tr key={`intgrs` + intgrs.id}>
 
                               <td className="ps-3 pe-3">
-                                <h6 className="mb-0 text-sm">{number + 1}</h6>
+                                <p className="mb-0 text-sm">{number + 1}</p>
                               </td>
 
                               <td>

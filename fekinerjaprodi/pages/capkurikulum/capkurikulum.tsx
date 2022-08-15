@@ -17,7 +17,9 @@ export default function capkurikulum() {
   const [userProdis, setuserProdis] = useState([]);
   const [userMatkuls, setuserMatkuls] = useState([]);
   const [dataError, setError] = useState([])
-  const MySwal = withReactContent(Swal)
+  const MySwal = withReactContent(Swal);
+
+  const [dataRole, setRole] = useState('');
 
 
   // state pake test user
@@ -83,6 +85,8 @@ export default function capkurikulum() {
         console.log(response);
         console.log('Sukses');
         const { level_akses } = response.data.user;
+        const {role} = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push('/');
@@ -160,7 +164,7 @@ export default function capkurikulum() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">

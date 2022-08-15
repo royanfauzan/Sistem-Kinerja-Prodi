@@ -16,7 +16,9 @@ export default function inputpkm() {
 
   const [userpkm, setuserpkm] = useState([]);
   const [dataError, setError] = useState([])
-  const MySwal = withReactContent(Swal)
+  const MySwal = withReactContent(Swal);
+
+  const [dataRole, setRole] = useState("");
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -61,6 +63,8 @@ export default function inputpkm() {
         console.log(response);
         console.log('Sukses');
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push('/');
@@ -135,7 +139,7 @@ export default function inputpkm() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">

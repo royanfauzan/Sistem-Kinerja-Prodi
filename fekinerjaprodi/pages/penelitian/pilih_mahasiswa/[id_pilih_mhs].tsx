@@ -36,6 +36,8 @@ export default function editPenelitian(props) {
   const [selectPenelitian, setSelectPenelitian] = useState(penelitian.mahasiswa_id);
   const [selectId, setSelectId] = useState(id_pilih_mhs);
 
+  const [dataDosen, setdataDosen] = useState();
+
   // pake ngambil data untuk halaman input
   const pengambilData = async () => {
     axios({
@@ -74,6 +76,8 @@ export default function editPenelitian(props) {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -142,7 +146,7 @@ export default function editPenelitian(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">

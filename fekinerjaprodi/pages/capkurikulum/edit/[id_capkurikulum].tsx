@@ -12,17 +12,17 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 export async function getServerSideProps(context) {
 
   //http request
-  const reqcapkurikulum  = await axios.get(`http://127.0.0.1:8000/api/tampil_CapaianKurikulum/${context.query.id_capkurikulum}`)
-  const res  = await reqcapkurikulum.data.all_capkurikulum
+  const reqcapkurikulum = await axios.get(`http://127.0.0.1:8000/api/tampil_CapaianKurikulum/${context.query.id_capkurikulum}`)
+  const res = await reqcapkurikulum.data.all_capkurikulum
 
   const reqprodi = await axios.get(`http://127.0.0.1:8000/api/Prodi/`)
   const prodi = await reqprodi.data.Prodi
 
-  const reqmatkul  = await axios.get(`http://127.0.0.1:8000/api/Matkul/`)
-  const matkul  = await reqmatkul.data.all_matkul
+  const reqmatkul = await axios.get(`http://127.0.0.1:8000/api/Matkul/`)
+  const matkul = await reqmatkul.data.all_matkul
 
   return {
-    props: { 
+    props: {
       capkurikulum: res, // <-- assign response
       prodi: prodi,
       matkul: matkul
@@ -38,17 +38,17 @@ export async function getServerSideProps(context) {
 
 
 export default function update_datacapkurikulum(props) {
-  const {capkurikulum} = props;
+  const { capkurikulum } = props;
   console.log(capkurikulum);
 
-  const {prodi} = props;
+  const { prodi } = props;
   console.log(prodi);
 
-  const {matkul} = props;
+  const { matkul } = props;
   console.log(matkul);
-  
+
   const router = useRouter();
-  
+
 
   const [datacapkurikulum, setdatacapkurikulum] = useState(capkurikulum);
   const [dataprodi, setdataprodi] = useState(prodi);
@@ -58,56 +58,59 @@ export default function update_datacapkurikulum(props) {
   const [stadmin, setStadmin] = useState(false);
   const [selectProdi, setselectProdi] = useState(capkurikulum.prodi_ID);
   const [selectMatkul, setselectMatkul] = useState(capkurikulum.matkul_ID);
-  
-  
+
+  const [dataRole, setRole] = useState("");
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
-  
+  const pengambilData = async () => {
+
   }
 
 
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
-    
-    
+  useEffect(() => {
+
+
     // cek token, kalo gaada disuruh login
     const lgToken = localStorage.getItem('token');
-    if(!lgToken){
+    if (!lgToken) {
       router.push('/login')
 
-      
+
     }
-    
+
     // perjalanan validasi token 
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/get_user",
       headers: { "Authorization": `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-    })
-    .catch(function (err) {
+      .then(function (response) {
+        console.log(response);
+        console.log('Sukses');
+        const { level_akses } = response.data.user;
+
+        const { role } = response.data.user;
+        setRole(role);
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push('/');
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+      })
+      .catch(function (err) {
         console.log('gagal');
         console.log(err.response);
         return router.push('/');
-    })
-  },[]);
-  
+      })
+  }, []);
+
   //HAPUS DATA
- 
+
 
   // Insert Update Data
   const submitForm = async (event) => {
@@ -137,7 +140,7 @@ export default function update_datacapkurikulum(props) {
 
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/CapaianKurikulum_Update/${datacapkurikulum.id}`+`?_method=PUT`,
+      url: `http://127.0.0.1:8000/api/CapaianKurikulum_Update/${datacapkurikulum.id}` + `?_method=PUT`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -178,311 +181,311 @@ export default function update_datacapkurikulum(props) {
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
-        <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetilDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <h6 className="mb-0">Edit Data Capaian Kurikulum</h6>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
+        <LayoutForm rlUser={dataRole}>
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetilDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <h6 className="mb-0">Edit Data Capaian Kurikulum</h6>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Simpan
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="card-body">
-                    <div className="row">
-
-                    <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="prodi" className="form-control-label">
-                            Program Studi
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            value={selectProdi}
-                            id="prodi"
-                            onChange={handleChangeProdi}
-                          >
-                            <option>Pilih Program Studi</option>
-                            {dataprodi.map((userProdi) => {
-                              {
-                                return (
-                                  <option
-                                    value={userProdi.id}
-                                    key={userProdi.id}
-                                  >
-                                    {userProdi.prodi + ' ' + userProdi.nama_prodi}
-                                  </option>
-                                );
-                              }
-                            })}
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="matkul" className="form-control-label">
-                            Mata Kuliah
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            value={selectMatkul}
-                            id="matkul"
-                            onChange={handleChangeMatkul}
-                          >
-                            <option>Pilih Mata Kuliah</option>
-                            {datamatkul.map((userMatkul) => {
-                              {
-                                return (
-                                  <option
-                                    value={userMatkul.id}
-                                    key={userMatkul.id}
-                                  >
-                                    {userMatkul.nama_matkul + ' ' + userMatkul.sks}
-                                  </option>
-                                );
-                              }
-                            })}
-                          </select>
-                        </div>
-                      </div>
-
-                    
-                    <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="semester" className="form-control-label">
-                            Semester
-                          </label>
-                          <input
-                          defaultValue={datacapkurikulum.semester}
-                            className="form-control"
-                            type="text"
-                            placeholder="Semester"
-                            id="semester"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tahun" className="form-control-label">
-                            Tahun
-                          </label>
-                          <input
-                            defaultValue={datacapkurikulum.tahun}
-                            className="form-control"
-                            type="text"
-                            placeholder="Tahun"
-                            id="tahun"
-                            required
-                          />
-                        </div>
-                      </div>   
-
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="matkul_kompetensi" className="form-control-label">
-                            Mata Kuliah Kompetensi
-                          </label>
-                          <input
-                          defaultValue={datacapkurikulum.mata_kuliah_kompetensi}
-                            className="form-control"
-                            type="text"
-                            placeholder="Mata Kuliah Kompetensi"
-                            id="matkul_kompetensi"
-                            required
-                          />
-                        </div>
-                      </div>       
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="kuliah_responsi_tutorial" className="form-control-label">
-                            Kuliah Responsi Tutorial
-                          </label>
-                          <input
-                          defaultValue={datacapkurikulum.kuliah_responsi_tutorial}
-                            className="form-control"
-                            type="number"
-                            placeholder="Kuliah Responsi Tutorial"
-                            id="kuliah_responsi_tutorial"
-                            required
-                          />
-                        </div>
-                      </div>             
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="seminar" className="form-control-label">
-                            Seminar
-                          </label>
-                          <input
-                          defaultValue={datacapkurikulum.seminar}
-                            className="form-control"
-                            type="number"
-                            placeholder="Seminar"
-                            id="seminar"
-                            required
-                          />
-                        </div>
-                      </div>            
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="praktikum" className="form-control-label">
-                            Praktikum
-                          </label>
-                          <input
-                          defaultValue={datacapkurikulum.praktikum}
-                            className="form-control"
-                            type="number"
-                            placeholder="Praktikum"
-                            id="praktikum"
-                            required
-                          />
-                        </div>
-                      </div>     
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="konv_kredit_jam" className="form-control-label">
-                            Konversi Kredit Jam
-                          </label>
-                          <input
-                          defaultValue={datacapkurikulum.konversi_kredit_jam}
-                            className="form-control"
-                            type="number"
-                            placeholder="Konversi Kredit Jam"
-                            id="konv_kredit_jam"
-                            required
-                          />
-                        </div>
-                      </div>         
+                    <div className="card-body">
+                      <div className="row">
 
                         <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="sikap" className="form-control-label">
-                            Sikap
-                          </label>
-                          <input
-                          defaultValue={datacapkurikulum.sikap}
-                            className="form-control"
-                            type="text"
-                            placeholder="Sikap"
-                            id="sikap"
-                            required
-                          />
+                          <div className="form-group">
+                            <label htmlFor="prodi" className="form-control-label">
+                              Program Studi
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={selectProdi}
+                              id="prodi"
+                              onChange={handleChangeProdi}
+                            >
+                              <option>Pilih Program Studi</option>
+                              {dataprodi.map((userProdi) => {
+                                {
+                                  return (
+                                    <option
+                                      value={userProdi.id}
+                                      key={userProdi.id}
+                                    >
+                                      {userProdi.prodi + ' ' + userProdi.nama_prodi}
+                                    </option>
+                                  );
+                                }
+                              })}
+                            </select>
+                          </div>
                         </div>
-                      </div> 
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="pengetahuan" className="form-control-label">
-                            Pengetahuan
-                          </label>
-                          <input
-                          defaultValue={datacapkurikulum.pengetahuan}
-                            className="form-control"
-                            type="text"
-                            placeholder="Pengetahuan"
-                            id="pengetahuan"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="matkul" className="form-control-label">
+                              Mata Kuliah
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              value={selectMatkul}
+                              id="matkul"
+                              onChange={handleChangeMatkul}
+                            >
+                              <option>Pilih Mata Kuliah</option>
+                              {datamatkul.map((userMatkul) => {
+                                {
+                                  return (
+                                    <option
+                                      value={userMatkul.id}
+                                      key={userMatkul.id}
+                                    >
+                                      {userMatkul.nama_matkul + ' ' + userMatkul.sks}
+                                    </option>
+                                  );
+                                }
+                              })}
+                            </select>
+                          </div>
                         </div>
-                      </div>              
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="ketrampilan_umum" className="form-control-label">
-                            Ketrampilan Umum
-                          </label>
-                          <input
-                          defaultValue={datacapkurikulum.ketrampilan_umum}
-                            className="form-control"
-                            type="text"
-                            placeholder="Ketrampilan Umum"
-                            id="ketrampilan_umum"
-                            required
-                          />
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="semester" className="form-control-label">
+                              Semester
+                            </label>
+                            <input
+                              defaultValue={datacapkurikulum.semester}
+                              className="form-control"
+                              type="text"
+                              placeholder="Semester"
+                              id="semester"
+                              required
+                            />
+                          </div>
                         </div>
-                      </div>            
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="khusus" className="form-control-label">
-                            Ketrampilan Khusus
-                          </label>
-                          <input
-                          defaultValue={datacapkurikulum.ketrampilan_khusus}
-                            className="form-control"
-                            type="text"
-                            placeholder="Ketrampilan Khusus"
-                            id="ketrampilan_khusus"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="tahun" className="form-control-label">
+                              Tahun
+                            </label>
+                            <input
+                              defaultValue={datacapkurikulum.tahun}
+                              className="form-control"
+                              type="text"
+                              placeholder="Tahun"
+                              id="tahun"
+                              required
+                            />
+                          </div>
                         </div>
-                      </div>          
 
-                         <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="dok_ren_pembelajaran" className="form-control-label">
-                            Dokumen Rencana Pembelajaran
-                          </label>
-                          <input
-                          defaultValue={datacapkurikulum.dok_ren_pembelajaran}
-                            className="form-control"
-                            type="text"
-                            placeholder="Dokumen Rencana Pembelajaran"
-                            id="dok_ren_pembelajaran"
-                            required
-                          />
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="matkul_kompetensi" className="form-control-label">
+                              Mata Kuliah Kompetensi
+                            </label>
+                            <input
+                              defaultValue={datacapkurikulum.mata_kuliah_kompetensi}
+                              className="form-control"
+                              type="text"
+                              placeholder="Mata Kuliah Kompetensi"
+                              id="matkul_kompetensi"
+                              required
+                            />
+                          </div>
                         </div>
-                      </div>      
 
-                          <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="unit_penyelenggara" className="form-control-label">
-                            Unit Penyelenggara
-                          </label>
-                          <input
-                          defaultValue={datacapkurikulum.unit_penyelenggara}
-                            className="form-control"
-                            type="text"
-                            placeholder="Unit Penyelenggara"
-                            id="unit_penyelenggara"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="kuliah_responsi_tutorial" className="form-control-label">
+                              Kuliah Responsi Tutorial
+                            </label>
+                            <input
+                              defaultValue={datacapkurikulum.kuliah_responsi_tutorial}
+                              className="form-control"
+                              type="number"
+                              placeholder="Kuliah Responsi Tutorial"
+                              id="kuliah_responsi_tutorial"
+                              required
+                            />
+                          </div>
                         </div>
-                      </div>    
-                   
 
-                            
-                    
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="seminar" className="form-control-label">
+                              Seminar
+                            </label>
+                            <input
+                              defaultValue={datacapkurikulum.seminar}
+                              className="form-control"
+                              type="number"
+                              placeholder="Seminar"
+                              id="seminar"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="praktikum" className="form-control-label">
+                              Praktikum
+                            </label>
+                            <input
+                              defaultValue={datacapkurikulum.praktikum}
+                              className="form-control"
+                              type="number"
+                              placeholder="Praktikum"
+                              id="praktikum"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="konv_kredit_jam" className="form-control-label">
+                              Konversi Kredit Jam
+                            </label>
+                            <input
+                              defaultValue={datacapkurikulum.konversi_kredit_jam}
+                              className="form-control"
+                              type="number"
+                              placeholder="Konversi Kredit Jam"
+                              id="konv_kredit_jam"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="sikap" className="form-control-label">
+                              Sikap
+                            </label>
+                            <input
+                              defaultValue={datacapkurikulum.sikap}
+                              className="form-control"
+                              type="text"
+                              placeholder="Sikap"
+                              id="sikap"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="pengetahuan" className="form-control-label">
+                              Pengetahuan
+                            </label>
+                            <input
+                              defaultValue={datacapkurikulum.pengetahuan}
+                              className="form-control"
+                              type="text"
+                              placeholder="Pengetahuan"
+                              id="pengetahuan"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="ketrampilan_umum" className="form-control-label">
+                              Ketrampilan Umum
+                            </label>
+                            <input
+                              defaultValue={datacapkurikulum.ketrampilan_umum}
+                              className="form-control"
+                              type="text"
+                              placeholder="Ketrampilan Umum"
+                              id="ketrampilan_umum"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="khusus" className="form-control-label">
+                              Ketrampilan Khusus
+                            </label>
+                            <input
+                              defaultValue={datacapkurikulum.ketrampilan_khusus}
+                              className="form-control"
+                              type="text"
+                              placeholder="Ketrampilan Khusus"
+                              id="ketrampilan_khusus"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="dok_ren_pembelajaran" className="form-control-label">
+                              Dokumen Rencana Pembelajaran
+                            </label>
+                            <input
+                              defaultValue={datacapkurikulum.dok_ren_pembelajaran}
+                              className="form-control"
+                              type="text"
+                              placeholder="Dokumen Rencana Pembelajaran"
+                              id="dok_ren_pembelajaran"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="unit_penyelenggara" className="form-control-label">
+                              Unit Penyelenggara
+                            </label>
+                            <input
+                              defaultValue={datacapkurikulum.unit_penyelenggara}
+                              className="form-control"
+                              type="text"
+                              placeholder="Unit Penyelenggara"
+                              id="unit_penyelenggara"
+                              required
+                            />
+                          </div>
+                        </div>
+
+
+
+
+                      </div>
+
                     </div>
-                  
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+        </LayoutForm>
       )}
     </>
   );

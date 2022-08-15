@@ -356,7 +356,8 @@ Route::post('Penelitian', [PenelitianController::class, 'store']);
 Route::put('Penelitian_Update/{id}', [PenelitianController::class, 'update']);
 Route::post('Penelitian_Delete/{id}', [PenelitianController::class, 'destroy']);
 Route::post('Penelitian_DeleteMhs/{id}', [PenelitianController::class, 'deletemhs']);
-Route::get('Penelitian_relasimhs', [PenelitianController::class, 'relasipenmhs']);
+Route::get('Penelitian_relasimhs/{id}', [PenelitianController::class, 'relasipenmhs']);
+Route::get('Penelitian_relasidosen/{id}', [PenelitianController::class, 'relasipendosen']);
 
 //route integrasi
 Route::get('Integrasi_search/{id}', [IntegrasiController::class, 'searchintegrasi']);

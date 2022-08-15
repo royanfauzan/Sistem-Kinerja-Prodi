@@ -151,7 +151,7 @@ export default function update_datapenelitian(props) {
     <>
     <LoadingUtama loadStatus={stadmin}/>
       {stadmin  &&(
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
         <div className="container-fluid py-4">
           <div className="row">
             <div className="col-md-8">

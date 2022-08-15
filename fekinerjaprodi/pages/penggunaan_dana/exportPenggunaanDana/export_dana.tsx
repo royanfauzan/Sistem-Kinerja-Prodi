@@ -271,6 +271,7 @@ export default function input_mahasiswa_asing(props) {
                   <thead>
                     <tr>
                       <th rowspan="2">No</th>
+                      <th rowspan="2">Program Studi</th>
                       <th rowspan="2" className="w-20">
                         Jenis Penggunaan
                       </th>
@@ -284,19 +285,37 @@ export default function input_mahasiswa_asing(props) {
                       </th>
                     </tr>
                     <tr>
-                      <th>{dataTs3.Tahun}</th>
-                      <th>{dataTs2.Tahun}</th>
-                      <th>{dataTs1.Tahun}</th>
-                      <th>Rata-rata</th>
-                      <th>{dataTs3.Tahun}</th>
-                      <th>{dataTs2.Tahun}</th>
-                      <th>{dataTs1.Tahun}</th>
-                      <th>Rata-rata</th>
+                      {!dataTs1.Tahun ? (
+                        <>
+                          {" "}
+                          <th>TS-2</th>
+                          <th>TS-1</th>
+                          <th>TS</th>
+                          <th>Rata-rata</th>
+                          <th>TS-2</th>
+                          <th>TS-1</th>
+                          <th>TS</th>
+                          <th>Rata-rata</th>
+                        </>
+                      ) : (
+                        <>
+                          {" "}
+                          <th>{dataTs3.Tahun}</th>
+                          <th>{dataTs2.Tahun}</th>
+                          <th>{dataTs1.Tahun}</th>
+                          <th>Rata-rata</th>
+                          <th>{dataTs3.Tahun}</th>
+                          <th>{dataTs2.Tahun}</th>
+                          <th>{dataTs1.Tahun}</th>
+                          <th>Rata-rata</th>
+                        </>
+                      )}
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>1</td>
+                      <td>Manajemen Informatika</td>
                       <td>Biaya Operasional Pendidikan</td>
                       <td></td>
                       <td></td>
@@ -309,29 +328,35 @@ export default function input_mahasiswa_asing(props) {
                     </tr>
                     <tr>
                       <td></td>
+                      <td></td>
                       <td>a. Biaya Dosen (Gaji, Honor)</td>
                       <td>{dataTs3.Biaya_Dosen_UPPS}</td>
                       <td>{dataTs2.Biaya_Dosen_UPPS}</td>
                       <td>{dataTs1.Biaya_Dosen_UPPS}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(dataTs3.Biaya_Dosen_UPPS) +
-                          parseInt(dataTs2.Biaya_Dosen_UPPS) +
-                          parseInt(dataTs1.Biaya_Dosen_UPPS)) /
-                          3}
+                        {Math.round(
+                          (parseInt(dataTs3.Biaya_Dosen_UPPS) +
+                            parseInt(dataTs2.Biaya_Dosen_UPPS) +
+                            parseInt(dataTs1.Biaya_Dosen_UPPS)) /
+                            3
+                        )}
                       </td>
                       <td>{dataTs3.Biaya_Dosen_Prodi}</td>
                       <td>{dataTs2.Biaya_Dosen_Prodi}</td>
                       <td>{dataTs1.Biaya_Dosen_Prodi}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(dataTs3.Biaya_Dosen_Prodi) +
-                          parseInt(dataTs2.Biaya_Dosen_Prodi) +
-                          parseInt(dataTs1.Biaya_Dosen_Prodi)) /
-                          3}
+                        {Math.round(
+                          (parseInt(dataTs3.Biaya_Dosen_Prodi) +
+                            parseInt(dataTs2.Biaya_Dosen_Prodi) +
+                            parseInt(dataTs1.Biaya_Dosen_Prodi)) /
+                            3
+                        )}
                       </td>
                     </tr>
                     <tr>
+                      <td></td>
                       <td></td>
                       <td>b. Biaya Tenaga Kependidikan (Gaji, Honor)</td>
                       <td>{dataTs3.Biaya_Tenaga_Kependidikan_UPPS}</td>
@@ -339,23 +364,28 @@ export default function input_mahasiswa_asing(props) {
                       <td>{dataTs1.Biaya_Tenaga_Kependidikan_UPPS}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(dataTs3.Biaya_Tenaga_Kependidikan_UPPS) +
-                          parseInt(dataTs2.Biaya_Tenaga_Kependidikan_UPPS) +
-                          parseInt(dataTs1.Biaya_Tenaga_Kependidikan_UPPS)) /
-                          3}
+                        {Math.round(
+                          (parseInt(dataTs3.Biaya_Tenaga_Kependidikan_UPPS) +
+                            parseInt(dataTs2.Biaya_Tenaga_Kependidikan_UPPS) +
+                            parseInt(dataTs1.Biaya_Tenaga_Kependidikan_UPPS)) /
+                            3
+                        )}
                       </td>
                       <td>{dataTs3.Biaya_Tenaga_Kependidikan_Prodi}</td>
                       <td>{dataTs2.Biaya_Tenaga_Kependidikan_Prodi}</td>
                       <td>{dataTs1.Biaya_Tenaga_Kependidikan_Prodi}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(dataTs3.Biaya_Tenaga_Kependidikan_Prodi) +
-                          parseInt(dataTs2.Biaya_Tenaga_Kependidikan_Prodi) +
-                          parseInt(dataTs1.Biaya_Tenaga_Kependidikan_Prodi)) /
-                          3}
+                        {Math.round(
+                          (parseInt(dataTs3.Biaya_Tenaga_Kependidikan_Prodi) +
+                            parseInt(dataTs2.Biaya_Tenaga_Kependidikan_Prodi) +
+                            parseInt(dataTs1.Biaya_Tenaga_Kependidikan_Prodi)) /
+                            3
+                        )}
                       </td>
                     </tr>
                     <tr>
+                      <td></td>
                       <td></td>
                       <td>
                         c. Biaya Operasional Pembelajaran (Bahan dan Peralatan
@@ -366,35 +396,40 @@ export default function input_mahasiswa_asing(props) {
                       <td>{dataTs1.Biaya_Operasional_Pembelajaran_UPPS}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(
-                          dataTs3.Biaya_Operasional_Pembelajaran_UPPS
-                        ) +
-                          parseInt(
-                            dataTs2.Biaya_Operasional_Pembelajaran_UPPS
+                        {Math.round(
+                          (parseInt(
+                            dataTs3.Biaya_Operasional_Pembelajaran_UPPS
                           ) +
-                          parseInt(
-                            dataTs1.Biaya_Operasional_Pembelajaran_UPPS
-                          )) /
-                          3}
+                            parseInt(
+                              dataTs2.Biaya_Operasional_Pembelajaran_UPPS
+                            ) +
+                            parseInt(
+                              dataTs1.Biaya_Operasional_Pembelajaran_UPPS
+                            )) /
+                            3
+                        )}
                       </td>
                       <td>{dataTs3.Biaya_Operasional_Pembelajaran_Prodi}</td>
                       <td>{dataTs2.Biaya_Operasional_Pembelajaran_Prodi}</td>
                       <td>{dataTs1.Biaya_Operasional_Pembelajaran_Prodi}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(
-                          dataTs3.Biaya_Operasional_Pembelajaran_Prodi
-                        ) +
-                          parseInt(
-                            dataTs2.Biaya_Operasional_Pembelajaran_Prodi
+                        {Math.round(
+                          (parseInt(
+                            dataTs3.Biaya_Operasional_Pembelajaran_Prodi
                           ) +
-                          parseInt(
-                            dataTs1.Biaya_Operasional_Pembelajaran_Prodi
-                          )) /
-                          3}
+                            parseInt(
+                              dataTs2.Biaya_Operasional_Pembelajaran_Prodi
+                            ) +
+                            parseInt(
+                              dataTs1.Biaya_Operasional_Pembelajaran_Prodi
+                            )) /
+                            3
+                        )}
                       </td>
                     </tr>
                     <tr>
+                      <td></td>
                       <td></td>
                       <td>
                         d. Biaya Operasional Tidak Langsung (Listrik, Gas, Air,
@@ -407,36 +442,41 @@ export default function input_mahasiswa_asing(props) {
                       <td>{dataTs1.Biaya_Operasional_TidakLangsung_UPPS}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(
-                          dataTs3.Biaya_Operasional_TidakLangsung_UPPS
-                        ) +
-                          parseInt(
-                            dataTs2.Biaya_Operasional_TidakLangsung_UPPS
+                        {Math.round(
+                          (parseInt(
+                            dataTs3.Biaya_Operasional_TidakLangsung_UPPS
                           ) +
-                          parseInt(
-                            dataTs1.Biaya_Operasional_TidakLangsung_UPPS
-                          )) /
-                          3}
+                            parseInt(
+                              dataTs2.Biaya_Operasional_TidakLangsung_UPPS
+                            ) +
+                            parseInt(
+                              dataTs1.Biaya_Operasional_TidakLangsung_UPPS
+                            )) /
+                            3
+                        )}
                       </td>
                       <td>{dataTs3.Biaya_Operasional_TidakLangsung_Prodi}</td>
                       <td>{dataTs2.Biaya_Operasional_TidakLangsung_Prodi}</td>
                       <td>{dataTs1.Biaya_Operasional_TidakLangsung_Prodi}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(
-                          dataTs3.Biaya_Operasional_TidakLangsung_Prodi
-                        ) +
-                          parseInt(
-                            dataTs2.Biaya_Operasional_TidakLangsung_Prodi
+                        {Math.round(
+                          (parseInt(
+                            dataTs3.Biaya_Operasional_TidakLangsung_Prodi
                           ) +
-                          parseInt(
-                            dataTs1.Biaya_Operasional_TidakLangsung_Prodi
-                          )) /
-                          3}
+                            parseInt(
+                              dataTs2.Biaya_Operasional_TidakLangsung_Prodi
+                            ) +
+                            parseInt(
+                              dataTs1.Biaya_Operasional_TidakLangsung_Prodi
+                            )) /
+                            3
+                        )}
                       </td>
                     </tr>
                     <tr>
                       <td>2</td>
+                      <td></td>
                       <td>
                         Biaya operasional kemahasiswaan (penalaran, minat,
                         bakat, dan kesejahteraan).
@@ -446,35 +486,40 @@ export default function input_mahasiswa_asing(props) {
                       <td>{dataTs1.Biaya_Operasional_Kemahasiswaan_UPPS}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(
-                          dataTs3.Biaya_Operasional_Kemahasiswaan_UPPS
-                        ) +
-                          parseInt(
-                            dataTs2.Biaya_Operasional_Kemahasiswaan_UPPS
+                        {Math.round(
+                          (parseInt(
+                            dataTs3.Biaya_Operasional_Kemahasiswaan_UPPS
                           ) +
-                          parseInt(
-                            dataTs1.Biaya_Operasional_Kemahasiswaan_UPPS
-                          )) /
-                          3}
+                            parseInt(
+                              dataTs2.Biaya_Operasional_Kemahasiswaan_UPPS
+                            ) +
+                            parseInt(
+                              dataTs1.Biaya_Operasional_Kemahasiswaan_UPPS
+                            )) /
+                            3
+                        )}
                       </td>
                       <td>{dataTs3.Biaya_Operasional_Kemahasiswaan_Prodi}</td>
                       <td>{dataTs2.Biaya_Operasional_Kemahasiswaan_Prodi}</td>
                       <td>{dataTs1.Biaya_Operasional_Kemahasiswaan_Prodi}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(
-                          dataTs3.Biaya_Operasional_Kemahasiswaan_Prodi
-                        ) +
-                          parseInt(
-                            dataTs2.Biaya_Operasional_Kemahasiswaan_Prodi
+                        {Math.round(
+                          (parseInt(
+                            dataTs3.Biaya_Operasional_Kemahasiswaan_Prodi
                           ) +
-                          parseInt(
-                            dataTs1.Biaya_Operasional_Kemahasiswaan_Prodi
-                          )) /
-                          3}
+                            parseInt(
+                              dataTs2.Biaya_Operasional_Kemahasiswaan_Prodi
+                            ) +
+                            parseInt(
+                              dataTs1.Biaya_Operasional_Kemahasiswaan_Prodi
+                            )) /
+                            3
+                        )}
                       </td>
                     </tr>
                     <tr>
+                      <td></td>
                       <td></td>
                       <td>Jumlah</td>
                       <td>
@@ -517,44 +562,48 @@ export default function input_mahasiswa_asing(props) {
                           )}
                       </td>
                       <td>
-                        {(parseInt(dataTs3.Biaya_Dosen_UPPS) +
-                          parseInt(dataTs2.Biaya_Dosen_UPPS) +
-                          parseInt(dataTs1.Biaya_Dosen_UPPS)) /
-                          3 +
-                          (parseInt(dataTs3.Biaya_Tenaga_Kependidikan_UPPS) +
-                            parseInt(dataTs2.Biaya_Tenaga_Kependidikan_UPPS) +
-                            parseInt(dataTs1.Biaya_Tenaga_Kependidikan_UPPS)) /
+                        {Math.round(
+                          (parseInt(dataTs3.Biaya_Dosen_UPPS) +
+                            parseInt(dataTs2.Biaya_Dosen_UPPS) +
+                            parseInt(dataTs1.Biaya_Dosen_UPPS)) /
                             3 +
-                          (parseInt(
-                            dataTs3.Biaya_Operasional_Pembelajaran_UPPS
-                          ) +
-                            parseInt(
-                              dataTs2.Biaya_Operasional_Pembelajaran_UPPS
+                            (parseInt(dataTs3.Biaya_Tenaga_Kependidikan_UPPS) +
+                              parseInt(dataTs2.Biaya_Tenaga_Kependidikan_UPPS) +
+                              parseInt(
+                                dataTs1.Biaya_Tenaga_Kependidikan_UPPS
+                              )) /
+                              3 +
+                            (parseInt(
+                              dataTs3.Biaya_Operasional_Pembelajaran_UPPS
                             ) +
-                            parseInt(
-                              dataTs1.Biaya_Operasional_Pembelajaran_UPPS
-                            )) /
-                            3 +
-                          (parseInt(
-                            dataTs3.Biaya_Operasional_TidakLangsung_UPPS
-                          ) +
-                            parseInt(
-                              dataTs2.Biaya_Operasional_TidakLangsung_UPPS
+                              parseInt(
+                                dataTs2.Biaya_Operasional_Pembelajaran_UPPS
+                              ) +
+                              parseInt(
+                                dataTs1.Biaya_Operasional_Pembelajaran_UPPS
+                              )) /
+                              3 +
+                            (parseInt(
+                              dataTs3.Biaya_Operasional_TidakLangsung_UPPS
                             ) +
-                            parseInt(
-                              dataTs1.Biaya_Operasional_TidakLangsung_UPPS
-                            )) /
-                            3 +
-                          (parseInt(
-                            dataTs3.Biaya_Operasional_Kemahasiswaan_UPPS
-                          ) +
-                            parseInt(
-                              dataTs2.Biaya_Operasional_Kemahasiswaan_UPPS
+                              parseInt(
+                                dataTs2.Biaya_Operasional_TidakLangsung_UPPS
+                              ) +
+                              parseInt(
+                                dataTs1.Biaya_Operasional_TidakLangsung_UPPS
+                              )) /
+                              3 +
+                            (parseInt(
+                              dataTs3.Biaya_Operasional_Kemahasiswaan_UPPS
                             ) +
-                            parseInt(
-                              dataTs1.Biaya_Operasional_Kemahasiswaan_UPPS
-                            )) /
-                            3}
+                              parseInt(
+                                dataTs2.Biaya_Operasional_Kemahasiswaan_UPPS
+                              ) +
+                              parseInt(
+                                dataTs1.Biaya_Operasional_Kemahasiswaan_UPPS
+                              )) /
+                              3
+                        )}
                       </td>
                       {/* PRODI */}
                       <td>
@@ -597,48 +646,55 @@ export default function input_mahasiswa_asing(props) {
                           )}
                       </td>
                       <td>
-                        {(parseInt(dataTs3.Biaya_Dosen_Prodi) +
-                          parseInt(dataTs2.Biaya_Dosen_Prodi) +
-                          parseInt(dataTs1.Biaya_Dosen_Prodi)) /
-                          3 +
-                          (parseInt(dataTs3.Biaya_Tenaga_Kependidikan_Prodi) +
-                            parseInt(dataTs2.Biaya_Tenaga_Kependidikan_Prodi) +
-                            parseInt(dataTs1.Biaya_Tenaga_Kependidikan_Prodi)) /
+                        {Math.round(
+                          (parseInt(dataTs3.Biaya_Dosen_Prodi) +
+                            parseInt(dataTs2.Biaya_Dosen_Prodi) +
+                            parseInt(dataTs1.Biaya_Dosen_Prodi)) /
                             3 +
-                          (parseInt(
-                            dataTs3.Biaya_Operasional_Pembelajaran_Prodi
-                          ) +
-                            parseInt(
-                              dataTs2.Biaya_Operasional_Pembelajaran_Prodi
+                            (parseInt(dataTs3.Biaya_Tenaga_Kependidikan_Prodi) +
+                              parseInt(
+                                dataTs2.Biaya_Tenaga_Kependidikan_Prodi
+                              ) +
+                              parseInt(
+                                dataTs1.Biaya_Tenaga_Kependidikan_Prodi
+                              )) /
+                              3 +
+                            (parseInt(
+                              dataTs3.Biaya_Operasional_Pembelajaran_Prodi
                             ) +
-                            parseInt(
-                              dataTs1.Biaya_Operasional_Pembelajaran_Prodi
-                            )) /
-                            3 +
-                          (parseInt(
-                            dataTs3.Biaya_Operasional_TidakLangsung_Prodi
-                          ) +
-                            parseInt(
-                              dataTs2.Biaya_Operasional_TidakLangsung_Prodi
+                              parseInt(
+                                dataTs2.Biaya_Operasional_Pembelajaran_Prodi
+                              ) +
+                              parseInt(
+                                dataTs1.Biaya_Operasional_Pembelajaran_Prodi
+                              )) /
+                              3 +
+                            (parseInt(
+                              dataTs3.Biaya_Operasional_TidakLangsung_Prodi
                             ) +
-                            parseInt(
-                              dataTs1.Biaya_Operasional_TidakLangsung_Prodi
-                            )) /
-                            3 +
-                          (parseInt(
-                            dataTs3.Biaya_Operasional_Kemahasiswaan_Prodi
-                          ) +
-                            parseInt(
-                              dataTs2.Biaya_Operasional_Kemahasiswaan_Prodi
+                              parseInt(
+                                dataTs2.Biaya_Operasional_TidakLangsung_Prodi
+                              ) +
+                              parseInt(
+                                dataTs1.Biaya_Operasional_TidakLangsung_Prodi
+                              )) /
+                              3 +
+                            (parseInt(
+                              dataTs3.Biaya_Operasional_Kemahasiswaan_Prodi
                             ) +
-                            parseInt(
-                              dataTs1.Biaya_Operasional_Kemahasiswaan_Prodi
-                            )) /
-                            3}
+                              parseInt(
+                                dataTs2.Biaya_Operasional_Kemahasiswaan_Prodi
+                              ) +
+                              parseInt(
+                                dataTs1.Biaya_Operasional_Kemahasiswaan_Prodi
+                              )) /
+                              3
+                        )}
                       </td>
                     </tr>
                     <tr>
                       <td>3</td>
+                      <td></td>
                       <td>Biaya Penelitian</td>
                       <td>{dataDnpenelitian3.dana_PT_Mandiri}</td>
                       <td>{dataDnpenelitian2.dana_PT_Mandiri}</td>
@@ -667,6 +723,7 @@ export default function input_mahasiswa_asing(props) {
                     </tr>
                     <tr>
                       <td>4</td>
+                      <td></td>
                       <td>Biaya PKM</td>
                       <td>{dataDnpkm3.dana_PT_Mandiri}</td>
                       <td>{dataDnpkm2.dana_PT_Mandiri}</td>
@@ -694,6 +751,7 @@ export default function input_mahasiswa_asing(props) {
                       </td>
                     </tr>
                     <tr>
+                      <td></td>
                       <td></td>
                       <td>Jumlah</td>
                       <td>
@@ -747,77 +805,93 @@ export default function input_mahasiswa_asing(props) {
                     </tr>
                     <tr>
                       <td>5</td>
+                      <td></td>
                       <td>Biaya Investasi SDM</td>
                       <td>{dataTs3.Biaya_Investasi_SDM_UPPS}</td>
                       <td>{dataTs2.Biaya_Investasi_SDM_UPPS}</td>
                       <td>{dataTs1.Biaya_Investasi_SDM_UPPS}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(dataTs3.Biaya_Investasi_SDM_UPPS) +
-                          parseInt(dataTs2.Biaya_Investasi_SDM_UPPS) +
-                          parseInt(dataTs1.Biaya_Investasi_SDM_UPPS)) /
-                          3}
+                        {Math.round(
+                          (parseInt(dataTs3.Biaya_Investasi_SDM_UPPS) +
+                            parseInt(dataTs2.Biaya_Investasi_SDM_UPPS) +
+                            parseInt(dataTs1.Biaya_Investasi_SDM_UPPS)) /
+                            3
+                        )}
                       </td>
                       <td>{dataTs3.Biaya_Investasi_SDM_Prodi}</td>
                       <td>{dataTs2.Biaya_Investasi_SDM_Prodi}</td>
                       <td>{dataTs1.Biaya_Investasi_SDM_Prodi}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(dataTs3.Biaya_Investasi_SDM_UPPS) +
-                          parseInt(dataTs2.Biaya_Investasi_SDM_UPPS) +
-                          parseInt(dataTs1.Biaya_Investasi_SDM_UPPS)) /
-                          3}
+                        {Math.round(
+                          (parseInt(dataTs3.Biaya_Investasi_SDM_UPPS) +
+                            parseInt(dataTs2.Biaya_Investasi_SDM_UPPS) +
+                            parseInt(dataTs1.Biaya_Investasi_SDM_UPPS)) /
+                            3
+                        )}
                       </td>
                     </tr>
                     <tr>
                       <td>6</td>
+                      <td></td>
                       <td>Biaya Investasi Sarana</td>
                       <td>{dataTs3.Biaya_Investasi_Sarana_UPPS}</td>
                       <td>{dataTs2.Biaya_Investasi_Sarana_UPPS}</td>
                       <td>{dataTs1.Biaya_Investasi_Sarana_UPPS}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(dataTs3.Biaya_Investasi_Sarana_UPPS) +
-                          parseInt(dataTs2.Biaya_Investasi_Sarana_UPPS) +
-                          parseInt(dataTs1.Biaya_Investasi_Sarana_UPPS)) /
-                          3}
+                        {Math.round(
+                          (parseInt(dataTs3.Biaya_Investasi_Sarana_UPPS) +
+                            parseInt(dataTs2.Biaya_Investasi_Sarana_UPPS) +
+                            parseInt(dataTs1.Biaya_Investasi_Sarana_UPPS)) /
+                            3
+                        )}
                       </td>
                       <td>{dataTs3.Biaya_Investasi_Sarana_Prodi}</td>
                       <td>{dataTs2.Biaya_Investasi_Sarana_Prodi}</td>
                       <td>{dataTs1.Biaya_Investasi_Sarana_Prodi}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(dataTs3.Biaya_Investasi_Sarana_Prodi) +
-                          parseInt(dataTs2.Biaya_Investasi_Sarana_Prodi) +
-                          parseInt(dataTs1.Biaya_Investasi_Sarana_Prodi)) /
-                          3}
+                        {Math.round(
+                          (parseInt(dataTs3.Biaya_Investasi_Sarana_Prodi) +
+                            parseInt(dataTs2.Biaya_Investasi_Sarana_Prodi) +
+                            parseInt(dataTs1.Biaya_Investasi_Sarana_Prodi)) /
+                            3
+                        )}
                       </td>
                     </tr>
                     <tr>
                       <td>7</td>
+                      <td></td>
                       <td>Biaya Investasi Prasarana</td>
                       <td>{dataTs3.Biaya_Investasi_Prasarana_UPPS}</td>
                       <td>{dataTs2.Biaya_Investasi_Prasarana_UPPS}</td>
                       <td>{dataTs1.Biaya_Investasi_Prasarana_UPPS}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(dataTs3.Biaya_Investasi_Prasarana_UPPS) +
-                          parseInt(dataTs2.Biaya_Investasi_Prasarana_UPPS) +
-                          parseInt(dataTs1.Biaya_Investasi_Prasarana_UPPS)) /
-                          3}
+                        {Math.round(
+                          (parseInt(dataTs3.Biaya_Investasi_Prasarana_UPPS) +
+                            parseInt(dataTs2.Biaya_Investasi_Prasarana_UPPS) +
+                            parseInt(dataTs1.Biaya_Investasi_Prasarana_UPPS)) /
+                            3
+                        )}
                       </td>
                       <td>{dataTs3.Biaya_Investasi_Prasarana_Prodi}</td>
                       <td>{dataTs2.Biaya_Investasi_Prasarana_Prodi}</td>
                       <td>{dataTs1.Biaya_Investasi_Prasarana_Prodi}</td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(dataTs3.Biaya_Investasi_Prasarana_Prodi) +
-                          parseInt(dataTs2.Biaya_Investasi_Prasarana_Prodi) +
-                          parseInt(dataTs1.Biaya_Investasi_Prasarana_Prodi)) /
-                          3}
+                        {Math.round(
+                          (parseInt(dataTs3.Biaya_Investasi_Prasarana_Prodi) +
+                            parseInt(dataTs2.Biaya_Investasi_Prasarana_Prodi) +
+                            parseInt(dataTs1.Biaya_Investasi_Prasarana_Prodi)) /
+                            3
+                        )}
                       </td>
                     </tr>
                     <tr>
+                      <td></td>
                       <td></td>
                       <td>Jumlah</td>
                       <td>
@@ -837,18 +911,22 @@ export default function input_mahasiswa_asing(props) {
                       </td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(dataTs3.Biaya_Investasi_SDM_UPPS) +
-                          parseInt(dataTs2.Biaya_Investasi_SDM_UPPS) +
-                          parseInt(dataTs1.Biaya_Investasi_SDM_UPPS)) /
-                          3 +
-                          (parseInt(dataTs3.Biaya_Investasi_Sarana_UPPS) +
-                            parseInt(dataTs2.Biaya_Investasi_Sarana_UPPS) +
-                            parseInt(dataTs1.Biaya_Investasi_Sarana_UPPS)) /
+                        {Math.round(
+                          (parseInt(dataTs3.Biaya_Investasi_SDM_UPPS) +
+                            parseInt(dataTs2.Biaya_Investasi_SDM_UPPS) +
+                            parseInt(dataTs1.Biaya_Investasi_SDM_UPPS)) /
                             3 +
-                          (parseInt(dataTs3.Biaya_Investasi_Prasarana_UPPS) +
-                            parseInt(dataTs2.Biaya_Investasi_Prasarana_UPPS) +
-                            parseInt(dataTs1.Biaya_Investasi_Prasarana_UPPS)) /
-                            3}
+                            (parseInt(dataTs3.Biaya_Investasi_Sarana_UPPS) +
+                              parseInt(dataTs2.Biaya_Investasi_Sarana_UPPS) +
+                              parseInt(dataTs1.Biaya_Investasi_Sarana_UPPS)) /
+                              3 +
+                            (parseInt(dataTs3.Biaya_Investasi_Prasarana_UPPS) +
+                              parseInt(dataTs2.Biaya_Investasi_Prasarana_UPPS) +
+                              parseInt(
+                                dataTs1.Biaya_Investasi_Prasarana_UPPS
+                              )) /
+                              3
+                        )}
                       </td>
                       <td>
                         {parseInt(dataTs2.Biaya_Investasi_SDM_Prodi) +
@@ -867,18 +945,24 @@ export default function input_mahasiswa_asing(props) {
                       </td>
                       {/* rata-rata */}
                       <td>
-                        {(parseInt(dataTs3.Biaya_Investasi_SDM_Prodi) +
-                          parseInt(dataTs2.Biaya_Investasi_SDM_Prodi) +
-                          parseInt(dataTs1.Biaya_Investasi_SDM_Prodi)) /
-                          3 +
-                          (parseInt(dataTs3.Biaya_Investasi_Sarana_Prodi) +
-                            parseInt(dataTs2.Biaya_Investasi_Sarana_Prodi) +
-                            parseInt(dataTs1.Biaya_Investasi_Sarana_Prodi)) /
+                        {Math.round(
+                          (parseInt(dataTs3.Biaya_Investasi_SDM_Prodi) +
+                            parseInt(dataTs2.Biaya_Investasi_SDM_Prodi) +
+                            parseInt(dataTs1.Biaya_Investasi_SDM_Prodi)) /
                             3 +
-                          (parseInt(dataTs3.Biaya_Investasi_Prasarana_Prodi) +
-                            parseInt(dataTs2.Biaya_Investasi_Prasarana_Prodi) +
-                            parseInt(dataTs1.Biaya_Investasi_Prasarana_Prodi)) /
-                            3}
+                            (parseInt(dataTs3.Biaya_Investasi_Sarana_Prodi) +
+                              parseInt(dataTs2.Biaya_Investasi_Sarana_Prodi) +
+                              parseInt(dataTs1.Biaya_Investasi_Sarana_Prodi)) /
+                              3 +
+                            (parseInt(dataTs3.Biaya_Investasi_Prasarana_Prodi) +
+                              parseInt(
+                                dataTs2.Biaya_Investasi_Prasarana_Prodi
+                              ) +
+                              parseInt(
+                                dataTs1.Biaya_Investasi_Prasarana_Prodi
+                              )) /
+                              3
+                        )}
                       </td>
                     </tr>
                   </tbody>

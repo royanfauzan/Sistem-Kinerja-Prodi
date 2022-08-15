@@ -15,7 +15,9 @@ export default function daftarpkm() {
 
   const [stadmin, setStadmin] = useState(false);
   const [pkm, setpkm] = useState([]);
-  const MySwal = withReactContent(Swal)
+  const MySwal = withReactContent(Swal);
+
+  const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -56,6 +58,8 @@ export default function daftarpkm() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -103,7 +107,7 @@ export default function daftarpkm() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
@@ -286,14 +290,14 @@ export default function daftarpkm() {
                                   <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                     Edit PKM
                                   </button>
-                                </Link>
+                                </Link>&emsp;&emsp;&nbsp;
 
                                 <button
                                   onClick={() => deletepkm(pkm.id)}
                                   className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
                                   Hapus PKM
-                                </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                </button>&emsp;&emsp;&emsp;&nbsp;
 
                                   <Link href={`/PkM/pilihdosen/${pkm.id}`}>
                                     <button className="btn btn-sm btn-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">

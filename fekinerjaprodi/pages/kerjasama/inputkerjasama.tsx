@@ -195,7 +195,7 @@ export default function inputkerjasama() {
                           <div className="form-group">
                             <label
                               htmlFor="mitra"
-                              className={dataError.tingkat ? "is-invalid" : ""}
+                              className={dataError.bidang ? "is-invalid" : ""}
                             >
                               Bidang
                             </label>

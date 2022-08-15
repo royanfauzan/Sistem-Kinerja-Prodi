@@ -134,7 +134,7 @@ export default function editpenerimaan(props) {
         MySwal.fire({
           icon: "success",
           title: "Berhasil",
-          text: "Data Berhasil Di Update",
+          text: "Data Seleksi Mahasiswa Baru Berhasil Di Edit",
         })
 
         router.push("/MahasiswaBaru_Asing/tabel_penerimaan")
@@ -144,7 +144,7 @@ export default function editpenerimaan(props) {
         MySwal.fire({
           icon: "error",
           title: "Oops...",
-          text: "Data Gagal Di Input",
+          text: "Data Seleksi Mahasiswa Baru Gagal Di Edit",
         })
         setError(error.response.data.error)
         console.log(error.response)

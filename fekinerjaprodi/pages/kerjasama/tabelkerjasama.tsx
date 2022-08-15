@@ -10,11 +10,13 @@ import Link from "next/link"
 import Swal from "sweetalert2"
 import withReactContent from "sweetalert2-react-content"
 
-export default function daftarprofil() {
+export default function tabelkerjasama() {
   const router = useRouter()
   const MySwal = withReactContent(Swal)
   const [stadmin, setStadmin] = useState(false)
   const [tampilKerjasama, settampilKerjasama] = useState([])
+  const url = "http://127.0.0.1:8000/storage/kerjasama/"
+  const [dataurl, setUrl] = useState(url)
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token")
@@ -273,7 +275,10 @@ export default function daftarprofil() {
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
                                   <h6 className="mb-0 text-sm">
-                                    {tKjs.bukti_kerjasama}
+                                    <a href={dataurl + tKjs.file_bukti}>
+                                      {" "}
+                                      {tKjs.bukti_kerjasama}
+                                    </a>{" "}
                                   </h6>
                                 </span>
                               </td>

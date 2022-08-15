@@ -15,9 +15,36 @@ class PenggunaanDanaController extends Controller
     public function tampil_penggunaan_dana()
     {
         //
+
         return response()->json([
             'success' => true,
-            'tampil_penggunaan_dana' => PenggunaanDana::with('prodi')->get()
+            'tampil_penggunaan_dana' => PenggunaanDana::with('prodi')->orderBy('Tahun', 'desc')->get()
+        ]);
+    }
+    public function search_penggunaandana($search)
+    {
+        //
+
+        return response()->json([
+            'success' => true,
+            'searchdana' => PenggunaanDana::with('prodi')->whereRelation('prodi', 'nama_prodi', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Dosen_Prodi', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Dosen_UPPS', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Investasi_Prasarana_Prodi', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Investasi_Prasarana_UPPS', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Investasi_Sarana_Prodi', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Investasi_Sarana_UPPS', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Investasi_SDM_Prodi', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Investasi_SDM_UPPS', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Operasional_Kemahasiswaan_Prodi', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Operasional_Kemahasiswaan_UPPS', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Operasional_Pembelajaran_Prodi', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Operasional_Pembelajaran_UPPS', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Operasional_TidakLangsung_Prodi', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Operasional_TidakLangsung_UPPS', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Tenaga_Kependidikan_Prodi', 'LIKE', "%{$search}%")
+                ->orWhere('Biaya_Tenaga_Kependidikan_UPPS', 'LIKE', "%{$search}%")
+                ->orWhere('Tahun', 'LIKE', "%{$search}%")->get()
         ]);
     }
     public function export_penggunaan_dana($tahun)
@@ -104,7 +131,7 @@ class PenggunaanDanaController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $model = PenggunaanDana::create([
@@ -189,7 +216,7 @@ class PenggunaanDanaController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
 

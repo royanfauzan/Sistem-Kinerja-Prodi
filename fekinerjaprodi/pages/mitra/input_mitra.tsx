@@ -6,16 +6,19 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 interface Prodi {
   nama_prodi: string;
 }
 
-export default function input_mahasiswa_asing() {
+export default function input_mitra() {
   const router = useRouter();
 
   const [dataProdis, setdataProdi] = useState<Prodi[]>([]);
-  const [dataError, setError] = useState([]);
+  const [dataError, setError] = useState([])
+  const MySwal = withReactContent(Swal)
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -99,21 +102,27 @@ export default function input_mahasiswa_asing() {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        const { profil } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(response.data);
-        // router.push("/");
+    .then(function (response) {
+      //handle success
+      MySwal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Mitra Berhasil Di Input",
       })
-      .catch(function (error) {
-        //handle error
+      console.log(response.data)
 
-        setError(error.response.error);
-        console.log(dataError);
-      });
+      router.push("/mitra/tabelmitra")
+    })
+    .catch(function (error) {
+      //handle error
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Data Mitra Gagal Di Input",
+      })
+      setError(error.response.data.error)
+      console.log(error.response.data.error)
+    })
   };
 
   return (
@@ -144,7 +153,7 @@ export default function input_mahasiswa_asing() {
                           <div className="form-group">
                             <label
                               htmlFor="namamitra"
-                              className="form-control-label"
+                              className={dataError.namamitra ? "is-invalid" : ""}
                             >
                               Nama Mitra
                             </label>
@@ -157,6 +166,13 @@ export default function input_mahasiswa_asing() {
                               placeholder=" Alamat"
                               id="namamitra"
                             />
+                              {dataError.namamitra ? (
+                              <div className="invalid-feedback">
+                                {dataError.namamitra}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           
                           </div>
                         </div>
@@ -165,7 +181,7 @@ export default function input_mahasiswa_asing() {
                           <div className="form-group">
                             <label
                               htmlFor="alamat"
-                              className="form-control-label"
+                              className={dataError.alamat ? "is-invalid" : ""}
                             >
                               Alamat
                             </label>
@@ -175,6 +191,13 @@ export default function input_mahasiswa_asing() {
                               placeholder="Alamat Mitra"
                               id="alamat"
                             />
+                              {dataError.alamat? (
+                              <div className="invalid-feedback">
+                                {dataError.alamat}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -182,7 +205,7 @@ export default function input_mahasiswa_asing() {
                           <div className="form-group">
                             <label
                               htmlFor="no_telepon"
-                              className="form-control-label"
+                              className={dataError.no_telepon ? "is-invalid" : ""}
                             >
                               Nomor Telepon Mitra
                             </label>
@@ -192,6 +215,13 @@ export default function input_mahasiswa_asing() {
                               placeholder="Nomor Telepon Mitra"
                               id="no_telepon"
                             />
+                              {dataError.no_telepon? (
+                              <div className="invalid-feedback">
+                                {dataError.no_telepon}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -199,7 +229,7 @@ export default function input_mahasiswa_asing() {
                           <div className="form-group">
                             <label
                               htmlFor="nama_cp"
-                              className="form-control-label"
+                              className={dataError.nama_cp ? "is-invalid" : ""}
                             >
                               Nama CP
                             </label>
@@ -209,6 +239,13 @@ export default function input_mahasiswa_asing() {
                               placeholder="Nama CP"
                               id="nama_cp"
                             />
+                              {dataError.nama_cp? (
+                              <div className="invalid-feedback">
+                                {dataError.nama_cp}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -216,7 +253,7 @@ export default function input_mahasiswa_asing() {
                           <div className="form-group">
                             <label
                               htmlFor="no_telp_cp"
-                              className="form-control-label"
+                              className={dataError.no_telp_cp ? "is-invalid" : ""}
                             >
                               Nomor Telepon CP
                             </label>
@@ -226,6 +263,13 @@ export default function input_mahasiswa_asing() {
                               placeholder="Nomor Telepon CP"
                               id="no_telp_cp"
                             />
+                              {dataError.no_telp_cp ? (
+                              <div className="invalid-feedback">
+                                {dataError.no_telp_cp}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -233,7 +277,7 @@ export default function input_mahasiswa_asing() {
                           <div className="form-group">
                             <label
                               htmlFor="email_cp"
-                              className="form-control-label"
+                              className={dataError.email_cp ? "is-invalid" : ""}
                             >
                               Email CP
                             </label>
@@ -243,14 +287,22 @@ export default function input_mahasiswa_asing() {
                               placeholder="Email CP"
                               id="email_cp"
                             />
+                            
+                              {dataError.email_cp ? (
+                              <div className="invalid-feedback">
+                                {dataError.email_cp}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
-                              htmlFor="tingkat"
-                              className="form-control-label"
+                              htmlFor="bidang"
+                              className={dataError.bidang? "is-invalid" : ""}
                             >
                               Bidang
                             </label>
@@ -260,7 +312,7 @@ export default function input_mahasiswa_asing() {
                               defaultValue="0"
                               id="bidang"
                             >
-                              <option>Bidang Kerjasama</option>
+                              <option value="">Pilih Bidang Kerjasama</option>
                               <option value="Kerjasama Pendidikan">
                                 {" "}
                                 Kerjasama Pendidikan{" "}
@@ -274,6 +326,13 @@ export default function input_mahasiswa_asing() {
                                 Kerjasama pengabdian Masyarakat
                               </option>
                             </select>
+                            {dataError.bidang ? (
+                              <div className="invalid-feedback">
+                                {dataError.bidang}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                       </div>

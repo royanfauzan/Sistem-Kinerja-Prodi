@@ -4,6 +4,7 @@ use App\Http\Controllers\CapKurikulumController;
 use App\Http\Controllers\IntegrasiController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MatkulController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProdiController;
@@ -180,6 +181,7 @@ Route::put('presentase/{id}', [PresentaseController::class, 'update']);
 Route::post('created', [MitraController::class, 'insertmitra']);
 Route::get('read_mitra', [MitraController::class, 'tampil_mitra']);
 Route::get('show_mitra/{id}', [MitraController::class, 'tampil_editmitra']);
+Route::get('readMitra/{search}', [MitraController::class, 'searchmitra']);
 Route::post('update_mitra/{id}', [MitraController::class, 'editmitra']);
 Route::post('delete_mitra/{id}', [MitraController::class, 'deletemitra']);
 
@@ -192,8 +194,16 @@ Route::post('update_kjs/{id}', [KerjasamaController::class, 'editkerjasama']);
 Route::post('delete_kjs/{id}', [KerjasamaController::class, 'delete_kjs']);
 
 
+Route::get('read_user', [UserController::class, 'index']);
+Route::get('search_user/{search}', [UserController::class, 'search']);
+Route::get('read_user/{id}', [UserController::class, 'show']);
+Route::post('store_user', [UserController::class, 'store']);
+Route::post('update_user/{id}', [UserController::class, 'update']);
+Route::post('delete_user/{id}', [UserController::class, 'destroy']);
+
 Route::post('create_penggunaan_dana', [PenggunaanDanaController::class, 'insert_penggunaan_dana']);
 Route::get('read_penggunaan_dana', [PenggunaanDanaController::class, 'tampil_penggunaan_dana']);
+Route::get('read_penggunaan_dana/{search}', [PenggunaanDanaController::class, 'search_penggunaandana']);
 Route::post('update_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'edit_penggunaan_dana']);
 Route::get('export_penggunaan_dana/{tahun}', [PenggunaanDanaController::class, 'export_penggunaan_dana']);
 Route::get('show_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'tampil_edit_dana']);
@@ -201,6 +211,7 @@ Route::post('delete_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'de
 
 Route::post('create_mahasiswa_asing', [MahasiswaAsingController::class, 'insert_mahasiswa_asing']);
 Route::get('read_mahasiswa_asing', [MahasiswaAsingController::class, 'tampil_mahasiswa_asing']);
+Route::get('tampilprodi_mahasiswa_asing/{prodi}', [MahasiswaAsingController::class, 'tampilprodi_mahasiswa_asing']);
 Route::get('search_mahasiswa_asing/{search}', [MahasiswaAsingController::class, 'search_mahasiswa_asing']);
 Route::get('export_mahasiswa_asing/{tahun}', [MahasiswaAsingController::class, 'tampilexport_mahasiswa_asing']);
 Route::get('show_mahasiswa_asing/{id}', [MahasiswaAsingController::class, 'tampil_edit_mahasiswa_asing']);
@@ -217,13 +228,19 @@ Route::post('delete_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'd
 
 
 Route::get('profildosens', [ProfildosenController::class, 'index']);
+Route::get('search_profil/', [ProfildosenController::class, 'allprofil']);
+Route::get('getprofil_dtps/', [ProfildosenController::class, 'get_dtps']);
+Route::get('search_profil/{search}', [ProfildosenController::class, 'searchprofil']);
+Route::get('tampil_profildosen/{id}', [ProfildosenController::class, 'show']);
+Route::get('get_profildosen/{nidk}', [ProfildosenController::class, 'get_profil']);
+Route::put('update_profildosen/{id}', [ProfildosenController::class, 'update']);
 Route::get('testuser', [ApiController::class, 'get_alluser']);
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('testmid', [ApiController::class, 'tester']);
     Route::get('get_user', [ApiController::class, 'get_user']);
     Route::post('penelitiandosens', [PenelitianController::class, 'store']);
     Route::post('pengabdiandosens', [PengabdianController::class, 'store']);
-    Route::post('ewmps', [EwmpController::class, 'store']);
+    
     Route::post('mengajars', [MengajarController::class, 'store']);
     Route::post('bimbingans', [BimbinganController::class, 'store']);
     Route::get('logout', [ApiController::class, 'logout']);
@@ -231,6 +248,14 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
 // Dev area EWMP
 Route::get('ewmps', [EwmpController::class, 'index']);
+Route::get('search_ewmp/', [EwmpController::class, 'allewmp']);
+Route::get('search_ewmpdsn/', [EwmpController::class, 'allewmpdsn']);
+Route::get('search_ewmp/{search}', [EwmpController::class, 'searchewmp']);
+Route::get('search_ewmpdsn/{search}', [EwmpController::class, 'searchewmpdsn']);
+Route::get('tampil_ewmp/{id}', [EwmpController::class, 'show']);
+Route::put('update_ewmp/{id}', [EwmpController::class, 'update']);
+Route::post('delete_ewmp/{id}', [EwmpController::class, 'destroy']);
+Route::post('ewmps', [EwmpController::class, 'store']);
 // Dev area Laporan
 Route::get('ewmplisttahun', [EwmpController::class, 'listtahun']);
 Route::get('dtpslisttahun', [ProfildosenController::class, 'listtahun']);
@@ -245,6 +270,7 @@ Route::get('laporanpublikasidos/{tahun}', [SdmLaporanController::class, 'exportp
 Route::get('laporanprodukdos/{tahun}', [SdmLaporanController::class, 'exportprodukdos']);
 Route::get('laporanbimbingan/{tahun}', [SdmLaporanController::class, 'exportbimbingan']);
 Route::get('laporantestdata/{tahun}', [SdmLaporanController::class, 'testambildata']);
+Route::get('data_dashboard', [ApiController::class, 'get_dashboardAdmin']);
 
 
 
@@ -332,7 +358,8 @@ Route::post('Penelitian', [PenelitianController::class, 'store']);
 Route::put('Penelitian_Update/{id}', [PenelitianController::class, 'update']);
 Route::post('Penelitian_Delete/{id}', [PenelitianController::class, 'destroy']);
 Route::post('Penelitian_DeleteMhs/{id}', [PenelitianController::class, 'deletemhs']);
-Route::get('Penelitian_relasimhs', [PenelitianController::class, 'relasipenmhs']);
+Route::get('Penelitian_relasimhs/{id}', [PenelitianController::class, 'relasipenmhs']);
+Route::get('Penelitian_relasidosen/{id}', [PenelitianController::class, 'relasipendosen']);
 
 //route integrasi
 Route::get('Integrasi_search/{id}', [IntegrasiController::class, 'searchintegrasi']);

@@ -6,6 +6,8 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 
 // Untuk Ngambil Data Berdasarkan ID
@@ -32,7 +34,9 @@ export async function getServerSideProps(context) {
 export default function update_datamitra(props) {
   const {mitra} = props;
   console.log(mitra);
-  
+
+  const [dataError, setError] = useState([])
+  const MySwal = withReactContent(Swal)
   const router = useRouter();
   const {pid} = router.query;
 
@@ -117,27 +121,27 @@ export default function update_datamitra(props) {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        const { profil } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(response.data);
-        // router.push("/");
+    .then(function (response) {
+      //handle success
+      MySwal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Mitra Berhasil Di Update",
       })
-      .catch(function (error) {
-        //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
+      console.log(response.data)
 
-        console.log("tidak success");
-        console.log(error.response);
-      });
+      router.push("/mitra/tabelmitra")
+    })
+    .catch(function (error) {
+      //handle error
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Data Gagal Di Update",
+      })
+      setError(error.response.data.error)
+      console.log(error.response.data.error)
+    })
   };
 
   return (
@@ -168,7 +172,8 @@ export default function update_datamitra(props) {
 
                       <div className="col-md-12">
                         <div className="form-group">
-                          <label htmlFor="namamitra" className="form-control-label">
+                          <label htmlFor="namamitra" 
+                          className={dataError.namamitra ? "is-invalid" : ""}>
                           Nama Mitra
                           </label>
                           <input
@@ -178,12 +183,19 @@ export default function update_datamitra(props) {
                             id="namamitra"
                             defaultValue={dataMitras.namamitra}
                           />
+                            {dataError.namamitra ? (
+                              <div className="invalid-feedback">
+                                {dataError.namamitra}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
 
                       <div className="col-md-12">
                         <div className="form-group">
-                          <label htmlFor="alamat" className="form-control-label">
+                          <label htmlFor="alamat"  className={dataError.alamat ? "is-invalid" : ""}>
                           Alamat
                           </label>
                           <input
@@ -193,12 +205,19 @@ export default function update_datamitra(props) {
                             id="alamat"
                             defaultValue={dataMitras.alamat}
                           />
+                           {dataError.alamat? (
+                              <div className="invalid-feedback">
+                                {dataError.alamat}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
 
                       <div className="col-md-12">
                         <div className="form-group">
-                          <label htmlFor="no_telepon" className="form-control-label">
+                          <label htmlFor="no_telepon" className={dataError.no_telepon ? "is-invalid" : ""}>
                           Nomor Telepon Mitra
                           </label>
                           <input
@@ -208,12 +227,19 @@ export default function update_datamitra(props) {
                             id="no_telepon"
                             defaultValue={dataMitras.no_telepon}
                           />
+                          {dataError.no_telepon? (
+                              <div className="invalid-feedback">
+                                {dataError.no_telepon}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
 
                       <div className="col-md-12">
                         <div className="form-group">
-                          <label htmlFor="nama_cp" className="form-control-label">
+                          <label htmlFor="nama_cp" className={dataError.nama_cp ? "is-invalid" : ""}>
                           Nama CP
                           </label>
                           <input
@@ -223,12 +249,19 @@ export default function update_datamitra(props) {
                             id="nama_cp"
                             defaultValue={dataMitras.nama_cp}
                           />
+                          {dataError.nama_cp? (
+                              <div className="invalid-feedback">
+                                {dataError.nama_cp}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
 
                       <div className="col-md-12">
                         <div className="form-group">
-                          <label htmlFor="no_telp_cp" className="form-control-label">
+                          <label htmlFor="no_telp_cp" className={dataError.no_telp_cp ? "is-invalid" : ""}>
                          Nomor Telepon CP
                           </label>
                           <input
@@ -238,12 +271,19 @@ export default function update_datamitra(props) {
                             id="no_telp_cp"
                             defaultValue={dataMitras.no_telp_cp}
                           />
+                           {dataError.no_telp_cp ? (
+                              <div className="invalid-feedback">
+                                {dataError.no_telp_cp}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
 
                       <div className="col-md-12">
                         <div className="form-group">
-                          <label htmlFor="email_cp" className="form-control-label">
+                          <label htmlFor="email_cp"  className={dataError.email_cp ? "is-invalid" : ""}>
                         Email CP
                           </label>
                           <input
@@ -253,12 +293,19 @@ export default function update_datamitra(props) {
                             id="email_cp"
                             defaultValue={dataMitras.email_cp}
                           />
+                           {dataError.email_cp ? (
+                              <div className="invalid-feedback">
+                                {dataError.email_cp}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
 
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="tingkat" className="form-control-label">
+                          <label htmlFor="tingkat" className={dataError.bidang? "is-invalid" : ""}>
                             Bidang
                           </label>
                           <select
@@ -268,12 +315,20 @@ export default function update_datamitra(props) {
                             id="bidang"
                             defaultValue={dataMitras.bidang}
                           >
-                            <option >Bidang Kerjasama</option>
+                            <option value="" >Pilih Bidang Kerjasama</option>
                             <option value="Kerjasama Pendidikan"> Kerjasama Pendidikan </option>
                             <option value="Kerjasama Penelitian"> Kerjasama Penelitian</option>
                             <option value="Kerjasama pengabdian Masyarakat"> Kerjasama pengabdian Masyarakat</option>
                             
                           </select>
+                          {dataError.bidang ? (
+                              <div className="invalid-feedback">
+                                {dataError.bidang}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+
                         </div>
                       </div>
                    

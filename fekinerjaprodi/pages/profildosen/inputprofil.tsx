@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
@@ -20,12 +20,16 @@ export default function inputprofil() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState<Udosen[]>([]);
+  const [dataError, setError] = useState([]);
+  
+  const [dataRole, setRole] = useState("");
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
 
+
   // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
+  const pengambilData = async () => {
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/testuser",
@@ -41,45 +45,44 @@ export default function inputprofil() {
         console.log("gagal");
         console.log(err.response);
       });
-  }
-
-
+  };
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
+  useEffect(() => {
     // cek token, kalo gaada disuruh login
-    const lgToken = localStorage.getItem('token');
-    if(!lgToken){
-      router.push('/login')
+    const lgToken = localStorage.getItem("token");
+    if (!lgToken) {
+      router.push("/login");
     }
 
-    // perjalanan validasi token 
+    // perjalanan validasi token
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/get_user",
-      headers: { "Authorization": `Bearer ${lgToken}` },
+      headers: { Authorization: `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-    })
-    .catch(function (err) {
-        console.log('gagal');
+      .then(function (response) {
+        console.log(response);
+        console.log("Sukses");
+        const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
+
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push("/");
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+      })
+      .catch(function (err) {
+        console.log("gagal");
         console.log(err.response);
-        return router.push('/');
-    })
-  },[]);
-
-
+        return router.push("/");
+      });
+  }, []);
 
   const submitForm = async (event) => {
     event.preventDefault();
@@ -88,21 +91,22 @@ export default function inputprofil() {
     const lgToken = localStorage.getItem("token");
 
     let formData = new FormData();
-    formData.append("NIDK", event.target.nidk.value);
-    formData.append("NIK", event.target.nik.value);
-    formData.append("NamaDosen", event.target.nama.value);
-    formData.append("Agama", event.target.agama.value);
-    formData.append("TempatLahir", event.target.tempatlahir.value);
-    formData.append("TanggalLahir", event.target.tanggallahir.value);
-    formData.append("StatusPerkawinan", event.target.statusK.value);
-    formData.append("JenisKelamin", event.target.jenisK.value);
+    formData.append("NIDK", event.target.NIDK.value);
+    formData.append("NIK", event.target.NIK.value);
+    formData.append("NamaDosen", event.target.NamaDosen.value);
+    formData.append("Agama", event.target.Agama.value);
+    formData.append("TempatLahir", event.target.TempatLahir.value);
+    formData.append("TanggalLahir", event.target.TanggalLahir.value);
+    formData.append("StatusPerkawinan", event.target.StatusPerkawinan.value);
+    formData.append("JenisKelamin", event.target.JenisKelamin.value);
+    formData.append("StatusDosen", event.target.StatusDosen.value);
 
-    formData.append("Golongan", event.target.golongan.value);
-    formData.append("Pangkat", event.target.pangkat.value);
-    formData.append("JabatanAkademik", event.target.jabatanA.value);
-    formData.append("Alamat", event.target.alamat.value);
-    formData.append("NoTelepon", event.target.notelp.value);
-    formData.append("Email", event.target.email.value);
+    formData.append("Golongan", event.target.Golongan.value);
+    formData.append("Pangkat", event.target.Pangkat.value);
+    formData.append("JabatanAkademik", event.target.JabatanAkademik.value);
+    formData.append("Alamat", event.target.Alamat.value);
+    formData.append("NoTelepon", event.target.NoTelepon.value);
+    formData.append("Email", event.target.Email.value);
 
     console.log(formData);
 
@@ -119,20 +123,26 @@ export default function inputprofil() {
         const { profil } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Login Sugses!!");
+        toast.success("Simpan Sukses Sugses!!");
         // console.log(token);
         console.log(profil);
-        router.push("/profildosen/daftarprofil");
+        router.push("/profildosen/tabelprofil");
       })
       .catch(function (error) {
-        //handle error
         toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
+        if(error.response.data.message){
+          toast.error(error.response.data.message);
+          setTimeout(()=>{router.push("/profildosen/tabelprofil");},500);
+          
+        }else{
+          setError(error.response.data.error);
+          if (error.response.status == 400) {
+            toast.error("Periksa Kelengkapan Data!!");
+          } else {
+            toast.error("Periksa Kelengkapan Data");
+          }
         }
-
+    
         console.log("tidak success");
         console.log(error.response);
       });
@@ -140,284 +150,466 @@ export default function inputprofil() {
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
-        <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetilDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
+        <LayoutForm rlUser={dataRole}>
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetilDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <p className="mb-0">Input Profil Dosen</p>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Tambah Data
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="card-body">
-                    <p className="text-uppercase text-sm">Profil Dosen</p>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="nidk" className="form-control-label">
-                            NIDK
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="nidk"
-                          >
-                            <option>Pilih NIDK User</option>
-                            {userDosens.map((userDosen) => {
-                              if (
-                                userDosen.role !== "admin" &&
-                                !userDosen.profil_dosen
-                              ) {
-                                return (
-                                  <option
-                                    value={userDosen.NIDK}
-                                    key={userDosen.NIDK}
-                                  >
-                                    {userDosen.NIDK}
-                                  </option>
-                                );
+                    <div className="card-body">
+                      <p className="text-uppercase text-sm">Profil Dosen</p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="NIDK"
+                              className={
+                                "form-control-label " + dataError.NIDK
+                                  ? "is-invalid"
+                                  : ""
                               }
-                            })}
-                          </select>
+                            >
+                              NIDK
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="NIDK dosen"
+                              id="NIDK"
+                            />
+                            {dataError.NIDK ? (
+                              <div className="invalid-feedback">
+                                {dataError.NIDK}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="NIK"
+                              className={
+                                "form-control-label " + dataError.NIK
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              NIK
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="NIK dosen"
+                              id="NIK"
+                            />
+                            {dataError.NIK ? (
+                              <div className="invalid-feedback">
+                                {dataError.NIK}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="NamaDosen"
+                              className={
+                                "form-control-label " + dataError.NamaDosen
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              NamaDosen
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="NamaDosen dosen"
+                              id="NamaDosen"
+                            />
+                            {dataError.NamaDosen ? (
+                              <div className="invalid-feedback">
+                                {dataError.NamaDosen}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Agama"
+                              className={
+                                "form-control-label " + dataError.Agama
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Agama
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Agama"
+                              id="Agama"
+                            />
+                            {dataError.Agama ? (
+                              <div className="invalid-feedback">
+                                {dataError.Agama}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="TempatLahir"
+                              className={
+                                "form-control-label " + dataError.TempatLahir
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Tempat Lahir
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tabanan"
+                              id="TempatLahir"
+                            />
+                            {dataError.TempatLahir ? (
+                              <div className="invalid-feedback">
+                                {dataError.TempatLahir}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="TanggalLahir"
+                              className={
+                                "form-control-label " + dataError.TanggalLahir
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Tanggal Lahir
+                            </label>
+                            <input
+                              className="form-control"
+                              type="date"
+                              placeholder="Pilih Tanggal"
+                              id="TanggalLahir"
+                            />
+                            {dataError.TanggalLahir ? (
+                              <div className="invalid-feedback">
+                                {dataError.TanggalLahir}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="JenisKelamin"
+                              className={
+                                "form-control-label " + dataError.JenisKelamin
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Jenis Kelamin
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="Laki-Laki"
+                              id="JenisKelamin"
+                            >
+                              <option value="Laki-Laki">Laki-Laki</option>
+                              <option value="Perempuan">Perempuan</option>
+                            </select>
+                            {dataError.JenisKelamin ? (
+                              <div className="invalid-feedback">
+                                {dataError.JenisKelamin}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="StatusPerkawinan"
+                              className={
+                                "form-control-label " +
+                                dataError.StatusPerkawinan
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Status Perkawinan
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="Belum Kawin"
+                              id="StatusPerkawinan"
+                            >
+                              <option value="Belum Kawin">Belum Kawin</option>
+                              <option value="Kawin">Kawin</option>
+                            </select>
+                            {dataError.StatusPerkawinan ? (
+                              <div className="invalid-feedback">
+                                {dataError.NamaDosen}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
                       </div>
+                      <hr className="horizontal dark" />
+                      <p className="text-uppercase text-sm">
+                        Informasi Akademik
+                      </p>
+                      <div className="row">
                       <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="nik" className="form-control-label">
-                            NIK
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="NIK dosen"
-                            id="nik"
-                            required
-                          />
+                          <div className="form-group">
+                            <label
+                              htmlFor="StatusDosen"
+                               className={"form-control-label "+dataError.StatusDosen ? "is-invalid" : ""}
+                            >
+                              Status Dosen
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="Dosen Tetap"
+                              id="StatusDosen"
+                            >
+                              <option value="Dosen Tetap">Dosen Tetap</option>
+                              <option value="Dosen Tidak Tetap">Dosen Tidak Tetap</option>
+                              <option value="Dosen Industri">Dosen Industri</option>
+                            </select>
+                            {dataError.StatusDosen ? (
+                              <div className="invalid-feedback">
+                                {dataError.StatusDosen}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="nama" className="form-control-label">
-                            Nama
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Nama dosen"
-                            id="nama"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="agama" className="form-control-label">
-                            Agama
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Agama"
-                            id="agama"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label
-                            htmlFor="tempatlahir"
-                            className="form-control-label"
-                          >
-                            Tempat Lahir
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tabanan"
-                            id="tempatlahir"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label
-                            htmlFor="tanggallahir"
-                            className="form-control-label"
-                          >
-                            Tanggal Lahir
-                          </label>
-                          <input
-                            className="form-control"
-                            type="date"
-                            placeholder="Pilih Tanggal"
-                            id="tanggallahir"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label
-                            htmlFor="jenisK"
-                            className="form-control-label"
-                          >
-                            Jenis Kelamin
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="Laki-Laki"
-                            id="jenisK"
-                          >
-                            <option value="Laki-Laki">Laki-Laki</option>
-                            <option value="Perempuan">Perempuan</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label
-                            htmlFor="statusK"
-                            className="form-control-label"
-                          >
-                            Status Perkawinan
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="Belum Kawin"
-                            id="statusK"
-                          >
-                            <option value="Belum Kawin">Belum Kawin</option>
-                            <option value="Kawin">Kawin</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <hr className="horizontal dark" />
-                    <p className="text-uppercase text-sm">Informasi Akademik</p>
-                    <div className="row">
+                      <div className="row">
                       <div className="col-md-4">
-                        <div className="form-group">
-                          <label
-                            htmlFor="pangkat"
-                            className="form-control-label"
-                          >
-                            Pangkat
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="pangkat"
-                            id="pangkat"
-                          />
+                          <div className="form-group">
+                            <label
+                              htmlFor="Golongan"
+                              className={
+                                "form-control-label " + dataError.Golongan
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Golongan
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Golongan"
+                              id="Golongan"
+                            />
+                            {dataError.Golongan ? (
+                              <div className="invalid-feedback">
+                                {dataError.Golongan}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-4">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Pangkat"
+                              className={
+                                "form-control-label " + dataError.Pangkat
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Pangkat
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Pangkat"
+                              id="Pangkat"
+                            />
+                            {dataError.Pangkat ? (
+                              <div className="invalid-feedback">
+                                {dataError.Pangkat}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-4">
+                          <div className="form-group">
+                            <label
+                              htmlFor="JabatanAkademik"
+                              className={
+                                "form-control-label " +
+                                dataError.JabatanAkademik
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Jabatan Akademik
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Jabatan Akademik"
+                              id="JabatanAkademik"
+                            />
+                            {dataError.JabatanAkademik ? (
+                              <div className="invalid-feedback">
+                                {dataError.JabatanAkademik}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <div className="col-md-4">
-                        <div className="form-group">
-                          <label
-                            htmlFor="jabatanA"
-                            className="form-control-label"
-                          >
-                            Jabatan Akademik
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Jabatan Akademik"
-                            id="jabatanA"
-                          />
+                      <hr className="horizontal dark" />
+                      <p className="text-uppercase text-sm">Kontak</p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Email"
+                              className={
+                                "form-control-label " + dataError.Email
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Email
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Email"
+                              id="Email"
+                            />
+                            {dataError.Email ? (
+                              <div className="invalid-feedback">
+                                {dataError.Email}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className="form-group">
-                          <label
-                            htmlFor="golongan"
-                            className="form-control-label"
-                          >
-                            Golongan
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="golongan"
-                            id="golongan"
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="NoTelepon"
+                              className={
+                                "form-control-label " + dataError.NoTelepon
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Nomor Telpon
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="085******"
+                              id="NoTelepon"
+                            />
+                            {dataError.NoTelepon ? (
+                              <div className="invalid-feedback">
+                                {dataError.NoTelepon}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <hr className="horizontal dark" />
-                    <p className="text-uppercase text-sm">Kontak</p>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="email" className="form-control-label">
-                            Email
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Email"
-                            id="email"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label
-                            htmlFor="notelp"
-                            className="form-control-label"
-                          >
-                            Nomor Telpon
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="085******"
-                            id="notelp"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-12">
-                        <div className="form-group">
-                          <label
-                            htmlFor="alamat"
-                            className="form-control-label"
-                          >
-                            Alamat
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Email"
-                            id="alamat"
-                          />
+                        <div className="col-md-12">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Alamat"
+                              className={
+                                "form-control-label " + dataError.Alamat
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Alamat
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Alamat"
+                              id="Alamat"
+                            />
+                            {dataError.Alamat ? (
+                              <div className="invalid-feedback">
+                                {dataError.Alamat}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+          <Toaster/>
+        </LayoutForm>
       )}
     </>
   );

@@ -108,19 +108,17 @@ export default function input_mahasiswa_asing() {
         MySwal.fire({
           icon: "success",
           title: "Berhasil",
-          text: "Data Berhasil Di Input",
+          text: "Data Mahasiswa Asing Berhasil Di Input",
         })
         router.push("/MahasiswaBaru_Asing/tabel_mahasiswa_asing")
       })
       .catch(function (error) {
         //handle error
-        toast.dismiss()
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!")
-        } else {
-          toast.error("Gagal Menyimpan Data")
-        }
-
+        MySwal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Data Mahasiswa Asing Gagal Di Input",
+        })
         setError(error.response.data.error)
         console.log(error.response.data.error)
       })
@@ -154,7 +152,11 @@ export default function input_mahasiswa_asing() {
                           <div className="form-group">
                             <label
                               htmlFor="prodi"
-                              className="form-control-label"
+                              className={
+                                dataError.Program_Studi_Prodi_Id
+                                  ? "is-invalid"
+                                  : ""
+                              }
                             >
                               Nama Prodi
                             </label>
@@ -164,7 +166,7 @@ export default function input_mahasiswa_asing() {
                               defaultValue="0"
                               id="prodi"
                             >
-                              <option>Pilih Prodi</option>
+                              <option value="">Pilih Prodi</option>
                               {dataProdis.map((dataProdi) => {
                                 return (
                                   <option
@@ -176,6 +178,13 @@ export default function input_mahasiswa_asing() {
                                 )
                               })}
                             </select>
+                            {dataError.Program_Studi_Prodi_Id ? (
+                              <div className="invalid-feedback">
+                                {dataError.Program_Studi_Prodi_Id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -183,7 +192,9 @@ export default function input_mahasiswa_asing() {
                           <div className="form-group">
                             <label
                               htmlFor="tahun_akademik"
-                              className="form-control-label"
+                              className={
+                                dataError.Tahun_Akademik ? "is-invalid" : ""
+                              }
                             >
                               Tahun Akademik
                             </label>
@@ -193,6 +204,13 @@ export default function input_mahasiswa_asing() {
                               placeholder=" Tahun Akademik"
                               id="tahun_akademik"
                             />
+                            {dataError.Tahun_Akademik ? (
+                              <div className="invalid-feedback">
+                                {dataError.Tahun_Akademik}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -200,7 +218,9 @@ export default function input_mahasiswa_asing() {
                           <div className="form-group">
                             <label
                               htmlFor="mahasiswa_aktif"
-                              className="form-control-label"
+                              className={
+                                dataError.Mahasiswa_Aktif ? "is-invalid" : ""
+                              }
                             >
                               Mahasiswa Aktif
                             </label>
@@ -210,6 +230,13 @@ export default function input_mahasiswa_asing() {
                               placeholder="Mahasiswa Aktif"
                               id="mahasiswa_aktif"
                             />
+                            {dataError.Mahasiswa_Aktif ? (
+                              <div className="invalid-feedback">
+                                {dataError.Mahasiswa_Aktif}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -217,7 +244,11 @@ export default function input_mahasiswa_asing() {
                           <div className="form-group">
                             <label
                               htmlFor="mahasiswa_fulltime"
-                              className="form-control-label"
+                              className={
+                                dataError.Mahasiswa_Aktif_Fulltime
+                                  ? "is-invalid"
+                                  : ""
+                              }
                             >
                               Mahasiswa Aktif Fulltime
                             </label>
@@ -227,6 +258,13 @@ export default function input_mahasiswa_asing() {
                               placeholder="Mahasiswa Aktif Fulltime"
                               id="mahasiswa_fulltime"
                             />
+                            {dataError.Mahasiswa_Aktif_Fulltime ? (
+                              <div className="invalid-feedback">
+                                {dataError.Mahasiswa_Aktif_Fulltime}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -234,7 +272,11 @@ export default function input_mahasiswa_asing() {
                           <div className="form-group">
                             <label
                               htmlFor="mahasiswa_parttime"
-                              className="form-control-label"
+                              className={
+                                dataError.Mahasiswa_Aktif_Parttime
+                                  ? "is-invalid"
+                                  : ""
+                              }
                             >
                               Mahasiswa Aktif Part Time
                             </label>
@@ -244,6 +286,13 @@ export default function input_mahasiswa_asing() {
                               placeholder="Mahasiswa Aktif PartTime"
                               id="mahasiswa_parttime"
                             />
+                            {dataError.Mahasiswa_Aktif_Parttime ? (
+                              <div className="invalid-feedback">
+                                {dataError.Mahasiswa_Aktif_Parttime}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                       </div>

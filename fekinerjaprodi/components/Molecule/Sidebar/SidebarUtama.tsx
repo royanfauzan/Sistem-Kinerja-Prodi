@@ -7,6 +7,10 @@ import style from "./sideb.module.css"
 export default function SidebarUtama() {
   const router = useRouter();
 
+  const pathHalaman = router.asPath;
+  const arrHalaman = pathHalaman.split("/");
+  const HalamanActive = arrHalaman.slice(-1)[0];
+
   const Logout = async () => {
     const lgToken = localStorage.getItem("token");
 
@@ -61,7 +65,7 @@ export default function SidebarUtama() {
       >
         <ul className="navbar-nav">
           <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards/dashboardadmin">
+            <a className={`nav-link ${(HalamanActive == 'dashboardadmin')?'active bg-primary text-white':''}`} href="/dashboards/dashboardadmin">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>

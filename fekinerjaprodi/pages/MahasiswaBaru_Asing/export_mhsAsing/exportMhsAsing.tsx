@@ -20,6 +20,8 @@ export default function penerimaanMahasiswa() {
   const [tampilMhsAsingTs3, settampilMhsAsingTs3] = useState([])
   const [tampilMhsAsing, settampilMhsAsing] = useState([])
   const [dataProdis, setdataProdi] = useState([])
+  const [prodis, setprodis] = useState([])
+  const [tampildataProdis, settampildataProdi] = useState([])
 
   const handleChange = (e) => {
     const value = Array.from(
@@ -28,9 +30,26 @@ export default function penerimaanMahasiswa() {
     )
     setSelectTahun(value)
   }
+  const handleChangeProdi = (e) => {
+    setdataProdi(e.target.value)
+  }
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token")
-
+    axios({
+      method: "get",
+      url: "http://127.0.0.1:8000/api/Prodi",
+    })
+      .then(function (response) {
+        console.log(response)
+        console.log("Sukses")
+        const { Prodi } = response.data
+        setprodis(Prodi)
+        console.log(dataProdis)
+      })
+      .catch(function (err) {
+        console.log("gagal")
+        console.log(err.response)
+      })
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/read_mahasiswa_asing",
@@ -40,21 +59,6 @@ export default function penerimaanMahasiswa() {
         console.log(response)
         console.log("Sukses")
         settampilMhsAsing(response.data.mahasiswa_asing)
-      })
-      .catch(function (err) {
-        console.log("gagal")
-        console.log(err.response)
-      })
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/Prodi",
-    })
-      .then(function (response) {
-        console.log(response)
-        console.log("Sukses")
-        const { Prodi } = response.data
-        setdataProdi(Prodi)
-        console.log(Prodi)
       })
       .catch(function (err) {
         console.log("gagal")
@@ -129,6 +133,19 @@ export default function penerimaanMahasiswa() {
         console.log(err.response)
       })
   }
+  const tampilprodi = (prodi) => {
+    axios({
+      method: "get",
+      url: `http://127.0.0.1:8000/api/tampilprodi_mahasiswa_asing/${prodi}`,
+    })
+      .then(function (response) {
+        settampildataProdi(response.data.tampil_mahasiswa_asing)
+      })
+      .catch(function (err) {
+        console.log("gagal")
+        console.log(err.response)
+      })
+  }
 
   return (
     <>
@@ -140,7 +157,7 @@ export default function penerimaanMahasiswa() {
               <div className="col-md-12">
                 <div className="card">
                   <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
+                    <div className="d-flex ">
                       <h4>Mahasiswa Asing</h4>
 
                       <button
@@ -148,7 +165,14 @@ export default function penerimaanMahasiswa() {
                         type="submit"
                         onClick={() => tampildata(dataSelectTahun)}
                       >
-                        Tampil Data
+                        Tampil Tahun
+                      </button>
+                      <button
+                        className="btn btn-primary btn-sm ms-2"
+                        type="submit"
+                        onClick={() => tampilprodi(dataProdis)}
+                      >
+                        Tampil Prodi
                       </button>
                     </div>
                   </div>
@@ -172,6 +196,34 @@ export default function penerimaanMahasiswa() {
                                   key={dataMhsasing.id}
                                 >
                                   {dataMhsasing.Tahun_Akademik}
+                                </option>
+                              )
+                            })}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card-body">
+                    <h5>Pilih Prodi</h5>
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div className="form-group">
+                          <select
+                            className="form-select"
+                            aria-label="Default select example"
+                            defaultValue={dataProdis}
+                            id="tahun"
+                            onChange={handleChangeProdi}
+                          >
+                            <option value="">Pilih Prodi</option>
+                            {prodis.map((dataprodi) => {
+                              return (
+                                <option
+                                  value={dataprodi.nama_prodi}
+                                  key={dataprodi.id}
+                                >
+                                  {dataprodi.nama_prodi}
                                 </option>
                               )
                             })}
@@ -262,7 +314,7 @@ export default function penerimaanMahasiswa() {
                     </tr>
                   </thead>
                   <tbody>
-                    {tampilMhsAsing.map((mhsasing, index) => {
+                    {tampildataProdis.map((mhsasing, index) => {
                       return (
                         <tr key={`tprodi` + mhsasing.id}>
                           {/* no */}

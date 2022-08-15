@@ -14,6 +14,15 @@ class MahasiswaAsingController extends Controller
             'mahasiswa_asing' => MahasiswaAsing::with('prodi')->get()
         ]);
     }
+    public function tampilprodi_mahasiswa_asing($prodi)
+    {
+        return response()->json([
+            'success' => true,
+            'tampil_mahasiswa_asing' => MahasiswaAsing::with('prodi')
+                ->whereRelation('prodi', 'nama_prodi', 'LIKE', "%{$prodi}%")
+                ->get()
+        ]);
+    }
     public function search_mahasiswa_asing($search)
     {
         return response()->json([
@@ -128,7 +137,7 @@ class MahasiswaAsingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
         $model = MahasiswaAsing::find($id);
         $model->Tahun_Akademik = $request->Tahun_Akademik;

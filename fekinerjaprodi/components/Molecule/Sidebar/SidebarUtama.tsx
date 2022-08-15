@@ -86,29 +86,11 @@ export default function SidebarUtama() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards_eva/dashboardpendidikan">
+            <a className="nav-link " href="/dashboardadmin/dashboardpendidikan">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
               <span className="nav-link-text ms-1">Kriteria Pendidikan</span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards_eva/dashboardpenelitian">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Kriteria Penelitian</span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards_eva/dashboardpkm">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">
-                Kriteria Pengabdian <br /> Kepada Masyarakat
-              </span>
             </a>
           </li>
           <li className={`nav-item `}>

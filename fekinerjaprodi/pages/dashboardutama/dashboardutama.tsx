@@ -78,55 +78,21 @@ export default function dashboardadmin() {
       {stadmin && (
         <LayoutForm>
           <div className="container-fluid py-4">
-            <div className="row">
-
-              <div className="col-4 mt-3">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">Data Integrasi</h5>
-                    <p className="card-text">
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </p>
-                    <a href="/integrasi/daftarintegrasi" className="btn btn-primary">
-                      Kelola Data
-                    </a>
+            <div className="col-12 h-100">
+              <div className="card mb-4 px-3 pb-3 ">
+                <div className="row p-5">
+                  <div className="col">
+                    <h4 className="text-center">POLITEKNIK NEGERI BALI</h4>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <h5 className="text-center">Selamat Data Di Sistem <br /> Laporan Kinerja Program Studi (LKPS)</h5>
                   </div>
                 </div>
               </div>
-
-              <div className="col-4 mt-3">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">Data Mata Kuliah</h5>
-                    <p className="card-text">
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </p>
-                    <a href="/matkul/daftarmatkul" className="btn btn-primary">
-                      Kelola Data
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-4 mt-3">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">Data Mahasiswa</h5>
-                    <p className="card-text">
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </p>
-                    <a href="/mahasiswa/daftarmhs" className="btn btn-primary">
-                      Kelola Data
-                    </a>
-                  </div>
-                </div>
-              </div>
-              
-              
             </div>
+
             <FooterUtama />
           </div>
         </LayoutForm>

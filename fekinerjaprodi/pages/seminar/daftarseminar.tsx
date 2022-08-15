@@ -9,7 +9,7 @@ import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 import Link from "next/link";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
-export default function daftarprestasi() {
+export default function daftarseminar() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
@@ -98,7 +98,7 @@ export default function daftarprestasi() {
                   <div className="row justify-content-between mb-4">
                     <div className="col-4">
                       <td className="align-middle">
-                        <Link href={`/prestasi/inputprestasi/`}>
+                        <Link href={`/seminar/inputseminar/`}>
                           <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                             Tambah Data
                           </button>
@@ -107,7 +107,7 @@ export default function daftarprestasi() {
                     </div>
                     <div className="col-4 d-flex flex-row-reverse">
                       <td className="align-middle">
-                        <Link href={`/prestasi/exportprestasi/export_prestasi`}>
+                        <Link href={`/seminar/exportseminar/export_seminar`}>
                           <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-5 mt-3 mb-0">
                             Export Excel
                           </button>

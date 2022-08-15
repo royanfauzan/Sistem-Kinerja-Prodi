@@ -124,7 +124,7 @@ console.log(ipk);
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(profil);
-        router.push("/");
+        router.push("../../ipk/daftaripk");
         console.log(response.data);
       })
       .catch(function (error) {
@@ -204,6 +204,7 @@ console.log(ipk);
                             type="text"
                             placeholder="Tahun"
                             id="tahun"
+                            defaultValue={dataIPK.tahun}
                             required
                           />
                         </div>
@@ -218,6 +219,7 @@ console.log(ipk);
                             type="text"
                             placeholder="Jumlah Lulusan"
                             id="jmlh_lulusan"
+                            defaultValue={dataIPK.jmlh_lulusan}
                             required
                           />
                         </div>
@@ -232,6 +234,7 @@ console.log(ipk);
                             type="text"
                             placeholder="IPK Minimal"
                             id="min"
+                            defaultValue={dataIPK.ipk_min}
                             required
                           />
                         </div>
@@ -247,6 +250,7 @@ console.log(ipk);
                             type="text"
                             placeholder="IPK Maksimal"
                             id="max"
+                            defaultValue={dataIPK.ipk_max}
                             required
                           />
                         </div>
@@ -262,6 +266,7 @@ console.log(ipk);
                             type="text"
                             placeholder="IPK Rata - rata"
                             id="avg"
+                            defaultValue={dataIPK.ipk_avg}
                             required
                           />
                         </div>

@@ -101,7 +101,7 @@ export default function inputseminar() {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(all_seminar);
-        // router.push("../seminar/daftarseminar");
+        router.push("../seminar/daftarseminar");
       })
       .catch(function (error) {
         //handle error
@@ -160,7 +160,7 @@ export default function inputseminar() {
                                     value={usermahasiswa.id}
                                     key={usermahasiswa.id}
                                   >
-                                    {usermahasiswa.nim}
+                                    {usermahasiswa.nama}
                                   </option>
                                 );
                               }
@@ -220,7 +220,7 @@ export default function inputseminar() {
                           <input
                             className="form-control"
                             type="text"
-                            placeholder="K Seminarategori"
+                            placeholder="Kategori Seminar"
                             id="kategori"
                             required
                           />

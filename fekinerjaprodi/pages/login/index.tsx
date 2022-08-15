@@ -5,22 +5,39 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function index() {
   const router = useRouter();
+
   useEffect(() => {
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/testaxios",
-    })
-      .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { profil } = response.data;
-        console.log(profil);
+
+    const lgToken = localStorage.getItem("token")
+    
+    if (lgToken) {
+      console.log(lgToken)
+      axios({
+        method: "get",
+        url: "http://127.0.0.1:8000/api/get_user",
+        headers: { Authorization: `Bearer ${lgToken}` },
       })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
-  }, []);
+        .then(function (response) {
+          console.log(response)
+          console.log("Sukses")
+          const { role } = response.data.user
+          // kalo ga admin dipindah ke halaman lain
+          if (role == 'admin') {
+            return router.push("/dashboards/dashboardadmin")
+          }
+          if (role=='dosen') {
+            return router.push("/dashboards/dashboarddosen")
+          }
+        })
+        .catch(function (err) {
+          console.log("gagal")
+          console.log(err.response)
+          
+        })
+    }
+
+    
+  }, [])
 
   const viewPassword = (event: ChangeEvent<HTMLInputElement>) => {
     const inputPwd = document.getElementById("password");
@@ -57,7 +74,15 @@ export default function index() {
         console.log(localStorage.getItem('token'));
         console.log("success");
         console.log(response);
-        router.push("/dashboards_eva/dashboardpendidikan");
+        // router.push("/dashboards_eva/dashboardpendidikan");
+        const { role } = response.data.user
+          // kalo ga admin dipindah ke halaman lain
+          if (role == 'admin') {
+            return router.push("/dashboards/dashboardadmin")
+          }
+          if (role=='dosen') {
+            return router.push("/dashboards/dashboarddosen")
+          }
       })
       .catch(function (error) {
         //handle error

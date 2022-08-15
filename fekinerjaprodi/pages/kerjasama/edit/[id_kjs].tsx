@@ -6,6 +6,8 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama"
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama"
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm"
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 interface Mitra {
   namamitra: string
@@ -31,6 +33,8 @@ export default function editkerjasama(props) {
   const { kerjasama } = props
   const [dataKerjasama, setKerjasama] = useState(kerjasama)
   const [filebukti, setFilebukti] = useState<File>()
+  const [dataError, setError] = useState([])
+  const MySwal = withReactContent(Swal)
 
   console.log(kerjasama)
 
@@ -137,25 +141,23 @@ export default function editkerjasama(props) {
       },
     })
       .then(function (response) {
-        const { profil } = response.data
-        //handle success
-        toast.dismiss()
-        toast.success("Login Sugses!!")
-        // console.log(token);
-        console.log(profil)
-        // router.push("/");
-        console.log(response.data)
+        MySwal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data Berhasil Di Edit",
+        })
+
+        router.push("/kerjasama/tabelkerjasama")
       })
       .catch(function (error) {
         //handle error
-        toast.dismiss()
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!")
-        } else {
-          toast.error("Gagal Menyimpan Data")
-        }
-
-        console.log("tidak success")
+        setError(error.response.data.error)
+        console.log(error.response.data.error)
+        MySwal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Data Gagal Di Edit",
+        })
         console.log(error.response)
       })
   }
@@ -188,7 +190,7 @@ export default function editkerjasama(props) {
                           <div className="form-group">
                             <label
                               htmlFor="mitra"
-                              className="form-control-label"
+                              className={dataError.idmitra ? "is-invalid" : ""}
                             >
                               MITRA
                             </label>
@@ -211,13 +213,20 @@ export default function editkerjasama(props) {
                                 )
                               })}
                             </select>
+                            {dataError.idmitra ? (
+                              <div className="invalid-feedback">
+                                {dataError.idmitra}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="mitra"
-                              className="form-control-label"
+                              className={dataError.bidang ? "is-invalid" : ""}
                             >
                               Bidang
                             </label>
@@ -237,13 +246,20 @@ export default function editkerjasama(props) {
                                 )
                               })}
                             </select>
+                            {dataError.bidang ? (
+                              <div className="invalid-feedback">
+                                {dataError.bidang}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="tingkat"
-                              className="form-control-label"
+                              className={dataError.tingkat ? "is-invalid" : ""}
                             >
                               Tingkat
                             </label>
@@ -260,13 +276,22 @@ export default function editkerjasama(props) {
                               <option value="Nasional">Nasional</option>
                               <option value="Lokal">Lokal</option>
                             </select>
+                            {dataError.tingkat ? (
+                              <div className="invalid-feedback">
+                                {dataError.tingkat}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="kegiatan"
-                              className="form-control-label"
+                              className={
+                                dataError.judul_kegiatan ? "is-invalid" : ""
+                              }
                             >
                               Judul Kegiatan
                             </label>
@@ -277,13 +302,20 @@ export default function editkerjasama(props) {
                               id="kegiatan"
                               defaultValue={dataKerjasama.judul_kegiatan}
                             />
+                            {dataError.judul_kegiatan ? (
+                              <div className="invalid-feedback">
+                                {dataError.judul_kegiatan}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="manfaat"
-                              className="form-control-label"
+                              className={dataError.manfaat ? "is-invalid" : ""}
                             >
                               Manfaat
                             </label>
@@ -294,13 +326,22 @@ export default function editkerjasama(props) {
                               id="manfaat"
                               defaultValue={dataKerjasama.manfaat}
                             />
+                            {dataError.manfaat ? (
+                              <div className="invalid-feedback">
+                                {dataError.manfaat}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="tanggalkegiatan"
-                              className="form-control-label"
+                              className={
+                                dataError.tanggal_kegiatan ? "is-invalid" : ""
+                              }
                             >
                               Tanggal Kegiatan
                             </label>
@@ -311,13 +352,22 @@ export default function editkerjasama(props) {
                               id="tanggalkegiatan"
                               defaultValue={dataKerjasama.tanggal_kegiatan}
                             />
+                            {dataError.tanggal_kegiatan ? (
+                              <div className="invalid-feedback">
+                                {dataError.tanggal_kegiatan}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="lamakegiatan"
-                              className="form-control-label"
+                              className={
+                                dataError.lama_kegiatan ? "is-invalid" : ""
+                              }
                             >
                               Lama Kegiatan
                             </label>
@@ -328,6 +378,13 @@ export default function editkerjasama(props) {
                               id="lamakegiatan"
                               defaultValue={dataKerjasama.lama_kegiatan}
                             />
+                            {dataError.lama_kegiatan ? (
+                              <div className="invalid-feedback">
+                                {dataError.lama_kegiatan}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -335,7 +392,9 @@ export default function editkerjasama(props) {
                           <div className="form-group">
                             <label
                               htmlFor="buktikerjasama"
-                              className="form-control-label"
+                              className={
+                                dataError.bukti_kerjasama ? "is-invalid" : ""
+                              }
                             >
                               Bukti Kerjasama
                             </label>
@@ -346,13 +405,22 @@ export default function editkerjasama(props) {
                               id="buktikerjasama"
                               defaultValue={dataKerjasama.bukti_kerjasama}
                             />
+                            {dataError.bukti_kerjasama ? (
+                              <div className="invalid-feedback">
+                                {dataError.bukti_kerjasama}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="tahunberakhir"
-                              className="form-control-label"
+                              className={
+                                dataError.tahun_berakhir ? "is-invalid" : ""
+                              }
                             >
                               Tahun Berakhir
                             </label>
@@ -363,6 +431,13 @@ export default function editkerjasama(props) {
                               id="tahunberakhir"
                               defaultValue={dataKerjasama.tahun_berakhir}
                             />
+                            {dataError.tahun_berakhir ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun_berakhir}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                       </div>
@@ -371,15 +446,16 @@ export default function editkerjasama(props) {
                           <div className="form-group">
                             <label
                               htmlFor="buktifile"
-                              className="form-control-label"
+                              className={
+                                dataError.file_bukti ? "is-invalid" : ""
+                              }
                             >
                               Bukti File
                             </label>
                             <div>
                               <a href={dataurl + dataKerjasama.file_bukti}>
-                                {" "}
                                 {dataKerjasama.file_bukti}
-                              </a>{" "}
+                              </a>
                             </div>
                             <input
                               className="form-control"
@@ -387,6 +463,13 @@ export default function editkerjasama(props) {
                               onChange={handleChangeFile}
                               id="buktifile"
                             />
+                            {dataError.file_bukti ? (
+                              <div className="invalid-feedback">
+                                {dataError.file_bukti}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                       </div>

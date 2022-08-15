@@ -798,84 +798,84 @@ class SdmSeeder extends Seeder
         // Data Pengalaman Mengajar
         Mengajar::create([
             'tahun_akademik'=>'2020/2021',
-            'semester'=>'ganjil',
+            'semester'=>'Ganjil',
             'matkul_id'=>1,
             'profil_dosen_id'=>1,
         ]);
 
         Mengajar::create([
             'tahun_akademik'=>'2020/2021',
-            'semester'=>'genap',
+            'semester'=>'Genap',
             'matkul_id'=>1,
             'profil_dosen_id'=>1,
         ]);
 
         Mengajar::create([
             'tahun_akademik'=>'2020/2021',
-            'semester'=>'genap',
+            'semester'=>'Genap',
             'matkul_id'=>2,
             'profil_dosen_id'=>1,
         ]);
 
         Mengajar::create([
             'tahun_akademik'=>'2020/2021',
-            'semester'=>'ganjil',
+            'semester'=>'Ganjil',
             'matkul_id'=>3,
             'profil_dosen_id'=>2,
         ]);
 
         Mengajar::create([
             'tahun_akademik'=>'2020/2021',
-            'semester'=>'genap',
+            'semester'=>'Genap',
             'matkul_id'=>4,
             'profil_dosen_id'=>2,
         ]);
 
         Mengajar::create([
             'tahun_akademik'=>'2020/2021',
-            'semester'=>'ganjil',
+            'semester'=>'Ganjil',
             'matkul_id'=>8,
             'profil_dosen_id'=>2,
         ]);
 
         Mengajar::create([
             'tahun_akademik'=>'2020/2021',
-            'semester'=>'genap',
+            'semester'=>'Genap',
             'matkul_id'=>9,
             'profil_dosen_id'=>2,
         ]);
 
         Mengajar::create([
             'tahun_akademik'=>'2020/2021',
-            'semester'=>'ganjil',
+            'semester'=>'Ganjil',
             'matkul_id'=>5,
             'profil_dosen_id'=>3,
         ]);
 
         Mengajar::create([
             'tahun_akademik'=>'2020/2021',
-            'semester'=>'genap',
+            'semester'=>'Genap',
             'matkul_id'=>6,
             'profil_dosen_id'=>3,
         ]);
 
         Mengajar::create([
             'tahun_akademik'=>'2020/2021',
-            'semester'=>'ganjil',
+            'semester'=>'Ganjil',
             'matkul_id'=>7,
             'profil_dosen_id'=>4,
         ]);
 
         Mengajar::create([
             'tahun_akademik'=>'2020/2021',
-            'semester'=>'genap',
+            'semester'=>'Genap',
             'matkul_id'=>11,
             'profil_dosen_id'=>4,
         ]);
 
         Mengajar::create([
             'tahun_akademik'=>'2020/2021',
-            'semester'=>'genap',
+            'semester'=>'Genap',
             'matkul_id'=>12,
             'profil_dosen_id'=>4,
         ]);

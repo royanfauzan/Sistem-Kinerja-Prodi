@@ -10,29 +10,28 @@ import Link from "next/link"
 import Swal from "sweetalert2"
 import withReactContent from "sweetalert2-react-content"
 
-export default function tabelkerjasama() {
+export default function tabelmitra() {
   const router = useRouter()
-  const MySwal = withReactContent(Swal)
+
   const [stadmin, setStadmin] = useState(false)
-  const [tampilKerjasama, settampilKerjasama] = useState([])
-  const url = "http://127.0.0.1:8000/storage/kerjasama/"
-  const [dataurl, setUrl] = useState(url)
+  const [tampilUser, settampilUser] = useState([])
+  const MySwal = withReactContent(Swal)
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token")
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/read_kjs",
+      url: "http://127.0.0.1:8000/api/read_user",
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response)
         console.log("Sukses")
-        const { tampilkerjasama } = response.data
-        settampilKerjasama(tampilkerjasama)
+        const { tampil_user } = response.data
+        settampilUser(tampil_user)
 
-        console.log(tampilkerjasama)
+        console.log(tampil_user)
       })
       .catch(function (err) {
         console.log("gagal")
@@ -72,7 +71,7 @@ export default function tabelkerjasama() {
       })
   }, [])
 
-  const deleteKjs = (id) => {
+  const deleteUser = (id) => {
     MySwal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -87,7 +86,7 @@ export default function tabelkerjasama() {
         // <-- if confirmed
         axios({
           method: "post",
-          url: `http://127.0.0.1:8000/api/delete_kjs/${id}`,
+          url: `http://127.0.0.1:8000/api/delete_user/${id}`,
         })
           .then(function (response) {
             router.reload()
@@ -99,10 +98,11 @@ export default function tabelkerjasama() {
       }
     })
   }
-  const editKjs = (id) => {
+
+  const editUser = (id) => {
     MySwal.fire({
-      title: "Edit",
-      text: "Are you sure? ",
+      title: "Edit Data Mitra",
+      text: "Yakin Edit Data? ",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -111,14 +111,15 @@ export default function tabelkerjasama() {
       // <--
       if (result.value) {
         // <-- if confirmed
-        router.push(`/kerjasama/edit/${id}`)
+        router.push(`/User/edit/${id}`)
       }
     })
   }
-  const tambahKjs = () => {
+
+  const tambahUser = () => {
     MySwal.fire({
-      title: "Tambah",
-      text: "Are you sure? ",
+      title: "Tambah Data Mitra",
+      text: "Yakin Tambah Data Mitra? ",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -127,62 +128,40 @@ export default function tabelkerjasama() {
       // <--
       if (result.value) {
         // <-- if confirmed
-        router.push(`/kerjasama/inputkerjasama`)
-      }
-    })
-  }
-  const exportKjs = () => {
-    MySwal.fire({
-      title: "EXport",
-      text: "Are you sure? ",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
-    }).then((result) => {
-      // <--
-      if (result.value) {
-        // <-- if confirmed
-        router.push(`/kerjasama/export_kerjasama/export_kjs`)
+        router.push(`/User/Insert_User`)
       }
     })
   }
   const searchdata = async (e) => {
     if (e.target.value == "") {
-      const req = await axios.get(`http://127.0.0.1:8000/api/read_kjs/`)
-      const res = await req.data.tampilkerjasama
-      settampilKerjasama(res)
+      const req = await axios.get(`http://127.0.0.1:8000/api/read_user/`)
+      const res = await req.data.tampil_user
+      settampilUser(res)
     } else {
       const req = await axios.get(
-        `http://127.0.0.1:8000/api/read_kjs/${e.target.value}`
+        `http://127.0.0.1:8000/api/search_user/${e.target.value}`
       )
-      const res = await req.data.searchkerjasama
-      settampilKerjasama(res)
+      const res = await req.data.search
+      settampilUser(res)
     }
   }
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
         <LayoutForm>
-          <div className=" container-fluid py-4">
+          <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
                 <div className="card-header pb-0">
                   <div className="row justify-content-between">
                     <div className="col-8">
                       <button
-                        onClick={() => tambahKjs()}
+                        onClick={() => tambahUser()}
                         className="btn btn-sm btn-success border-0 shadow-sm  m-0"
                       >
                         Tambah
-                      </button>
-
-                      <button
-                        onClick={() => exportKjs()}
-                        className="btn ms-2 btn-sm btn-success border-0 shadow-sm  m-0"
-                      >
-                        Export
                       </button>
                     </div>
 
@@ -200,114 +179,52 @@ export default function tabelkerjasama() {
                 </div>
                 <div className="card-body px-0 pt-0 pb-2">
                   <div className="table-responsive p-0">
-                    <table className="table align-items-center mb-0">
+                    <table className="table align-items-center mb-0 text-center">
                       <thead>
                         <tr>
                           <th className="text-uppercase text-secondary text-xxs font-weight-bolder ">
-                            <h6>Lembaga Mitra</h6>
+                            <h5>NIDK</h5>
                           </th>
                           <th className="text-uppercase text-secondary text-xxs font-weight-bolder  ps-2">
-                            <h6> Tingkat</h6>
+                            <h5> Role</h5>
                           </th>
                           <th className="text-uppercase text-secondary text-xxs font-weight-bolder  ps-2">
-                            <h6>Judul Kegiatan Kerjasama</h6>
-                          </th>
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder ">
-                            <h6> Manfaat Bagi PS Yang Diakreditasi</h6>
-                          </th>
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder ">
-                            <h6>Waktu dan Durasi</h6>
+                            <h5> Level Akses</h5>
                           </th>
 
                           <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder ">
-                            <h6> Bukti Kerjasama</h6>
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder ">
-                            <h6>Tahun Berakhirnya Kerjasama</h6>
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder ">
-                            <h6> Bidang</h6>
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder ">
-                            <h6> Aksi</h6>
+                            <h5> Aksi</h5>
                           </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {tampilKerjasama.map((tKjs) => {
+                        {tampilUser.map((User) => {
                           return (
-                            <tr
-                              className="text-center"
-                              key={`tkerjasama` + tKjs.id}
-                            >
+                            <tr key={`User` + User.id}>
                               <td>
-                                <h6 className="mb-0 text-sm">
-                                  {tKjs.mitra.namamitra}
-                                </h6>
+                                <h6 className="mb-0 text-sm">{User.NIDK}</h6>
                               </td>
                               <td>
                                 <div className="d-flex flex-column justify-content-center">
-                                  <h6 className="mb-0 text-sm">
-                                    {tKjs.tingkat}
-                                  </h6>
+                                  <h6 className="mb-0 text-sm">{User.role}</h6>
                                 </div>
                               </td>
                               <td className="align-middle ">
                                 <h6 className="mb-0 text-sm">
-                                  {tKjs.judul_kegiatan}
+                                  {User.level_akses}
                                 </h6>
-                              </td>
-
-                              <td className="align-middle text-center text-sm">
-                                <h6 className="mb-0 text-sm">{tKjs.manfaat}</h6>
-                              </td>
-                              <td className="align-middle text-center">
-                                <span className="text-secondary text-xs font-weight-bold">
-                                  <h6 className="mb-0 text-sm">
-                                    {tKjs.tanggal_kegiatan}
-                                  </h6>
-                                </span>
-                              </td>
-
-                              <td className="align-middle text-center">
-                                <span className="text-secondary text-xs font-weight-bold">
-                                  <h6 className="mb-0 text-sm">
-                                    <a href={dataurl + tKjs.file_bukti}>
-                                      {" "}
-                                      {tKjs.bukti_kerjasama}
-                                    </a>{" "}
-                                  </h6>
-                                </span>
-                              </td>
-
-                              <td className="align-middle text-center">
-                                <span className="text-secondary text-xs font-weight-bold">
-                                  <h6 className="mb-0 text-sm">
-                                    {tKjs.tahun_berakhir}
-                                  </h6>
-                                </span>
-                              </td>
-
-                              <td className="align-middle text-center">
-                                <span className="text-secondary text-xs font-weight-bold">
-                                  <h6 className="mb-0 text-sm">
-                                    {tKjs.mitra.bidang}
-                                  </h6>
-                                </span>
                               </td>
 
                               <td className="align-middle text-center">
                                 <button
-                                  onClick={() => editKjs(tKjs.id)}
+                                  onClick={() => editUser(User.id)}
                                   className="btn btn-sm btn-primary border-0 shadow-sm mb-3 me-3"
                                 >
                                   EDIT
                                 </button>
+
                                 <button
-                                  onClick={() => deleteKjs(tKjs.id)}
+                                  onClick={() => deleteUser(User.id)}
                                   className="btn btn-sm btn-danger border-0 shadow-sm mb-3 me-3"
                                 >
                                   HAPUS

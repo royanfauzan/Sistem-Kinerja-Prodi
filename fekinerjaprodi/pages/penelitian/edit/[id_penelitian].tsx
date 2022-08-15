@@ -37,6 +37,8 @@ export default function update_datapenelitian(props) {
   
 
   const [datapenelitian, spenelitian] = useState(penelitian);
+  const [dataError, setError] = useState([]);
+  
   const [dataRole, setRole] = useState("");
 
   // state pake test user
@@ -60,8 +62,6 @@ export default function update_datapenelitian(props) {
     const lgToken = localStorage.getItem('token');
     if(!lgToken){
       router.push('/login')
-
-      
     }
     
     // perjalanan validasi token 
@@ -82,7 +82,6 @@ export default function update_datapenelitian(props) {
             }
             // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
             setStadmin(true);
-            pengambilData();
     })
     .catch(function (err) {
         console.log('gagal');

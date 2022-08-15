@@ -96,7 +96,6 @@ export default function inputmhs() {
     formData.append("deskripsi_bukti", event.target.deskripsi_bukti.value);
     formData.append("file_bukti", filebukti);
 
-
     console.log(formData);
 
     axios({

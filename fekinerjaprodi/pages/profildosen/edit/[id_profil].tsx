@@ -2,50 +2,42 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
-import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutForm";
-import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
+import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
+import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
+import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
 
-interface Udosen {
-  NIDK: string;
-  role: string;
-  level_akses: number;
-  profil_dosen: object;
-  created_at: string;
-  updated_at: string;
+// Untuk Ngambil Data Berdasarkan ID
+export async function getServerSideProps(context) {
+  //http request
+  const req = await axios.get(
+    `http://127.0.0.1:8000/api/tampil_profildosen/${context.query.id_profil}`
+  );
+  const res = await req.data.profil_dosen;
+
+  return {
+    props: {
+        profil_dosen: res, // <-- assign response
+    },
+  };
 }
 
-export default function inputprofil() {
+export default function update_dataprofil(props) {
+  const { profil_dosen } = props;
+  console.log(profil_dosen);
+
   const router = useRouter();
 
-  const [userDosens, setuserDosens] = useState<Udosen[]>([]);
+  const [dataProfilDosen, setProfilDosen] = useState(profil_dosen);
   const [dataError, setError] = useState([]);
-  
+
   const [dataRole, setRole] = useState("");
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
 
-
   // pake ngambil data untuk halaman input
-  const pengambilData = async () => {
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/testuser",
-    })
-      .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { userdosen } = response.data;
-        setuserDosens(userdosen);
-        console.log(userdosen);
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
-  };
+  const pengambilData = async () => {};
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
@@ -84,6 +76,9 @@ export default function inputprofil() {
       });
   }, []);
 
+  //HAPUS DATA
+
+  // Insert Update Data
   const submitForm = async (event) => {
     event.preventDefault();
 
@@ -112,7 +107,7 @@ export default function inputprofil() {
 
     axios({
       method: "post",
-      url: "http://127.0.0.1:8000/api/profildosens",
+      url: `http://127.0.0.1:8000/api/update_profildosen/${profil_dosen.id}?_method=PUT`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -133,7 +128,6 @@ export default function inputprofil() {
         if(error.response.data.message){
           toast.error(error.response.data.message);
           setTimeout(()=>{router.push("/profildosen/tabelprofil");},500);
-          
         }else{
           setError(error.response.data.error);
           if (error.response.status == 400) {
@@ -165,7 +159,7 @@ export default function inputprofil() {
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
                         >
-                          Tambah Data
+                          Update Data
                         </button>
                       </div>
                     </div>
@@ -185,10 +179,11 @@ export default function inputprofil() {
                               NIDK
                             </label>
                             <input
-                              className="form-control"
+                              className="form-control-plaintext"
                               type="text"
                               placeholder="NIDK dosen"
                               id="NIDK"
+                              defaultValue={profil_dosen.NIDK}
                             />
                             {dataError.NIDK ? (
                               <div className="invalid-feedback">
@@ -216,6 +211,7 @@ export default function inputprofil() {
                               type="text"
                               placeholder="NIK dosen"
                               id="NIK"
+                              defaultValue={profil_dosen.NIK}
                             />
                             {dataError.NIK ? (
                               <div className="invalid-feedback">
@@ -243,6 +239,7 @@ export default function inputprofil() {
                               type="text"
                               placeholder="NamaDosen dosen"
                               id="NamaDosen"
+                              defaultValue={profil_dosen.NamaDosen}
                             />
                             {dataError.NamaDosen ? (
                               <div className="invalid-feedback">
@@ -270,6 +267,7 @@ export default function inputprofil() {
                               type="text"
                               placeholder="Agama"
                               id="Agama"
+                              defaultValue={profil_dosen.Agama}
                             />
                             {dataError.Agama ? (
                               <div className="invalid-feedback">
@@ -297,6 +295,7 @@ export default function inputprofil() {
                               type="text"
                               placeholder="Tabanan"
                               id="TempatLahir"
+                              defaultValue={profil_dosen.TempatLahir}
                             />
                             {dataError.TempatLahir ? (
                               <div className="invalid-feedback">
@@ -324,6 +323,7 @@ export default function inputprofil() {
                               type="date"
                               placeholder="Pilih Tanggal"
                               id="TanggalLahir"
+                              defaultValue={profil_dosen.TanggalLahir}
                             />
                             {dataError.TanggalLahir ? (
                               <div className="invalid-feedback">
@@ -349,7 +349,7 @@ export default function inputprofil() {
                             <select
                               className="form-select"
                               aria-label="Default select example"
-                              defaultValue="Laki-Laki"
+                              defaultValue={profil_dosen.JenisKelamin}
                               id="JenisKelamin"
                             >
                               <option value="Laki-Laki">Laki-Laki</option>
@@ -380,7 +380,7 @@ export default function inputprofil() {
                             <select
                               className="form-select"
                               aria-label="Default select example"
-                              defaultValue="Belum Kawin"
+                              defaultValue={profil_dosen.StatusPerkawinan}
                               id="StatusPerkawinan"
                             >
                               <option value="Belum Kawin">Belum Kawin</option>
@@ -401,27 +401,35 @@ export default function inputprofil() {
                         Informasi Akademik
                       </p>
                       <div className="row">
-                      <div className="col-md-6">
+                        <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="StatusDosen"
-                               className={"form-control-label "+dataError.StatusDosen ? "is-invalid" : ""}
+                              className={
+                                "form-control-label " + dataError.StatusDosen
+                                  ? "is-invalid"
+                                  : ""
+                              }
                             >
                               Status Dosen
                             </label>
                             <select
                               className="form-select"
                               aria-label="Default select example"
-                              defaultValue="Dosen Tetap"
+                              defaultValue={profil_dosen.StatusDosen}
                               id="StatusDosen"
                             >
                               <option value="Dosen Tetap">Dosen Tetap</option>
-                              <option value="Dosen Tidak Tetap">Dosen Tidak Tetap</option>
-                              <option value="Dosen Industri">Dosen Industri</option>
+                              <option value="Dosen Tidak Tetap">
+                                Dosen Tidak Tetap
+                              </option>
+                              <option value="Dosen Industri">
+                                Dosen Industri
+                              </option>
                             </select>
                             {dataError.StatusDosen ? (
                               <div className="invalid-feedback">
-                                {dataError.StatusDosen}
+                                {dataError.NamaDosen}
                               </div>
                             ) : (
                               ""
@@ -430,7 +438,7 @@ export default function inputprofil() {
                         </div>
                       </div>
                       <div className="row">
-                      <div className="col-md-4">
+                        <div className="col-md-4">
                           <div className="form-group">
                             <label
                               htmlFor="Golongan"
@@ -447,6 +455,7 @@ export default function inputprofil() {
                               type="text"
                               placeholder="Golongan"
                               id="Golongan"
+                              defaultValue={profil_dosen.Golongan}
                             />
                             {dataError.Golongan ? (
                               <div className="invalid-feedback">
@@ -474,6 +483,7 @@ export default function inputprofil() {
                               type="text"
                               placeholder="Pangkat"
                               id="Pangkat"
+                              defaultValue={profil_dosen.Pangkat}
                             />
                             {dataError.Pangkat ? (
                               <div className="invalid-feedback">
@@ -502,6 +512,7 @@ export default function inputprofil() {
                               type="text"
                               placeholder="Jabatan Akademik"
                               id="JabatanAkademik"
+                              defaultValue={profil_dosen.JabatanAkademik}
                             />
                             {dataError.JabatanAkademik ? (
                               <div className="invalid-feedback">
@@ -533,6 +544,7 @@ export default function inputprofil() {
                               type="text"
                               placeholder="Email"
                               id="Email"
+                              defaultValue={profil_dosen.Email}
                             />
                             {dataError.Email ? (
                               <div className="invalid-feedback">
@@ -560,6 +572,7 @@ export default function inputprofil() {
                               type="text"
                               placeholder="085******"
                               id="NoTelepon"
+                              defaultValue={profil_dosen.NoTelepon}
                             />
                             {dataError.NoTelepon ? (
                               <div className="invalid-feedback">
@@ -587,6 +600,7 @@ export default function inputprofil() {
                               type="text"
                               placeholder="Alamat"
                               id="Alamat"
+                              defaultValue={profil_dosen.Alamat}
                             />
                             {dataError.Alamat ? (
                               <div className="invalid-feedback">
@@ -608,7 +622,7 @@ export default function inputprofil() {
             </div>
             <FooterUtama />
           </div>
-          <Toaster/>
+          <Toaster />
         </LayoutForm>
       )}
     </>

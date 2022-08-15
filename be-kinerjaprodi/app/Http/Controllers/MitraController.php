@@ -24,10 +24,31 @@ class MitraController extends Controller
             'id' => $id
         ]);
     }
+
+    public function searchmitra($search)
+    {
+
+
+        return response()->json([
+            'success' => true,
+            'searchmitra' =>  Mitra::where('namamitra', 'LIKE', "%{$search}%")
+                ->orwhere('alamat', 'LIKE', "%{$search}%")
+                ->orwhere('no_telepon', 'LIKE', "%{$search}%")
+                ->orwhere('nama_cp', 'LIKE', "%{$search}%")
+                ->orwhere('no_telp_cp', 'LIKE', "%{$search}%")
+                ->orwhere('email_cp', 'LIKE', "%{$search}%")
+                ->orwhere('bidang', 'LIKE', "%{$search}%")
+                ->get()
+
+        ]);
+    }
+
     public function tester(Request $request)
     {
         return response()->json(['Sukses' => true]);
     }
+
+
 
     public function insertmitra(Request $request)
     {
@@ -53,7 +74,7 @@ class MitraController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $model = Mitra::create([
@@ -103,7 +124,7 @@ class MitraController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
         $model = Mitra::find($id);
         $model->namamitra = $request->namamitra;

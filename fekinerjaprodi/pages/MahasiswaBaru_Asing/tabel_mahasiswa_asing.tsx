@@ -100,17 +100,17 @@ export default function daftarprofil() {
   }
   const exportAsing = () => {
     MySwal.fire({
-      title: "EXport",
-      text: "Are you sure? ",
+      title: "Export Data Mahasiswa Asing",
+      text: "Yakin Export? ",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      confirmButtonText: "Ya !",
     }).then((result) => {
       // <--
       if (result.value) {
         // <-- if confirmed
-        router.push(`/MahasiswaBaru_Asing/export_penerimaan/exportPenerimaan`)
+        router.push(`/MahasiswaBaru_Asing/export_mhsAsing/exportMhsAsing`)
       }
     })
   }

@@ -22,12 +22,13 @@ class LuaranlainnyaController extends Controller
         ]);
     }
 
-    public function tampilrelasi()
+    public function tampilrelasi($id)
     {
         return response()->json([
             'success' => true,
-            'all_relasi' => relasi_luaran_mhs::with('mahasiswa')->get(),
+            'all_relasi' => relasi_luaran_mhs::with('mahasiswa')->where('luaranlainnya_id',$id)->get(),
         ]);
+        
     }
 
     /**
@@ -60,7 +61,7 @@ class LuaranlainnyaController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $dataluaran = Luaranlainnya::create(

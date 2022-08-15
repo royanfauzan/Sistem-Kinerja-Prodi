@@ -79,16 +79,15 @@ export default function dashboardadmin() {
         <LayoutForm>
           <div className="container-fluid py-4">
             <div className="row">
-
               <div className="col-4 mt-3">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title">Data Integrasi</h5>
+                    <h5 className="card-title">Data Capaian kurikulum</h5>
                     <p className="card-text">
                       With supporting text below as a natural lead-in to
                       additional content.
                     </p>
-                    <a href="/integrasi/daftarintegrasi" className="btn btn-primary">
+                    <a href="/capkurikulum/daftarkurikulum" className="btn btn-primary">
                       Kelola Data
                     </a>
                   </div>
@@ -98,33 +97,17 @@ export default function dashboardadmin() {
               <div className="col-4 mt-3">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title">Data Mata Kuliah</h5>
+                    <h5 className="card-title">Data Kepuasan Mahasiswa</h5>
                     <p className="card-text">
                       With supporting text below as a natural lead-in to
                       additional content.
                     </p>
-                    <a href="/matkul/daftarmatkul" className="btn btn-primary">
+                    <a href="/kepuasanmhs/daftarkepuasanmhs" className="btn btn-primary">
                       Kelola Data
                     </a>
                   </div>
                 </div>
               </div>
-
-              <div className="col-4 mt-3">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">Data Mahasiswa</h5>
-                    <p className="card-text">
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </p>
-                    <a href="/mahasiswa/daftarmhs" className="btn btn-primary">
-                      Kelola Data
-                    </a>
-                  </div>
-                </div>
-              </div>
-              
               
             </div>
             <FooterUtama />

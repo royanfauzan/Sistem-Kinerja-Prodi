@@ -209,35 +209,9 @@ export default function daftarluaran() {
                                   </button>
                                 </Link>
 
-                                <Link href={`/luaran/hapusmahasiswa`}>
+                                <Link href={`/luaran/hapus/${lurn.id}`}>
                                   <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                   Hapus mahasiswa
-                                  </button>
-                                </Link>
-
-                                <button
-                                  onClick={() => deleteluaran(lurn.id)}
-                                  className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
-                                >
-                                  Hapus
-                                </button>
-                                </tr>
-                                <tr>
-                                <Link href={`/luaran/edit/${lurn.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
-
-                                <Link href={`/luaran/pilih/${lurn.id}`}>
-                                  <button className="btn btn-sm btn-success border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Pilih mahasiswa
-                                  </button>
-                                </Link>
-
-                                <Link href={`/luaran/hapusmahasiswa`}>
-                                  <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                   Hapus mahasiswa
+                                    Hapus mahasiswa
                                   </button>
                                 </Link>
 

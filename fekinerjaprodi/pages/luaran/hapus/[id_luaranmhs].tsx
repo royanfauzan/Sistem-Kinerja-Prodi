@@ -2,34 +2,53 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
-import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutForm";
-import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
+import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
+import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
+import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
 import Link from "next/link";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
-export default function daftarprestasi() {
+export async function getServerSideProps(context) {
+  //http request
+  const req = await axios.get(
+    `http://127.0.0.1:8000/api/tampil_relasi/${context.query.id_luaranmhs}`
+  );
+  const res = await req.data.all_relasi;
+
+  return {
+    props: {
+      luaran: res, // <-- assign response
+    },
+  };
+}
+
+export default function daftarluaran(props) {
   const router = useRouter();
+  const { id_luaranmhs } = router.query;
+  const { luaran } = props;
+
+  console.log(router.query)
 
   const [stadmin, setStadmin] = useState(false);
-  const [profilDosen, setprofilDosen] = useState([]);
+  const [profilDosen, setprofilDosen] = useState(luaran);
+  const [id_luaran, setid_luaran] = useState(id_luaranmhs);
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/pagelaran",
+      url: `http://127.0.0.1:8000/api/tampil_relasi/${id_luaran}`,
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_pagelaran } = response.data;
-        setprofilDosen(all_pagelaran);
-
-        console.log(all_pagelaran);
+        const { all_relasi } = response.data;
+        setprofilDosen(all_relasi);
+        console.log('aaaaaaaaaaaaaaaaa');
+        console.log(id_luaran);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -69,10 +88,10 @@ export default function daftarprestasi() {
       });
   }, []);
 
-  const deletepagelaran = (id) => {
+  const deleteluaran = (id) => {
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/delete_pagelaran/${id}`,
+      url: `http://127.0.0.1:8000/api/deletemahasiswa/${id}`,
     })
       .then(function (response) {
         router.reload();
@@ -98,18 +117,16 @@ export default function daftarprestasi() {
                   <div className="row justify-content-between mb-4">
                     <div className="col-4">
                       <td className="align-middle">
-                        <Link href={`/pagelaran/inputpagelaran/`}>
-                          <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                            Tambah Data
+                        <Link href={`/luaran/daftarluaran/`}>
+                          <button className=" btn btn-primary border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
+                            Daftar Tabel
                           </button>
                         </Link>
                       </td>
                     </div>
                     <div className="col-4 d-flex flex-row-reverse">
                       <td className="align-middle">
-                        <Link
-                          href={`/pagelaran/exportpagelaran/export_pagelaran`}
-                        >
+                        <Link href={`/luaran/exportluaran/export_luaran`}>
                           <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-5 mt-3 mb-0">
                             Export Excel
                           </button>
@@ -131,92 +148,42 @@ export default function daftarprestasi() {
                             NO
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Mahasiswa
+                            Nama Mahasiswa
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Judul Pagelaran
+                            Judul
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Tahun
-                          </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Penyelenggara
-                          </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Ruang Lingkup
-                          </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            File Bukti
+                            NIM
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2 pe-0"></th>
                         </tr>
                       </thead>
                       <tbody>
-                        {profilDosen.map((pglrn, number) => {
+                        {profilDosen.map((lurn, number) => {
                           return (
-                            <tr key={`pglrn` + pglrn.id}>
+                            <tr key={`lurn` + lurn.id}>
                               <td>
                                 <h6 className="mb-0 text-sm ps-2">
                                   {number + 1}
                                 </h6>
                               </td>
 
-                              <td>
-                                {pglrn.anggota_mahasiswas.map(
-                                  (anggota_mahasiswas) => {
-                                    return (
-                                      <p
-                                        className="mb-0 text-sm"
-                                        key="anggota.id"
-                                      >
-                                        {anggota_mahasiswas.nama}
-                                      </p>
-                                    );
-                                  }
-                                )}
-                              </td>
-
                               <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {pglrn.judul}
+                                  {lurn.mahasiswa.nama}
                                 </p>
                               </td>
 
                               <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {pglrn.tahun}
+                                  {lurn.mahasiswa.nim}
                                 </p>
-                              </td>
-
-                              <td className="align-middle ">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {pglrn.penyelenggara}
-                                </p>
-                              </td>
-
-                              <td className="align-middle ">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {pglrn.ruang_lingkup}
-                                </p>
-                              </td>
-
-                              <td className="align-middle ">
-                                <span className="text-dark text-xs font-weight-bold">
-                                  <p className="text-xs font-weight-bold mb-0">
-                                    {pglrn.file_bukti}
-                                  </p>
-                                </span>
                               </td>
 
                               <td className="align-middle pe-0">
-                                <Link href={`/pagelaran/edit/${pglrn.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
-
                                 <button
-                                  onClick={() => deletepagelaran(pglrn.id)}
+                                  onClick={() => deleteluaran(lurn.id)}
                                   className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
                                   Hapus

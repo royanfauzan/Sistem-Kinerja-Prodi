@@ -57,7 +57,7 @@ export default function index() {
         console.log(localStorage.getItem('token'));
         console.log("success");
         console.log(response);
-        router.push("/dashboards_eva/dashboardpendidikan");
+        router.push("/dashboards_capaian_tridarma/dashboardtridarma");
       })
       .catch(function (error) {
         //handle error

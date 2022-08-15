@@ -10,7 +10,7 @@ import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import Link from "next/link";
 
 
-export default function daftarprestasi() {
+export default function daftarpagelaran() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
@@ -21,16 +21,16 @@ export default function daftarprestasi() {
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/prestasi",
+      url: "http://127.0.0.1:8000/api/pagelaran",
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_prestasi } = response.data;
-        setprofilDosen(all_prestasi);
+        const { all_pagelaran } = response.data;
+        setprofilDosen(all_pagelaran);
 
-        console.log(all_prestasi);
+        console.log(all_pagelaran);
       })
       .catch(function (err) {
         console.log("gagal");

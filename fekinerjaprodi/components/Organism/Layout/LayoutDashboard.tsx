@@ -13,7 +13,7 @@ export default function LayoutForm(props: LayoutProps) {
   const role = rlUser;
   return (
     <>
-      <div className="min-height-300 bg-primary position-absolute w-100 h-100"></div>
+      <div className="min-height-300 bg-primary position-absolute w-100"></div>
       {role == "admin" ? (
         <SidebarUtama />
       ): (

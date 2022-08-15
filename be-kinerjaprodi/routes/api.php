@@ -133,7 +133,7 @@ Route::post('delete_waktutunggu/{id}', [WaktutungguController::class, 'destroy']
 //Luaran lainnya
 Route::post('luaran_mhs/{id}', [LuaranlainnyaController::class, 'pilihmahasiswa']);
 Route::get('luaran', [LuaranlainnyaController::class, 'index']);
-Route::get('tampil_relasi', [LuaranlainnyaController::class, 'tampilrelasi']);
+Route::get('tampil_relasi/{id}', [LuaranlainnyaController::class, 'tampilrelasi']);
 Route::post('luaran', [LuaranlainnyaController::class, 'store']);
 Route::put('edit_luaran/{id}', [LuaranlainnyaController::class, 'update']);
 Route::get('show_luaran/{id}', [LuaranlainnyaController::class, 'show']);
@@ -142,6 +142,8 @@ Route::post('deletemahasiswa/{id}', [LuaranlainnyaController::class, 'deletemaha
 
 
 //Pagelaran MHS
+
+Route::get('tahun_pagelaran', [PagelaranController::class, 'exportpublikasidos']);
 Route::get('pagelaran', [PagelaranController::class, 'index']);
 Route::post('pagelaran', [PagelaranController::class, 'store']);
 Route::put('edit_pagelaran/{id}', [PagelaranController::class, 'update']);

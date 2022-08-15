@@ -5,18 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class relasi_luaran_mhs extends Model
+class Relasi_pagelaran_mhs extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-
+    
     public function mahasiswa()
     {
         return $this->belongsTo(Mahasiswa::class,'mahasiswa_id','id');
-    }
-
-    public function luaran()
-    {
-        return $this->belongsTo(Luaranlainnya::class,'luaranlainnya_id','id');
     }
 }

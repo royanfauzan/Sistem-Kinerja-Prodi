@@ -200,6 +200,8 @@ Route::get('read_user/{id}', [UserController::class, 'show']);
 Route::post('store_user', [UserController::class, 'store']);
 Route::post('update_user/{id}', [UserController::class, 'update']);
 Route::post('delete_user/{id}', [UserController::class, 'destroy']);
+Route::get('reset_user/{id}', [UserController::class, 'resetpassword']);
+Route::post('change_password/', [UserController::class, 'changepassword']);
 
 Route::post('create_penggunaan_dana', [PenggunaanDanaController::class, 'insert_penggunaan_dana']);
 Route::get('read_penggunaan_dana', [PenggunaanDanaController::class, 'tampil_penggunaan_dana']);
@@ -240,7 +242,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('get_user', [ApiController::class, 'get_user']);
     Route::post('penelitiandosens', [PenelitianController::class, 'store']);
     Route::post('pengabdiandosens', [PengabdianController::class, 'store']);
-    
+
     Route::post('mengajars', [MengajarController::class, 'store']);
     Route::post('bimbingans', [BimbinganController::class, 'store']);
     Route::get('logout', [ApiController::class, 'logout']);
@@ -368,4 +370,3 @@ Route::get('Integrasi', [IntegrasiController::class, 'index']);
 Route::post('Integrasi', [IntegrasiController::class, 'store']);
 Route::put('Integrasi_Update/{id}', [IntegrasiController::class, 'update']);
 Route::post('Integrasi_Delete/{id}', [IntegrasiController::class, 'destroy']);
-

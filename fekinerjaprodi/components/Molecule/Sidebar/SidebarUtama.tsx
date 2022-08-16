@@ -1,38 +1,37 @@
-import axios from "axios";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import axios from "axios"
+import { useRouter } from "next/router"
+import React, { useEffect, useState } from "react"
 import style from "./sideb.module.css"
 
-
 export default function SidebarUtama() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const pathHalaman = router.asPath;
-  const arrHalaman = pathHalaman.split("/");
-  const HalamanActive = arrHalaman.slice(-1)[0];
+  const pathHalaman = router.asPath
+  const arrHalaman = pathHalaman.split("/")
+  const HalamanActive = arrHalaman.slice(-1)[0]
 
   const Logout = async () => {
-    const lgToken = localStorage.getItem("token");
+    const lgToken = localStorage.getItem("token")
 
     axios({
-        method: "get",
-        url: "http://127.0.0.1:8000/api/logout",
-        headers: { Authorization: `Bearer ${lgToken}` },
-        params:{
-          token:lgToken
-        }
+      method: "get",
+      url: "http://127.0.0.1:8000/api/logout",
+      headers: { Authorization: `Bearer ${lgToken}` },
+      params: {
+        token: lgToken,
+      },
     })
-        .then(function (response) {
-            console.log(response);
-            console.log("Sukses");
-            localStorage.removeItem("token");
-            router.push('/login');
-        })
-        .catch(function (err) {
-            console.log("gagal");
-            console.log(err.response);
-        });
-};
+      .then(function (response) {
+        console.log(response)
+        console.log("Sukses")
+        localStorage.removeItem("token")
+        router.push("/login")
+      })
+      .catch(function (err) {
+        console.log("gagal")
+        console.log(err.response)
+      })
+  }
 
   return (
     <aside
@@ -65,11 +64,37 @@ export default function SidebarUtama() {
       >
         <ul className="navbar-nav">
           <li className={`nav-item `}>
-            <a className={`nav-link ${(HalamanActive == 'dashboardadmin')?'active bg-primary text-white':''}`} href="/dashboards/dashboardadmin">
+            <a
+              className={`nav-link ${
+                HalamanActive == "dashboardadmin"
+                  ? "active bg-primary text-white"
+                  : ""
+              }`}
+              href="/dashboards/dashboardadmin"
+            >
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
               <span className="nav-link-text ms-1">Dashboard</span>
+            </a>
+          </li>
+          <li className={`nav-item `}>
+            <a className="nav-link " href="/dashboard_rona/dashboard_user">
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">User</span>
+            </a>
+          </li>
+          <li className={`nav-item `}>
+            <a className="nav-link " href="/dashboard_rona/dashboard_tb124">
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">
+                Kriteria Kerjasama, <br /> Mahasiswa, Keuangan, <br />
+                Sarana dan Prasarana
+              </span>
             </a>
           </li>
           <li className={`nav-item `}>
@@ -120,13 +145,8 @@ export default function SidebarUtama() {
         </ul>
       </div>
       <div className="mx-3 ">
-        
-        <a
-          href="https://www.creative-tim.com/learning-lab/bootstrap/license/argon-dashboard"
-          target="_blank"
-          className="btn btn-dark btn-sm w-100 mb-3"
-        >
-          Documentation
+        <a href="/User/UbahPassword" className="btn btn-dark btn-sm w-100 mb-3">
+          Change Password
         </a>
         <a
           className="btn btn-sm btn-outline-danger mb-0 w-100"
@@ -137,5 +157,5 @@ export default function SidebarUtama() {
         </a>
       </div>
     </aside>
-  );
+  )
 }

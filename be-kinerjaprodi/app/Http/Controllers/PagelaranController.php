@@ -300,6 +300,9 @@ class PagelaranController extends Controller
             $arrPagelaraninter[] = $PagelaranInternasional;
             $jumlahPagelarants = $PagelaranWilayah + $PagelaranNasional + $PagelaranInternasional;
 
+            $jml_ttl_ts =  $jumlahPublikasits + $jumlahSeminarts + $jumlahPagelarants;
+
+
             $sementara = collect(
                 [
                     'jurnal_tidak_akreditasi' => $tidakakreditasi,
@@ -318,7 +321,9 @@ class PagelaranController extends Controller
                     'pagelaran_internasional' => $PagelaranInternasional,
                     'jumlah_pagelaran_ts' => $jumlahPagelarants,
                     'list_pagelaran' => $listpagelarl,
+                    'totalts' => $jml_ttl_ts,
                     'ts' => $th
+                    
                 ]
             );
             $publikasits->push(collect($sementara));
@@ -348,6 +353,8 @@ class PagelaranController extends Controller
             $jmlPagelarannasional +
             $jmlPagelaraninter;
 
+            
+
 
         return response()->json([
             'success' => true,
@@ -365,6 +372,20 @@ class PagelaranController extends Controller
             'jumlah_pagelaran_internasional' => $jmlPagelaraninter,
 
             'jumlah_total' => $jml_total,
+        ]);
+    }
+
+    public function listtahun(Request $request)
+    {
+        //
+        $allpagelaran = Pagelaran::all()->groupBy('tahun');
+        $arrTahun = array();
+        foreach ($allpagelaran as $key => $pagelaranthn) {
+            $arrTahun[] = $pagelaranthn[0]->tahun;
+        }
+        return response()->json([
+            'success' => true,
+            'tahunpagelarans' => $arrTahun,
         ]);
     }
 }

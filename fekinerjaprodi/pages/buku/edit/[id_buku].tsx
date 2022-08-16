@@ -35,6 +35,7 @@ export default function editbuku(props) {
   const url = "http://127.0.0.1:8000/";
   const [dataurl, setUrl] = useState(url);
   const [dataBukus, setBukus] = useState([]);
+  const [dataRole, setRole] = useState("");
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () => {};
@@ -58,6 +59,8 @@ export default function editbuku(props) {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -126,7 +129,6 @@ export default function editbuku(props) {
 
   const handleChangeTingkat = (e) => {
     setselectTingkat(e.target.value);
-   
   };
 
   const handleChangeFile = (e) => {
@@ -137,7 +139,7 @@ export default function editbuku(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -196,16 +198,16 @@ export default function editbuku(props) {
                               required
                             >
                               <option value="">Pilih Kategori Jurnal</option>
-                              <option value="Jurnal Penelitian Tidak Terakreditasi">
+                              <option value="tidak terakreditasi">
                                 Jurnal Penelitian Tidak Terakreditasi
                               </option>
-                              <option value="Jurnal penelitian nasional terakreditasi">
+                              <option value="nasional terakreditasi">
                                 Jurnal penelitian nasional terakreditasi
                               </option>
-                              <option value="Jurnal penelitian internasional">
+                              <option value="internasional">
                                 Jurnal penelitian internasional
                               </option>
-                              <option value="Jurnal penelitian internasional bereputasi">
+                              <option value="internasional bereputasi">
                                 Jurnal penelitian internasional bereputasi
                               </option>
                             </select>

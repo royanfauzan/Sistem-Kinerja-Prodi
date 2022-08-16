@@ -14,23 +14,27 @@ export default function daftarpagelaran() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
+  const [isLoaded, setisLoaded] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
+  const [allPublikasi, setallPublikasi] = useState();
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
+    const dateSekarang = new Date();
+    const tahunSekarang = dateSekarang.getFullYear();
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/pagelaran",
+      url: `http://127.0.0.1:8000/api/tahun_pagelaran/${tahunSekarang}`,
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_pagelaran } = response.data;
-        setprofilDosen(all_pagelaran);
+        const { data } = response;
+        setallPublikasi(data);
 
-        console.log(all_pagelaran);
+        console.log(data);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -83,7 +87,6 @@ export default function daftarpagelaran() {
                   td,
                   th {
                     border: 2px solid !important;
-                    text-align: center;
                   }
 
                   table {
@@ -129,90 +132,324 @@ export default function daftarpagelaran() {
                         <thead>
                           <tr>
                             <th rowspan="2">No</th>
-                            <th  rowspan="2" >Nama Kegiatan</th>
-                            <th rowspan="2">Waktu Pengelolaan</th>
-                            <th colspan="3">Tingkat</th>
-                            <th rowspan="2">Prestasi yang Dicapai</th>
+                            <th  rowspan="2" >Jenis Publikasi</th>
+                            <th colspan="3">Jumlah Judul </th>
+                            <th rowspan="2">Jumlah</th>
                           </tr>
                           <tr>
-                            <th>Lokal / Wilayah</th>
-                            <th>Nasional</th>
-                            <th>Internasional</th>
+                            <th>TS-2</th>
+                            <th>TS-1</th>
+                            <th>TS</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {profilDosen.map((kpsn, number) => {
-                            return (
-                              <tr key={`kpsn` + kpsn.id}>
-                                <th>
-                                  <p className="mb-0 text-sm font-weight-bold">{number + 1}</p>
-                                </th>
-
-                                <th className="align-middle  text-sm">
-                                  <p className="text-xs font-weight-bold mb-0">
-                                    {kpsn.nm_kegiatan}
-                                  </p>
-                                </th>
-
-                                <th className="align-middle  text-sm">
-                                  <p className="text-xs text-center font-weight-bold mb-0">
-                                    {kpsn.tahun}
-                                  </p>
-                                </th>
-
-                                {kpsn.tingkat == "Lokal" ? (
+                          {allPublikasi && (
+                            <>
+                              <tr>
+                                <td>{1}</td>
+                                <td>Jurnal penelitian tidak terakreditasi</td>
+                                {allPublikasi.publikasi_ts[2].jurnal_tidak_akreditasi ? (
                                   <>
-                                    {" "}
-                                    <th></th> <th> </th>{" "}
-                                    <th>
-                                      {" "}
-                                      <p className="mb-0 text-sm">Lokal </p>
-                                    </th>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[2].jurnal_tidak_akreditasi}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[1].jurnal_tidak_akreditasi}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[0].jurnal_tidak_akreditasi}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.jumlah_publikasi_tidak_akreditasi}
+                                    </td>
                                   </>
                                 ) : (
-                                  ""
-                                )}
-
-                                {kpsn.tingkat == "Nasional" ? (
                                   <>
-                                    {" "}
-                                    <th></th>{" "}
-                                    <th>
-                                      {" "}
-                                      <p className="mb-0 text-sm">
-                                        Nasional{" "}
-                                      </p>
-                                    </th>{" "}
-                                    <th> </th>{" "}
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
                                   </>
-                                ) : (
-                                  ""
                                 )}
-
-                                {kpsn.tingkat == "Internasional" ? (
-                                  <>
-                                    {" "}
-                                    <th>
-                                      {" "}
-                                      <p className="mb-0 text-sm">
-                                        internasional{" "}
-                                      </p>
-                                    </th>{" "}
-                                    <th></th> <th> </th>{" "}
-                                  </>
-                                ) : (
-                                  ""
-                                )}
-
-                                <th className="align-middle ">
-                                  <p className="text-xs font-weight-bold mb-0">
-                                    {kpsn.prestasi_dicapai}
-                                  </p>
-                                </th>
                               </tr>
-                              
-                            );
-                          })}
+                              <tr>
+                                <td>{1}</td>
+                                <td>Jurnal penelitian nasional terakreditasi</td>
+                                {allPublikasi.publikasi_ts[2].jurnal_nasional ? (
+                                  <>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[2].jurnal_nasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[1].jurnal_nasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[0].jurnal_nasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.jumlah_publikasi_nasional}
+                                    </td>
+                                  </>
+                                ) : (
+                                  <>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                  </>
+                                )}
+                              </tr>
+                              <tr>
+                                <td>{1}</td>
+                                <td>Jurnal penelitian internasiona</td>
+                                {allPublikasi.publikasi_ts[2].jurnal_internasional ? (
+                                  <>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[2].jurnal_internasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[1].jurnal_internasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[0].jurnal_internasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.jumlah_publikasi_internasional}
+                                    </td>
+                                  </>
+                                ) : (
+                                  <>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                  </>
+                                )}
+                              </tr>
+
+                              <tr>
+                                <td>{1}</td>
+                                <td>Jurnal penelitian internasional bereputasi</td>
+                                {allPublikasi.publikasi_ts[2].jurnal_internasional_bereputasi ? (
+                                  <>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[2].jurnal_internasional_bereputasi}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[1].jurnal_internasional_bereputasi}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[0].jurnal_internasional_bereputasi}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.jumlah_publikasi_internasional_bereputasi}
+                                    </td>
+                                  </>
+                                ) : (
+                                  <>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                  </>
+                                )}
+                              </tr>
+
+                              <tr>
+                                <td>{1}</td>
+                                <td>Seminar wilayah/lokal/perguruan tinggi</td>
+                                {allPublikasi.publikasi_ts[2].seminar_wilayah ? (
+                                  <>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[2].seminar_wilayah}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[1].seminar_wilayah}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[0].seminar_wilayah}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.jumlah_seminar_wilayah}
+                                    </td>
+                                  </>
+                                ) : (
+                                  <>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                  </>
+                                )}
+                              </tr>
+
+                              <tr>
+                                <td>{1}</td>
+                                <td>Seminar nasional</td>
+                                {allPublikasi.publikasi_ts[2].seminar_nasional ? (
+                                  <>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[2].seminar_nasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[1].seminar_nasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[0].seminar_nasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.jumlah_seminar_nasional   }
+                                    </td>
+                                  </>
+                                ) : (
+                                  <>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                  </>
+                                )}
+                              </tr>
+
+                              <tr>
+                                <td>{1}</td>
+                                <td>Seminar internasional</td>
+                                {allPublikasi.publikasi_ts[2].seminar_internasional ? (
+                                  <>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[2].seminar_internasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[1].seminar_internasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[0].seminar_internasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.jumlah_seminar_internasional}
+                                    </td>
+                                  </>
+                                ) : (
+                                  <>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                  </>
+                                )}
+                              </tr>
+
+                              <tr>
+                                <td>{1}</td>
+                                <td>Pagelaran/pameran/presentasi dalam forum di tingkat wilayah</td>
+                                {allPublikasi.publikasi_ts[2].pagelaran_wilayah ? (
+                                  <>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[2].pagelaran_wilayah}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[1].pagelaran_wilayah}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[0].pagelaran_wilayah}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.jumlah_pagelaran_wilayah}
+                                    </td>
+                                  </>
+                                ) : (
+                                  <>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                  </>
+                                )}
+                              </tr>
+
+                              <tr>
+                                <td>{1}</td>
+                                <td>Pagelaran/pameran/presentasi dalam forum di tingkat nasional</td>
+                                {allPublikasi.publikasi_ts[2].pagelaran_nasional ? (
+                                  <>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[2].pagelaran_nasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[1].pagelaran_nasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[0].pagelaran_nasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.jumlah_pagelaran_nasional}
+                                    </td>
+                                  </>
+                                ) : (
+                                  <>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                  </>
+                                )}
+                              </tr>
+                              <tr>
+                                <td>{1}</td>
+                                <td>Pagelaran/pameran/presentasi dalam forum di tingkat internasional</td>
+                                {allPublikasi.publikasi_ts[2].pagelaran_internasional ? (
+                                  <>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[2].pagelaran_internasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[1].pagelaran_internasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[0].pagelaran_internasional}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.jumlah_pagelaran_internasional}
+                                    </td>
+                                  </>
+                                ) : (
+                                  <>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                  </>
+                                )}
+                              </tr>
+
+                              <tr>
+                                <td className="text-center" colspan="2">Jumlah</td>
+                                {allPublikasi.publikasi_ts[2]?(
+                                  <>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[2].totalts}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[1].totalts}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.publikasi_ts[0].totalts}
+                                    </td>
+                                    <td>
+                                      {allPublikasi.jumlah_total}
+                                    </td>
+                                  </>
+                                ) : (
+                                  <>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                    <td>{0}</td>
+                                  </>
+                                )}
+                              </tr>
+                            </>
+                          )}
                         </tbody>
                       </table>
                     }

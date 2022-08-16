@@ -143,8 +143,8 @@ Route::post('deletemahasiswa/{id}', [LuaranlainnyaController::class, 'deletemaha
 
 
 //Pagelaran MHS
-
-Route::get('tahun_pagelaran', [PagelaranController::class, 'exportpublikasidos']);
+Route::get('pagelaranlisttahun', [PagelaranController::class, 'listtahun']);
+Route::get('tahun_pagelaran/{tahun}', [PagelaranController::class, 'exportpublikasidos']);
 Route::get('pagelaran', [PagelaranController::class, 'index']);
 Route::post('pagelaran', [PagelaranController::class, 'store']);
 Route::put('edit_pagelaran/{id}', [PagelaranController::class, 'update']);

@@ -70,19 +70,6 @@ export default function SidebarDosen() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a
-              className="nav-link "
-              href="/dashboards_capaian_tridarma/dashboardtridarma"
-            >
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">
-                Kriteria Luaran dan <br /> Capaian Tridarama
-              </span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
             <a className="nav-link " href="/dashboards_eva/dashboardpendidikan">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>

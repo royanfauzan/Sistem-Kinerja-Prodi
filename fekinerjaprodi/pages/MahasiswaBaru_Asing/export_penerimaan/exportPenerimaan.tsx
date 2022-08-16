@@ -7,13 +7,14 @@ import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama"
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm"
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 import Link from "next/link"
+import ReactHTMLTableToExcel from "react-html-table-to-excel"
 
 export default function penerimaanMahasiswa() {
   const router = useRouter()
 
   const [stadmin, setStadmin] = useState(false)
   const [tampilPenerimaan, settampilPenerimaan] = useState([])
-
+  const [dataRole, setRole] = useState("")
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token")
 
@@ -53,6 +54,8 @@ export default function penerimaanMahasiswa() {
         console.log(response)
         console.log("Sukses")
         const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/")
@@ -86,25 +89,30 @@ export default function penerimaanMahasiswa() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
                 <div className="card-header pb-0">
                   <div className="row justify-content-between">
                     <div className="col-4">
-                      <h6>Authors table</h6>
+                      <h4>Authors table</h4>
                     </div>
                     <div className="col-4 d-flex flex-row-reverse">
-                      <button className="btn btn-sm btn-success border-0 shadow-sm mb-3 me-3">
-                        EXPORT
-                      </button>
+                      <ReactHTMLTableToExcel
+                        id="test-table-xls-button"
+                        className="download-table-xls-button btn btn-success ms-3"
+                        table="table1"
+                        filename="Seleksi Mahasiswa"
+                        sheet="Seleksi Mahasiswa"
+                        buttonText="Export Excel"
+                      />
                     </div>
                   </div>
                 </div>
                 <style jsx>{`
                   table,
-                  td,
+                  th,
                   th {
                     border: 1px solid;
                     text-align: center;
@@ -115,93 +123,120 @@ export default function penerimaanMahasiswa() {
                     border-collapse: collapse;
                   }
                 `}</style>
-                <table>
-                  <thead>
-                    <tr>
-                      <th rowspan="2">Program Studi</th>
-                      <th rowspan="2">Tahun Akademik</th>
-                      <th rowspan="2">Daya Tampung</th>
-                      <th colspan="2">Jumlah Calon Mahasiswa</th>
-                      <th colspan="2">Jumlah Mahasiswa Baru</th>
-                      <th colspan="2">Jumlah Mahasiswa Aktif</th>
-                    </tr>
-                    <tr>
-                      <th>Pendaftar</th>
-                      <th>Lulus Seleksi</th>
-                      <th>Reguler</th>
-                      <th>Transfer</th>
-                      <th>Reguler</th>
-                      <th>Transfer</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tampilPenerimaan.map((tPenerimaan) => {
-                      return (
-                        <tr key={`tpenerimaan` + tPenerimaan.id}>
-                          <td>
-                            <h6 className="mb-0 text-sm">
-                              {tPenerimaan.prodi.nama_prodi}
-                            </h6>
-                          </td>
-                          <td>
-                            <h6 className="mb-0 text-sm">
-                              {tPenerimaan.Tahun_Akademik}
-                            </h6>
-                          </td>
-                          <td>
-                            <div className="d-flex flex-column justify-content-center">
-                              <h6 className="mb-0 text-sm">
-                                {tPenerimaan.Daya_Tampung}
-                              </h6>
-                            </div>
-                          </td>
-                          <td className="align-middle ">
-                            <h6 className="mb-0 text-sm">
-                              {tPenerimaan.Pendaftaran}
-                            </h6>
-                          </td>
 
-                          <td className="align-middle text-center text-sm">
-                            <h6 className="mb-0 text-sm">
-                              {tPenerimaan.Lulus_Seleksi}
-                            </h6>
-                          </td>
-                          <td className="align-middle text-center">
-                            <span className="text-secondary text-xs font-weight-bold">
-                              <h6 className="mb-0 text-sm">
-                                {tPenerimaan.Maba_Reguler}
-                              </h6>
-                            </span>
-                          </td>
-
-                          <td className="align-middle text-center">
-                            <span className="text-secondary text-xs font-weight-bold">
-                              <h6 className="mb-0 text-sm">
-                                {tPenerimaan.Maba_Transfer}
-                              </h6>
-                            </span>
-                          </td>
-
-                          <td className="align-middle text-center">
-                            <span className="text-secondary text-xs font-weight-bold">
-                              <h6 className="mb-0 text-sm">
-                                {tPenerimaan.Mahasiswa_Aktif_Reguler}
-                              </h6>
-                            </span>
-                          </td>
-
-                          <td className="align-middle text-center">
-                            <span className="text-secondary text-xs font-weight-bold">
-                              <h6 className="mb-0 text-sm">
-                                {tPenerimaan.Mahasiswa_Aktif_Transfer}
-                              </h6>
-                            </span>
-                          </td>
+                <div className="card-body ">
+                  <div className="table-responsive p-0">
+                    <table id="table1" border={1}>
+                      <thead>
+                        <tr>
+                          <th rowspan="2">
+                            <h3 className="mb-0 text-sm">Tahun Akademik</h3>
+                          </th>
+                          <th rowspan="2">
+                            <h3 className="mb-0 text-sm">Daya Tampung</h3>
+                          </th>
+                          <th colspan="2">
+                            <h3 className="mb-0 text-sm">
+                              Jumlah Calon Mahasiswa
+                            </h3>
+                          </th>
+                          <th colspan="2">
+                            <h3 className="mb-0 text-sm">
+                              Jumlah Mahasiswa Baru
+                            </h3>
+                          </th>
+                          <th colspan="2">
+                            <h3 className="mb-0 text-sm">
+                              Jumlah Mahasiswa Aktif
+                            </h3>
+                          </th>
                         </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
+                        <tr>
+                          <th>
+                            <h3 className="mb-0 text-sm">Pendaftar</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">Lulus Seleksi</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">Reguler</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">Transfer</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">Reguler</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">Transfer</h3>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {tampilPenerimaan.map((tPenerimaan) => {
+                          return (
+                            <tr key={`tpenerimaan` + tPenerimaan.id}>
+                              <th>
+                                <h4 className="mb-0 text-sm">
+                                  {tPenerimaan.Tahun_Akademik}
+                                </h4>
+                              </th>
+                              <th>
+                                <div className="d-flex flex-column justify-content-center">
+                                  <h4 className="mb-0 text-sm">
+                                    {tPenerimaan.Daya_Tampung}
+                                  </h4>
+                                </div>
+                              </th>
+                              <th className="align-middle ">
+                                <h4 className="mb-0 text-sm">
+                                  {tPenerimaan.Pendaftaran}
+                                </h4>
+                              </th>
+
+                              <th className="align-middle text-center text-sm">
+                                <h4 className="mb-0 text-sm">
+                                  {tPenerimaan.Lulus_Seleksi}
+                                </h4>
+                              </th>
+                              <th className="align-middle text-center">
+                                <span className="text-secondary text-xs font-weight-bold">
+                                  <h4 className="mb-0 text-sm">
+                                    {tPenerimaan.Maba_Reguler}
+                                  </h4>
+                                </span>
+                              </th>
+
+                              <th className="align-middle text-center">
+                                <span className="text-secondary text-xs font-weight-bold">
+                                  <h4 className="mb-0 text-sm">
+                                    {tPenerimaan.Maba_Transfer}
+                                  </h4>
+                                </span>
+                              </th>
+
+                              <th className="align-middle text-center">
+                                <span className="text-secondary text-xs font-weight-bold">
+                                  <h4 className="mb-0 text-sm">
+                                    {tPenerimaan.Mahasiswa_Aktif_Reguler}
+                                  </h4>
+                                </span>
+                              </th>
+
+                              <th className="align-middle text-center">
+                                <span className="text-secondary text-xs font-weight-bold">
+                                  <h4 className="mb-0 text-sm">
+                                    {tPenerimaan.Mahasiswa_Aktif_Transfer}
+                                  </h4>
+                                </span>
+                              </th>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
             <FooterUtama />

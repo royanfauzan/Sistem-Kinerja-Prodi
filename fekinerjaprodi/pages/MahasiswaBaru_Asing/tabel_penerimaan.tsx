@@ -14,6 +14,7 @@ export default function penerimaanMahasiswa() {
   const MySwal = withReactContent(Swal)
   const [stadmin, setStadmin] = useState(false)
   const [tampilPenerimaan, settampilPenerimaan] = useState([])
+  const [dataRole, setRole] = useState("")
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token")
@@ -54,6 +55,8 @@ export default function penerimaanMahasiswa() {
         console.log(response)
         console.log("Sukses")
         const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/")
@@ -164,7 +167,7 @@ export default function penerimaanMahasiswa() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">

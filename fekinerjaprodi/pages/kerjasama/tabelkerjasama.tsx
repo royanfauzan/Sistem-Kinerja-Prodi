@@ -17,6 +17,7 @@ export default function tabelkerjasama() {
   const [tampilKerjasama, settampilKerjasama] = useState([])
   const url = "http://127.0.0.1:8000/storage/kerjasama/"
   const [dataurl, setUrl] = useState(url)
+  const [dataRole, setRole] = useState("")
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token")
@@ -57,6 +58,8 @@ export default function tabelkerjasama() {
         console.log(response)
         console.log("Sukses")
         const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/")
@@ -164,7 +167,7 @@ export default function tabelkerjasama() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className=" container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
@@ -294,7 +297,7 @@ export default function tabelkerjasama() {
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
                                   <h6 className="mb-0 text-sm">
-                                    {tKjs.mitra.bidang}
+                                    {tKjs.bidang}
                                   </h6>
                                 </span>
                               </td>

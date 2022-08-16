@@ -15,7 +15,7 @@ export default function LayoutForm(props: LayoutProps) {
 
   return (
     <>
-      <div className={`min-height-300 bg-primary position-absolute w-100 h-100 `}>
+      <div className={`min-height-300 bg-primary position-absolute w-100`}>
         
       </div>
       {role == "admin" ? <SidebarUtama /> : <SidebarDosen />}

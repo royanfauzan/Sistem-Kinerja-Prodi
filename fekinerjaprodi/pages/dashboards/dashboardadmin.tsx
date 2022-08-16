@@ -116,7 +116,7 @@ export default function dashboardadmin() {
                     </h3>
                   </div>
                 </div>
-                <div className="row mt-4 ms-1">
+                <div className="row mt-4 ">
                   <div className="col-6">
                     <div className="row d-flex justify-content-around">
                       <Carddashboard judul={`Kriteria Sumber Daya Manusia`}>
@@ -156,7 +156,7 @@ export default function dashboardadmin() {
                       </Carddashboard>
                     </div>
                   </div>
-                  <div className="col-6 me-1">
+                  <div className="col-6 ">
                     <div className="row d-flex justify-content-around">
                       <Carddashboard judul={`Kriteria Penelitian`}>
                         <ListCardDash

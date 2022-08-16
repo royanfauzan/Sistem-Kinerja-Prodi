@@ -283,6 +283,8 @@ class SdmLaporanController extends Controller
             $arrPagelaraninter[] = $PagelaranInternasional;
             $jumlahPagelarants = $PagelaranWilayah + $PagelaranNasional + $PagelaranInternasional;
 
+            $jumlah_ts = $jumlahPublikasits+$jumlahPagelarants+$jumlahSeminarts;
+
             $sementara = collect(
                 [
                     'jurnal_tidak_akreditasi' => $tidakakreditasi,
@@ -301,6 +303,7 @@ class SdmLaporanController extends Controller
                     'pagelaran_internasional' => $PagelaranInternasional,
                     'jumlah_pagelaran_ts' => $jumlahPagelarants,
                     'list_pagelaran' => $listpagelarl,
+                    'jml_ts' => $jumlah_ts,
                     'ts' => $th
                 ]
             );

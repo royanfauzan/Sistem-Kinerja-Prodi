@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
+import Carddashboard from "../../components/Molecule/MenuCard/Carddashboard";
+import ListCardDash from "../../components/Molecule/MenuCard/ListCardDash";
 import MenuCardUtama from "../../components/Molecule/MenuCard/MenuCardUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutDashboardBlue from "../../components/Organism/Layout/LayoutDashboardBlue";
@@ -103,162 +105,91 @@ export default function dashboardadmin() {
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
         <LayoutDashboardBlue rlUser={dataRole}>
-          <div className="container-fluid py-4">
+          <div className="container-fluid pb-4 pt-0 mt-0">
             <div className="row mx-3 my-3 bg-white rounded">
               <div className="col-12 mx-2 my-2">
                 <div className="row justify-content-center mt-3">
-                  <div className="col-10 border-top border-bottom">
-                  <h3 className="text-center"> Overview Kriteria Sumber Daya Manusia </h3>
+                  <div className="col-10 border-bottom">
+                    <h3 className="text-center">
+                      {" "}
+                      Sistem Informasi Kinerja Program Studi{" "}
+                    </h3>
                   </div>
                 </div>
-                <div className="row justify-content-center ">
-                  <div className="col-10 mb-3 pb-3 border-bottom">
-                    <div className="row mb-3 mt-3">
-                      <h5 className="text-center">
-                        Ringkasan Pengumpulan Data EWMP
-                      </h5>
-                    </div>
-                    <div className="row mb-3">
-                      <div className="col-3 border-end text-center">
-                        <p>Jumlah DTPS</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_dtps}</h5>
-                        )}
-                      </div>
-                      <div className="col-3 border-end text-center">
-                        <p>Data EWMP TS</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_ewmp_ts}</h5>
-                        )}
-                      </div>
-                      <div className="col-3 border-end text-center">
-                        <p>Data EWMP TS-1</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_ewmp_ts1}</h5>
-                        )}
-                      </div>
-                      <div className="col-3 text-center">
-                        <p>Data EWMP TS-2</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_ewmp_ts2}</h5>
-                        )}
-                      </div>
-                    </div>
-                    <div className="row mb-0 mt-5">
-                      <h5 className="text-center">Overall EWMP Progress</h5>
-                    </div>
-                    <div className="row mb-0">
-                      <p className="text-center fw-lighter fst-italic pb-0">
-                        <small>
-                          *Berdasarkan data ideal(DTPS * 3Tahun * 2 Semester)
-                        </small>
-                      </p>
-                    </div>
-                    <div className="row mb-3 justify-content-center">
-                      <div className="col-3 text-center border-bottom">
-                        {dataDashboardadmin && <h5>{progresEwmp}%</h5>}
-                        <div className="progress p-0">
-                          <div
-                            className="progress-bar bg-info text-xs"
-                            role="progressbar"
-                            style={{ width: `${progresEwmp}%` }}
-                            aria-valuenow={progresEwmp}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          >
-                            {progresEwmp}%
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row mb-0 mt-5 justify-content-center">
-                      <div className="col-4">
-                        <div className="row">
-                          <Link href={`/ewmp/tabelewmp/`}>
-                            <button className=" btn btn-outline-primary shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                              Kelola EWMP
-                            </button>
-                          </Link>
-                        </div>
-                      </div>
+                <div className="row mt-4 ms-1">
+                  <div className="col-6">
+                    <div className="row d-flex justify-content-around">
+                      <Carddashboard judul={`Kriteria Sumber Daya Manusia`}>
+                        <ListCardDash
+                          judul={"Profil Dosen"}
+                          keterangan={`mengelola data profil dosen`}
+                          halaman={"/publikasidos/export/export_publikasidos"}
+                          icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                          judul={"Luaran Lainnya"}
+                          keterangan={`kelola data Luaran Dosen`}
+                          halaman={"#"}
+                          icon={`bi bi-calendar3-range`}
+                        />
+                      </Carddashboard>
+
+                      <Carddashboard judul={`Kriteria Pendidikan`}>
+                        <ListCardDash
+                          judul={"Capaian Kurikulum"}
+                          keterangan={`input`}
+                          halaman={"/publikasidos/export/export_publikasidos"}
+                          icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                          judul={"Data Integrasi"}
+                          keterangan={`kelola data Luaran Dosen`}
+                          halaman={"#"}
+                          icon={`bi bi-calendar3-range`}
+                        />
+                        <ListCardDash
+                          judul={"Kepuasan Mahasiswa"}
+                          keterangan={`kelola data Luaran Dosen`}
+                          halaman={"#"}
+                          icon={`bi bi-calendar3-range`}
+                        />
+                      </Carddashboard>
                     </div>
                   </div>
-                  <hr />
-                </div>
-                <div className="row justify-content-center ">
-                  <div className="col-10 mb-3 pb-3 border-bottom">
-                    <div className="row mb-3 mt-3">
-                      <h5 className="text-center">
-                        Data Pagelaran/Publikasi Ilmiah
-                      </h5>
-                    </div>
-                    <div className="row mb-3">
-                      <div className="col-3 border-end text-center">
-                        <p>Jurnal</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_publikasi_jurnal}</h5>
-                        )}
-                      </div>
-                      <div className="col-3 text-center border-end">
-                        <p>Sitasi Jurnal</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_sitasi_jurnal}</h5>
-                        )}
-                      </div>
-                      <div className="col-3 border-end text-center">
-                        <p>Seminar</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_publikasi_seminar}</h5>
-                        )}
-                      </div>
-                      <div className="col-3 border-end text-center">
-                        <p>Pagelaran</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_publikasi_pagelaran}</h5>
-                        )}
-                      </div>
-                      
-                    </div>
-                    <div className="row mb-0 mt-5">
-                      <h5 className="text-center">Total Publikasi Tersimpan</h5>
-                    </div>
-                    <div className="row mb-0">
-                      <p className="text-center fw-lighter fst-italic pb-0">
-                        <small>
-                          *Jurnal + Seminar + Pagelaran
-                        </small>
-                      </p>
-                    </div>
-                    <div className="row mb-3 justify-content-center">
-                      <div className="col-3 text-center border-bottom">
-                        {dataDashboardadmin && (<h5>{dataDashboardadmin.total_publikasi}</h5>)}
-                        {/* <div className="progress p-0">
-                          <div
-                            className="progress-bar bg-info text-xs"
-                            role="progressbar"
-                            style={{ width: `${progresEwmp}%` }}
-                            aria-valuenow={progresEwmp}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          >
-                            {progresEwmp}%
-                          </div>
-                        </div> */}
-                      </div>
-                    </div>
-                    <div className="row mb-0 mt-5 justify-content-center">
-                      <div className="col-4">
-                        <div className="row">
-                          <Link href={`/ewmp/tabelewmp/`}>
-                            <button className=" btn btn-outline-primary shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                              Kelola Publikasi
-                            </button>
-                          </Link>
-                        </div>
-                      </div>
+                  <div className="col-6 me-1">
+                    <div className="row d-flex justify-content-around">
+                      <Carddashboard judul={`Kriteria Penelitian`}>
+                        <ListCardDash
+                          judul={"Capaian Kurikulum"}
+                          keterangan={`input`}
+                          halaman={"/publikasidos/export/export_publikasidos"}
+                          icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                          judul={"Data Integrasi"}
+                          keterangan={`kelola data Luaran Dosen`}
+                          halaman={"#"}
+                          icon={`bi bi-calendar3-range`}
+                        />
+                        <ListCardDash
+                          judul={"Kepuasan Mahasiswa"}
+                          keterangan={`kelola data Luaran Dosen`}
+                          halaman={"#"}
+                          icon={`bi bi-calendar3-range`}
+                        />
+                      </Carddashboard>
+                      <Carddashboard
+                        judul={`Kriteria Pengabdian Kepada Masyarakat`}
+                      >
+                        <ListCardDash
+                          judul={"Profil Dosen"}
+                          keterangan={`mengelola data profil dosen`}
+                          halaman={"/publikasidos/export/export_publikasidos"}
+                          icon={`bi bi-card-text`}
+                        />
+                      </Carddashboard>
                     </div>
                   </div>
-                  <hr />
                 </div>
               </div>
             </div>

@@ -75,18 +75,84 @@ export default function daftarkurikulum() {
       });
   }, []);
 
+  const tambahcapkurikulum = () => {
+    MySwal.fire({
+      title: "Tambah Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/capkurikulum/capkurikulum`);
+      }
+    });
+  };
+
+  const exportcapkurikulum = () => {
+    MySwal.fire({
+      title: "Export Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/capkurikulum/export/exportcapkurikulum`);
+      }
+    });
+  };
+
+  const editcapkurikulum = (id) => {
+    MySwal.fire({
+      title: "Edit Data",
+      text: "Apakah kalian yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/capkurikulum/edit/${id}`);
+      }
+    });
+  };
+
+
   const deletecapkurikulum = (id) => {
-    axios({
-      method: "post",
-      url: `http://127.0.0.1:8000/api/CapaianKurikulum_Delete/${id}`,
-    })
-      .then(function (response) {
-        router.reload();
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+    MySwal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, hapus ini!",
+    }).then((result) => {
+      // <--
+      if (result.isConfirmed) {
+        // <-- if confirmed
+        axios({
+          method: "post",
+          url: `http://127.0.0.1:8000/api/CapaianKurikulum_Delete/${id}`,
+        })
+          .then(function (response) {
+            router.reload();
+          })
+          .catch(function (err) {
+            console.log("gagal");
+            console.log(err.response);
+          });
+      }
+    });
   };
 
   const searchdata= async (e) => {
@@ -128,24 +194,27 @@ export default function daftarkurikulum() {
                   </div>
                   </div>
                 <div className="row justify-content-between mb-4">
-                  <div className="col-4 ms-3">
-                    <div className="align-middle">
-                      <Link href={`/capkurikulum/capkurikulum/`}>
-                        <button className=" btn btn-primary border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
+                <div className="col-4 ms-3">
+                      <td className="align-middle">
+                        <button
+                          onClick={() => tambahcapkurikulum()}
+                          className="btn btn-primary border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                        >
                           Tambah Data
                         </button>
-                      </Link>
+                      </td>
                     </div>
-                  </div>
-                  <div className="col-4 d-flex flex-row-reverse">
-                    <div className="align-middle">
-                      <Link href={`/capkurikulum/export/exportcapkurikulum/`}>
-                        <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                          Export Tabel
+                    
+                    <div className="col-4 d-flex flex-row-reverse">
+                      <td className="align-middle">
+                        <button
+                          onClick={() => exportcapkurikulum()}
+                          className="btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                        >
+                          Export Data
                         </button>
-                      </Link>
+                      </td>
                     </div>
-                  </div>
                 </div>
                 <div className="card-body p-3">
                   <div className="table-responsive p-0">
@@ -315,11 +384,13 @@ export default function daftarkurikulum() {
                               </td>
 
                               <td className="align-middle pe-3 text-end">
-                                <Link href={`/capkurikulum/edit/${kurikulum.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
+
+                                <button
+                                  onClick={() => editcapkurikulum(kurikulum.id)}
+                                  className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
+                                >
+                                  Edit
+                                </button>
 
                                 <button
                                   onClick={() => deletecapkurikulum(kurikulum.id)}

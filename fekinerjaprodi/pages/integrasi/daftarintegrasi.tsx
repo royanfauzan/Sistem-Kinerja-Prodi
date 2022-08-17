@@ -76,18 +76,84 @@ export default function daftarintgrs() {
       });
   }, []);
 
-  const deleteintegrasi = (id) => {
-    axios({
-      method: "post",
-      url: `http://127.0.0.1:8000/api/Integrasi_Delete/${id}`,
-    })
-      .then(function (response) {
-        router.reload();
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+  const tambahintegrasi = () => {
+    MySwal.fire({
+      title: "Tambah Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/integrasi/inputintegrasi`);
+      }
+    });
+  };
+
+  const editintegrasi = (id) => {
+    MySwal.fire({
+      title: "Edit Data",
+      text: "Apakah kalian yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/integrasi/edit/${id}`);
+      }
+    });
+  };
+
+  const exportintegrasi = () => {
+    MySwal.fire({
+      title: "Export Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/integrasi/export/exportintegrasi`);
+      }
+    });
+  };
+
+
+  const deleteintegrasi= (id) => {
+    MySwal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, hapus ini!",
+    }).then((result) => {
+      // <--
+      if (result.isConfirmed) {
+        // <-- if confirmed
+        axios({
+          method: "post",
+          url: `http://127.0.0.1:8000/api/Integrasi_Delete/${id}`,
+        })
+          .then(function (response) {
+            router.reload();
+          })
+          .catch(function (err) {
+            console.log("gagal");
+            console.log(err.response);
+          });
+      }
+    });
   };
 
   const searchdata= async (e) => {
@@ -130,24 +196,29 @@ export default function daftarintgrs() {
                   </div>
                   </div>
                 <div className="row justify-content-between mb-4">
-                  <div className="col-4">
-                    <div className="align-middle">
-                      <Link href={`/integrasi/inputintegrasi/`}>
-                        <button className=" btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
+                <div className="col-5">
+                      <div className="col-5">
+                      <td className="align-middle">
+                        <button
+                          onClick={() => tambahintegrasi()}
+                          className="btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                        >
                           Tambah Data
                         </button>
-                      </Link>
+                      </td>
                     </div>
-                  </div>
-                  <div className="col-4 d-flex flex-row-reverse">
-                    <div className="align-middle">
-                      <Link href={`/integrasi/export/exportintegrasi/`}>
-                        <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
+                      </div>
+                      
+                    <div className="col-4 d-flex flex-row-reverse">
+                      <td className="align-middle">
+                        <button
+                          onClick={() => exportintegrasi()}
+                          className="btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                        >
                           Export Tabel
                         </button>
-                      </Link>
+                      </td>
                     </div>
-                  </div>
                 </div>
                 <div className="card-body p-3">
                   <div className="table-responsive p-0">
@@ -244,11 +315,13 @@ export default function daftarintgrs() {
                               </td>
 
                               <td className="align-middle pe-3 text-end">
-                                <Link href={`/integrasi/edit/${intgrs.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
+
+                                <button
+                                  onClick={() => editintegrasi(intgrs.id)}
+                                  className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
+                                >
+                                  Edit
+                                </button>
 
                                 <button
                                   onClick={() => deleteintegrasi(intgrs.id)}

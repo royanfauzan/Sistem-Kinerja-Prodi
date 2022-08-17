@@ -131,7 +131,7 @@ export default function hapusmhs(props) {
                         <div className="col-12">
                             <div className="card mb-4">
                                 <div className="card-header pb-0">
-                                    <h6>Tabel Penelitian</h6>
+                                    <h6>Hapus ID Mahasiswa</h6>
                                 </div>
                                 <div className="row justify-content-end">
                                     <div className="col-3 d-flex flex-row-reverse pe-2">

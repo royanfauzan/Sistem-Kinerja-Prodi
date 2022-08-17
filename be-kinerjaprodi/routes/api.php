@@ -152,6 +152,8 @@ Route::get('show_pagelaran/{id}', [PagelaranController::class, 'show']);
 Route::post('delete_pagelaran/{id}', [PagelaranController::class, 'destroy']);
 
 //Tulisan MHS
+Route::get('tahun_tulisan/{tahun}', [TulisanController::class, 'exportpublikasidos']);
+Route::get('tulisan', [TulisanController::class, 'index']);
 Route::post('tulisan', [TulisanController::class, 'store']);
 Route::put('tulisan/{id}', [TulisanController::class, 'update']);
 

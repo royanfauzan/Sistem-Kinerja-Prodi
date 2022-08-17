@@ -35,7 +35,7 @@ export default function editluaran(props) {
   const [datapkms, setpkms] = useState([]);
   const [selectpkm, setSelectpkm] = useState(pkm.dosen_id);
   const [selectId, setSelectId] = useState(id_pilih_dosen);
-  const [dataDosen, setdataDosen] = useState();
+  const [dataDosen, setdataDosen] = useState([]);
 
   const [dataRole, setRole] = useState("");
 

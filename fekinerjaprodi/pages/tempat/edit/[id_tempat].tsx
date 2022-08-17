@@ -10,31 +10,32 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 // Untuk Ngambil Data Berdasarkan ID
 export async function getServerSideProps(context) {
 
-    //http request
-    const req  = await axios.get(`http://127.0.0.1:8000/api/show_tempat/${context.query.id_tempat}`)
-    const res  = await req.data.all_tempat
-  
-    return {
-      props: {
-          tempat: res // <-- assign response
-      },
-    }
+  //http request
+  const req = await axios.get(`http://127.0.0.1:8000/api/show_tempat/${context.query.id_tempat}`)
+  const res = await req.data.all_tempat
+
+  return {
+    props: {
+      tempat: res // <-- assign response
+    },
   }
+}
 
 export default function edittempat(props) {
   const router = useRouter();
-  const {tempat}=props;
+  const { tempat } = props;
   const [dataTempat, setTempat] = useState(tempat);
- 
-console.log(tempat);
 
-   // State Select
+  console.log(tempat);
+
+  // State Select
   const [stadmin, setStadmin] = useState(false);
   const [dataTempats, setTempats] = useState([]);
   const [selectTempat, setSelectTempat] = useState(tempat.kepuasan_id);
+  const [dataRole, setRole] = useState("");
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
+  const pengambilData = async () => {
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/kepuasan",
@@ -42,7 +43,7 @@ console.log(tempat);
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_prodi} = response.data;
+        const { all_prodi } = response.data;
         setTempats(all_prodi);
         console.log(dataTempats);
       })
@@ -55,42 +56,44 @@ console.log(tempat);
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
+  useEffect(() => {
     // cek token, kalo gaada disuruh login
     const lgToken = localStorage.getItem('token');
-    if(!lgToken){
+    if (!lgToken) {
       router.push('/login')
     }
- 
+
     // perjalanan validasi token 
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/get_user",
       headers: { "Authorization": `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-           
-    })
-    .catch(function (err) {
+      .then(function (response) {
+        console.log(response);
+        console.log('Sukses');
+        const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push('/');
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+
+      })
+      .catch(function (err) {
         console.log('gagal');
         console.log(err.response);
         return router.push('/');
-    })
-  },[]);
+      })
+  }, []);
 
   const handleChangeTempat = (e) => {
     setSelectTempat(e.target.value);
-   
+
   };
 
 
@@ -141,114 +144,114 @@ console.log(tempat);
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
-        <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetilDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
+        <LayoutForm rlUser={dataRole}>
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetilDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <p className="mb-0">Input Data</p>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Simpan
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="card-body">
-                    <p className="text-uppercase text-sm">Prestasi Mahasiswa</p>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="kepuasan" className="form-control-label">
-                            Tahun Kepuasan Lulusan
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
+                    <div className="card-body">
+                      <p className="text-uppercase text-sm">Prestasi Mahasiswa</p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="kepuasan" className="form-control-label">
+                              Tahun Kepuasan Lulusan
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
 
-                            id="kepuasan"
-                            value={selectTempat}
-                            onChange={handleChangeTempat}
-                          >
-                            <option>Pilih Tahun Lulusan</option>
-                            {dataTempats.map((userkepuasan) => {
-                               {
-                                return (
-                                  <option
-                                    value={userkepuasan.id}
-                                    key={userkepuasan.id}
-                                  >
-                                    {userkepuasan.tahun}
-                                  </option>
-                                );
-                              }
-                            })}
-                          </select>
+                              id="kepuasan"
+                              value={selectTempat}
+                              onChange={handleChangeTempat}
+                            >
+                              <option>Pilih Tahun Lulusan</option>
+                              {dataTempats.map((userkepuasan) => {
+                                {
+                                  return (
+                                    <option
+                                      value={userkepuasan.id}
+                                      key={userkepuasan.id}
+                                    >
+                                      {userkepuasan.tahun}
+                                    </option>
+                                  );
+                                }
+                              })}
+                            </select>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="lokal" className="form-control-label">
-                            Tempat Kerja Lokal
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Jumlah kerja lokal"
-                            id="lokal"
-                            defaultValue={dataTempat.lokal}
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="lokal" className="form-control-label">
+                              Tempat Kerja Lokal
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Jumlah kerja lokal"
+                              id="lokal"
+                              defaultValue={dataTempat.lokal}
+                              required
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="nasional" className="form-control-label">
-                            Tempat Kerja Nasional
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Jumlah kerja nasional"
-                            id="nasional"
-                            defaultValue={dataTempat.nasional}
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="nasional" className="form-control-label">
+                              Tempat Kerja Nasional
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Jumlah kerja nasional"
+                              id="nasional"
+                              defaultValue={dataTempat.nasional}
+                              required
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="multinasional" className="form-control-label">
-                            Tempat Kerja Multinasional
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Jumlah kerja multi masional"
-                            id="multinasional"
-                            defaultValue={dataTempat.multinasional}
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="multinasional" className="form-control-label">
+                              Tempat Kerja Multinasional
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Jumlah kerja multi masional"
+                              id="multinasional"
+                              defaultValue={dataTempat.multinasional}
+                              required
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+        </LayoutForm>
       )}
     </>
   );

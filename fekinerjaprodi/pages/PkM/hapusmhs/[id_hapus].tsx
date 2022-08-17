@@ -14,24 +14,24 @@ import withReactContent from "sweetalert2-react-content"
 export async function getServerSideProps(context) {
 
     //http request
-    const req = await axios.get(`http://127.0.0.1:8000/api/Penelitian_relasidosen/${context.query.id_hapusdosen}`)
+    const req = await axios.get(`http://127.0.0.1:8000/api/PKM_relasimhs/${context.query.id_hapus}`)
     const res = await req.data.all_relasi
 
     return {
         props: {
-            penelitianmhs: res // <-- assign response
+            pkmmhs: res // <-- assign response
         },
     }
 }
 
 export default function hapusmhs(props) {
     const router = useRouter();
-    const { id_hapusdosen } = router.query;
-    const { penelitianmhs } = props;
+    const { id_hapus } = router.query;
+    const { pkmmhs } = props;
 
     const [stadmin, setStadmin] = useState(false);
-    const [penelitian, setpenelitian] = useState(penelitianmhs);
-    const [id_penelitian, setid_penelitian] = useState(id_hapusdosen);
+    const [pkm, setpkm] = useState(pkmmhs);
+    const [id_pkm, setid_penelitian] = useState(id_hapus);
     const MySwal = withReactContent(Swal);
     const [dataRole, setRole] = useState("");
 
@@ -42,16 +42,16 @@ export default function hapusmhs(props) {
 
         axios({
             method: "get",
-            url: `http://127.0.0.1:8000/api/Penelitian_relasidosen/${id_penelitian}`,
+            url: `http://127.0.0.1:8000/api/PKM_relasimhs/${id_pkm}`,
             headers: { Authorization: `Bearer ${lgToken}` },
         })
             .then(function (response) {
                 console.log(response);
                 console.log("Sukses");
                 const { all_relasi } = response.data;
-                setpenelitian(all_relasi);
+                setpkm(all_relasi);
 
-                console.log(id_hapusdosen);
+                console.log(id_hapus);
             })
             .catch(function (err) {
                 console.log("gagal");
@@ -93,10 +93,10 @@ export default function hapusmhs(props) {
             });
     }, []);
 
-    const deletepenelitian = (id) => {
+    const deletepkm = (id) => {
         axios({
             method: "post",
-            url: `http://127.0.0.1:8000/api/Penelitian_Deleterelasi_dosen/${id}`,
+            url: `http://127.0.0.1:8000/api/PKM_Deleterelasi_mhs/${id}`,
         })
             .then(function (response) {
                 router.reload();
@@ -109,15 +109,15 @@ export default function hapusmhs(props) {
 
     const searchdata = async (e) => {
         if (e.target.value == "") {
-            const req = await axios.get(`http://127.0.0.1:8000/api/Penelitian/`)
+            const req = await axios.get(`http://127.0.0.1:8000/api/PKM/`)
             const res = await req.data.all_penelitian
-            setpenelitian(res)
+            setpkm(res)
         } else {
             const req = await axios.get(
-                `http://127.0.0.1:8000/api/Penelitian_search/${e.target.value}`
+                `http://127.0.0.1:8000/api/PKM_search/${e.target.value}`
             )
             const res = await req.data.searchpenelitian
-            setpenelitian(res)
+            setpkm(res)
         }
     }
 
@@ -131,7 +131,7 @@ export default function hapusmhs(props) {
                         <div className="col-12">
                             <div className="card mb-4">
                                 <div className="card-header pb-0">
-                                    <h6>Tabel Penelitian</h6>
+                                    <h6>Tabel PKM</h6>
                                 </div>
                                 <div className="row justify-content-end">
                                     <div className="col-3 d-flex flex-row-reverse pe-2">
@@ -149,7 +149,7 @@ export default function hapusmhs(props) {
                                 <div className="row justify-content-between mb-4">
                                     <div className="col-4">
                                         <div className="align-middle">
-                                            <Link href={`/penelitian/daftarpenelitian/`}>
+                                            <Link href={`/PkM/daftarpkm/`}>
                                                 <button className=" btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                                                     Daftar Tabel
                                                 </button>
@@ -178,9 +178,9 @@ export default function hapusmhs(props) {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {penelitian.map((penelitian, number) => {
+                                                {pkm.map((pkm, number) => {
                                                     return (
-                                                        <tr key={`penelitian` + penelitian.id}>
+                                                        <tr key={`pkm` + pkm.id}>
 
                                                             <td className="ps-3 pe-3">
                                                                 <p className="mb-0 text-sm">{number + 1}</p>
@@ -190,13 +190,14 @@ export default function hapusmhs(props) {
 
                                                             <td className="align-middle  text-sm">
                                                                 <p className="text-xs font-weight-bold mb-0">
-                                                                    {penelitian.dosen.NamaDosen}
+                                                                    {pkm.mahasiswa.nama}
                                                                 </p>
                                                             </td>
 
+
                                                             <td className="align-middle  text-sm">
                                                                 <p className="text-xs font-weight-bold mb-0">
-                                                                    {penelitian.dosen.NIDK}
+                                                                    {pkm.mahasiswa.nim}
                                                                 </p>
                                                             </td>
 
@@ -207,7 +208,7 @@ export default function hapusmhs(props) {
 
 
                                                                 <button
-                                                                    onClick={() => deletepenelitian(penelitian.id)}
+                                                                    onClick={() => deletepkm(pkm.id)}
                                                                     className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                                                 >
                                                                     Hapus

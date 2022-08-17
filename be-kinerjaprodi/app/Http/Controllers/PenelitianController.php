@@ -340,4 +340,23 @@ class PenelitianController extends Controller
             'message' => "Berhasil Dihapus"
         ]);
     }
+
+    public function deletedosen($id)
+    {
+        $penelitian = RelasiDosPen::find($id);
+        $penelitian->delete();
+
+        if (!$penelitian) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
+    }
+
+    
 }

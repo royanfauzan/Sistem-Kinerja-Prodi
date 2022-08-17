@@ -19,8 +19,8 @@ class CreateBukusTable extends Migration
             $table->string('kategori_jurnal');
             $table->string('nm_jurnal');
             $table->string('keterangan');
-            $table->string('volume');
             $table->string('tahun');
+            $table->string('volume');
             $table->string('nomor');
             $table->string('halaman');
             $table->integer('sitasi');

@@ -28,6 +28,7 @@ export default function editpenerimaan(props) {
   const router = useRouter()
   const MySwal = withReactContent(Swal)
   const { penerimaan } = props
+  const [dataRole, setRole] = useState("")
   const [dataPenerimaan, setdataPenerimaan] = useState(penerimaan)
   console.log(dataPenerimaan)
   const [dataProdi, setdataProdi] = useState([])
@@ -77,6 +78,8 @@ export default function editpenerimaan(props) {
         console.log(response)
         console.log("Sukses")
         const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/")
@@ -155,7 +158,7 @@ export default function editpenerimaan(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">

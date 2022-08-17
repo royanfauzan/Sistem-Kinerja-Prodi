@@ -18,13 +18,12 @@ export default function input_penggunaan_dana() {
   const MySwal = withReactContent(Swal)
   const [dataError, setError] = useState([])
   const [dataProdis, setdataProdi] = useState<Prodi[]>([])
-
+  const [dataRole, setRole] = useState("")
   // state pake test user
   const [stadmin, setStadmin] = useState(false)
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () => {
-
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/Prodi",
@@ -41,45 +40,6 @@ export default function input_penggunaan_dana() {
         console.log(err.response)
       })
   }
-
-
-
-
-
-  // Setelah halaman Loading nya muncul, ini jalan
-  // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
-    // cek token, kalo gaada disuruh login
-    const lgToken = localStorage.getItem('token');
-    if(!lgToken){
-      router.push('/login')
-    }
-
-    // perjalanan validasi token 
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/get_user",
-      headers: { "Authorization": `Bearer ${lgToken}` },
-    })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-    })
-    .catch(function (err) {
-        console.log('gagal');
-        console.log(err.response);
-        return router.push('/');
-    })
-  },[]);
-
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
@@ -100,6 +60,8 @@ export default function input_penggunaan_dana() {
         console.log(response)
         console.log("Sukses")
         const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/")
@@ -183,6 +145,8 @@ export default function input_penggunaan_dana() {
     formData.append("Prodi_Id", event.target.prodi.value)
     formData.append("Tahun", event.target.Tahun.value)
 
+    console.log(formData)
+
     axios({
       method: "post",
       url: "http://127.0.0.1:8000/api/create_penggunaan_dana",
@@ -214,12 +178,11 @@ export default function input_penggunaan_dana() {
       })
   }
 
-
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -244,7 +207,6 @@ export default function input_penggunaan_dana() {
                             <label
                               htmlFor="prodi"
                               className={dataError.Prodi_Id ? "is-invalid" : ""}
-
                             >
                               Nama Prodi
                             </label>
@@ -254,10 +216,8 @@ export default function input_penggunaan_dana() {
                               defaultValue="0"
                               id="prodi"
                             >
-
                               <option value="">Pilih Prodi</option>
                               {dataProdis.map((dataProdi) => {
-
                                 return (
                                   <option
                                     value={dataProdi.id}
@@ -265,7 +225,6 @@ export default function input_penggunaan_dana() {
                                   >
                                     {dataProdi.nama_prodi}
                                   </option>
-
                                 )
                               })}
                             </select>
@@ -276,283 +235,493 @@ export default function input_penggunaan_dana() {
                             ) : (
                               ""
                             )}
+                          </div>
+                        </div>
 
-                                );
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="tahun_akademik"
+                              className={
+                                dataError.Biaya_Dosen_UPPS ? "is-invalid" : ""
+                              }
+                            >
+                              Biaya Dosen UPPS
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder=" Biaya Dosen UPPS"
+                              id="Biaya_Dosen_UPPS"
+                            />
+                            {dataError.Biaya_Dosen_UPPS ? (
+                              <div className="invalid-feedback">
+                                {dataError.Biaya_Dosen_UPPS}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
 
-                     
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tahun_akademik" className="form-control-label">
-                           Biaya Dosen UPPS
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder=" Biaya Dosen UPPS"
-                            id="Biaya_Dosen_UPPS"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Dosen_Prodi"
+                              className={
+                                dataError.Biaya_Dosen_Prodi ? "is-invalid" : ""
+                              }
+                            >
+                              Biaya Dosen Prodi
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Biaya Dosen Prodi"
+                              id="Biaya_Dosen_Prodi"
+                            />
+                            {dataError.Biaya_Dosen_Prodi ? (
+                              <div className="invalid-feedback">
+                                {dataError.Biaya_Dosen_Prodi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Dosen_Prodi" className="form-control-label">
-                           Biaya Dosen Prodi
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Biaya Dosen Prodi"
-                            id="Biaya_Dosen_Prodi"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Investasi_Prasarana_Prodi"
+                              className={
+                                dataError.Biaya_Investasi_Prasarana_Prodi
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Baiaya Investasi Prasarana Prodi
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Mahasiswa Aktif Fulltime"
+                              id="Biaya_Investasi_Prasarana_Prodi"
+                            />
+                            {dataError.Biaya_Investasi_Prasarana_Prodi ? (
+                              <div className="invalid-feedback">
+                                {dataError.Biaya_Investasi_Prasarana_Prodi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Investasi_Prasarana_Prodi" className="form-control-label">
-                          Baiaya Investasi Prasarana Prodi
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Mahasiswa Aktif Fulltime"
-                            id="Biaya_Investasi_Prasarana_Prodi"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Investasi_Prasarana_UPPS"
+                              className={
+                                dataError.Biaya_Investasi_Prasarana_UPPS
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Biaya Investasi Prasarana UPPS
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder=" Biaya Investasi Prasarana UPPS"
+                              id="Biaya_Investasi_Prasarana_UPPS"
+                            />
+                            {dataError.Biaya_Investasi_Prasarana_UPPS ? (
+                              <div className="invalid-feedback">
+                                {dataError.Biaya_Investasi_Prasarana_UPPS}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Investasi_Prasarana_UPPS" className="form-control-label">
-                          Biaya Investasi Prasarana UPPS
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder=" Biaya Investasi Prasarana UPPS"
-                            id="Biaya_Investasi_Prasarana_UPPS"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Investasi_Sarana_Prodi"
+                              className={
+                                dataError.Biaya_Investasi_Sarana_Prodi
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Biaya Investasi Sarana Prodi
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Biaya Investasi Sarana Prodi"
+                              id="Biaya_Investasi_Sarana_Prodi"
+                            />
+                            {dataError.Biaya_Investasi_Sarana_Prodi ? (
+                              <div className="invalid-feedback">
+                                {dataError.Biaya_Investasi_Sarana_Prodi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
-                        
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Investasi_Sarana_Prodi" className="form-control-label">
-                          Biaya Investasi Sarana Prodi
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Biaya Investasi Sarana Prodi"
-                            id="Biaya_Investasi_Sarana_Prodi"
-                            required
-                          />
-                        </div>
-                      </div>
-                   
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Investasi_Sarana_UPPS" className="form-control-label">
-                          Biaya Investasi Sarana UPPS
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Biaya Investasi Sarana UPPS"
-                            id="Biaya_Investasi_Sarana_UPPS"
-                            required
-                          />
-                        </div>
-                      </div>
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Investasi_SDM_Prodi" className="form-control-label">
-                          Biaya Investasi SDM Prodi
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Biaya Investasi Sarana UPPS"
-                            id="Biaya_Investasi_SDM_Prodi"
-                            required
-                          />
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Investasi_Sarana_UPPS"
+                              className={
+                                dataError.Biaya_Investasi_Sarana_UPPS
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Biaya Investasi Sarana UPPS
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Biaya Investasi Sarana UPPS"
+                              id="Biaya_Investasi_Sarana_UPPS"
+                            />
+                            {dataError.Biaya_Investasi_Sarana_UPPS ? (
+                              <div className="invalid-feedback">
+                                {dataError.Biaya_Investasi_Sarana_UPPS}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Investasi_SDM_Prodi"
+                              className={
+                                dataError.Biaya_Investasi_SDM_Prodi
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Biaya Investasi SDM Prodi
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Biaya Investasi Sarana UPPS"
+                              id="Biaya_Investasi_SDM_Prodi"
+                            />
+                            {dataError.Biaya_Investasi_SDM_Prodi ? (
+                              <div className="invalid-feedback">
+                                {dataError.Biaya_Investasi_SDM_Prodi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Investasi_SDM_UPPS"
+                              className={
+                                dataError.Biaya_Investasi_SDM_UPPS
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Biaya Investasi SDM UPPS
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="M Biaya Investasi SDM UPPS"
+                              id="Biaya_Investasi_SDM_UPPS"
+                            />
+                            {dataError.Biaya_Investasi_SDM_UPPS ? (
+                              <div className="invalid-feedback">
+                                {dataError.Biaya_Investasi_SDM_UPPS}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Operasional_Kemahasiswaan_Prodi"
+                              className={
+                                dataError.Biaya_Operasional_Kemahasiswaan_Prodi
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Biaya Operasional Kemahasiswaan Prodi
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder=" Biaya Operasional Kemahasiswaan Prodi"
+                              id="Biaya_Operasional_Kemahasiswaan_Prodi"
+                            />
+                            {dataError.Biaya_Operasional_Kemahasiswaan_Prodi ? (
+                              <div className="invalid-feedback">
+                                {
+                                  dataError.Biaya_Operasional_Kemahasiswaan_Prodi
+                                }
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Operasional_Kemahasiswaan_UPPS"
+                              className={
+                                dataError.Biaya_Operasional_Kemahasiswaan_UPPS
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Biaya Operasional Kemahasiswaan UPPS
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder=" Biaya Operasional Kemahasiswaan Prodi"
+                              id="Biaya_Operasional_Kemahasiswaan_UPPS"
+                            />
+                            {dataError.Biaya_Operasional_Kemahasiswaan_UPPS ? (
+                              <div className="invalid-feedback">
+                                {dataError.Biaya_Operasional_Kemahasiswaan_UPPS}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Operasional_Pembelajaran_Prodi"
+                              className={
+                                dataError.Biaya_Operasional_Pembelajaran_Prodi
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Biaya Operasional Pembelajaran Prodi
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="  Biaya Operasional Pembelajaran Prodi"
+                              id="Biaya_Operasional_Pembelajaran_Prodi"
+                            />
+                            {dataError.Biaya_Operasional_Pembelajaran_Prodi ? (
+                              <div className="invalid-feedback">
+                                {dataError.Biaya_Operasional_Pembelajaran_Prodi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Operasional_Pembelajaran_UPPS"
+                              className={
+                                dataError.Biaya_Operasional_Pembelajaran_UPPS
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Biaya Operasional Pembelajaran UPPS
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Biaya Operasional Pembelajaran UPPS"
+                              id="Biaya_Operasional_Pembelajaran_UPPS"
+                            />
+                            {dataError.Biaya_Operasional_Pembelajaran_UPPS ? (
+                              <div className="invalid-feedback">
+                                {dataError.Biaya_Operasional_Pembelajaran_UPPS}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Operasional_TidakLangsung_Prodi"
+                              className={
+                                dataError.Biaya_Operasional_TidakLangsung_Prodi
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Biaya Operasional Tidak Langsung Prodi
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder=" Biaya Operasional Kemahasiswaan Prodi"
+                              id="Biaya_Operasional_TidakLangsung_Prodi"
+                            />
+                            {dataError.Biaya_Operasional_TidakLangsung_Prodi ? (
+                              <div className="invalid-feedback">
+                                {
+                                  dataError.Biaya_Operasional_TidakLangsung_Prodi
+                                }
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Operasional_TidakLangsung_UPPS"
+                              className={
+                                dataError.Biaya_Operasional_TidakLangsung_UPPS
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Biaya Operasional Tidak Langsung UPPS
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder=" Biaya Operasional Tidak Langsung UPPS"
+                              id="Biaya_Operasional_TidakLangsung_UPPS"
+                            />
+                            {dataError.Biaya_Operasional_TidakLangsung_UPPS ? (
+                              <div className="invalid-feedback">
+                                {dataError.Biaya_Operasional_TidakLangsung_UPPS}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Tenaga_Kependidikan_Prodi"
+                              className={
+                                dataError.Biaya_Tenaga_Kependidikan_Prodi
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Biaya Tenaga Kependidikan Prodi
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder=" Biaya Tenaga Kependidikan Prodi"
+                              id="Biaya_Tenaga_Kependidikan_Prodi"
+                            />
+                            {dataError.Biaya_Tenaga_Kependidikan_Prodi ? (
+                              <div className="invalid-feedback">
+                                {dataError.Biaya_Tenaga_Kependidikan_Prodi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Biaya_Tenaga_Kependidikan_UPPS"
+                              className={
+                                dataError.Biaya_Tenaga_Kependidikan_UPPS
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Biaya Tenaga Kependidikan UPPS
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder=" Biaya Tenaga Kependidikan UPPS"
+                              id="Biaya_Tenaga_Kependidikan_UPPS"
+                            />
+                            {dataError.Biaya_Tenaga_Kependidikan_UPPS ? (
+                              <div className="invalid-feedback">
+                                {dataError.Biaya_Tenaga_Kependidikan_UPPS}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="Tahun"
+                              className={dataError.Tahun ? "is-invalid" : ""}
+                            >
+                              Tahun
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder=" Tahun "
+                              id="Tahun"
+                            />
+                            {dataError.Tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.Tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
                       </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Investasi_SDM_UPPS" className="form-control-label">
-                          Biaya Investasi SDM UPPS
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="M Biaya Investasi SDM UPPS"
-                            id="Biaya_Investasi_SDM_UPPS"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Operasional_Kemahasiswaan_Prodi" className="form-control-label">
-                          Biaya Operasional Kemahasiswaan Prodi
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder=" Biaya Operasional Kemahasiswaan Prodi"
-                            id="Biaya_Operasional_Kemahasiswaan_Prodi"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Operasional_Kemahasiswaan_UPPS" className="form-control-label">
-                          Biaya Operasional Kemahasiswaan UPPS
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder=" Biaya Operasional Kemahasiswaan Prodi"
-                            id="Biaya_Operasional_Kemahasiswaan_UPPS"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Operasional_Pembelajaran_Prodi" className="form-control-label">
-                          Biaya Operasional Pembelajaran Prodi
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="  Biaya Operasional Pembelajaran Prodi"
-                            id="Biaya_Operasional_Pembelajaran_Prodi"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Operasional_Pembelajaran_UPPS" className="form-control-label">
-                          Biaya Operasional Pembelajaran UPPS
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Biaya Operasional Pembelajaran UPPS"
-                            id="Biaya_Operasional_Pembelajaran_UPPS"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Operasional_TidakLangsung_Prodi" className="form-control-label">
-                          Biaya Operasional Tidak Langsung Prodi
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder=" Biaya Operasional Kemahasiswaan Prodi"
-                            id="Biaya_Operasional_TidakLangsung_Prodi"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Operasional_TidakLangsung_UPPS" className="form-control-label">
-                          Biaya Operasional Tidak Langsung UPPS
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder=" Biaya Operasional Tidak Langsung UPPS"
-                            id="Biaya_Operasional_TidakLangsung_UPPS"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Tenaga_Kependidikan_Prodi" className="form-control-label">
-                          Biaya Tenaga Kependidikan Prodi
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder=" Biaya Tenaga Kependidikan Prodi"
-                            id="Biaya_Tenaga_Kependidikan_Prodi"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Biaya_Tenaga_Kependidikan_UPPS" className="form-control-label">
-                          Biaya Tenaga Kependidikan UPPS
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder=" Biaya Tenaga Kependidikan UPPS"
-                            id="Biaya_Tenaga_Kependidikan_UPPS"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="Tahun" className="form-control-label">
-                          Tahun
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder=" Tahun "
-                            id="Tahun"
-                            required
-                          />
-                        </div>
-                      </div>    
-                    
                     </div>
-                  
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
-
+        </LayoutForm>
       )}
     </>
   )
-
 }

@@ -77,7 +77,7 @@ export default function update_datapenelitian(props) {
             const { role } = response.data.user;
             setRole(role);
             // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
+            if(level_akses !== 2){
               return router.push('/');
             }
             // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -151,7 +151,7 @@ export default function update_datapenelitian(props) {
     <>
     <LoadingUtama loadStatus={stadmin}/>
       {stadmin  &&(
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
         <div className="container-fluid py-4">
           <div className="row">
             <div className="col-md-8">

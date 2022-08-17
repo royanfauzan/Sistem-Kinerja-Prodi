@@ -15,6 +15,8 @@ export default function integrasi() {
     const [stadmin, setStadmin] = useState(false);
     const [tampilintegrasi, settampilintegrasi] = useState([]);
 
+    const [dataRole, setRole] = useState("");
+
     const pengambilData = async () => {
         const lgToken = localStorage.getItem("token");
 
@@ -54,8 +56,11 @@ export default function integrasi() {
                 console.log(response);
                 console.log("Sukses");
                 const { level_akses } = response.data.user;
+
+                const { role } = response.data.user;
+                setRole(role);
                 // kalo ga admin dipindah ke halaman lain
-                if (level_akses !== 3) {
+                if (level_akses !== 2) {
                     return router.push("/");
                 }
                 // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -74,7 +79,7 @@ export default function integrasi() {
         <>
             <LoadingUtama loadStatus={stadmin} />
             {stadmin && (
-                <LayoutForm>
+                <LayoutForm rlUser={dataRole}>
                     <div className="container-fluid py-4">
                         <div className="col-12">
                             <div className="card mb-4">

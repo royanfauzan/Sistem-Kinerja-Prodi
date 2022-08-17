@@ -6,6 +6,8 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 
 export default function inputpagelaran() {
@@ -13,6 +15,8 @@ export default function inputpagelaran() {
 
   const [userDosens, setuserDosens] = useState([]);
   const [filebukti, setfilebuktis] = useState<File>([]);
+  const [dataError, setError] = useState([]);
+  const MySwal = withReactContent(Swal);
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -85,27 +89,27 @@ export default function inputpagelaran() {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        const { all_pagelaran } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(all_pagelaran);
-        router.push("../pagelaran/daftarpagelaran");
-      })
-      .catch(function (error) {
-        //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
-        console.log(error.response);
+    .then(function (response) {
+      MySwal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Berhasil Di Input",
       });
+
+      router.push("../pagelaran/daftarpagelaran");
+    })
+
+    .catch(function (error) {
+      //handle error
+      setError(error.response.data.error);
+      console.log(error.response.data.error);
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Data Gagal Di Input",
+      });
+      console.log(error.response);
+    });
   };
 
   return (
@@ -177,19 +181,35 @@ export default function inputpagelaran() {
                       </div>
 
                       <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="ruang" className="form-control-label">
-                          Ruang Lingkup
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="K Seminarategori"
-                            id="ruang"
-                            required
-                          />
+                          <div className="form-group">
+                            <label
+                              htmlFor="ruang"
+                              className={dataError.ruang_lingkup ? "is-invalid" : ""}
+                            >
+                              Ruang Lingkup
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
+                              id="ruang"
+                            >
+                              <option value="">Pilih Ruang Lingkup</option>
+                              <option value="internasional">
+                                Internasional
+                              </option>
+                              <option value="nasional">Nasional</option>
+                              <option value="wilayah">Wilayah</option>
+                            </select>
+                            {dataError.ruang_lingkup ? (
+                              <div className="invalid-feedback">
+                                {dataError.ruang_lingkup}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
 
                       <div className="col-md-6">
                         <div className="form-group">

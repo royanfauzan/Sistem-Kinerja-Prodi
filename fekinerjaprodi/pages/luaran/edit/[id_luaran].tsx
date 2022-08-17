@@ -32,6 +32,7 @@ export default function editluaran(props) {
   // State Select
   const [stadmin, setStadmin] = useState(false);
   const [dataLuarans, setLuarans] = useState([]);
+  const [dataRole, setRole] = useState("");
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () => {
@@ -57,6 +58,8 @@ export default function editluaran(props) {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -123,7 +126,7 @@ export default function editluaran(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">

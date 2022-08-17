@@ -20,6 +20,7 @@ export default function inputkerjasama() {
   const [filebukti, setFilebukti] = useState<File>()
   const [dataError, setError] = useState([])
   const MySwal = withReactContent(Swal)
+  const [dataRole, setRole] = useState("")
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false)
@@ -62,6 +63,8 @@ export default function inputkerjasama() {
         console.log(response)
         console.log("Sukses")
         const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/")
@@ -136,7 +139,7 @@ export default function inputkerjasama() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -206,16 +209,15 @@ export default function inputkerjasama() {
                               id="bidang"
                             >
                               <option value="">Pilih Bidang</option>
-                              {dataMitras.map((dataMitra) => {
-                                return (
-                                  <option
-                                    value={dataMitra.bidang}
-                                    key={dataMitra.id}
-                                  >
-                                    {dataMitra.bidang}
-                                  </option>
-                                )
-                              })}
+                              <option value="Kerjasama Pendidikan">
+                                Kerjasama Pendidikan
+                              </option>
+                              <option value="Kerjasama Penelitian">
+                                Kerjasama Penelitian
+                              </option>
+                              <option value="Kerjasama Pengabdian Kepada Masyarakat">
+                                Kerjasama Pengabdian Kepada Masyarakat
+                              </option>
                             </select>
                             {dataError.bidang ? (
                               <div className="invalid-feedback">

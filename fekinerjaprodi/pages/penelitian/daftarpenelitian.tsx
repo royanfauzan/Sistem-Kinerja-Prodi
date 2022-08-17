@@ -15,7 +15,8 @@ export default function daftarpenelitian() {
 
   const [stadmin, setStadmin] = useState(false);
   const [penelitian, setpenelitian] = useState([]);
-  const MySwal = withReactContent(Swal)
+  const MySwal = withReactContent(Swal);
+  const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -56,8 +57,10 @@ export default function daftarpenelitian() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 3) {
+        if (level_akses !== 2) {
           return router.push("/");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -104,7 +107,7 @@ export default function daftarpenelitian() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
@@ -305,13 +308,13 @@ export default function daftarpenelitian() {
                                     </button>
                                   </Link>
 
-                                  <Link href={`/penelitian/hapus/hapusmhs`}>
-                                    <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                  <Link href={`/penelitian/hapusmhs/${penelitian.id}`}>
+                                    <button className="btn btn-sm btn-secondary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                       Hapus mahasiswa
                                     </button>
                                   </Link>
 
-                                  <Link href={`/penelitian/hapus/hapusmhs`}>
+                                  <Link href={`/penelitian/hapusdosen/${penelitian.id}`}>
                                     <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                       Hapus Dosen
                                     </button>

@@ -41,6 +41,7 @@ export default function update_datamatkul(props) {
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
 
+  const [dataRole, setRole] = useState("");
 
 
   // pake ngambil data untuk halaman input
@@ -73,8 +74,11 @@ export default function update_datamatkul(props) {
         console.log(response);
         console.log('Sukses');
         const { level_akses } = response.data.user;
+        
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 3) {
+        if (level_akses !== 2) {
           return router.push('/');
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -143,7 +147,7 @@ export default function update_datamatkul(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">

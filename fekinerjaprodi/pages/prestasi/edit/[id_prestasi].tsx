@@ -34,6 +34,7 @@ console.log(prestasi);
   const [selectTingkat, setselectTingkat] = useState(prestasi.tingkat);
   const [selectKategori, setselectKategori] = useState(prestasi.kategori);
   const [selectPrestasi, setSelectPrestasi] = useState(prestasi.prodi_id);
+  const [dataRole, setRole] = useState("");
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () =>{
@@ -74,6 +75,8 @@ console.log(prestasi);
             console.log(response);
             console.log('Sukses');
             const {level_akses} = response.data.user;
+            const { role } = response.data.user;
+            setRole(role);
             // kalo ga admin dipindah ke halaman lain
             if(level_akses !== 3){
               return router.push('/');
@@ -156,7 +159,7 @@ console.log(prestasi);
     <>
     <LoadingUtama loadStatus={stadmin}/>
       {stadmin  &&(
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
         <div className="container-fluid py-4">
           <div className="row">
             <div className="col-md-8">

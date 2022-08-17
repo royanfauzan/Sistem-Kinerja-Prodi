@@ -131,6 +131,9 @@ export default function daftarprestasi() {
                             NO
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
+                            Mahasiswa
+                          </th>
+                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Judul Pagelaran
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
@@ -156,6 +159,21 @@ export default function daftarprestasi() {
                                 <h6 className="mb-0 text-sm ps-2">
                                   {number + 1}
                                 </h6>
+                              </td>
+
+                              <td>
+                                {pglrn.anggota_mahasiswas.map(
+                                  (anggota_mahasiswas) => {
+                                    return (
+                                      <p
+                                        className="mb-0 text-sm"
+                                        key="anggota.id"
+                                      >
+                                        {anggota_mahasiswas.nama}
+                                      </p>
+                                    );
+                                  }
+                                )}
                               </td>
 
                               <td className="align-middle  text-sm">

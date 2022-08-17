@@ -23,11 +23,19 @@ class PenelitianController extends Controller
         ]);
     }
 
-    public function relasipenmhs()
+    public function relasipenmhs($id)
     {
         return response()->json([ //ngirim ke front end
             'success' => true,
-            'all_relasi' => RelasiPenMhs::with('mahasiswa')->get(),
+            'all_relasi' => RelasiPenMhs::with('mahasiswa')->where('penelitian_id', $id)->get(),
+        ]);
+    }
+
+    public function relasipendosen($id)
+    {
+        return response()->json([ //ngirim ke front end
+            'success' => true,
+            'all_relasi' => RelasiDosPen::with('dosen')->where('penelitian_id', $id)->get(),
         ]);
     }
 
@@ -332,4 +340,23 @@ class PenelitianController extends Controller
             'message' => "Berhasil Dihapus"
         ]);
     }
+
+    public function deletedosen($id)
+    {
+        $penelitian = RelasiDosPen::find($id);
+        $penelitian->delete();
+
+        if (!$penelitian) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
+    }
+
+    
 }

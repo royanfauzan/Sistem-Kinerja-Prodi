@@ -84,11 +84,9 @@ export default function input_mitra() {
 
     let formData = new FormData()
     formData.append("NIDK", event.target.NIDK.value)
-    formData.append("password", event.target.password.value)
-    formData.append("role", event.target.role.value)
-    formData.append("level_akses", event.target.level_akses.value)
-
-    console.log(formData)
+    formData.append("password", event.target.Password.value)
+    formData.append("role", "admin")
+    formData.append("level_akses", "3")
 
     axios({
       method: "post",
@@ -178,107 +176,48 @@ export default function input_mitra() {
                             )}
                           </div>
                         </div>
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label
-                              className={dataError.password ? "is-invalid" : ""}
-                              htmlFor="password"
-                            >
-                              Password
-                            </label>
-                          </div>
-                          <div className="input-group input-group-merge">
-                            <input
-                              type="password"
-                              id="password"
-                              className="form-control"
-                              placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                              aria-describedby="password"
-                            />
-                            {dataError.password ? (
-                              <div className="invalid-feedback">
-                                {dataError.password}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                            <span className="input-group-text cursor-pointer">
-                              <i className="bx bx-hide"></i>
-                            </span>
-                          </div>
+                      </div>
+                      <div className="mb-3 form-password-toggle">
+                        <div className="d-flex justify-content-between">
+                          <label className="form-label" htmlFor="password">
+                            Password
+                          </label>
                         </div>
-                        <div className="mb-3">
-                          <div className="form-check">
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                              id="remember-me"
-                              onChange={viewPassword}
-                            />
-                            <label
-                              className="form-check-label"
-                              htmlFor="remember-me"
-                            >
-                              {" "}
-                              Lihat Password{" "}
-                            </label>
-                          </div>
+                        <div className="input-group input-group-merge">
+                          <input
+                            type="password"
+                            id="password"
+                            className="form-control"
+                            name="Password"
+                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                            aria-describedby="password"
+                          />
+                          <span className="input-group-text cursor-pointer">
+                            <i className="bx bx-hide"></i>
+                          </span>
                         </div>
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label
-                              htmlFor="role"
-                              className={dataError.role ? "is-invalid" : ""}
-                            >
-                              Role
-                            </label>
-                            <select
-                              className="form-select"
-                              aria-label="Default select example"
-                              defaultValue="0"
-                              id="role"
-                            >
-                              <option value="">Pilih Role</option>
-                              <option value="Admin">Admin</option>
-                              <option value="Dosen"> Dosen</option>
-                            </select>
-                            {dataError.role ? (
-                              <div className="invalid-feedback">
-                                {dataError.role}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label
-                              htmlFor="level_akses"
-                              className={
-                                dataError.level_akses ? "is-invalid" : ""
-                              }
-                            >
-                              Level Akses
-                            </label>
-                            <select
-                              className="form-select"
-                              aria-label="Default select example"
-                              defaultValue="0"
-                              id="level_akses"
-                            >
-                              <option value="">Pilih Level Akses</option>
-                              <option value="1">1</option>
-                              <option value="2"> 2</option>
-                            </select>
-                            {dataError.level_akses ? (
-                              <div className="invalid-feedback">
-                                {dataError.level_akses}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
+                      </div>
+                      <div className="mb-3">
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="remember-me"
+                            onChange={viewPassword}
+                          />
+                          <label
+                            className={dataError.NIDK ? "is-invalid" : ""}
+                            htmlFor="remember-me"
+                          >
+                            Lihat Password
+                          </label>
+                          {dataError.password ? (
+                            <div className="invalid-feedback">
+                              {dataError.password}
+                            </div>
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </div>
                     </div>

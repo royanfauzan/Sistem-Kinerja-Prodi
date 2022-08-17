@@ -9,32 +9,34 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 
 // Untuk Ngambil Data Berdasarkan ID
 export async function getServerSideProps(context) {
+  //http request
+  const req = await axios.get(
+    `http://127.0.0.1:8000/api/show_ipk/${context.query.id_ipk}`
+  );
+  const res = await req.data.all_ipk;
 
-    //http request
-    const req  = await axios.get(`http://127.0.0.1:8000/api/show_ipk/${context.query.id_ipk}`)
-    const res  = await req.data.all_ipk
-  
-    return {
-      props: {
-          ipk: res // <-- assign response
-      },
-    }
-  }
+  return {
+    props: {
+      ipk: res, // <-- assign response
+    },
+  };
+}
 
 export default function editprestasi(props) {
   const router = useRouter();
-  const {ipk}=props;
+  const { ipk } = props;
   const [dataIPK, setIPK] = useState(ipk);
- 
-console.log(ipk);
 
-   // State Select
+  console.log(ipk);
+
+  // State Select
   const [stadmin, setStadmin] = useState(false);
   const [dataIPKs, setPrestasis] = useState([]);
   const [selectIPK, setselectIPK] = useState(ipk.prodi_id);
+  const [dataRole, setRole] = useState("");
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () =>{
+  const pengambilData = async () => {
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/Prodi",
@@ -42,7 +44,7 @@ console.log(ipk);
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { Prodi} = response.data;
+        const { Prodi } = response.data;
         setPrestasis(Prodi);
         console.log(dataIPKs);
       })
@@ -50,49 +52,47 @@ console.log(ipk);
         console.log("gagal");
         console.log(err.response);
       });
-  }
-
+  };
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
+  useEffect(() => {
     // cek token, kalo gaada disuruh login
-    const lgToken = localStorage.getItem('token');
-    if(!lgToken){
-      router.push('/login')
+    const lgToken = localStorage.getItem("token");
+    if (!lgToken) {
+      router.push("/login");
     }
- 
-    // perjalanan validasi token 
+
+    // perjalanan validasi token
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/get_user",
-      headers: { "Authorization": `Bearer ${lgToken}` },
+      headers: { Authorization: `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-           
-    })
-    .catch(function (err) {
-        console.log('gagal');
+      .then(function (response) {
+        console.log(response);
+        console.log("Sukses");
+        const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push("/");
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+      })
+      .catch(function (err) {
+        console.log("gagal");
         console.log(err.response);
-        return router.push('/');
-    })
-  },[]);
+        return router.push("/");
+      });
+  }, []);
 
   const handleChangeIPK = (e) => {
     setselectIPK(e.target.value);
-   
   };
-
 
   const submitForm = async (event) => {
     event.preventDefault();
@@ -110,7 +110,8 @@ console.log(ipk);
 
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/update_ipk/${dataIPK.id}` + `?_method=PUT`,
+      url:
+        `http://127.0.0.1:8000/api/update_ipk/${dataIPK.id}` + `?_method=PUT`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -124,7 +125,7 @@ console.log(ipk);
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(profil);
-        router.push("/");
+        router.push("../../ipk/daftaripk");
         console.log(response.data);
       })
       .catch(function (error) {
@@ -143,141 +144,158 @@ console.log(ipk);
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
-        <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetilDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
-                    </div>
-                  </div>
-                  <div className="card-body">
-                    <p className="text-uppercase text-sm mb-3"><h6>IPK Lulusan</h6></p>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="prodi" className="form-control-label">
-                            Prodi
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-
-                            id="prodi"
-                            value={selectIPK}
-                            onChange={handleChangeIPK}
-                          >
-                            <option>Pilih Prodi</option>
-                            {dataIPKs.map((userprodi) => {
-                               {
-                                return (
-                                  <option
-                                    value={userprodi.id}
-                                    key={userprodi.id}
-                                  >
-                                    {userprodi.prodi + ` ` + userprodi.nama_prodi}
-                                  </option>
-                                );
-                              }
-                            })}
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tahun" className="form-control-label">
-                            Tahun
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tahun"
-                            id="tahun"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="jmlh_lulusan" className="form-control-label">
-                            Jumlah Lulusan
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Jumlah Lulusan"
-                            id="jmlh_lulusan"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="min" className="form-control-label">
-                            IPK Minimal
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="IPK Minimal"
-                            id="min"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="max" className="form-control-label">
-                            IPK Maksimal
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="IPK Maksimal"
-                            id="max"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="avg" className="form-control-label">
-                          IPK Rata - rata
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="IPK Rata - rata"
-                            id="avg"
-                            required
-                          />
-                        </div>
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
+        <LayoutForm rlUser={dataRole}>
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetilDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <p className="mb-0">Input Data</p>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Simpan
+                        </button>
                       </div>
                     </div>
+                    <div className="card-body">
+                      <p className="text-uppercase text-sm mb-3">
+                        <h6>IPK Lulusan</h6>
+                      </p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="prodi"
+                              className="form-control-label"
+                            >
+                              Prodi
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              id="prodi"
+                              value={selectIPK}
+                              onChange={handleChangeIPK}
+                            >
+                              <option>Pilih Prodi</option>
+                              {dataIPKs.map((userprodi) => {
+                                {
+                                  return (
+                                    <option
+                                      value={userprodi.id}
+                                      key={userprodi.id}
+                                    >
+                                      {userprodi.prodi +
+                                        ` ` +
+                                        userprodi.nama_prodi}
+                                    </option>
+                                  );
+                                }
+                              })}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="tahun"
+                              className="form-control-label"
+                            >
+                              Tahun
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tahun"
+                              id="tahun"
+                              defaultValue={dataIPK.tahun}
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="jmlh_lulusan"
+                              className="form-control-label"
+                            >
+                              Jumlah Lulusan
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Jumlah Lulusan"
+                              id="jmlh_lulusan"
+                              defaultValue={dataIPK.jmlh_lulusan}
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="min" className="form-control-label">
+                              IPK Minimal
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="IPK Minimal"
+                              id="min"
+                              defaultValue={dataIPK.ipk_min}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="max" className="form-control-label">
+                              IPK Maksimal
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="IPK Maksimal"
+                              id="max"
+                              defaultValue={dataIPK.ipk_max}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="avg" className="form-control-label">
+                              IPK Rata - rata
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="IPK Rata - rata"
+                              id="avg"
+                              defaultValue={dataIPK.ipk_avg}
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+        </LayoutForm>
       )}
     </>
   );

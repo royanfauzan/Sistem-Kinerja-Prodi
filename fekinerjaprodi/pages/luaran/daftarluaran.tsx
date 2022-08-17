@@ -14,6 +14,7 @@ export default function daftarluaran() {
 
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
+  const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -54,6 +55,8 @@ export default function daftarluaran() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -87,7 +90,7 @@ export default function daftarluaran() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
@@ -209,35 +212,9 @@ export default function daftarluaran() {
                                   </button>
                                 </Link>
 
-                                <Link href={`/luaran/hapusmahasiswa`}>
+                                <Link href={`/luaran/hapus/${lurn.id}`}>
                                   <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                   Hapus mahasiswa
-                                  </button>
-                                </Link>
-
-                                <button
-                                  onClick={() => deleteluaran(lurn.id)}
-                                  className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
-                                >
-                                  Hapus
-                                </button>
-                                </tr>
-                                <tr>
-                                <Link href={`/luaran/edit/${lurn.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
-
-                                <Link href={`/luaran/pilih/${lurn.id}`}>
-                                  <button className="btn btn-sm btn-success border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Pilih mahasiswa
-                                  </button>
-                                </Link>
-
-                                <Link href={`/luaran/hapusmahasiswa`}>
-                                  <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                   Hapus mahasiswa
+                                    Hapus mahasiswa
                                   </button>
                                 </Link>
 

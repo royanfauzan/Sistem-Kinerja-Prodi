@@ -10,28 +10,48 @@ import Link from "next/link";
 import Swal from "sweetalert2"
 import withReactContent from "sweetalert2-react-content"
 
-export default function hapusmhs() {
+
+export async function getServerSideProps(context) {
+
+    //http request
+    const req = await axios.get(`http://127.0.0.1:8000/api/PKM_relasidosen/${context.query.id_hapus}`)
+    const res = await req.data.all_relasi
+
+    return {
+        props: {
+            pkmmhs: res // <-- assign response
+        },
+    }
+}
+
+export default function hapusmhs(props) {
     const router = useRouter();
+    const { id_hapus } = router.query;
+    const { pkmmhs } = props;
 
     const [stadmin, setStadmin] = useState(false);
-    const [penelitian, setpenelitian] = useState([]);
-    const MySwal = withReactContent(Swal)
+    const [pkm, setpkm] = useState(pkmmhs);
+    const [id_pkm, setid_pkm] = useState(id_hapus);
+    const MySwal = withReactContent(Swal);
+    const [dataRole, setRole] = useState("");
+
+
 
     const pengambilData = async () => {
         const lgToken = localStorage.getItem("token");
 
         axios({
             method: "get",
-            url: "http://127.0.0.1:8000/api/Penelitian_relasimhs",
+            url: `http://127.0.0.1:8000/api/PKM_relasidosen/${id_pkm}`,
             headers: { Authorization: `Bearer ${lgToken}` },
         })
             .then(function (response) {
                 console.log(response);
                 console.log("Sukses");
                 const { all_relasi } = response.data;
-                setpenelitian(all_relasi);
+                setpkm(all_relasi);
 
-                console.log(all_relasi);
+                console.log(id_hapus);
             })
             .catch(function (err) {
                 console.log("gagal");
@@ -56,8 +76,10 @@ export default function hapusmhs() {
                 console.log(response);
                 console.log("Sukses");
                 const { level_akses } = response.data.user;
+                const { role } = response.data.user;
+                setRole(role);
                 // kalo ga admin dipindah ke halaman lain
-                if (level_akses !== 3) {
+                if (level_akses !== 2) {
                     return router.push("/");
                 }
                 // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -71,10 +93,10 @@ export default function hapusmhs() {
             });
     }, []);
 
-    const deletepenelitian = (id) => {
+    const deletepkm = (id) => {
         axios({
             method: "post",
-            url: `http://127.0.0.1:8000/api/Penelitian_DeleteMhs/${id}`,
+            url: `http://127.0.0.1:8000/api/PKM_Deleterelasi_dosen/${id}`,
         })
             .then(function (response) {
                 router.reload();
@@ -87,15 +109,15 @@ export default function hapusmhs() {
 
     const searchdata = async (e) => {
         if (e.target.value == "") {
-            const req = await axios.get(`http://127.0.0.1:8000/api/Penelitian/`)
+            const req = await axios.get(`http://127.0.0.1:8000/api/PKM/`)
             const res = await req.data.all_penelitian
-            setpenelitian(res)
+            setpkm(res)
         } else {
             const req = await axios.get(
-                `http://127.0.0.1:8000/api/Penelitian_search/${e.target.value}`
+                `http://127.0.0.1:8000/api/PKM_search/${e.target.value}`
             )
             const res = await req.data.searchpenelitian
-            setpenelitian(res)
+            setpkm(res)
         }
     }
 
@@ -104,12 +126,12 @@ export default function hapusmhs() {
         <>
             <LoadingUtama loadStatus={stadmin} />
             {stadmin && (
-                <LayoutForm>
+                <LayoutForm rlUser={dataRole}>
                     <div className="container-fluid py-4">
                         <div className="col-12">
                             <div className="card mb-4">
                                 <div className="card-header pb-0">
-                                    <h6>Tabel Penelitian</h6>
+                                    <h6>Tabel PKM</h6>
                                 </div>
                                 <div className="row justify-content-end">
                                     <div className="col-3 d-flex flex-row-reverse pe-2">
@@ -127,7 +149,7 @@ export default function hapusmhs() {
                                 <div className="row justify-content-between mb-4">
                                     <div className="col-4">
                                         <div className="align-middle">
-                                            <Link href={`/penelitian/daftarpenelitian/`}>
+                                            <Link href={`/PkM/daftarpkm/`}>
                                                 <button className=" btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                                                     Daftar Tabel
                                                 </button>
@@ -145,10 +167,10 @@ export default function hapusmhs() {
                                                         NO
                                                     </th>
                                                     <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-3">
-                                                        Nama Mahasiswa
+                                                        Nama Dosen
                                                     </th>
                                                     <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-3">
-                                                        NIM
+                                                        NIDK
                                                     </th>
 
 
@@ -156,37 +178,33 @@ export default function hapusmhs() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {penelitian.map((penelitian, number) => {
+                                                {pkm.map((pkm, number) => {
                                                     return (
-                                                        <tr key={`penelitian` + penelitian.id}>
+                                                        <tr key={`pkm` + pkm.id}>
 
                                                             <td className="ps-3 pe-3">
                                                                 <p className="mb-0 text-sm">{number + 1}</p>
                                                             </td>
 
 
-
                                                             <td className="align-middle  text-sm">
                                                                 <p className="text-xs font-weight-bold mb-0">
-                                                                    {penelitian.mahasiswa.nama }
+                                                                    {pkm.dosen.NamaDosen}
                                                                 </p>
                                                             </td>
 
-
                                                             <td className="align-middle  text-sm">
                                                                 <p className="text-xs font-weight-bold mb-0">
-                                                                    {penelitian.mahasiswa.nim }
+                                                                    {pkm.dosen.NIDK}
                                                                 </p>
                                                             </td>
-
-
 
 
                                                             <td className="align-middle pe-3 text-end">
 
 
                                                                 <button
-                                                                    onClick={() => deletepenelitian(penelitian.id)}
+                                                                    onClick={() => deletepkm(pkm.id)}
                                                                     className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                                                 >
                                                                     Hapus

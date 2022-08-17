@@ -19,8 +19,10 @@ export default function inputintegrasi() {
   const [filebukti, setfilebuktis] = useState<File>([]);
   const penelitianref = useRef(null);
   const pkmref = useRef(null);
-  const [dataError, setError] = useState([])
-  const MySwal = withReactContent(Swal)
+  const [dataError, setError] = useState([]);
+  const MySwal = withReactContent(Swal);
+
+  const [dataRole, setRole] = useState('');
 
 
   const [PKMs, setPkMs] = useState([]);
@@ -158,8 +160,11 @@ export default function inputintegrasi() {
         console.log(response);
         console.log('Sukses');
         const { level_akses } = response.data.user;
+        
+        const {role} = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 3) {
+        if (level_akses !== 2) {
           return router.push('/');
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -231,7 +236,7 @@ export default function inputintegrasi() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -289,7 +294,7 @@ export default function inputintegrasi() {
                         <div className="col-md-6">
                           <div className="form-group">
                             <label htmlFor="penelitian"
-                              className={dataError.tema_sesuai_roadmap ? "is-invalid" : ""}>
+                              className={dataError.penelitian_id ? "is-invalid" : ""}>
                               Penelitian
                             </label>
                             <select
@@ -314,9 +319,9 @@ export default function inputintegrasi() {
                                 }
                               })}
                             </select>
-                            {dataError.tema_sesuai_roadmap ? (
+                            {dataError.penelitian_id ? (
                               <div className="invalid-feedback">
-                                {dataError.tema_sesuai_roadmap}
+                                {dataError.penelitian_id}
                               </div>
                             ) : (
                               ""
@@ -327,7 +332,7 @@ export default function inputintegrasi() {
                         <div className="col-md-6">
                           <div className="form-group">
                             <label htmlFor="pkm"
-                              className={dataError.tema_sesuai_roadmap ? "is-invalid" : ""}>
+                              className={dataError.PkM_id ? "is-invalid" : ""}>
                               PKM
                             </label>
                             <select
@@ -352,9 +357,9 @@ export default function inputintegrasi() {
                                 }
                               })}
                             </select>
-                            {dataError.tema_sesuai_roadmap ? (
+                            {dataError.PkM_id ? (
                               <div className="invalid-feedback">
-                                {dataError.tema_sesuai_roadmap}
+                                {dataError.PkM_id}
                               </div>
                             ) : (
                               ""

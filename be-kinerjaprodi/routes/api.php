@@ -134,7 +134,7 @@ Route::post('delete_waktutunggu/{id}', [WaktutungguController::class, 'destroy']
 //Luaran lainnya
 Route::post('luaran_mhs/{id}', [LuaranlainnyaController::class, 'pilihmahasiswa']);
 Route::get('luaran', [LuaranlainnyaController::class, 'index']);
-Route::get('tampil_relasi', [LuaranlainnyaController::class, 'tampilrelasi']);
+Route::get('tampil_relasi/{id}', [LuaranlainnyaController::class, 'tampilrelasi']);
 Route::post('luaran', [LuaranlainnyaController::class, 'store']);
 Route::put('edit_luaran/{id}', [LuaranlainnyaController::class, 'update']);
 Route::get('show_luaran/{id}', [LuaranlainnyaController::class, 'show']);
@@ -143,6 +143,8 @@ Route::post('deletemahasiswa/{id}', [LuaranlainnyaController::class, 'deletemaha
 
 
 //Pagelaran MHS
+Route::get('pagelaranlisttahun', [PagelaranController::class, 'listtahun']);
+Route::get('tahun_pagelaran/{tahun}', [PagelaranController::class, 'exportpublikasidos']);
 Route::get('pagelaran', [PagelaranController::class, 'index']);
 Route::post('pagelaran', [PagelaranController::class, 'store']);
 Route::put('edit_pagelaran/{id}', [PagelaranController::class, 'update']);
@@ -198,6 +200,8 @@ Route::get('read_user/{id}', [UserController::class, 'show']);
 Route::post('store_user', [UserController::class, 'store']);
 Route::post('update_user/{id}', [UserController::class, 'update']);
 Route::post('delete_user/{id}', [UserController::class, 'destroy']);
+Route::get('reset_user/{id}', [UserController::class, 'resetpassword']);
+Route::post('change_password/', [UserController::class, 'changepassword']);
 
 Route::post('create_penggunaan_dana', [PenggunaanDanaController::class, 'insert_penggunaan_dana']);
 Route::get('read_penggunaan_dana', [PenggunaanDanaController::class, 'tampil_penggunaan_dana']);
@@ -238,7 +242,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('get_user', [ApiController::class, 'get_user']);
     Route::post('penelitiandosens', [PenelitianController::class, 'store']);
     Route::post('pengabdiandosens', [PengabdianController::class, 'store']);
-    
+
     Route::post('mengajars', [MengajarController::class, 'store']);
     Route::post('bimbingans', [BimbinganController::class, 'store']);
     Route::get('logout', [ApiController::class, 'logout']);
@@ -344,6 +348,10 @@ Route::put('PKM_Update/{id}', [PKMController::class, 'update']);
 Route::post('PKM_Delete/{id}', [PKMController::class, 'destroy']);
 Route::post('PKM_dosen/{id}', [PKMController::class, 'pilihdosen']);
 Route::post('PKM_mahasiswa/{id}', [PKMController::class, 'pilihmhs']);
+Route::get('PKM_relasimhs/{id}', [PKMController::class, 'relasiPkmMhs']);
+Route::get('PKM_relasidosen/{id}', [PKMController::class, 'relasipkmdosen']);
+Route::post('PKM_Deleterelasi_dosen/{id}', [PKMController::class, 'deletedosen']);
+Route::post('PKM_Deleterelasi_mhs/{id}', [PKMController::class, 'deletemhs']);
 
 //route penelitian
 Route::get('Penelitian_search/{id}', [PenelitianController::class, 'searchpenelitian']);
@@ -355,7 +363,9 @@ Route::post('Penelitian', [PenelitianController::class, 'store']);
 Route::put('Penelitian_Update/{id}', [PenelitianController::class, 'update']);
 Route::post('Penelitian_Delete/{id}', [PenelitianController::class, 'destroy']);
 Route::post('Penelitian_DeleteMhs/{id}', [PenelitianController::class, 'deletemhs']);
-Route::get('Penelitian_relasimhs', [PenelitianController::class, 'relasipenmhs']);
+Route::get('Penelitian_relasimhs/{id}', [PenelitianController::class, 'relasipenmhs']);
+Route::get('Penelitian_relasidosen/{id}', [PenelitianController::class, 'relasipendosen']);
+Route::post('Penelitian_Deleterelasi_dosen/{id}', [PenelitianController::class, 'deletedosen']);
 
 //route integrasi
 Route::get('Integrasi_search/{id}', [IntegrasiController::class, 'searchintegrasi']);
@@ -364,4 +374,3 @@ Route::get('Integrasi', [IntegrasiController::class, 'index']);
 Route::post('Integrasi', [IntegrasiController::class, 'store']);
 Route::put('Integrasi_Update/{id}', [IntegrasiController::class, 'update']);
 Route::post('Integrasi_Delete/{id}', [IntegrasiController::class, 'destroy']);
-

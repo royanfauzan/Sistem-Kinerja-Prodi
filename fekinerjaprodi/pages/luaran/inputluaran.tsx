@@ -15,17 +15,18 @@ export default function inputluaran() {
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
+  const [dataRole, setRole] = useState("");
 
-  const pengambilData = async () =>{
+  const pengambilData = async () => {
 
   }
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
-  useEffect(()=>{
+  useEffect(() => {
     // cek token, kalo gaada disuruh login
     const lgToken = localStorage.getItem('token');
-    if(!lgToken){
+    if (!lgToken) {
       router.push('/login')
     }
 
@@ -35,24 +36,26 @@ export default function inputluaran() {
       url: "http://127.0.0.1:8000/api/get_user",
       headers: { "Authorization": `Bearer ${lgToken}` },
     })
-    .then(function (response) {
-            console.log(response);
-            console.log('Sukses');
-            const {level_akses} = response.data.user;
-            // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
-              return router.push('/');
-            }
-            // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-            setStadmin(true);
-            pengambilData();
-    })
-    .catch(function (err) {
+      .then(function (response) {
+        console.log(response);
+        console.log('Sukses');
+        const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 3) {
+          return router.push('/');
+        }
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+        setStadmin(true);
+        pengambilData();
+      })
+      .catch(function (err) {
         console.log('gagal');
         console.log(err.response);
         return router.push('/');
-    })
-  },[]);
+      })
+  }, []);
 
   const submitForm = async (event) => {
     event.preventDefault();
@@ -103,98 +106,98 @@ export default function inputluaran() {
 
   return (
     <>
-    <LoadingUtama loadStatus={stadmin}/>
-      {stadmin  &&(
-        <LayoutForm>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-md-8">
-              <form id="inputDetilDosen" onSubmit={submitForm}>
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
-                      <button
-                        className="btn btn-primary btn-sm ms-auto"
-                        type="submit"
-                      >
-                        Simpan
-                      </button>
-                    </div>
-                  </div>
-                  <div className="card-body">
-                    <p className="text-uppercase text-sm">Luaran Lainnya</p>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="judul" className="form-control-label">
-                            judul
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="judul"
-                            id="judul"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="keterangan" className="form-control-label">
-                            Keterangan
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Keterangan"
-                            id="keterangan"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tahun" className="form-control-label">
-                          Tahun
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tahun"
-                            id="tahun"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="jenis" className="form-control-label">
-                          Jenis Luaran
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Jenis Luaran"
-                            id="jenis"
-                            required
-                          />
-                        </div>
+      <LoadingUtama loadStatus={stadmin} />
+      {stadmin && (
+        <LayoutForm rlUser={dataRole}>
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-md-8">
+                <form id="inputDetilDosen" onSubmit={submitForm}>
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="d-flex align-items-center">
+                        <p className="mb-0">Input Data</p>
+                        <button
+                          className="btn btn-primary btn-sm ms-auto"
+                          type="submit"
+                        >
+                          Simpan
+                        </button>
                       </div>
                     </div>
+                    <div className="card-body">
+                      <p className="text-uppercase text-sm">Luaran Lainnya</p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="judul" className="form-control-label">
+                              judul
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="judul"
+                              id="judul"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="keterangan" className="form-control-label">
+                              Keterangan
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Keterangan"
+                              id="keterangan"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="tahun" className="form-control-label">
+                              Tahun
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tahun"
+                              id="tahun"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="jenis" className="form-control-label">
+                              Jenis Luaran
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Jenis Luaran"
+                              id="jenis"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div className="col-md-4">
+                <CardUtama />
+              </div>
             </div>
-            <div className="col-md-4">
-              <CardUtama />
-            </div>
+            <FooterUtama />
           </div>
-          <FooterUtama />
-        </div>
-      </LayoutForm>
+        </LayoutForm>
       )}
     </>
   );

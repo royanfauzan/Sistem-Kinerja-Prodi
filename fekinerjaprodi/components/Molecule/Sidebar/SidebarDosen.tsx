@@ -1,15 +1,15 @@
-import axios from "axios";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import axios from "axios"
+import { useRouter } from "next/router"
+import React, { useEffect, useState } from "react"
 import style from "./sideb.module.css"
 
 export default function SidebarDosen() {
-  const router = useRouter();
+  const router = useRouter()
 
   // const arrMenuSDM =['']
 
   const Logout = async () => {
-    const lgToken = localStorage.getItem("token");
+    const lgToken = localStorage.getItem("token")
 
     axios({
       method: "get",
@@ -20,16 +20,16 @@ export default function SidebarDosen() {
       },
     })
       .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        localStorage.removeItem("token");
-        router.push("/login");
+        console.log(response)
+        console.log("Sukses")
+        localStorage.removeItem("token")
+        router.push("/login")
       })
       .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
-  };
+        console.log("gagal")
+        console.log(err.response)
+      })
+  }
 
   return (
     <aside
@@ -70,19 +70,6 @@ export default function SidebarDosen() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a
-              className="nav-link "
-              href="/dashboards_capaian_tridarma/dashboardtridarma"
-            >
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">
-                Kriteria Luaran dan <br /> Capaian Tridarama
-              </span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
             <a className="nav-link " href="/dashboards_eva/dashboardpendidikan">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
@@ -119,12 +106,8 @@ export default function SidebarDosen() {
         </ul>
       </div>
       <div className=" mx-3 ">
-        <a
-          href="https://www.creative-tim.com/learning-lab/bootstrap/license/argon-dashboard"
-          target="_blank"
-          className="btn btn-dark btn-sm w-100 mb-3"
-        >
-          Documentation
+        <a href="/User/UbahPassword" className="btn btn-dark btn-sm w-100 mb-3">
+          Change Password
         </a>
         <a
           className="btn btn-sm btn-outline-danger mb-0 w-100"
@@ -135,5 +118,5 @@ export default function SidebarDosen() {
         </a>
       </div>
     </aside>
-  );
+  )
 }

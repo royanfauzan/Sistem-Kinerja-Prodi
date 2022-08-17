@@ -17,6 +17,7 @@ export default function dashboardadmin() {
 
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
+  const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -57,8 +58,10 @@ export default function dashboardadmin() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 3) {
+        if (level_akses !== 2) {
           return router.push("/");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -76,13 +79,17 @@ export default function dashboardadmin() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
+          <div className="col-6">
+              <div className="card mb-4 px-3 pb-3 bg-light">
             <div className="row">
-              <div className="col-4 mt-3">
+              <div className="col-12 mt-3">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title">Data Pengabdian <br /> Kepada Masyarakat</h5>
+                    <h5 className="card-title">
+                      Data Pengabdian Kepada Masyarakat
+                    </h5>
                     <p className="card-text">
                       With supporting text below as a natural lead-in to
                       additional content.
@@ -93,7 +100,8 @@ export default function dashboardadmin() {
                   </div>
                 </div>
               </div>
-              
+            </div>
+              </div>
             </div>
             <FooterUtama />
           </div>

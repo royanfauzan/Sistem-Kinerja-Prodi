@@ -17,6 +17,8 @@ export default function pkm() {
     const [anggota_dosens, setdataDosen] = useState([]);
     const [anggota_mahasiswas, setdataMahasiswa] = useState([]);
 
+    const [dataRole, setRole] = useState("");
+
     const pengambilData = async () => {
         const lgToken = localStorage.getItem("token");
 
@@ -56,6 +58,8 @@ export default function pkm() {
                 console.log(response);
                 console.log("Sukses");
                 const { level_akses } = response.data.user;
+                const { role } = response.data.user;
+                setRole(role);
                 // kalo ga admin dipindah ke halaman lain
                 if (level_akses !== 3) {
                     return router.push("/");
@@ -76,7 +80,7 @@ export default function pkm() {
         <>
             <LoadingUtama loadStatus={stadmin} />
             {stadmin && (
-                <LayoutForm>
+                <LayoutForm rlUser={dataRole}>
                     <div className="container-fluid py-4">
                         <div className="col-12">
                             <div className="card mb-4">
@@ -125,23 +129,23 @@ export default function pkm() {
                                                     <th rowspan="2">NO</th>
                                                     <th rowspan="2">Semester</th>
                                                     <th rowspan="2">Kode Mata Kuliah</th>
-                                                    <th rowspan="2">Nama <br/>Mata <br/> Kuliah</th>
-                                                    <th rowspan="2">Mata <br/> Kuliah <br/> Kompetensi</th>
+                                                    <th rowspan="2">Nama <br />Mata <br /> Kuliah</th>
+                                                    <th rowspan="2">Mata <br /> Kuliah <br /> Kompetensi</th>
                                                     <th colspan="3">Bobot Kredit (sks)</th>
-                                                    <th rowspan="2">Konversi  <br/>Kredit ke <br/>Jam</th>
+                                                    <th rowspan="2">Konversi  <br />Kredit ke <br />Jam</th>
                                                     <th colspan="4">Capaian Pembelajaran</th>
-                                                    <th rowspan="2">Dokumen <br/>Rencana <br/>Pembelajaran</th>
-                                                    <th rowspan="2">Unit <br/>Penyelenggara</th>
+                                                    <th rowspan="2">Dokumen <br />Rencana <br />Pembelajaran</th>
+                                                    <th rowspan="2">Unit <br />Penyelenggara</th>
                                                 </tr>
                                                 <tr>
-                                                    <th >Kuliah/ <br/>Responsi/ <br/>Tutorial</th>
+                                                    <th >Kuliah/ <br />Responsi/ <br />Tutorial</th>
                                                     <th >Seminar</th>
-                                                    <th >Praktikum/ <br/>Praktik/<br/> Praktik <br/>Lapangan</th>
+                                                    <th >Praktikum/ <br />Praktik/<br /> Praktik <br />Lapangan</th>
 
                                                     <th >Sikap</th>
                                                     <th >Pengetahuan</th>
-                                                    <th >Keterampilan <br/> Umum</th>
-                                                    <th >Keterampilan <br/>Khusus</th>
+                                                    <th >Keterampilan <br /> Umum</th>
+                                                    <th >Keterampilan <br />Khusus</th>
 
                                                 </tr>
                                             </thead>

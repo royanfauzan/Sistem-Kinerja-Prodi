@@ -15,5 +15,8 @@ class relasi_luaran_mhs extends Model
         return $this->belongsTo(Mahasiswa::class,'mahasiswa_id','id');
     }
 
-
+    public function luaran()
+    {
+        return $this->belongsTo(Luaranlainnya::class,'luaranlainnya_id','id');
+    }
 }

@@ -27,6 +27,7 @@ export default function editluaran(props) {
   const { id_pilih } = router.query;
   const { luaran } = props;
   const [dataLuaran, setLuaran] = useState(luaran);
+  const [dataRole, setRole] = useState("");
 
   console.log(luaran);
 
@@ -74,6 +75,8 @@ export default function editluaran(props) {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -142,7 +145,7 @@ export default function editluaran(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">

@@ -74,18 +74,152 @@ export default function daftarpenelitian() {
       });
   }, []);
 
+  const pilihdosen = () => {
+    MySwal.fire({
+      title: "Pilih Dosen",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/penelitian/pilih_dosen/${id}`);
+      }
+    });
+  };
+
+  const pilihmhs = () => {
+    MySwal.fire({
+      title: "Pilih Mahasiswa",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/penelitian/pilih_mahasiswa/${id}`);
+      }
+    });
+  };
+
+  const hapusdosen = () => {
+    MySwal.fire({
+      title: "Hapus Dosen",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/penelitian/hapusdosen/${id}`);
+      }
+    });
+  };
+
+  const hapusmhs = () => {
+    MySwal.fire({
+      title: "Hapus Mahasiswa",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/penelitian/hapusdosen/${id}`);
+      }
+    });
+  };
+
+
+  const tambahpenelitian = () => {
+    MySwal.fire({
+      title: "Tambah Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/penelitian/inputpenelitian`);
+      }
+    });
+  };
+
+  const exportpenelitian = () => {
+    MySwal.fire({
+      title: "Export Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/penelitian/export/exportpenelitian`);
+      }
+    });
+  };
+
+  const editpenelitian = (id) => {
+    MySwal.fire({
+      title: "Edit Data",
+      text: "Apakah kalian yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/penelitian/edit/${id}`);
+      }
+    });
+  };
+
   const deletepenelitian = (id) => {
-    axios({
-      method: "post",
-      url: `http://127.0.0.1:8000/api/Penelitian_Delete/${id}`,
-    })
-      .then(function (response) {
-        router.reload();
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+    MySwal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, hapus ini!",
+    }).then((result) => {
+      // <--
+      if (result.isConfirmed) {
+        // <-- if confirmed
+        axios({
+          method: "post",
+          url: `http://127.0.0.1:8000/api/Penelitian_Delete/${id}`,
+        })
+          .then(function (response) {
+            router.reload();
+          })
+          .catch(function (err) {
+            console.log("gagal");
+            console.log(err.response);
+          });
+      }
+    });
   };
 
   const searchdata = async (e) => {
@@ -129,23 +263,25 @@ export default function daftarpenelitian() {
                 </div>
                 <div className="row justify-content-between mb-4">
                   <div className="col-4">
-                    <div className="align-middle">
-                      <Link href={`/penelitian/inputpenelitian/`}>
-                        <button className=" btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
+                      <td className="align-middle">
+                        <button
+                          onClick={() => tambahpenelitian()}
+                          className="btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                        >
                           Tambah Data
                         </button>
-                      </Link>
+                      </td>
                     </div>
-                  </div>
-                  <div className="col-4 d-flex flex-row-reverse">
-                    <div className="align-middle">
-                      <Link href={`/penelitian/export/exportpenelitian/`}>
-                        <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                          Export Tabel
+                    <div className="col-4 d-flex flex-row-reverse">
+                      <td className="align-middle">
+                        <button
+                          onClick={() => exportpenelitian()}
+                          className="btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                        >
+                          Export Data
                         </button>
-                      </Link>
+                      </td>
                     </div>
-                  </div>
                 </div>
 
                 <div className="card-body px-0 pt-0 pb-2">
@@ -281,17 +417,18 @@ export default function daftarpenelitian() {
 
                               <td className="align-middle pe-3 justify-content-evenly">
                                 <tr>
-                                  <Link href={`/penelitian/edit/${penelitian.id}`}>
-                                    <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                      Edit Penelitian
-                                    </button>
-                                  </Link>
+                                <button
+                                    onClick={() => editpenelitian(penelitian.id)}
+                                    className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
+                                  >
+                                    Edit Penelitian
+                                  </button>
 
                                   <button
                                     onClick={() => deletepenelitian(penelitian.id)}
                                     className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
                                   >
-                                    Hapus Pnelitian
+                                    Hapus Penelitian
                                   </button>
 
                                   <Link href={`/penelitian/pilih_dosen/${penelitian.id}`}>

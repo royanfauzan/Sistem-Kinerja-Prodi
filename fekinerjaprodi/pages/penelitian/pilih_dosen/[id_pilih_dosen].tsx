@@ -33,7 +33,7 @@ export default function editluaran(props) {
   // State Select
   const [stadmin, setStadmin] = useState(false);
   const [dataPenelitians, setPenelitians] = useState([]);
-  const [selectPenelitian, setSelectPenelitian] = useState(penelitian.dosen_id);
+  const [selectPenelitian, setSelectPenelitian] = useState(penelitian.profil_dosen_id);
   const [selectId, setSelectId] = useState(id_pilih_dosen);
   const [dataDosen, setdataDosen] = useState();
 

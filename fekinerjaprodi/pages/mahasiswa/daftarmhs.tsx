@@ -75,18 +75,66 @@ export default function daftarmhs() {
       });
   }, []);
 
+  const tambahmhs = () => {
+    MySwal.fire({
+      title: "Tambah Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/mahasiswa/inputmhs`);
+      }
+    });
+  };
+
+  const editmhs = (id) => {
+    MySwal.fire({
+      title: "Edit Data",
+      text: "Apakah kalian yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/mahasiswa/edit/${id}`);
+      }
+    });
+  };
+
   const deletemhs = (id) => {
-    axios({
-      method: "post",
-      url: `http://127.0.0.1:8000/api/Mahasiswa_Delete/${id}`,
-    })
-      .then(function (response) {
-        router.reload();
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+    MySwal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, hapus ini!",
+    }).then((result) => {
+      // <--
+      if (result.isConfirmed) {
+        // <-- if confirmed
+        axios({
+          method: "post",
+          url: `http://127.0.0.1:8000/api/Mahasiswa_Delete/${id}`,
+        })
+          .then(function (response) {
+            router.reload();
+          })
+          .catch(function (err) {
+            console.log("gagal");
+            console.log(err.response);
+          });
+      }
+    });
   };
 
   const searchdata = async (e) => {
@@ -116,14 +164,15 @@ export default function daftarmhs() {
                 </div>
                 <div className="row justify-content-between mb-4">
                 <div className="col-4">
-                    <div className="align-middle">
-                      <Link href={`/mahasiswa/inputmhs/`}>
-                        <button className=" btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mb-0">
+                      <td className="align-middle">
+                        <button
+                          onClick={() => tambahmhs()}
+                          className="btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mb-0"
+                        >
                           Tambah Data
                         </button>
-                      </Link>
+                      </td>
                     </div>
-                  </div>
                   <div className="col-3 d-flex flex-row-reverse me-3">
                     <input
                       className="form-control d-flex flex-row-reverse me-2"
@@ -175,11 +224,13 @@ export default function daftarmhs() {
                               </td>
 
                               <td className="align-middle pe-3 text-end">
-                                <Link href={`/mahasiswa/edit/${kurikulum.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
+
+                                <button
+                                  onClick={() => editmhs(kurikulum.id)}
+                                  className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
+                                >
+                                  Edit
+                                </button>
 
                                 <button
                                   onClick={() => deletemhs(kurikulum.id)}

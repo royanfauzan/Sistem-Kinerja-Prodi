@@ -11,9 +11,9 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 export async function getServerSideProps(context) {
   //http request
   const req = await axios.get(
-    `http://127.0.0.1:8000/api/tampil_Penelitian/${context.query.id_pilih_dosen}`
+    `http://127.0.0.1:8000/api/PKM_relasidosen/${context.query.id_pilih_dosen}`
   );
-  const res = await req.data.all_penelitian;
+  const res = await req.data.all_relasi;
 
   return {
     props: {
@@ -33,7 +33,7 @@ export default function editluaran(props) {
   // State Select
   const [stadmin, setStadmin] = useState(false);
   const [datapkms, setpkms] = useState([]);
-  const [selectpkm, setSelectpkm] = useState(pkm.dosen_id);
+  const [selectpkm, setSelectpkm] = useState(pkm.profil_dosen_id);
   const [selectId, setSelectId] = useState(id_pilih_dosen);
   const [dataDosen, setdataDosen] = useState([]);
 

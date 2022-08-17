@@ -35,6 +35,8 @@ export default function editPenelitian(props) {
   const [dataPenelitians, setPenelitians] = useState([]);
   const [selectPenelitian, setSelectPenelitian] = useState(penelitian.mahasiswa_id);
   const [selectId, setSelectId] = useState(id_pilih_mhs);
+  
+  const [dataRole, setRole] = useState("");
 
   const [dataDosen, setdataDosen] = useState();
 
@@ -154,7 +156,7 @@ export default function editPenelitian(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Pilih Mahasiswa</p>
+                        <h6 className="mb-0">Pilih ID Mahasiswa</h6>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"

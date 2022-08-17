@@ -284,9 +284,18 @@ Route::group(['middleware' => ['adminonly']], function () {
     Route::post('profildosens', [ProfildosenController::class, 'store']);
 });
 
+// Rekognisi
+Route::post('rekognisidosens', [RekognisiController::class, 'store']);
+Route::get('search_rekognisi/', [RekognisiController::class, 'allrekognisi']);
+Route::get('search_rekognisidsn/', [RekognisiController::class, 'allrekognisidsn']);
+Route::get('search_rekognisi/{search}', [RekognisiController::class, 'searchrekognisi']);
+Route::get('search_rekognisidsn/{search}', [RekognisiController::class, 'searchrekognisidsn']);
+Route::get('tampil_rekognisi/{id}', [RekognisiController::class, 'show']);
+Route::put('update_rekognisi/{id}', [RekognisiController::class, 'update']);
+Route::post('delete_rekognisi/{id}', [RekognisiController::class, 'destroy']);
+
 Route::group(['middleware' => ['dosenonly']], function () {
     Route::post('detildosens', [DetaildosenController::class, 'store']);
-    Route::post('rekognisidosens', [RekognisiController::class, 'store']);
     Route::post('pendidikandosens', [PendidikanController::class, 'store']);
 });
 //route prodi

@@ -35,4 +35,14 @@ class profilDosen extends Model
         return $this->hasMany(Bimbingan::class,'profil_dosen_id','id');
     }
 
+    public function ewmps()
+    {
+        return $this->hasMany(Ewmp::class,'profil_dosen_id','id');
+    }
+
+    public function rekognisis()
+    {
+        return $this->hasMany(Rekognisi::class,'profil_dosen_id','id')->orderBy('tahun','DESC');
+    }
+
 }

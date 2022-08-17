@@ -243,11 +243,15 @@ class EwmpController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors(),
-            ], 400);
+            return response()->json(['error' => $validator->errors()], 400);
         }
+
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => $validator->errors(),
+        //     ], 400);
+        // }
 
         $ewmpExist = Ewmp::where([['profil_dosen_id', $request->profil_dosen_id],['tahun_akademik', $request->tahun_akademik],['semester', $request->semester]])->where([['id','!=',$id]])->get()->count();
         if ($ewmpExist) {

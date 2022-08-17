@@ -9,4 +9,9 @@ class Rekognisi extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    
+    public function profilDosen()
+    {
+        return $this->belongsTo(profilDosen::class, 'profil_dosen_id');
+    }
 }

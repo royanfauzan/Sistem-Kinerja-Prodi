@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
@@ -10,12 +10,13 @@ import Link from "next/link";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-export default function tabelewmp() {
+export default function tabelrekognisi() {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
   const [stadmin, setStadmin] = useState(false);
+  const apiurl = "http://127.0.0.1:8000/"
 
-  const [dataEwmps, setdataEwmps] = useState([]);
+  const [dataRekognisis, setdataRekognisis] = useState([]);
   const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
@@ -23,16 +24,16 @@ export default function tabelewmp() {
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/search_ewmpdsn",
+      url: "http://127.0.0.1:8000/api/search_rekognisi",
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { dataewmps } = response.data;
-        setdataEwmps(dataewmps);
+        const { datarekognisis } = response.data;
+        setdataRekognisis(datarekognisis);
 
-        console.log(dataewmps);
+        console.log(datarekognisis);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -62,8 +63,8 @@ export default function tabelewmp() {
         setRole(role);
 
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses != 2) {
-          return router.push("/ewmp/tabelewmp");
+        if (level_akses !== 3) {
+          return router.push("/rekognisi/tabelrekognisidsn");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         setStadmin(true);
@@ -72,15 +73,15 @@ export default function tabelewmp() {
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
-        return router.push("/");
+        return router.push("/rekognisi/tabelrekognisidsn");
       });
 
     
   }, []);
 
-  const deleteEwmp = (id) => {
+  const deleterekognisi = (id) => {
     MySwal.fire({
-      title: "Yakin Hapus Data EWMP?",
+      title: "Yakin Hapus Data rekognisi?",
       text: "Data yang dihapus tidak dapat dikembalikan!",
       icon: "warning",
       showCancelButton: true,
@@ -94,11 +95,11 @@ export default function tabelewmp() {
         // <-- if confirmed
         axios({
           method: "post",
-          url: `http://127.0.0.1:8000/api/delete_ewmp/${id}`,
+          url: `http://127.0.0.1:8000/api/delete_rekognisi/${id}`,
         })
           .then(function (response) {
-            const { dataewmps } = response.data;
-            setdataEwmps(dataewmps);
+            const { datarekognisis } = response.data;
+            setdataRekognisis(datarekognisis);
           })
           .catch(function (err) {
             console.log("gagal");
@@ -109,26 +110,16 @@ export default function tabelewmp() {
   };
  
   const searchdata = async (e) => {
-    const lgToken = localStorage.getItem("token");
     if (e.target.value == "") {
-      const req = await axios.get(`http://127.0.0.1:8000/api/search_ewmpdsn/`, {
-        headers: {
-          Authorization: `Bearer ${lgToken}`
-        }
-      });
-      const res = await req.data.dataewmps;
-      setdataEwmps(res);
+      const req = await axios.get(`http://127.0.0.1:8000/api/search_rekognisi/`);
+      const res = await req.data.datarekognisis;
+      setdataRekognisis(res);
     } else {
       const req = await axios.get(
-        `http://127.0.0.1:8000/api/search_ewmpdsn/${e.target.value}`, {
-          headers: {
-            Authorization: `Bearer ${lgToken}`
-          }
-        }
+        `http://127.0.0.1:8000/api/search_rekognisi/${e.target.value}`
       );
-      const res = await req.data.dataewmps;
-      setdataEwmps(res);
-      console.log(res);
+      const res = await req.data.datarekognisis;
+      setdataRekognisis(res);
     }
   };
   return (
@@ -136,14 +127,14 @@ export default function tabelewmp() {
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
         <LayoutForm rlUser={dataRole}>
-          <div className=" container-fluid py-4">
+          <div className=" container-fluid pb-4">
             <div className="col-12">
               <div className="card mb-4">
                 <div className="card-header pb-0">
                   <div className="card-header pb-0 px-3">
                     <div className="row">
                       <div className="col-4">
-                        <h4>Tabel Profil Dosen</h4>
+                        <h4>Tabel Rekognisi Dosen</h4>
                       </div>
                     </div>
 
@@ -177,13 +168,13 @@ export default function tabelewmp() {
                           </div>
 
                           <div className="col-8 d-flex justify-content-end">
-                          <Link href={`/ewmp/inputewmp/`}>
+                          <Link href={`/rekognisi/inputrekognisi/`}>
                               <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                                 Tambah Data
                               </button>
                             </Link>
                             <Link
-                              href={`/ewmp/export/exportewmp`}
+                              href={`/rekognisi/export/exportrekognisi`}
                             >
                               <button className=" btn btn-outline-success shadow-sm ps-3 ps-3 me-2 mt-3 mb-0">
                                 Cek Laporan
@@ -204,28 +195,19 @@ export default function tabelewmp() {
                             Nama Dosen
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Tahun Ajaran
+                            Rekognisi
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Semester
+                            Bidang
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Sks Prodi
+                          Tahun
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Sks Luar Prodi
+                            Deskripsi
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            SKS Luar PT
-                          </th>
-                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            SKS Penelitian
-                          </th>
-                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            SKS PkM
-                          </th>
-                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            SKS Tugas
+                          File Bukti
                           </th>
                           <th className="text-uppercase text-dark text-xs text-center font-weight-bolder opacity-9 ps-2">
                             Aksi
@@ -233,67 +215,52 @@ export default function tabelewmp() {
                         </tr>
                       </thead>
                       <tbody>
-                        {dataEwmps.map((ewmp) => {
+                        {dataRekognisis.map((rekognisi) => {
                           return (
                             <tr
                               className="text-center"
-                              key={`tkerjasama` + ewmp.id}
+                              key={`tkerjasama` + rekognisi.id}
                             >
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {ewmp.profil_dosen.NamaDosen}
+                                  {rekognisi.profil_dosen.NamaDosen}
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {ewmp.tahun_akademik}
+                                  {rekognisi.rekognisi}
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {ewmp.semester}
+                                  {rekognisi.bidang}
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {ewmp.sks_ps_akreditasi}
+                                  {rekognisi.tahun}
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {ewmp.sks_ps_lain_pt}
+                                  {rekognisi.deskripsi}
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {ewmp.sks_ps_luar_pt}
-                                </p>
-                              </td>
-                              <td className="align-middle text-sm">
-                                <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {ewmp.sks_penelitian}
-                                </p>
-                              </td>
-                              <td className="align-middle text-sm">
-                                <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {ewmp.sks_pengabdian}
-                                </p>
-                              </td>
-                              <td className="align-middle text-sm">
-                                <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {ewmp.sks_tugas}
+                                  <a href={`${apiurl+rekognisi.fileBukti}`}>{rekognisi.fileBukti.split("/").slice(-1)[0] }</a>
                                 </p>
                               </td>
 
                               <td className="align-middle pe-3 text-end">
-                                <Link href={`/ewmp/edit/${ewmp.id}`}>
+                                <Link href={`/rekognisi/edit/${rekognisi.id}`}>
                                   <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                     Edit
                                   </button>
                                 </Link>
 
                                 <button
-                                  onClick={() => deleteEwmp(ewmp.id)}
+                                  onClick={() => deleterekognisi(rekognisi.id)}
                                   className="btn btn-sm btn-outline-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
                                   Hapus
@@ -310,6 +277,7 @@ export default function tabelewmp() {
             </div>
             <FooterUtama />
           </div>
+          <Toaster />
         </LayoutForm>
       )}
     </>

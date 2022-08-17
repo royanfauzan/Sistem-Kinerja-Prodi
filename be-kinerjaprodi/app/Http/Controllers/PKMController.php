@@ -23,6 +23,22 @@ class PKMController extends Controller
         ]);
     }
 
+    public function relasiPkmMhs($id)
+    {
+        return response()->json([ //ngirim ke front end
+            'success' => true,
+            'all_relasi' => RelasiPkmMhs::with('mahasiswa')->where('pkm_id', $id)->get(),
+        ]);
+    }
+
+    public function relasipkmdosen($id)
+    {
+        return response()->json([ //ngirim ke front end
+            'success' => true,
+            'all_relasi' => RelasiPkmDos::with('dosen')->where('pkm_id', $id)->get(),
+        ]);
+    }
+
     public function searchpkm($search)
     {
 
@@ -312,6 +328,40 @@ class PKMController extends Controller
             'pkm_id' => $request->pkm_id,
             'keanggotaan' => $request->keanggotaan,
             'all_pkm' => Pkm::all()
+        ]);
+    }
+
+    public function deletedosen($id)
+    {
+        $pkm = RelasiPkmDos::find($id);
+        $pkm->delete();
+
+        if (!$pkm) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
+    }
+
+    public function deletemhs($id)
+    {
+        $pkm = RelasiPkmMhs::find($id);
+        $pkm->delete();
+
+        if (!$pkm) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
         ]);
     }
 }

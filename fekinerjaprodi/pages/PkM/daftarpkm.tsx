@@ -313,13 +313,13 @@ export default function daftarpkm() {
                                     </button>
                                   </Link>
 
-                                  <Link href={`/penelitian/hapus/hapusmhs`}>
-                                    <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                  <Link href={`/PkM/hapusmhs/${pkm.id}`}>
+                                    <button className="btn btn-sm btn-secondary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                       Hapus mahasiswa
                                     </button>
                                   </Link>
 
-                                  <Link href={`/penelitian/hapus/hapusmhs`}>
+                                  <Link href={`/PkM/hapusdosen/${pkm.id}`}>
                                     <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                       Hapus Dosen
                                     </button>

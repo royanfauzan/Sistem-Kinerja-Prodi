@@ -349,6 +349,10 @@ Route::put('PKM_Update/{id}', [PKMController::class, 'update']);
 Route::post('PKM_Delete/{id}', [PKMController::class, 'destroy']);
 Route::post('PKM_dosen/{id}', [PKMController::class, 'pilihdosen']);
 Route::post('PKM_mahasiswa/{id}', [PKMController::class, 'pilihmhs']);
+Route::get('PKM_relasimhs/{id}', [PKMController::class, 'relasiPkmMhs']);
+Route::get('PKM_relasidosen/{id}', [PKMController::class, 'relasipkmdosen']);
+Route::post('PKM_Deleterelasi_dosen/{id}', [PKMController::class, 'deletedosen']);
+Route::post('PKM_Deleterelasi_mhs/{id}', [PKMController::class, 'deletemhs']);
 
 //route penelitian
 Route::get('Penelitian_search/{id}', [PenelitianController::class, 'searchpenelitian']);
@@ -362,6 +366,7 @@ Route::post('Penelitian_Delete/{id}', [PenelitianController::class, 'destroy']);
 Route::post('Penelitian_DeleteMhs/{id}', [PenelitianController::class, 'deletemhs']);
 Route::get('Penelitian_relasimhs/{id}', [PenelitianController::class, 'relasipenmhs']);
 Route::get('Penelitian_relasidosen/{id}', [PenelitianController::class, 'relasipendosen']);
+Route::post('Penelitian_Deleterelasi_dosen/{id}', [PenelitianController::class, 'deletedosen']);
 
 //route integrasi
 Route::get('Integrasi_search/{id}', [IntegrasiController::class, 'searchintegrasi']);

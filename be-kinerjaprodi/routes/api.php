@@ -276,11 +276,10 @@ Route::get('data_dashboard', [ApiController::class, 'get_dashboardAdmin']);
 
 
 
-
+Route::get('profildosens', [ProfildosenController::class, 'index']);
 Route::group(['middleware' => ['adminonly']], function () {
     Route::get('testadmin', [ApiController::class, 'tester']);
     Route::post('profildosens', [ProfildosenController::class, 'store']);
-    Route::get('profildosens', [ProfildosenController::class, 'index']);
 });
 
 Route::group(['middleware' => ['dosenonly']], function () {

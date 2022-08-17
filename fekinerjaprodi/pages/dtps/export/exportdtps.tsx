@@ -13,9 +13,10 @@ export default function exportdtps() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
-  const [dataSelectTahun, setSelectTahun] = useState(``);
+  const [dataSelectTahun, setSelectTahun] = useState(`${new Date().getFullYear()}`);
 
-  // console.log(dataSelectTahun);
+  console.log(dataSelectTahun);
+  console.log(`dataSelectTahun`);
 
   const [dataDTPS, setdataDTPS] = useState([]);
   const [dataListTahun, setListTahun] = useState([]);
@@ -23,6 +24,34 @@ export default function exportdtps() {
   const [tampilMhsAsing, settampilMhsAsing] = useState([]);
   const [dataProdis, setdataProdi] = useState([]);
   const [dataRole, setRole] = useState('');
+
+  const tanggalSekarang = new Date();
+  const tahunSekarang = tanggalSekarang.getFullYear();
+
+ function tahunGenerator(tahun:number,tipe:String,jumlah:number) {
+   let counter = -5;
+   const tahunPertama = tipe=='akademik'?(`${tahun+counter-2}/${tahun+counter-1}`):`${tahun+counter-1}`;
+   const arrTahun =[tahunPertama];
+   if(tipe=='akademik'){
+    for (let index = 0; index <= jumlah; index++) {
+      if(counter>0){
+        counter++;
+        arrTahun.push((`${tahun+counter-2}/${tahun+counter-1}`));
+      }
+      if(counter<=0){
+        arrTahun.push((`${tahun+counter-1}/${tahun+counter}`));
+        counter++;
+      }
+      
+    }
+   }else{
+    for (let index = 0; index <= jumlah; index++) {
+      arrTahun.push((`${tahun+counter}`));
+      counter++;
+    }
+   }
+   setListTahun(arrTahun);
+ }
   
 
   const handleChange = (e) => {
@@ -42,9 +71,12 @@ export default function exportdtps() {
         console.log(response);
         console.log("Sukses");
         const { tahundtpss } = response.data;
-        setListTahun(tahundtpss);
-        setSelectTahun(tahundtpss[0].split("/")[1]);
-        tampildata(tahundtpss[0].split("/")[1]);
+        // setListTahun(tahundtpss);
+        tahunGenerator(new Date().getFullYear(),'akademik',10);
+        // setSelectTahun(`${new Date().getFullYear()}`);
+        // console.log(dataSelectTahun);
+        // console.log('aaaaaaaaaaaaaaaaaaaaaaa');
+        tampildata(`${new Date().getFullYear()}`);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -128,7 +160,7 @@ export default function exportdtps() {
                               <select
                                 className="form-select"
                                 aria-label="Default select example"
-                                defaultValue={dataSelectTahun}
+                                value={dataSelectTahun}
                                 id="tahun"
                                 onChange={handleChange}
                               >

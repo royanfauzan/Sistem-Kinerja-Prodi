@@ -6,8 +6,8 @@ export default function NavbarUtama() {
   const pathHalaman = router.asPath;
   const arrHalaman = pathHalaman.split("/");
 
-  const listHalaman = ['dashboardadmin','tabelewmp','tabelewmpdsn'];
-  const namaHalaman = ['Dashboard Admin','Tabel List Ewmp','List Ewmp Dosen'];
+  const listHalaman = ['dashboardadmin','tabelewmp','tabelewmpdsn','dashboarddosen'];
+  const namaHalaman = ['Dashboard Admin','Tabel List Ewmp','List Ewmp Dosen','Dashboard Dosen'];
   const indexNama = listHalaman.findIndex((a)=>{return a == arrHalaman.slice(-1)[0]});
   let namaHalamanIni = namaHalaman[indexNama];
   if (!namaHalamanIni) {
@@ -26,7 +26,7 @@ export default function NavbarUtama() {
             {arrHalaman.map((hal, key, arrHalaman) => {
               if (key + 1 === arrHalaman.length) {
                 return (
-                  <li className="breadcrumb-item text-sm">
+                  <li className="breadcrumb-item text-sm" key={`halaman${key}`}>
                     <a className="text-white text-bold" href="#">
                       {hal}
                     </a>
@@ -34,7 +34,7 @@ export default function NavbarUtama() {
                 );
               } else {
                 return (
-                  <li className="breadcrumb-item text-sm">
+                  <li className="breadcrumb-item text-sm" key={`halaman${key}`}>
                     <a className="opacity-5 text-white" href="#">
                       {hal}
                     </a>

@@ -10,6 +10,19 @@ export default function SidebarUtama() {
   const arrHalaman = pathHalaman.split("/")
   const HalamanActive = arrHalaman.slice(-1)[0]
 
+  const listFolderDashboard = ['dashboards'];
+  const isMenuDashboard = listFolderDashboard.includes(arrHalaman[1]);
+
+  const listFolderPendidikan = ['dashboards_eva','capkurikulum','integrasi','kepuasanmhs','matkul','mahasiswa'];
+  const isMenuPendidikan = listFolderPendidikan.includes(arrHalaman[1]);
+
+  const listFolderCapaian = ['dashboards_capaian_tridarma','prestasi'];
+  const isMenuCapaian = listFolderCapaian.includes(arrHalaman[1]);
+
+  console.log(arrHalaman)
+  console.log(`arrHalaman`)
+
+
   const Logout = async () => {
     const lgToken = localStorage.getItem("token")
 
@@ -64,14 +77,7 @@ export default function SidebarUtama() {
       >
         <ul className="navbar-nav">
           <li className={`nav-item `}>
-            <a
-              className={`nav-link ${
-                HalamanActive == "dashboardadmin"
-                  ? "active bg-primary text-white"
-                  : ""
-              }`}
-              href="/dashboards/dashboardadmin"
-            >
+            <a className={`nav-link ${isMenuDashboard?'active bg-primary text-white':''}`} href="/dashboards/dashboardadmin">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
@@ -79,7 +85,10 @@ export default function SidebarUtama() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboard_rona/dashboard_user">
+            <a
+              className={`nav-link ${isMenuCapaian?'active bg-primary text-white':''}`}
+              href="/dashboards_capaian_tridarma/dashboardtridarma"
+            >
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
@@ -87,7 +96,7 @@ export default function SidebarUtama() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboard_rona/dashboard_tb124">
+            <a className={`nav-link ${isMenuPendidikan?'active bg-primary text-white':''}`} href="/dashboards_eva/dashboardpendidikan">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>

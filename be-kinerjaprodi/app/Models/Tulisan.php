@@ -9,4 +9,8 @@ class Tulisan extends Model
 {
     use HasFactory;
     protected $guarded = ["id"];
+    public function dosen()
+    {
+        return $this->belongsTo(profilDosen::class,'dosen_id','id');
+    }
 }

@@ -13,6 +13,9 @@ export default function SidebarUtama() {
   const listFolderDashboard = ['dashboards'];
   const isMenuDashboard = listFolderDashboard.includes(arrHalaman[1]);
 
+  const listFolderSdm = ['sdm','rekognisi','penelitiandosen','profildosen','dtps'];
+  const isMenuSdm = listFolderSdm.includes(arrHalaman[1]);
+
   const listFolderPendidikan = ['dashboards_eva','capkurikulum','integrasi','kepuasanmhs','matkul','mahasiswa'];
   const isMenuPendidikan = listFolderPendidikan.includes(arrHalaman[1]);
 
@@ -125,6 +128,19 @@ export default function SidebarUtama() {
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
               <span className="nav-link-text ms-1">Kriteria Pendidikan</span>
+            </a>
+          </li>
+          <li className={`nav-item `}>
+            <a
+              className={`nav-link ${isMenuSdm?'active bg-primary text-white':''}`} 
+              href="/sdm/dashboardSdmAdmin"
+            >
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">
+                Kriteria Sumber Daya<br /> Manusia(SDM)
+              </span>
             </a>
           </li>
           <li className={`nav-item `}>

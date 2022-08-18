@@ -16,17 +16,17 @@ interface Udosen {
   updated_at: string;
 }
 
-export default function inputprofil() {
+export default function inputprofildetail() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState<Udosen[]>([]);
   const [dataError, setError] = useState([]);
-  const [filebukti, setfilebuktis] = useState<File>([]);
-
+  
   const [dataRole, setRole] = useState("");
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
+
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () => {
@@ -84,16 +84,11 @@ export default function inputprofil() {
       });
   }, []);
 
-  const handleChangeFile = (e) => {
-    setfilebuktis(e.target.files[0]);
-  };
-
   const submitForm = async (event) => {
     event.preventDefault();
 
     toast.loading("Loading...");
     const lgToken = localStorage.getItem("token");
-    const kesesuaian = event.target.kesesuaian.checked?'V':' ';
 
     let formData = new FormData();
     formData.append("NIDK", event.target.NIDK.value);
@@ -105,8 +100,6 @@ export default function inputprofil() {
     formData.append("StatusPerkawinan", event.target.StatusPerkawinan.value);
     formData.append("JenisKelamin", event.target.JenisKelamin.value);
     formData.append("StatusDosen", event.target.StatusDosen.value);
-    formData.append("bidangKeahlian", event.target.bidangKeahlian.value);
-    formData.append("kesesuaian", kesesuaian);
 
     formData.append("Golongan", event.target.Golongan.value);
     formData.append("Pangkat", event.target.Pangkat.value);
@@ -137,12 +130,11 @@ export default function inputprofil() {
       })
       .catch(function (error) {
         toast.dismiss();
-        if (error.response.data.message) {
+        if(error.response.data.message){
           toast.error(error.response.data.message);
-          setTimeout(() => {
-            router.push("/profildosen/tabelprofil");
-          }, 500);
-        } else {
+          setTimeout(()=>{router.push("/profildosen/tabelprofil");},500);
+          
+        }else{
           setError(error.response.data.error);
           if (error.response.status == 400) {
             toast.error("Periksa Kelengkapan Data!!");
@@ -150,7 +142,7 @@ export default function inputprofil() {
             toast.error("Periksa Kelengkapan Data");
           }
         }
-
+    
         console.log("tidak success");
         console.log(error.response);
       });
@@ -409,15 +401,11 @@ export default function inputprofil() {
                         Informasi Akademik
                       </p>
                       <div className="row">
-                        <div className="col-md-6">
+                      <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="StatusDosen"
-                              className={
-                                "form-control-label " + dataError.StatusDosen
-                                  ? "is-invalid"
-                                  : ""
-                              }
+                               className={"form-control-label "+dataError.StatusDosen ? "is-invalid" : ""}
                             >
                               Status Dosen
                             </label>
@@ -428,12 +416,8 @@ export default function inputprofil() {
                               id="StatusDosen"
                             >
                               <option value="Dosen Tetap">Dosen Tetap</option>
-                              <option value="Dosen Tidak Tetap">
-                                Dosen Tidak Tetap
-                              </option>
-                              <option value="Dosen Industri">
-                                Dosen Industri
-                              </option>
+                              <option value="Dosen Tidak Tetap">Dosen Tidak Tetap</option>
+                              <option value="Dosen Industri">Dosen Industri</option>
                             </select>
                             {dataError.StatusDosen ? (
                               <div className="invalid-feedback">
@@ -446,65 +430,7 @@ export default function inputprofil() {
                         </div>
                       </div>
                       <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label
-                              htmlFor="bidangKeahlian"
-                              className={
-                                "form-control-label " + dataError.bidangKeahlian
-                                  ? "is-invalid"
-                                  : ""
-                              }
-                            >
-                             Bidang keahlian
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Pilih Tanggal"
-                              id="bidangKeahlian"
-                            />
-                            {dataError.bidangKeahlian ? (
-                              <div className="invalid-feedback">
-                                {dataError.bidangKeahlian}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            value="V"
-                            id="kesesuaian"
-                            checked
-                          />
-                          {dataError.kesesuaian ? (
-                              <div className="invalid-feedback">
-                                {dataError.kesesuaian}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          <label
-                            className={
-                              "form-check-label " + dataError.kesesuaian
-                                ? "is-invalid"
-                                : ""
-                            }
-                            htmlFor="kesesuaian"
-                          >
-                            Kesesuaian
-                          </label>
-                        </div>
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col-md-4">
+                      <div className="col-md-4">
                           <div className="form-group">
                             <label
                               htmlFor="Golongan"
@@ -682,7 +608,7 @@ export default function inputprofil() {
             </div>
             <FooterUtama />
           </div>
-          <Toaster />
+          <Toaster/>
         </LayoutForm>
       )}
     </>

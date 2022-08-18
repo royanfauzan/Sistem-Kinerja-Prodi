@@ -629,7 +629,7 @@ class SdmSeeder extends Seeder
             'profil_dosen_id'=>1,
             'bidangKeahlian'=>'Teknik Elektro',
             'kesesuaian'=>'V',
-            'jabatanAkademik'=>'Lektor Kepala',
+            
             'noSertifPendidik'=>'SerDos(16100501000821)',
             "fileBukti" => 'storage/testarea/image.jpg',
         ]);
@@ -638,7 +638,7 @@ class SdmSeeder extends Seeder
             'profil_dosen_id'=>2,
             'bidangKeahlian'=>'Teknik Elektro',
             'kesesuaian'=>'V',
-            'jabatanAkademik'=>'Lektor',
+         
             'noSertifPendidik'=>'SerDos(11100501016334)',
             "fileBukti" => 'storage/testarea/image.jpg',
         ]);
@@ -647,7 +647,7 @@ class SdmSeeder extends Seeder
             'profil_dosen_id'=>3,
             'bidangKeahlian'=>'Manajemen',
             'kesesuaian'=>'V',
-            'jabatanAkademik'=>'Lektor',
+            
             'noSertifPendidik'=>'SerDos(11100501016999)',
             "fileBukti" => 'storage/testarea/image.jpg',
         ]);
@@ -656,28 +656,31 @@ class SdmSeeder extends Seeder
             'profil_dosen_id'=>4,
             'bidangKeahlian'=>'Pendidikan Matematika',
             'kesesuaian'=>'V',
-            'jabatanAkademik'=>'Asisten Ahli',
+           
             'noSertifPendidik'=>'SerDos(11100501016999)',
             "fileBukti" => 'storage/testarea/image.jpg',
         ]);
 
         // SertifikatKompetensi
         Serkom::create([
-            'detaildosen_id'=>1,
-            'nama_sertifikat'=>'SerKom',
-            'keterangan'=>'Operator PLC dan Sistem SCADA BNSP, No Reg. ELM 21809175 2019',
+            'profil_dosen_id'=>1,
+            'nama_skema'=>'SerKom(Operator PLC dan Sistem SCADA BNSP)',
+            'nomor_sertifikat'=>'No Reg. ELM 21809175 2019',
+            'tanggal_sertif'=>'2019-12-01',
             "file_bukti" => 'storage/testarea/image.jpg',
         ]);
         Serkom::create([
-            'detaildosen_id'=>1,
-            'nama_sertifikat'=>'SerKom',
-            'keterangan'=>'Maintainer Sistem SCADA BNSP, No Reg. ELM 21809222 2020',
+            'profil_dosen_id'=>1,
+            'nama_skema'=>'SerKom(Maintainer Sistem SCADA BNSP)',
+            'nomor_sertifikat'=>'No Reg. ELM 21809222 2020',
+            'tanggal_sertif'=>'2020-06-01',
             "file_bukti" => 'storage/testarea/image.jpg',
         ]);
         Serkom::create([
-            'detaildosen_id'=>2,
-            'nama_sertifikat'=>'SerKom',
-            'keterangan'=>'Developer Sistem BNSP, No Reg. ADB 21809222 2021',
+            'profil_dosen_id'=>2,
+            'nama_skema'=>'SerKom(Developer Sistem BNSP)',
+            'nomor_sertifikat'=>'No Reg. ADB 21809222 2021',
+            'tanggal_sertif'=>'2021-08-01',
             "file_bukti" => 'storage/testarea/image.jpg',
         ]);
 

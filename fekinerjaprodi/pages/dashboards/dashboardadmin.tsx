@@ -123,7 +123,7 @@ export default function dashboardadmin() {
                         <ListCardDash
                           judul={"Profil Dosen"}
                           keterangan={`mengelola data profil dosen`}
-                          halaman={"/publikasidos/export/export_publikasidos"}
+                          halaman={"/profildosen/tabelprofil"}
                           icon={`bi bi-card-text`}
                         />
                         <ListCardDash

@@ -17,7 +17,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-        profil_dosen: res, // <-- assign response
+      profil_dosen: res, // <-- assign response
     },
   };
 }
@@ -84,6 +84,7 @@ export default function update_dataprofil(props) {
 
     toast.loading("Loading...");
     const lgToken = localStorage.getItem("token");
+    const kesesuaian = event.target.kesesuaian.checked ? "V" : " ";
 
     let formData = new FormData();
     formData.append("NIDK", event.target.NIDK.value);
@@ -95,6 +96,9 @@ export default function update_dataprofil(props) {
     formData.append("StatusPerkawinan", event.target.StatusPerkawinan.value);
     formData.append("JenisKelamin", event.target.JenisKelamin.value);
     formData.append("StatusDosen", event.target.StatusDosen.value);
+    formData.append("bidangKeahlian", event.target.bidangKeahlian.value);
+    console.log(event.target.bidangKeahlian.value);
+    formData.append("kesesuaian", kesesuaian);
 
     formData.append("Golongan", event.target.Golongan.value);
     formData.append("Pangkat", event.target.Pangkat.value);
@@ -125,10 +129,12 @@ export default function update_dataprofil(props) {
       })
       .catch(function (error) {
         toast.dismiss();
-        if(error.response.data.message){
+        if (error.response.data.message) {
           toast.error(error.response.data.message);
-          setTimeout(()=>{router.push("/profildosen/tabelprofil");},500);
-        }else{
+          setTimeout(() => {
+            router.push("/profildosen/tabelprofil");
+          }, 500);
+        } else {
           setError(error.response.data.error);
           if (error.response.status == 400) {
             toast.error("Periksa Kelengkapan Data!!");
@@ -136,7 +142,7 @@ export default function update_dataprofil(props) {
             toast.error("Periksa Kelengkapan Data");
           }
         }
-    
+
         console.log("tidak success");
         console.log(error.response);
       });
@@ -434,6 +440,74 @@ export default function update_dataprofil(props) {
                             ) : (
                               ""
                             )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="bidangKeahlian"
+                              className={
+                                "form-control-label " + dataError.bidangKeahlian
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Bidang keahlian
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Bidang Keahlian"
+                              defaultValue={
+                                profil_dosen.detaildosen
+                                  ? profil_dosen.detaildosen.bidangKeahlian
+                                  : ""
+                              }
+                              id="bidangKeahlian"
+                            />
+                            {dataError.bidangKeahlian ? (
+                              <div className="invalid-feedback">
+                                {dataError.bidangKeahlian}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="row h-100 align-items-center">
+                            <div className="col pt-2 form-check">
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                value="V"
+                                id="kesesuaian"
+                                defaultChecked={
+                                  profil_dosen.detaildosen
+                                    ? profil_dosen.detaildosen.kesesuaian == "V"
+                                    : true
+                                }
+                              />
+                              {dataError.kesesuaian ? (
+                                <div className="invalid-feedback">
+                                  {dataError.kesesuaian}
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                              <label
+                                className={
+                                  "form-check-label " + dataError.kesesuaian
+                                    ? "is-invalid"
+                                    : ""
+                                }
+                                htmlFor="kesesuaian"
+                              >
+                                Kesesuaian
+                              </label>
+                            </div>
                           </div>
                         </div>
                       </div>

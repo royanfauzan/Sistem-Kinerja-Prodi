@@ -45,4 +45,9 @@ class profilDosen extends Model
         return $this->hasMany(Rekognisi::class,'profil_dosen_id','id')->orderBy('tahun','DESC');
     }
 
+    public function serkoms()
+    {
+        return $this->hasMany(Serkom::class,'profil_dosen_id','id');
+    }
+
 }

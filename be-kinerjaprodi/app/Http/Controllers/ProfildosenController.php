@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Detaildosen;
 use App\Models\profilDosen;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,7 +43,7 @@ class ProfildosenController extends Controller
     public function store(Request $request)
     {
         //
-        $data = $request->only('NIDK', 'NamaDosen', 'NIK', 'TempatLahir', 'TanggalLahir', 'StatusDosen', 'JenisKelamin', 'StatusPerkawinan', 'Agama');
+        $data = $request->only('NIDK', 'NamaDosen', 'NIK', 'TempatLahir', 'TanggalLahir', 'StatusDosen', 'JenisKelamin', 'StatusPerkawinan', 'Agama', 'kesesuaian', 'bidangKeahlian');
         $validator = Validator::make($data, [
             'NIDK' => 'required|string',
             'NamaDosen' => 'required|string',
@@ -51,6 +52,8 @@ class ProfildosenController extends Controller
             'TanggalLahir' => 'required|string',
             'JenisKelamin' => 'required|string',
             'StatusPerkawinan' => 'required|string',
+            'kesesuaian' => 'required|string',
+            'bidangKeahlian' => 'required|string',
             'Agama' => 'required|string',
             'StatusDosen' => 'required|string',
         ]);
@@ -86,6 +89,17 @@ class ProfildosenController extends Controller
             'StatusDosen' => $request->StatusDosen,
         ]);
 
+        $kesesuaian = ' ';
+        if ($request->kesesuaian) {
+            $kesesuaian = $request->kesesuaian;
+        }
+
+        $detailDosen = Detaildosen::create([
+            'profil_dosen_id' => $profil->id,
+            'kesesuaian' => $kesesuaian,
+            'bidangKeahlian' => $request->bidangKeahlian
+        ]);
+
         $profil->Golongan = isset($request->Golongan) ? $request->Golongan : '';
         $profil->Pangkat = isset($request->Pangkat) ? $request->Pangkat : '';
         $profil->JabatanAkademik = isset($request->JabatanAkademik) ? $request->JabatanAkademik : '';
@@ -112,7 +126,7 @@ class ProfildosenController extends Controller
     {
         return response()->json([
             'success' => true,
-            'profil_dosen' => profilDosen::find($id),
+            'profil_dosen' => profilDosen::with('detaildosen')->find($id),
             'id' => $id
         ]);
     }
@@ -139,7 +153,7 @@ class ProfildosenController extends Controller
     {
         //
         $profilDosen = profilDosen::find($id);
-        $data = $request->only('NamaDosen', 'NIK', 'TempatLahir', 'TanggalLahir', 'StatusDosen', 'JenisKelamin', 'StatusPerkawinan', 'Agama');
+        $data = $request->only('NamaDosen', 'NIK', 'TempatLahir', 'TanggalLahir', 'StatusDosen', 'JenisKelamin', 'StatusPerkawinan', 'Agama', 'bidangKeahlian');
         $validator = Validator::make($data, [
             'NamaDosen' => 'required|string',
             'NIK' => "required|string",
@@ -147,12 +161,31 @@ class ProfildosenController extends Controller
             'TanggalLahir' => 'required|string',
             'JenisKelamin' => 'required|string',
             'StatusPerkawinan' => 'required|string',
+            'bidangKeahlian' => 'required|string',
             'Agama' => 'required|string',
             'StatusDosen' => 'required|string',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        $kesesuaian = ' ';
+        if ($request->kesesuaian) {
+            $kesesuaian = $request->kesesuaian;
+        }
+
+        if ($profilDosen->detaildosen) {
+            $detailDosen = Detaildosen::find($profilDosen->detaildosen->id);
+            $detailDosen->bidangKeahlian = $request->bidangKeahlian;
+            $detailDosen->kesesuaian = $kesesuaian;
+            $detailDosen->save();
+        } else {
+            $detailDosen = Detaildosen::create([
+                'profil_dosen_id' => $profilDosen->id,
+                'kesesuaian' => $kesesuaian,
+                'bidangKeahlian' => $request->bidangKeahlian
+            ]);
         }
 
 
@@ -218,16 +251,16 @@ class ProfildosenController extends Controller
         ]);
     }
 
-    public function searchprofil(Request $request,$search)
+    public function searchprofil(Request $request, $search)
     {
         //
         $profilDosens = profilDosen::where('NamaDosen', 'LIKE', "%{$search}%")
-        ->orWhere('NIDK', 'LIKE', "%{$search}%")
-        ->orWhere('StatusDosen', 'LIKE', "%{$search}%")
-        ->orWhere('Golongan', 'LIKE', "%{$search}%")
-        ->orWhere('Pangkat', 'LIKE', "%{$search}%")
-        ->orWhere('JabatanAkademik', 'LIKE', "%{$search}%")
-        ->get();
+            ->orWhere('NIDK', 'LIKE', "%{$search}%")
+            ->orWhere('StatusDosen', 'LIKE', "%{$search}%")
+            ->orWhere('Golongan', 'LIKE', "%{$search}%")
+            ->orWhere('Pangkat', 'LIKE', "%{$search}%")
+            ->orWhere('JabatanAkademik', 'LIKE', "%{$search}%")
+            ->get();
         return response()->json([
             'success' => true,
             'profilDosens' => $profilDosens,
@@ -238,18 +271,29 @@ class ProfildosenController extends Controller
     {
         //
         $profilDosens = profilDosen::where('StatusDosen', "Dosen Tetap")
-        ->get();
+            ->get();
         return response()->json([
             'success' => true,
             'profilDosens' => $profilDosens,
         ]);
     }
 
-    public function get_profil(Request $request,$nidk)
+    public function get_profil(Request $request, $nidk)
     {
         //
         $profilDosen = profilDosen::where('NIDK', $nidk)
-        ->first();
+            ->first();
+        return response()->json([
+            'success' => true,
+            'profilDosen' => $profilDosen,
+        ]);
+    }
+
+    public function profil_lengkap(Request $request, $nidk)
+    {
+        //
+        $profilDosen = profilDosen::where('NIDK', $nidk)->with('detaildosen', 'serkoms')
+            ->first();
         return response()->json([
             'success' => true,
             'profilDosen' => $profilDosen,

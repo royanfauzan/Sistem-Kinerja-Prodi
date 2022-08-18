@@ -43,6 +43,7 @@ use App\Http\Controllers\ProfildosenController;
 use App\Http\Controllers\RekognisiController;
 use App\Http\Controllers\SdmLaporanController;
 use App\Http\Controllers\RelasiLuaranController;
+use App\Models\Detaildosen;
 use App\Models\MahasiswaAsing;
 use App\Models\PenggunaanDana;
 use App\Models\profilDosen;
@@ -275,6 +276,12 @@ Route::get('laporanprodukdos/{tahun}', [SdmLaporanController::class, 'exportprod
 Route::get('laporanbimbingan/{tahun}', [SdmLaporanController::class, 'exportbimbingan']);
 Route::get('laporantestdata/{tahun}', [SdmLaporanController::class, 'testambildata']);
 Route::get('data_dashboard', [ApiController::class, 'get_dashboardAdmin']);
+Route::get('profillengkap/{nidk}', [ProfildosenController::class, 'profil_lengkap']);
+
+// DetailDosen
+Route::get('tampil_detail/{id}', [DetaildosenController::class, 'show']);
+Route::put('update_detail/{id}', [DetaildosenController::class, 'update']);
+Route::post('delete_detail/{id}', [DetaildosenController::class, 'destroy']);
 
 
 

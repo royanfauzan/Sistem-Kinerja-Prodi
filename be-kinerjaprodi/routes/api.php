@@ -43,6 +43,7 @@ use App\Http\Controllers\ProfildosenController;
 use App\Http\Controllers\RekognisiController;
 use App\Http\Controllers\SdmLaporanController;
 use App\Http\Controllers\RelasiLuaranController;
+use App\Http\Controllers\SerkomController;
 use App\Models\Detaildosen;
 use App\Models\MahasiswaAsing;
 use App\Models\PenggunaanDana;
@@ -282,6 +283,12 @@ Route::get('profillengkap/{nidk}', [ProfildosenController::class, 'profil_lengka
 Route::get('tampil_detail/{id}', [DetaildosenController::class, 'show']);
 Route::put('update_detail/{id}', [DetaildosenController::class, 'update']);
 Route::post('delete_detail/{id}', [DetaildosenController::class, 'destroy']);
+
+// Serkom
+Route::post('insert_serkom', [SerkomController::class, 'store']);
+Route::get('tampil_serkom/{id}', [SerkomController::class, 'show']);
+Route::put('update_serkom/{id}', [SerkomController::class, 'update']);
+Route::post('delete_serkom/{id}', [SerkomController::class, 'destroy']);
 
 
 

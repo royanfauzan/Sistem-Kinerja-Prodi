@@ -93,12 +93,22 @@ class ProfildosenController extends Controller
         if ($request->kesesuaian) {
             $kesesuaian = $request->kesesuaian;
         }
+        
 
         $detailDosen = Detaildosen::create([
             'profil_dosen_id' => $profil->id,
             'kesesuaian' => $kesesuaian,
             'bidangKeahlian' => $request->bidangKeahlian
         ]);
+
+        $perusahaan = ' ';
+        if ($request->perusahaan && $profil->StatusDosen =='Dosen Industri') {
+            $perusahaan = $request->perusahaan;
+            $detailDosen->perusahaan = $perusahaan;
+            $detailDosen->save();
+        }
+
+
 
         $profil->Golongan = isset($request->Golongan) ? $request->Golongan : '';
         $profil->Pangkat = isset($request->Pangkat) ? $request->Pangkat : '';
@@ -186,6 +196,13 @@ class ProfildosenController extends Controller
                 'kesesuaian' => $kesesuaian,
                 'bidangKeahlian' => $request->bidangKeahlian
             ]);
+        }
+
+        $perusahaan = ' ';
+        if ($request->perusahaan && $profilDosen->StatusDosen =='Dosen Industri') {
+            $perusahaan = $request->perusahaan;
+            $detailDosen->perusahaan = $perusahaan;
+            $detailDosen->save();
         }
 
 

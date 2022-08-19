@@ -8,28 +8,28 @@ import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
 
 // Untuk Ngambil Data Berdasarkan ID
+
 export async function getServerSideProps(context) {
   //http request
   const req = await axios.get(
-    `http://127.0.0.1:8000/api/tampil_detail/${context.query.id_detaildosen}`
+    `http://127.0.0.1:8000/api/profillengkap/${context.query.nidk_dsn}`
   );
-  const res = await req.data.datadetail;
+  const res = await req.data.profilDosen;
 
   return {
     props: {
-      datadetail: res, // <-- assign response
+      profilDsn: res, // <-- assign response
     },
   };
 }
 
-export default function update_dataprofil(props) {
-  const { datadetail } = props;
-
+export default function inputserkom(props) {
   const apiurl = "http://127.0.0.1:8000/";
+  const { profilDsn } = props;
 
   const router = useRouter();
 
-  const [dataDetailDosen, setDetailDosen] = useState(datadetail);
+  const [dataDetailDosen, setDetailDosen] = useState(profilDsn);
   const [dataError, setError] = useState([]);
   const [filebukti, setfilebuktis] = useState<File>([]);
 
@@ -39,7 +39,6 @@ export default function update_dataprofil(props) {
   const [stadmin, setStadmin] = useState(false);
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () => {};
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
@@ -64,12 +63,12 @@ export default function update_dataprofil(props) {
         setRole(role);
 
         // kalo ga admin dipindah ke halaman lain
-        // if (level_akses !== 2) {
-        //   return router.push("/profildosen/daftarprofil");
-        // }
+        if (level_akses !== 3) {
+          return router.push("/profildosen/myprofil");
+        }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
+
         setStadmin(true);
-        pengambilData();
       })
       .catch(function (err) {
         console.log("gagal");
@@ -88,18 +87,22 @@ export default function update_dataprofil(props) {
     const lgToken = localStorage.getItem("token");
 
     let formData = new FormData();
-    formData.append("profil_dosen_id", dataDetailDosen.profil_dosen_id);
-    formData.append("kesesuaian", dataDetailDosen.kesesuaian);
-    formData.append("bidangKeahlian", dataDetailDosen.bidangKeahlian);
-    formData.append("noSertifPendidik", event.target.noSertifPendidik.value);
-    formData.append("perusahaan", event.target.perusahaan.value);
-    formData.append("fileBukti", filebukti);
+    formData.append("profil_dosen_id", dataDetailDosen.id);
+    formData.append("nama_skema", event.target.nama_skema.value);
+    formData.append("nomor_sertifikat", event.target.nomor_sertifikat.value);
+    formData.append("tanggal_sertif", event.target.tanggal_sertif.value);
+    formData.append(
+      "lembaga_sertifikasi",
+      event.target.lembaga_sertifikasi.value
+    );
+    formData.append("dikeluarkan_oleh", event.target.dikeluarkan_oleh.value);
+    formData.append("file_bukti", filebukti);
 
     console.log(formData);
 
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/update_detail/${dataDetailDosen.id}?_method=PUT`,
+      url: `http://127.0.0.1:8000/api/insert_serkom/`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -113,23 +116,14 @@ export default function update_dataprofil(props) {
         toast.success("Simpan Sukses Sugses!!");
         // console.log(token);
         console.log(detailDosen);
-        if (dataRole=='dosen') {
-          router.push("/profildosen/myprofil");
-        }else{
-          router.push("/profildosen/tabelprofil");
-        }
-
+        router.push(`/profildosen/lihatprofil/${dataDetailDosen.NIDK}`);
       })
       .catch(function (error) {
         toast.dismiss();
         if (error.response.data.message) {
           toast.error(error.response.data.message);
           setTimeout(() => {
-            if (dataRole=='dosen') {
-              router.push("/profildosen/myprofil");
-            }else{
-              router.push("/profildosen/tabelprofil");
-            }
+            router.push(`/profildosen/lihatprofil/${dataDetailDosen.NIDK}`);
           }, 500);
         } else {
           setError(error.response.data.error);
@@ -161,28 +155,28 @@ export default function update_dataprofil(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Sertifikat Pendidik Professional</p>
+                        <p className="mb-0">Sertifikat Kompetensi</p>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
                         >
-                          Update Data
+                          Tambah Data
                         </button>
                       </div>
                     </div>
                     <div className="card-body">
                       <hr className="horizontal dark" />
                       <p className="text-uppercase text-sm">
-                        Detail Sertifikat Pendidik
+                        Detail Sertifikat Kompetensi
                       </p>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
-                              htmlFor="noSertifPendidik"
+                              htmlFor="nomor_sertifikat"
                               className={
                                 "form-control-label " +
-                                dataError.noSertifPendidik
+                                dataError.nomor_sertifikat
                                   ? "is-invalid"
                                   : ""
                               }
@@ -193,12 +187,65 @@ export default function update_dataprofil(props) {
                               className="form-control"
                               type="text"
                               placeholder="Serdos(781******)"
-                              id="noSertifPendidik"
-                              defaultValue={dataDetailDosen.noSertifPendidik}
+                              id="nomor_sertifikat"
                             />
-                            {dataError.noSertifPendidik ? (
+                            {dataError.nomor_sertifikat ? (
                               <div className="invalid-feedback">
-                                {dataError.noSertifPendidik}
+                                {dataError.nomor_sertifikat}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-8">
+                          <div className="form-group">
+                            <label
+                              htmlFor="nama_skema"
+                              className={
+                                "form-control-label " + dataError.nama_skema
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Nama Skema
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Skema sertifikasi"
+                              id="nama_skema"
+                            />
+                            {dataError.nama_skema ? (
+                              <div className="invalid-feedback">
+                                {dataError.nama_skema}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-4">
+                          <div className="form-group">
+                            <label
+                              htmlFor="tanggal_sertif"
+                              className={
+                                "form-control-label " + dataError.tanggal_sertif
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Tanggal Terbit
+                            </label>
+                            <input
+                              className="form-control"
+                              type="date"
+                              placeholder="Skema sertifikasi"
+                              id="tanggal_sertif"
+                            />
+                            {dataError.tanggal_sertif ? (
+                              <div className="invalid-feedback">
+                                {dataError.tanggal_sertif}
                               </div>
                             ) : (
                               ""
@@ -210,37 +257,38 @@ export default function update_dataprofil(props) {
                             <label
                               htmlFor="fileBukti"
                               className={
-                                dataError.fileBukti ? "is-invalid" : ""
+                                dataError.file_bukti ? "is-invalid" : ""
                               }
                             >
-                              File Bukti :{" "}
-                              {dataDetailDosen.fileBukti ? (
-                                <span>
-                                  <a
-                                    href={`${
-                                      apiurl + dataDetailDosen.fileBukti
-                                    }`}
-                                  >
-                                    {
-                                      dataDetailDosen.fileBukti
-                                        .split("/")
-                                        .slice(-1)[0]
-                                    }
-                                  </a>
-                                </span>
-                              ) : (
-                                <span> </span>
-                              )}
+                              File Bukti :
+                              {/* File Bukti :{" "}
+                                {dataDetailDosen.file_bukti ? (
+                                  <span>
+                                    <a
+                                      href={`${
+                                        apiurl + dataDetailDosen.file_bukti
+                                      }`}
+                                    >
+                                      {
+                                        dataDetailDosen.file_bukti
+                                          .split("/")
+                                          .slice(-1)[0]
+                                      }
+                                    </a>
+                                  </span>
+                                ) : (
+                                  <span> </span>
+                                )} */}
                             </label>
                             <input
                               className="form-control"
                               type="file"
                               onChange={handleChangeFile}
-                              id="fileBukti"
+                              id="file_bukti"
                             />
-                            {dataError.fileBukti ? (
+                            {dataError.file_bukti ? (
                               <div className="invalid-feedback">
-                                {dataError.fileBukti}
+                                {dataError.file_bukti}
                               </div>
                             ) : (
                               ""
@@ -255,27 +303,53 @@ export default function update_dataprofil(props) {
                           <div className="col-md-6">
                             <div className="form-group">
                               <label
-                                htmlFor="perusahaan"
+                                htmlFor="lembaga_sertifikasi"
                                 className={
                                   "form-control-label " +
-                                  dataError.perusahaan
+                                  dataError.lembaga_sertifikasi
                                     ? "is-invalid"
                                     : ""
                                 }
                               >
-                                Perusahan(Khusus dosen Industri)
+                                Lembaga Sertifikasi
                               </label>
                               <input
-                              disabled={dataDetailDosen.profil_dosen.StatusDosen!='Dosen Industri'}
                                 className="form-control"
                                 type="text"
-                                placeholder="PT Pilar"
-                                id="perusahaan"
-                                defaultValue={dataDetailDosen.perusahaan}
+                                placeholder="Skema sertifikasi"
+                                id="lembaga_sertifikasi"
                               />
-                              {dataError.perusahaan ? (
+                              {dataError.lembaga_sertifikasi ? (
                                 <div className="invalid-feedback">
-                                  {dataError.perusahaan}
+                                  {dataError.lembaga_sertifikasi}
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label
+                                htmlFor="dikeluarkan_oleh"
+                                className={
+                                  "form-control-label " +
+                                  dataError.dikeluarkan_oleh
+                                    ? "is-invalid"
+                                    : ""
+                                }
+                              >
+                                Lembaga Penerbit Sertifikat
+                              </label>
+                              <input
+                                className="form-control"
+                                type="text"
+                                placeholder="Skema sertifikasi"
+                                id="dikeluarkan_oleh"
+                              />
+                              {dataError.dikeluarkan_oleh ? (
+                                <div className="invalid-feedback">
+                                  {dataError.dikeluarkan_oleh}
                                 </div>
                               ) : (
                                 ""

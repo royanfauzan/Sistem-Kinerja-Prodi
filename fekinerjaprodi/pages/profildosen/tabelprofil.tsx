@@ -275,9 +275,15 @@ export default function tabelprofil() {
                                   </button>
                                 </Link>
 
+                                <Link href={`/profildosen/lihatprofil/${pDsn.NIDK}`}>
+                                  <button className="btn btn-sm btn-outline-success border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                    Selengkapnya
+                                  </button>
+                                </Link>
+
                                 <button
                                   onClick={() => deleteProfil(pDsn.id)}
-                                  className="btn btn-sm btn-outline-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
+                                  className="btn btn-sm btn-outline-danger shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
                                   Hapus
                                 </button>

@@ -7,16 +7,21 @@ import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 
-interface Udosen {
-  NIDK: string;
-  role: string;
-  level_akses: number;
-  profil_dosen: object;
-  created_at: string;
-  updated_at: string;
+export async function getServerSideProps(context) {
+  //http request
+  const req = await axios.get(
+    `http://127.0.0.1:8000/api/tampil_profildosen/${context.query.id_profil}`
+  );
+  const res = await req.data.profil_dosen;
+
+  return {
+    props: {
+        profil_dosen: res, // <-- assign response
+    },
+  };
 }
 
-export default function inputprofildetail() {
+export default function inputprofildetail(props) {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState<Udosen[]>([]);
@@ -100,6 +105,7 @@ export default function inputprofildetail() {
     formData.append("StatusPerkawinan", event.target.StatusPerkawinan.value);
     formData.append("JenisKelamin", event.target.JenisKelamin.value);
     formData.append("StatusDosen", event.target.StatusDosen.value);
+    formData.append("perusahaan", event.target.perusahaan.value);
 
     formData.append("Golongan", event.target.Golongan.value);
     formData.append("Pangkat", event.target.Pangkat.value);
@@ -506,6 +512,37 @@ export default function inputprofildetail() {
                             {dataError.JabatanAkademik ? (
                               <div className="invalid-feedback">
                                 {dataError.JabatanAkademik}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <hr className="horizontal dark" />
+                      <p className="text-uppercase text-sm">Detail Tambahan</p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="perusahaan"
+                              className={
+                                "form-control-label " + dataError.perusahaan
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Perusahan(Khusus Dosen Industri)
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="PT Pilar"
+                              id="perusahaan"
+                            />
+                            {dataError.perusahaan ? (
+                              <div className="invalid-feedback">
+                                {dataError.perusahaan}
                               </div>
                             ) : (
                               ""

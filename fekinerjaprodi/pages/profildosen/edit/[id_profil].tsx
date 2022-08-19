@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
@@ -30,6 +30,7 @@ export default function update_dataprofil(props) {
 
   const [dataProfilDosen, setProfilDosen] = useState(profil_dosen);
   const [dataError, setError] = useState([]);
+  const refPerusahaan = useRef(null);
 
   const [dataRole, setRole] = useState("");
 
@@ -97,6 +98,7 @@ export default function update_dataprofil(props) {
     formData.append("JenisKelamin", event.target.JenisKelamin.value);
     formData.append("StatusDosen", event.target.StatusDosen.value);
     formData.append("bidangKeahlian", event.target.bidangKeahlian.value);
+    formData.append("perusahaan", event.target.perusahaan.value);
     console.log(event.target.bidangKeahlian.value);
     formData.append("kesesuaian", kesesuaian);
 
@@ -147,6 +149,14 @@ export default function update_dataprofil(props) {
         console.log(error.response);
       });
   };
+
+  const handleSelectStatus = (e)=>{
+    if (e.target.value=='Dosen Industri') {
+      refPerusahaan.current.disabled = false;
+    }else{
+      refPerusahaan.current.disabled = true;
+    }
+  }
 
   return (
     <>
@@ -424,6 +434,7 @@ export default function update_dataprofil(props) {
                               aria-label="Default select example"
                               defaultValue={profil_dosen.StatusDosen}
                               id="StatusDosen"
+                              onChange={handleSelectStatus}
                             >
                               <option value="Dosen Tetap">Dosen Tetap</option>
                               <option value="Dosen Tidak Tetap">
@@ -591,6 +602,45 @@ export default function update_dataprofil(props) {
                             {dataError.JabatanAkademik ? (
                               <div className="invalid-feedback">
                                 {dataError.JabatanAkademik}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-uppercase text-sm">Detail Tambahan</p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="perusahaan"
+                              className={
+                                "form-control-label " + dataError.perusahaan
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Perusahan(Khusus dosen Industri)
+                            </label>
+                            <input
+                              disabled={
+                                profil_dosen.StatusDosen != "Dosen Industri"
+                              }
+                              ref={refPerusahaan}
+                              className="form-control"
+                              type="text"
+                              placeholder="PT Pilar"
+                              id="perusahaan"
+                              defaultValue={
+                                profil_dosen.detaildosen
+                                  ? profil_dosen.detaildosen.perusahaan
+                                  : ""
+                              }
+                            />
+                            {dataError.perusahaan ? (
+                              <div className="invalid-feedback">
+                                {dataError.perusahaan}
                               </div>
                             ) : (
                               ""

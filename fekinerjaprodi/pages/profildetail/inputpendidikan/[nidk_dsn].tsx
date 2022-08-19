@@ -12,24 +12,24 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 export async function getServerSideProps(context) {
   //http request
   const req = await axios.get(
-    `http://127.0.0.1:8000/api/tampil_serkom/${context.query.id_serkom}`
+    `http://127.0.0.1:8000/api/profillengkap/${context.query.nidk_dsn}`
   );
-  const res = await req.data.dataserkom;
+  const res = await req.data.profilDosen;
 
   return {
     props: {
-      dataserkom: res, // <-- assign response
+      profilDsn: res, // <-- assign response
     },
   };
 }
 
-export default function inputserkom(props) {
+export default function inputpendidikan(props) {
   const apiurl = "http://127.0.0.1:8000/";
-  const { dataserkom } = props;
+  const { profilDsn } = props;
 
   const router = useRouter();
 
-  const [dataSerkomDosen, setSerkomDosen] = useState(dataserkom);
+  const [dataDetailDosen, setDetailDosen] = useState(profilDsn);
   const [dataError, setError] = useState([]);
   const [filebukti, setfilebuktis] = useState<File>([]);
 
@@ -63,9 +63,9 @@ export default function inputserkom(props) {
         setRole(role);
 
         // kalo ga admin dipindah ke halaman lain
-        // if (level_akses !== 3) {
-        //   return router.push("/profildosen/myprofil");
-        // }
+        if (level_akses !== 3) {
+          return router.push("/profildosen/myprofil");
+        }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
 
         setStadmin(true);
@@ -87,22 +87,21 @@ export default function inputserkom(props) {
     const lgToken = localStorage.getItem("token");
 
     let formData = new FormData();
-    formData.append("profil_dosen_id", dataSerkomDosen.profil_dosen_id);
-    formData.append("nama_skema", event.target.nama_skema.value);
-    formData.append("nomor_sertifikat", event.target.nomor_sertifikat.value);
-    formData.append("tanggal_sertif", event.target.tanggal_sertif.value);
+    formData.append("profil_dosen_id", dataDetailDosen.id);
     formData.append(
-      "lembaga_sertifikasi",
-      event.target.lembaga_sertifikasi.value
+      "program_pendidikan",
+      event.target.program_pendidikan.value
     );
-    formData.append("dikeluarkan_oleh", event.target.dikeluarkan_oleh.value);
-    formData.append("file_bukti", filebukti);
+    formData.append("jurusan", event.target.jurusan.value);
+    formData.append("prodi", event.target.prodi.value);
+    formData.append("perguruan_tinggi", event.target.perguruan_tinggi.value);
+    formData.append("tahun_lulus", event.target.tahun_lulus.value);
 
     console.log(formData);
 
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/update_serkom/${dataSerkomDosen.id}?_method=PUT`,
+      url: `http://127.0.0.1:8000/api/insert_pendidikan/`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -116,22 +115,14 @@ export default function inputserkom(props) {
         toast.success("Simpan Sukses Sugses!!");
         // console.log(token);
         console.log(detailDosen);
-        if (dataRole == "dosen") {
-          router.push("/profildosen/myprofil");
-        } else {
-          router.push("/profildosen/tabelprofil");
-        }
+        router.push(`/profildosen/lihatprofil/${dataDetailDosen.NIDK}`);
       })
       .catch(function (error) {
         toast.dismiss();
         if (error.response.data.message) {
           toast.error(error.response.data.message);
           setTimeout(() => {
-            if (dataRole == "dosen") {
-              router.push("/profildosen/myprofil");
-            } else {
-              router.push("/profildosen/tabelprofil");
-            }
+            router.push(`/profildosen/lihatprofil/${dataDetailDosen.NIDK}`);
           }, 500);
         } else {
           setError(error.response.data.error);
@@ -145,10 +136,6 @@ export default function inputserkom(props) {
         console.log("tidak success");
         console.log(error.response);
       });
-  };
-
-  const handleChangeFile = (e) => {
-    setfilebuktis(e.target.files[0]);
   };
 
   return (
@@ -168,7 +155,7 @@ export default function inputserkom(props) {
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
                         >
-                          Update Data
+                          Tambah Data
                         </button>
                       </div>
                     </div>
@@ -195,89 +182,93 @@ export default function inputserkom(props) {
                               type="text"
                               placeholder="Teknik Elektro"
                               id="identitas"
-                              defaultValue={`${dataSerkomDosen.profil_dosen.NamaDosen}`}
+                              defaultValue={`${dataDetailDosen.NamaDosen}`}
                             />
+                          </div>
+                        </div>
+                        <div className="col-md-5">
+                          <div className="form-group">
+                            <label
+                              htmlFor="program_pendidikan"
+                              className={
+                                "form-control-label " +
+                                dataError.program_pendidikan
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Program Pendidikan
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              id="program_pendidikan"
+                            >
+                              <option value={`S2`}>
+                                S2(Magister/Magister Terapan)
+                              </option>
+                              <option value={`S3`}>
+                                S3(Doktor/Doktor Terapan)
+                              </option>
+                            </select>
+                            {dataError.program_pendidikan ? (
+                              <div className="invalid-feedback">
+                                {dataError.program_pendidikan}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
-                              htmlFor="nomor_sertifikat"
+                              htmlFor="jurusan"
                               className={
-                                "form-control-label " +
-                                dataError.nomor_sertifikat
+                                "form-control-label " + dataError.jurusan
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              Nomor Sertifikat
+                              Jurusan
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="Serdos(781******)"
-                              id="nomor_sertifikat"
-                              defaultValue={dataSerkomDosen.nomor_sertifikat}
+                              placeholder="Teknik Elektro"
+                              id="jurusan"
                             />
-                            {dataError.nomor_sertifikat ? (
+                            {dataError.jurusan ? (
                               <div className="invalid-feedback">
-                                {dataError.nomor_sertifikat}
+                                {dataError.jurusan}
                               </div>
                             ) : (
                               ""
                             )}
                           </div>
                         </div>
-                        <div className="col-md-8">
-                          <div className="form-group">
-                            <label
-                              htmlFor="nama_skema"
-                              className={
-                                "form-control-label " + dataError.nama_skema
-                                  ? "is-invalid"
-                                  : ""
-                              }
-                            >
-                              Nama Skema
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Skema sertifikasi"
-                              id="nama_skema"
-                              defaultValue={dataSerkomDosen.nama_skema}
-                            />
-                            {dataError.nama_skema ? (
-                              <div className="invalid-feedback">
-                                {dataError.nama_skema}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
+
                         <div className="col-md-4">
                           <div className="form-group">
                             <label
-                              htmlFor="tanggal_sertif"
+                              htmlFor="prodi"
                               className={
-                                "form-control-label " + dataError.tanggal_sertif
+                                "form-control-label " + dataError.prodi
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              Tanggal Terbit
+                              Program Studi
                             </label>
                             <input
                               className="form-control"
-                              type="date"
-                              placeholder="Skema sertifikasi"
-                              id="tanggal_sertif"
-                              defaultValue={dataSerkomDosen.tanggal_sertif}
+                              type="text"
+                              placeholder="Sains Komputer"
+                              id="prodi"
                             />
-                            {dataError.tanggal_sertif ? (
+                            {dataError.prodi ? (
                               <div className="invalid-feedback">
-                                {dataError.tanggal_sertif}
+                                {dataError.prodi}
                               </div>
                             ) : (
                               ""
@@ -287,109 +278,56 @@ export default function inputserkom(props) {
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
-                              htmlFor="fileBukti"
+                              htmlFor="perguruan_tinggi"
                               className={
-                                dataError.file_bukti ? "is-invalid" : ""
+                                "form-control-label " +
+                                dataError.perguruan_tinggi
+                                  ? "is-invalid"
+                                  : ""
                               }
                             >
-                              File Bukti :{" "}
-                              {dataSerkomDosen.file_bukti ? (
-                                <span>
-                                  <a
-                                    href={`${
-                                      apiurl + dataSerkomDosen.file_bukti
-                                    }`}
-                                  >
-                                    {
-                                      dataSerkomDosen.file_bukti
-                                        .split("/")
-                                        .slice(-1)[0]
-                                    }
-                                  </a>
-                                </span>
-                              ) : (
-                                <span> </span>
-                              )}
+                              Perguruan Tinggi
                             </label>
                             <input
                               className="form-control"
-                              type="file"
-                              onChange={handleChangeFile}
-                              id="file_bukti"
+                              type="text"
+                              placeholder="UNUD"
+                              id="perguruan_tinggi"
                             />
-                            {dataError.file_bukti ? (
+                            {dataError.perguruan_tinggi ? (
                               <div className="invalid-feedback">
-                                {dataError.file_bukti}
+                                {dataError.perguruan_tinggi}
                               </div>
                             ) : (
                               ""
                             )}
                           </div>
                         </div>
-                        <hr className="horizontal dark" />
-                        <p className="text-uppercase text-sm">
-                          Detail Tambahan
-                        </p>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label
-                                htmlFor="lembaga_sertifikasi"
-                                className={
-                                  "form-control-label " +
-                                  dataError.lembaga_sertifikasi
-                                    ? "is-invalid"
-                                    : ""
-                                }
-                              >
-                                Lembaga Sertifikasi
-                              </label>
-                              <input
-                                className="form-control"
-                                type="text"
-                                placeholder="Skema sertifikasi"
-                                id="lembaga_sertifikasi"
-                                defaultValue={
-                                  dataSerkomDosen.lembaga_sertifikasi
-                                }
-                              />
-                              {dataError.lembaga_sertifikasi ? (
-                                <div className="invalid-feedback">
-                                  {dataError.lembaga_sertifikasi}
-                                </div>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label
-                                htmlFor="dikeluarkan_oleh"
-                                className={
-                                  "form-control-label " +
-                                  dataError.dikeluarkan_oleh
-                                    ? "is-invalid"
-                                    : ""
-                                }
-                              >
-                                Lembaga Penerbit Sertifikat
-                              </label>
-                              <input
-                                className="form-control"
-                                type="text"
-                                placeholder="Skema sertifikasi"
-                                id="dikeluarkan_oleh"
-                                defaultValue={dataSerkomDosen.dikeluarkan_oleh}
-                              />
-                              {dataError.dikeluarkan_oleh ? (
-                                <div className="invalid-feedback">
-                                  {dataError.dikeluarkan_oleh}
-                                </div>
-                              ) : (
-                                ""
-                              )}
-                            </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="tahun_lulus"
+                              className={
+                                "form-control-label " + dataError.tahun_lulus
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Tahun Lulus
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="2008"
+                              id="tahun_lulus"
+                            />
+                            {dataError.tahun_lulus ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun_lulus}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                       </div>

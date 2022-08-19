@@ -247,7 +247,7 @@ export default function myprofil() {
                                     disabled={!editMode}
                                     className="form-control-plaintext"
                                     type="text"
-                                    placeholder=""
+                                    placeholder="-"
                                     id="NIDK"
                                     defaultValue={userDosen.NIDK}
                                   />
@@ -276,7 +276,7 @@ export default function myprofil() {
                                     disabled={!editMode}
                                     className={`form-control${readOnly}`}
                                     type="text"
-                                    placeholder=""
+                                    placeholder="-"
                                     id="NIK"
                                     defaultValue={userDosen.NIK}
                                   />
@@ -306,7 +306,7 @@ export default function myprofil() {
                                     disabled={!editMode}
                                     className={`form-control${readOnly}`}
                                     type="text"
-                                    placeholder=""
+                                    placeholder="-"
                                     id="NamaDosen"
                                     defaultValue={userDosen.NamaDosen}
                                   />
@@ -335,7 +335,7 @@ export default function myprofil() {
                                     disabled={!editMode}
                                     className={`form-control${readOnly}`}
                                     type="text"
-                                    placeholder=""
+                                    placeholder="-"
                                     id="Agama"
                                     defaultValue={userDosen.Agama}
                                   />
@@ -365,7 +365,7 @@ export default function myprofil() {
                                     disabled={!editMode}
                                     className={`form-control${readOnly}`}
                                     type="text"
-                                    placeholder=""
+                                    placeholder="-"
                                     id="TempatLahir"
                                     defaultValue={userDosen.TempatLahir}
                                   />
@@ -395,7 +395,7 @@ export default function myprofil() {
                                     disabled={!editMode}
                                     className={`form-control${readOnly}`}
                                     type="date"
-                                    placeholder=""
+                                    placeholder="-"
                                     id="TanggalLahir"
                                     defaultValue={userDosen.TanggalLahir}
                                   />
@@ -622,7 +622,7 @@ export default function myprofil() {
                                     disabled={!editMode}
                                     className={`form-control${readOnly}`}
                                     type="text"
-                                    placeholder=""
+                                    placeholder="-"
                                     id="Golongan"
                                     defaultValue={userDosen.Golongan}
                                   />
@@ -651,7 +651,7 @@ export default function myprofil() {
                                     disabled={!editMode}
                                     className={`form-control${readOnly}`}
                                     type="text"
-                                    placeholder=""
+                                    placeholder="-"
                                     id="Pangkat"
                                     defaultValue={userDosen.Pangkat}
                                   />
@@ -681,7 +681,7 @@ export default function myprofil() {
                                     disabled={!editMode}
                                     className={`form-control${readOnly}`}
                                     type="text"
-                                    placeholder=""
+                                    placeholder="-"
                                     id="JabatanAkademik"
                                     defaultValue={userDosen.JabatanAkademik}
                                   />
@@ -719,7 +719,7 @@ export default function myprofil() {
                                     }
                                     className="form-control"
                                     type="text"
-                                    placeholder="PT Pilar"
+                                    placeholder="-"
                                     id="perusahaan"
                                     defaultValue={
                                       userDosen.detaildosen
@@ -756,7 +756,7 @@ export default function myprofil() {
                                     disabled={!editMode}
                                     className={`form-control${readOnly}`}
                                     type="text"
-                                    placeholder=""
+                                    placeholder="-"
                                     id="Email"
                                     defaultValue={userDosen.Email}
                                   />
@@ -786,7 +786,7 @@ export default function myprofil() {
                                     disabled={!editMode}
                                     className={`form-control${readOnly}`}
                                     type="text"
-                                    placeholder=""
+                                    placeholder="-"
                                     id="NoTelepon"
                                     defaultValue={userDosen.NoTelepon}
                                   />
@@ -815,7 +815,7 @@ export default function myprofil() {
                                     disabled={!editMode}
                                     className={`form-control${readOnly}`}
                                     type="text"
-                                    placeholder=""
+                                    placeholder="-"
                                     id="Alamat"
                                     defaultValue={userDosen.Alamat}
                                   />
@@ -883,22 +883,43 @@ export default function myprofil() {
                                 );
                               })
                             ) : (
-                              <div className="row">
-                                <Link
-                                  href={`/profildetail/sertifikatkompetensi/${userDosen.detaildosen.id}`}
-                                >
-                                  <button className="btn btn-sm btn-outline-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Tambah Sertifikat Kompetensi
-                                  </button>
-                                </Link>
-                              </div>
+                              <></>
                             ))}
                           <div className="row">
                             <Link
-                              href={`/profildetail/sertifikatkompetensi/${userDosen.detaildosen.id}`}
+                              href={`/profildetail/inputserkomdsn`}
                             >
                               <button className="btn btn-sm btn-outline-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                 Tambah Sertifikat Kompetensi
+                              </button>
+                            </Link>
+                          </div>
+                        </CardSertif>
+                      </div>
+                      <div className="col-12 m-0 p-0">
+                        <CardSertif judul={"Riwayat Pendidikan"}>
+                          {userDosen &&
+                            (userDosen.pendidikans.length ? (
+                              userDosen.pendidikans.map((pendidikan, indx) => {
+                                return (
+                                  <ListCardSertif
+                                    key={pendidikan.id + "" + indx}
+                                    judul={`${pendidikan.program_pendidikan} ${pendidikan.jurusan}`}
+                                    halamanEdit={`/profildetail/editpendidikan/${pendidikan.id}`}
+                                    halaman={apiurl + pendidikan.file_bukti}
+                                    icon={`bi bi-patch-check`}
+                                  />
+                                );
+                              })
+                            ) : (
+                              <></>
+                            ))}
+                          <div className="row">
+                            <Link
+                              href={`/profildetail/inputpendidikandsn`}
+                            >
+                              <button className="btn btn-sm btn-outline-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                Tambah Data Pendidikan
                               </button>
                             </Link>
                           </div>

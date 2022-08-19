@@ -241,6 +241,21 @@ class ProfildosenController extends Controller
     public function destroy($id)
     {
         //
+        $profilDosen = profilDosen::find($id);
+        $profilDosen->delete();
+
+        if (!$profilDosen) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus",
+            'profilDosens' => profilDosen::all(),
+        ]);
     }
 
     public function listtahun(Request $request)
@@ -309,7 +324,7 @@ class ProfildosenController extends Controller
     public function profil_lengkap(Request $request, $nidk)
     {
         //
-        $profilDosen = profilDosen::where('NIDK', $nidk)->with('detaildosen', 'serkoms')
+        $profilDosen = profilDosen::where('NIDK', $nidk)->with('detaildosen', 'serkoms','pendidikans')
             ->first();
         return response()->json([
             'success' => true,

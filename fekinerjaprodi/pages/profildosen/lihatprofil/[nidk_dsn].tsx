@@ -729,9 +729,7 @@ export default function lihatprofil(props) {
                                     Perusahan(Khusus dosen Industri)
                                   </label>
                                   <input
-                                    disabled={
-                                      true
-                                    }
+                                    disabled={true}
                                     className={`form-control${readOnly}`}
                                     type="text"
                                     placeholder="-"
@@ -898,15 +896,7 @@ export default function lihatprofil(props) {
                                 );
                               })
                             ) : (
-                              <div className="row">
-                                <Link
-                                  href={`/profildetail/inputserkom/${userDosen.NIDK}`}
-                                >
-                                  <button className="btn btn-sm btn-outline-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Tambah Sertifikat Kompetensi
-                                  </button>
-                                </Link>
-                              </div>
+                              <></>
                             ))}
                           <div className="row">
                             <Link
@@ -919,6 +909,34 @@ export default function lihatprofil(props) {
                           </div>
                         </CardSertif>
                       </div>
+                      <div className="col-12 m-0 p-0">
+                        <CardSertif judul={"Riwayat Pendidikan"}>
+                          {userDosen &&
+                            (userDosen.pendidikans.length ? (
+                              userDosen.pendidikans.map((pendidikan, indx) => {
+                                return (
+                                  <ListCardSertif
+                                    key={pendidikan.id + "" + indx}
+                                    judul={`${pendidikan.program_pendidikan} ${pendidikan.jurusan}`}
+                                    halamanEdit={`/profildetail/editpendidikan/${pendidikan.id}`}
+                                    halaman={apiurl + pendidikan.file_bukti}
+                                    icon={`bi bi-patch-check`}
+                                  />
+                                );
+                              })
+                            ) : (
+                              <></>
+                            ))}
+                          <div className="row">
+                            <Link href={`/profildetail/inputpendidikan/${userDosen.NIDK}`}>
+                              <button className="btn btn-sm btn-outline-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                Tambah Riwayat Pendidikan
+                              </button>
+                            </Link>
+                          </div>
+                        </CardSertif>
+                      </div>
+                      
                     </div>
                   </div>
                 </div>

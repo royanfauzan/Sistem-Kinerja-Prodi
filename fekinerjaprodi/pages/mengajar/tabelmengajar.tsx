@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
@@ -10,11 +10,13 @@ import Link from "next/link";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-export default function tabelprofil() {
+export default function tabelmengajardsn() {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
   const [stadmin, setStadmin] = useState(false);
-  const [profilDosen, setprofilDosen] = useState([]);
+  const apiurl = "http://127.0.0.1:8000/"
+
+  const [dataMengajars, setdataMengajars] = useState([]);
   const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
@@ -22,21 +24,22 @@ export default function tabelprofil() {
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/profildosens",
+      url: "http://127.0.0.1:8000/api/search_mengajar/",
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { profilDosens } = response.data;
-        setprofilDosen(profilDosens);
+        const { datamengajars } = response.data;
+        setdataMengajars(datamengajars);
 
-        console.log(profilDosens);
+        console.log(datamengajars);
       })
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
       });
+    
   };
 
   useEffect(() => {
@@ -58,43 +61,45 @@ export default function tabelprofil() {
         const { level_akses } = response.data.user;
         const { role } = response.data.user;
         setRole(role);
+        pengambilData();
 
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
-          return router.push("/");
+          return router.push("/mengajar/tabelmengajardsn");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         setStadmin(true);
-        pengambilData();
       })
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
-        return router.push("/");
+        return router.push("/mengajar/tabelmengajardsn");
       });
 
     
   }, []);
 
-  const deleteProfil = (id,nama) => {
+  const deletemengajar = (id) => {
     MySwal.fire({
-      title: `Yakin akan menghapus profile ${nama}?`,
-      text: "Data berkaitan dengan profil ini akan dihapus secara Permanen!!",
+      title: "Yakin Hapus Data mengajar?",
+      text: "Data yang dihapus tidak dapat dikembalikan!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Hapus",
+      cancelButtonText: "Tidak",
+      confirmButtonText: "Ya",
     }).then((result) => {
       // <--
       if (result.isConfirmed) {
         // <-- if confirmed
         axios({
           method: "post",
-          url: `http://127.0.0.1:8000/api/delete_profildosen/${id}`,
+          url: `http://127.0.0.1:8000/api/delete_mengajar/${id}`,
         })
           .then(function (response) {
-            router.reload();
+            const { datamengajars } = response.data;
+            setdataMengajars(datamengajars);
           })
           .catch(function (err) {
             console.log("gagal");
@@ -103,39 +108,18 @@ export default function tabelprofil() {
       }
     });
   };
-  const editKjs = (id) => {
-    router.push(`/profildosen/edit/${id}`);
-  };
-  const tambahKjs = () => {
-    router.push(`/profildosen/inputprofil`);
-  };
-  const exportKjs = () => {
-    MySwal.fire({
-      title: "EXport",
-      text: "Are you sure? ",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
-    }).then((result) => {
-      // <--
-      if (result.value) {
-        // <-- if confirmed
-        router.push(`/kerjasama/export_kerjasama/export_kjs`);
-      }
-    });
-  };
+ 
   const searchdata = async (e) => {
     if (e.target.value == "") {
-      const req = await axios.get(`http://127.0.0.1:8000/api/search_profil/`);
-      const res = await req.data.profilDosens;
-      setprofilDosen(res);
+      const req = await axios.get(`http://127.0.0.1:8000/api/search_mengajar/`);
+      const res = await req.data.datamengajars;
+      setdataMengajars(res);
     } else {
       const req = await axios.get(
-        `http://127.0.0.1:8000/api/search_profil/${e.target.value}`
+        `http://127.0.0.1:8000/api/search_mengajar/${e.target.value}`
       );
-      const res = await req.data.profilDosens;
-      setprofilDosen(res);
+      const res = await req.data.datamengajars;
+      setdataMengajars(res);
     }
   };
   return (
@@ -143,14 +127,14 @@ export default function tabelprofil() {
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
         <LayoutForm rlUser={dataRole}>
-          <div className=" container-fluid py-4">
+          <div className=" container-fluid pb-4">
             <div className="col-12">
               <div className="card mb-4">
                 <div className="card-header pb-0">
                   <div className="card-header pb-0 px-3">
                     <div className="row">
                       <div className="col-4">
-                        <h4>Tabel Profil Dosen</h4>
+                        <h4>Tabel Pengajaman Mengajar</h4>
                       </div>
                     </div>
 
@@ -184,13 +168,13 @@ export default function tabelprofil() {
                           </div>
 
                           <div className="col-8 d-flex justify-content-end">
-                          <Link href={`/profildosen/inputprofil/`}>
+                          <Link href={`/mengajar/inputmengajar/`}>
                               <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                                 Tambah Data
                               </button>
                             </Link>
                             <Link
-                              href={`/prestasi/exportprestasi/export_prestasi`}
+                              href={`/mengajar/export/exportmengajar`}
                             >
                               <button className=" btn btn-outline-success shadow-sm ps-3 ps-3 me-2 mt-3 mb-0">
                                 Cek Laporan
@@ -208,82 +192,68 @@ export default function tabelprofil() {
                       <thead>
                         <tr>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            NIDK/NIDN
-                          </th>
-                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
                             Nama Dosen
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Status Dosen
+                            Kode Matkul
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Jabatan Akademik
+                            Nama Matkul
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            NIK
+                          semester
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Email
+                            Tahun Akademik
                           </th>
+                          
                           <th className="text-uppercase text-dark text-xs text-center font-weight-bolder opacity-9 ps-2">
                             Aksi
                           </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {profilDosen.map((pDsn) => {
+                        {dataMengajars.map((mengajar) => {
                           return (
                             <tr
                               className="text-center"
-                              key={`tkerjasama` + pDsn.id}
+                              key={`tkerjasama` + mengajar.id}
                             >
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {pDsn.NIDK}
+                                  {mengajar.profil_dosen.NamaDosen}
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {pDsn.NamaDosen}
+                                  {mengajar.matkul.kode_matkul}
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {pDsn.StatusDosen}
+                                  {mengajar.matkul.nama_matkul}
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {pDsn.JabatanAkademik}
+                                  {mengajar.semester}
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {pDsn.NIK}
+                                  {mengajar.tahun_akademik}
                                 </p>
                               </td>
-                              <td className="align-middle text-sm">
-                                <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {pDsn.Email}
-                                </p>
-                              </td>
-
                               <td className="align-middle pe-3 text-end">
-                                <Link href={`/profildosen/edit/${pDsn.id}`}>
+                                <Link href={`/mengajar/edit/${mengajar.id}`}>
                                   <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                     Edit
                                   </button>
                                 </Link>
 
-                                <Link href={`/profildosen/lihatprofil/${pDsn.NIDK}`}>
-                                  <button className="btn btn-sm btn-outline-success border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Selengkapnya
-                                  </button>
-                                </Link>
-
                                 <button
-                                  onClick={() => deleteProfil(pDsn.id,pDsn.NamaDosen)}
-                                  className="btn btn-sm btn-outline-danger shadow-sm ps-3 pe-3 mb-2 mt-2"
+                                  onClick={() => deletemengajar(mengajar.id)}
+                                  className="btn btn-sm btn-outline-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
                                   Hapus
                                 </button>
@@ -299,6 +269,7 @@ export default function tabelprofil() {
             </div>
             <FooterUtama />
           </div>
+          <Toaster />
         </LayoutForm>
       )}
     </>

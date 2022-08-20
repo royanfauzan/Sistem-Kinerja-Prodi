@@ -83,7 +83,7 @@ export default function inputrekognisidsn() {
         pengambilData(NIDK);
 
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 2) {
+        if (level_akses != 2) {
           return router.push("/rekognisi/tabelrekognisi");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin

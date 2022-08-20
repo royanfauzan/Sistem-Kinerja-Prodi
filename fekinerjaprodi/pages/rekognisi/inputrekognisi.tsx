@@ -83,7 +83,7 @@ export default function inputrekognisi() {
 
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
-          return router.push("/rekognisi/tabelrekognisi");
+          return router.push("/rekognisi/tabelrekognisidsn");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
 
@@ -211,7 +211,6 @@ export default function inputrekognisi() {
                               <select
                                 className="form-select"
                                 aria-label="Default select example"
-                                defaultValue={userDosen.id}
                                 id="profil_dosen_id"
                               >
                                 {userDosens.map((userdosen) => {

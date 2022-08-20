@@ -20,7 +20,9 @@ class CreatePendidikansTable extends Migration
             $table->string("perguruan_tinggi");
             $table->string("jurusan");
             $table->string("prodi");
-            $table->foreignId('profil_dosen_id');
+            $table->foreignId('profil_dosen_id')->references('id')
+                ->on('profil_dosens')
+                ->onDelete('cascade');;
             $table->timestamps();
         });
     }

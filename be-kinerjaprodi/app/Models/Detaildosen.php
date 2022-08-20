@@ -14,4 +14,9 @@ class Detaildosen extends Model
     {
         return $this->hasMany(Serkom::class,'detaildosen_id','id');
     }
+
+    public function profilDosen()
+    {
+        return $this->belongsTo(profilDosen::class,'profil_dosen_id','id');
+    }
 }

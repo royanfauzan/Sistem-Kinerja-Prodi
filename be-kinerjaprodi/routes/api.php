@@ -13,6 +13,7 @@ use App\Http\Controllers\PenelitianController;
 use App\Http\Controllers\PKMController;
 use App\Http\Controllers\ProdukMHSController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\BbjurnaldosController;
 use App\Http\Controllers\BimbinganController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\IpkController;
@@ -43,6 +44,8 @@ use App\Http\Controllers\ProfildosenController;
 use App\Http\Controllers\RekognisiController;
 use App\Http\Controllers\SdmLaporanController;
 use App\Http\Controllers\RelasiLuaranController;
+use App\Http\Controllers\SerkomController;
+use App\Models\Detaildosen;
 use App\Models\MahasiswaAsing;
 use App\Models\PenggunaanDana;
 use App\Models\profilDosen;
@@ -238,6 +241,7 @@ Route::get('search_profil/{search}', [ProfildosenController::class, 'searchprofi
 Route::get('tampil_profildosen/{id}', [ProfildosenController::class, 'show']);
 Route::get('get_profildosen/{nidk}', [ProfildosenController::class, 'get_profil']);
 Route::put('update_profildosen/{id}', [ProfildosenController::class, 'update']);
+Route::post('delete_profildosen/{id}', [ProfildosenController::class, 'destroy']);
 Route::get('testuser', [ApiController::class, 'get_alluser']);
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('testmid', [ApiController::class, 'tester']);
@@ -245,8 +249,8 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('penelitiandosens', [PenelitianController::class, 'store']);
     Route::post('pengabdiandosens', [PengabdianController::class, 'store']);
 
-    Route::post('mengajars', [MengajarController::class, 'store']);
-    Route::post('bimbingans', [BimbinganController::class, 'store']);
+    // Route::post('mengajars', [MengajarController::class, 'store']);
+    // Route::post('bimbingans', [BimbinganController::class, 'store']);
     Route::get('logout', [ApiController::class, 'logout']);
 });
 
@@ -260,6 +264,7 @@ Route::get('tampil_ewmp/{id}', [EwmpController::class, 'show']);
 Route::put('update_ewmp/{id}', [EwmpController::class, 'update']);
 Route::post('delete_ewmp/{id}', [EwmpController::class, 'destroy']);
 Route::post('ewmps', [EwmpController::class, 'store']);
+
 // Dev area Laporan
 Route::get('ewmplisttahun', [EwmpController::class, 'listtahun']);
 Route::get('dtpslisttahun', [ProfildosenController::class, 'listtahun']);
@@ -275,7 +280,47 @@ Route::get('laporanprodukdos/{tahun}', [SdmLaporanController::class, 'exportprod
 Route::get('laporanbimbingan/{tahun}', [SdmLaporanController::class, 'exportbimbingan']);
 Route::get('laporantestdata/{tahun}', [SdmLaporanController::class, 'testambildata']);
 Route::get('data_dashboard', [ApiController::class, 'get_dashboardAdmin']);
+Route::get('profillengkap/{nidk}', [ProfildosenController::class, 'profil_lengkap']);
 
+// DetailDosen
+Route::get('tampil_detail/{id}', [DetaildosenController::class, 'show']);
+Route::put('update_detail/{id}', [DetaildosenController::class, 'update']);
+Route::post('delete_detail/{id}', [DetaildosenController::class, 'destroy']);
+
+// Serkom
+Route::post('insert_serkom', [SerkomController::class, 'store']);
+Route::get('tampil_serkom/{id}', [SerkomController::class, 'show']);
+Route::put('update_serkom/{id}', [SerkomController::class, 'update']);
+Route::post('delete_serkom/{id}', [SerkomController::class, 'destroy']);
+
+// Pendidikan
+Route::post('insert_pendidikan', [PendidikanController::class, 'store']);
+Route::get('tampil_pendidikan/{id}', [PendidikanController::class, 'show']);
+Route::put('update_pendidikan/{id}', [PendidikanController::class, 'update']);
+Route::post('delete_pendidikan/{id}', [PendidikanController::class, 'destroy']);
+
+// Bimbingan
+Route::post('bimbingans', [BimbinganController::class, 'store']);
+Route::get('search_bimbingan/', [BimbinganController::class, 'allbimbingan']);
+Route::get('search_matkul_prodi/{id}', [BimbinganController::class, 'searchmatkulprodi']);
+Route::get('search_bimbingandsn/', [BimbinganController::class, 'allbimbingandsn']);
+Route::get('search_bimbingan/{search}', [BimbinganController::class, 'searchbimbingan']);
+Route::get('search_bimbingandsn/{search}', [BimbinganController::class, 'searchbimbingandsn']);
+Route::get('tampil_bimbingan/{id}', [BimbinganController::class, 'show']);
+Route::put('update_bimbingan/{id}', [BimbinganController::class, 'update']);
+Route::post('delete_bimbingan/{id}', [BimbinganController::class, 'destroy']);
+
+// BbJurnaldos
+Route::post('jurnals', [BbjurnaldosController::class, 'store']);
+Route::get('search_jurnal/', [BbjurnaldosController::class, 'alljurnal']);
+Route::get('search_jurnaldsn/', [BbjurnaldosController::class, 'alljurnaldsn']);
+Route::get('search_jurnal/{search}', [BbjurnaldosController::class, 'searchjurnal']);
+Route::get('search_jurnaldsn/{search}', [BbjurnaldosController::class, 'searchjurnaldsn']);
+Route::get('tampil_jurnal/{id}', [BbjurnaldosController::class, 'show']);
+Route::put('update_jurnal/{id}', [BbjurnaldosController::class, 'update']);
+Route::post('delete_jurnal/{id}', [BbjurnaldosController::class, 'destroy']);
+Route::post('hapusanggota_jurnal/{id}', [BbjurnaldosController::class, 'hapusAnggota']);
+Route::post('tambahanggota_jurnal/{id}', [BbjurnaldosController::class, 'tambahAnggota']);
 
 
 Route::get('profildosens', [ProfildosenController::class, 'index']);
@@ -293,6 +338,17 @@ Route::get('search_rekognisidsn/{search}', [RekognisiController::class, 'searchr
 Route::get('tampil_rekognisi/{id}', [RekognisiController::class, 'show']);
 Route::put('update_rekognisi/{id}', [RekognisiController::class, 'update']);
 Route::post('delete_rekognisi/{id}', [RekognisiController::class, 'destroy']);
+
+// Mengajar
+Route::post('mengajardosens', [MengajarController::class, 'store']);
+Route::get('search_mengajar/', [MengajarController::class, 'allmengajar']);
+Route::get('search_matkul_prodi/{id}', [MengajarController::class, 'searchmatkulprodi']);
+Route::get('search_mengajardsn/', [MengajarController::class, 'allmengajardsn']);
+Route::get('search_mengajar/{search}', [MengajarController::class, 'searchmengajar']);
+Route::get('search_mengajardsn/{search}', [MengajarController::class, 'searchmengajardsn']);
+Route::get('tampil_mengajar/{id}', [MengajarController::class, 'show']);
+Route::put('update_mengajar/{id}', [MengajarController::class, 'update']);
+Route::post('delete_mengajar/{id}', [MengajarController::class, 'destroy']);
 
 Route::group(['middleware' => ['dosenonly']], function () {
     Route::post('detildosens', [DetaildosenController::class, 'store']);

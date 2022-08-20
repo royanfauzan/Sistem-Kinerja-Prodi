@@ -15,6 +15,11 @@ class profilDosen extends Model
         return $this->belongsToMany(Produk::class,'relasi_dos_prods','profil_dosen_id','produk_id')->withPivot('keanggotaan');
     }
 
+    public function bbjurnals()
+    {
+        return $this->belongsToMany(Bbjurnaldos::class,'relasi_jur_dos','profil_dosen_id','bbjurnaldos_id')->withPivot('keanggotaan');
+    }
+
     public function mengajars()
     {
         return $this->hasMany(Mengajar::class,'profil_dosen_id','id');
@@ -43,6 +48,11 @@ class profilDosen extends Model
     public function rekognisis()
     {
         return $this->hasMany(Rekognisi::class,'profil_dosen_id','id')->orderBy('tahun','DESC');
+    }
+
+    public function serkoms()
+    {
+        return $this->hasMany(Serkom::class,'profil_dosen_id','id');
     }
 
 }

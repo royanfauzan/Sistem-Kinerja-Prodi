@@ -87,7 +87,7 @@ export default function dashboardadmin() {
 
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
-          return router.push("/dashboards/darboarddosen");
+          return router.push("/dashboards/dashboarddosen");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         pengambilData();
@@ -123,7 +123,7 @@ export default function dashboardadmin() {
                         <ListCardDash
                           judul={"Profil Dosen"}
                           keterangan={`mengelola data profil dosen`}
-                          halaman={"/publikasidos/export/export_publikasidos"}
+                          halaman={"/profildosen/tabelprofil"}
                           icon={`bi bi-card-text`}
                         />
                         <ListCardDash

@@ -1,35 +1,42 @@
 import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
+import CardSertif from "../../../components/Molecule/MenuCard/CardSertif";
+import ListCardSertif from "../../../components/Molecule/MenuCard/ListCardSertif";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export async function getServerSideProps(context) {
   //http request
   const req = await axios.get(
-    `http://127.0.0.1:8000/api/tampil_bimbingan/${context.query.id_bimbingan}`
+    `http://127.0.0.1:8000/api/tampil_jurnal/${context.query.id_jurnal}`
   );
-  const res = await req.data.databimbingan;
+  const {datajurnal,profildosens} = await req.data;
 
   return {
     props: {
-        databimbingan: res, // <-- assign response
+      datajurnal: datajurnal, // <-- assign response
+      dataprofils: profildosens, // <-- assign response
     },
   };
 }
 
-export default function editbimbingandsn(props) {
+export default function editjurnaldsn(props) {
   const router = useRouter();
-  const {databimbingan}=props;
-  const apiurl = "http://127.0.0.1:8000/"
+  const MySwal = withReactContent(Swal);
+  const { datajurnal,dataprofils } = props;
+  const apiurl = "http://127.0.0.1:8000/";
 
-  const [userDosens, setuserDosens] = useState([]);
+  const [userDosens, setuserDosens] = useState(dataprofils);
   const [dataProdis, setdataProdis] = useState([]);
   const [userDosen, setuserDosen] = useState();
-  const [dataBimbingan, setdataBimbingan] = useState(databimbingan);
+  const [dataJurnal, setdataJurnal] = useState(datajurnal);
   const [UsrSekarang, setUsrSekarang] = useState();
   const [filebukti, setfilebuktis] = useState<File>([]);
 
@@ -56,22 +63,6 @@ export default function editbimbingandsn(props) {
         console.log("INI DOSEN YG LOGIN");
         console.log(profilDosen);
         setuserDosen(profilDosen);
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
-
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/Prodi/",
-    })
-      .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { Prodi } = response.data;
-        setdataProdis(Prodi);
-        console.log(Prodi);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -108,7 +99,7 @@ export default function editbimbingandsn(props) {
 
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 2) {
-          return router.push("/rekognisi/export/exportbimbingan");
+          return router.push("/rekognisi/export/exportjurnal");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
 
@@ -129,18 +120,21 @@ export default function editbimbingandsn(props) {
 
     let formData = new FormData();
     formData.append("profil_dosen_id", event.target.profil_dosen_id.value);
-    formData.append("judul_ta", event.target.judul_ta.value);
-    formData.append("nama_mhs", event.target.nama_mhs.value);
-    formData.append("nim_mhs", event.target.nim_mhs.value);
-    formData.append("prodi_id", event.target.prodi_id.value);
-    formData.append("tahun_akademik", event.target.tahun_akademik.value);
-    formData.append("fileBukti", filebukti);
+    formData.append("judul", event.target.judul.value);
+    formData.append("nm_jurnal", event.target.nm_jurnal.value);
+    formData.append("keterangan", event.target.keterangan.value);
+    formData.append("volume", event.target.volume.value);
+    formData.append("nomor", event.target.nomor.value);
+    formData.append("halaman", event.target.halaman.value);
+    formData.append("kategori_jurnal", event.target.kategori_jurnal.value);
+    formData.append("tahun", event.target.tahun.value);
+    formData.append("sitasi", event.target.sitasi.value);
 
     console.log(formData);
 
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/update_bimbingan/${dataBimbingan.id}?_method=PUT`,
+      url: `http://127.0.0.1:8000/api/update_jurnal/${dataJurnal.id}?_method=PUT`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -154,14 +148,14 @@ export default function editbimbingandsn(props) {
         toast.success("Simpan Sukses Sugses!!");
         // console.log(token);
         console.log(profil);
-        router.push("/bimbingan/tabelbimbingandsn");
+        router.push("/bukujurnal/tabeljurnaldsn");
       })
       .catch(function (error) {
         toast.dismiss();
         if (error.response.data.message) {
           toast.error(error.response.data.message);
           setTimeout(() => {
-            router.push("/bimbingan/tabelbimbingandsn");
+            router.push("/bukujurnal/tabeljurnaldsn");
           }, 500);
         } else {
           setError(error.response.data.error);
@@ -194,6 +188,37 @@ export default function editbimbingandsn(props) {
     console.log(dosz);
   };
 
+  const deleteanggota = (id) => {
+    MySwal.fire({
+      title: "Yakin Hapus Data rekognisi?",
+      text: "Data yang dihapus tidak dapat dikembalikan!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Tidak",
+      confirmButtonText: "Ya",
+    }).then((result) => {
+      // <--
+      if (result.isConfirmed) {
+        // <-- if confirmed
+        axios({
+          method: "post",
+          url: `http://127.0.0.1:8000/api/hapusanggota_jurnal/${id}`,
+        })
+          .then(function (response) {
+            const { datajurnal, profildosens } = response.data;
+            setuserDosens(profildosens);
+            setdataJurnal(datajurnal);
+          })
+          .catch(function (err) {
+            console.log("gagal");
+            console.log(err.response);
+          });
+      }
+    });
+  };
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -215,9 +240,8 @@ export default function editbimbingandsn(props) {
                         </button>
                       </div>
                     </div>
-
                     <div className="card-body">
-                      <p className="text-uppercase text-sm">Data Bimbingan</p>
+                      <p className="text-uppercase text-sm">Data Jurnal</p>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">
@@ -255,119 +279,83 @@ export default function editbimbingandsn(props) {
                             )}
                           </div>
                         </div>
-                        {/* <div className="col-md-6">
-                          <div className="form-group">
-                            <label
-                              htmlFor="profil_dosen_id"
-                              className={
-                                "form-control-label " +
-                                dataError.profil_dosen_id
-                                  ? "is-invalid"
-                                  : ""
-                              }
-                            >
-                              Pilih DTPS
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Pilih Dosen"
-                              id="profil_dosen_id"
-                              list="datalistDosen"
-                              defaultValue=""
-                              onChange={clickSelectId}
-                            />
-                            <datalist id="datalistDosen">
-                              {userDosens.map((userdosen) => {
-                                return (
-                                  <option
-                                    value={userdosen.NIDK}
-                                    key={userdosen.id}
-                                  >
-                                    {userdosen.NamaDosen}
-                                  </option>
-                                );
-                              })}
-                            </datalist>
-
-                            {dataError.profil_dosen_id ? (
-                              <div className="invalid-feedback">
-                                {dataError.profil_dosen_id}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div> */}
                       </div>
                       <hr className="horizontal dark" />
                       <p className="text-uppercase text-sm">
-                        BImbingan: Data Mahasiswa
+                        Jurnal: Detail Jurnal
                       </p>
                       <div className="row">
                         <div className="col-md-9">
                           <div className="form-group">
                             <label
-                              htmlFor="prodi_id"
+                              htmlFor="kategori_jurnal"
                               className={
-                                "form-control-label " + dataError.prodi_id
+                                "form-control-label " +
+                                dataError.kategori_jurnal
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              Program Studi
+                              Jenis Jurnal
                             </label>
 
                             <select
                               className="form-select"
                               aria-label="Default select example"
-                              defaultValue={dataBimbingan.prodi_id}
-                              id="prodi_id"
+                              defaultValue={dataJurnal.kategori_jurnal}
+                              id="kategori_jurnal"
                             >
-                              {dataProdis.map((prodi) => {
-                                return (
-                                  <option
-                                    value={prodi.id}
-                                    key={`mtk-${prodi.id}`}
-                                  >
-                                    {`${prodi.prodi}  ${prodi.nama_prodi}`}
-                                  </option>
-                                );
-                              })}
+                              <option value={`Jurnal Tidak Terakreditasi`}>
+                                Jurnal Tidak Terakreditasi
+                              </option>
+                              <option value={`Jurnal Nasional Terakreditasi`}>
+                                Jurnal Nasional Terakreditasi
+                              </option>
+                              <option value={`Jurnal Internasional`}>
+                                Jurnal Internasional
+                              </option>
+                              <option value={`Jurnal Internasional Bereputasi`}>
+                                Jurnal Internasional Bereputasi
+                              </option>
+                              <option value={`Bab Buku`}>Bab/Buku</option>
                             </select>
 
-                            {dataError.prodi_id ? (
+                            {dataError.kategori_jurnal ? (
                               <div className="invalid-feedback">
-                                {dataError.prodi_id}
+                                {dataError.kategori_jurnal}
                               </div>
                             ) : (
                               ""
                             )}
                           </div>
                         </div>
-
-                        <div className="col-4">
+                      </div>
+                      <hr className="horizontal dark" />
+                      <p className="text-uppercase text-sm">
+                        Jurnal: Data Jurnal
+                      </p>
+                      <div className="row">
+                        <div className="col-8">
                           <div className="form-group">
                             <label
-                              htmlFor="nim_mhs"
+                              htmlFor="judul"
                               className={
-                                "form-control-label " + dataError.nim_mhs
+                                "form-control-label " + dataError.judul
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              NIM Mahasiswa
+                              Judul Jurnal
                             </label>
-                            <input
+                            <textarea
                               className="form-control"
-                              type="text"
-                              placeholder="191532****"
-                              defaultValue={dataBimbingan.mahasiswa.nim}
-                              id="nim_mhs"
-                            />
-                            {dataError.nim_mhs ? (
+                              placeholder="judul"
+                              defaultValue={dataJurnal.judul}
+                              id="judul"
+                            ></textarea>
+                            {dataError.judul ? (
                               <div className="invalid-feedback">
-                                {dataError.nim_mhs}
+                                {dataError.judul}
                               </div>
                             ) : (
                               ""
@@ -377,58 +365,25 @@ export default function editbimbingandsn(props) {
                         <div className="col-6">
                           <div className="form-group">
                             <label
-                              htmlFor="nama_mhs"
+                              htmlFor="JMSC"
                               className={
-                                "form-control-label " + dataError.nama_mhs
+                                "form-control-label " + dataError.nm_jurnal
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              Nama Mahasiswa
+                              Nama Jurnal
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="Kadek Utama "
-                              defaultValue={dataBimbingan.mahasiswa.nama}
-                              id="nama_mhs"
+                              placeholder="JiPANI"
+                              defaultValue={dataJurnal.nm_jurnal}
+                              id="nm_jurnal"
                             />
-                            {dataError.nama_mhs ? (
+                            {dataError.nm_jurnal ? (
                               <div className="invalid-feedback">
-                                {dataError.nama_mhs}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <hr className="horizontal dark" />
-                      <p className="text-uppercase text-sm">
-                        Bimbingan: Data Tugas Akhir
-                      </p>
-                      <div className="row">
-                        <div className="col-8">
-                          <div className="form-group">
-                            <label
-                              htmlFor="judul_ta"
-                              className={
-                                "form-control-label " + dataError.judul_ta
-                                  ? "is-invalid"
-                                  : ""
-                              }
-                            >
-                              Judul Tugas Akhir
-                            </label>
-                            <textarea
-                              className="form-control"
-                              defaultValue={dataBimbingan.judul_ta}
-                              placeholder="judul_ta"
-                              id="judul_ta"
-                            ></textarea>
-                            {dataError.judul_ta ? (
-                              <div className="invalid-feedback">
-                                {dataError.judul_ta}
+                                {dataError.nm_jurnal}
                               </div>
                             ) : (
                               ""
@@ -438,25 +393,169 @@ export default function editbimbingandsn(props) {
                         <div className="col-4">
                           <div className="form-group">
                             <label
-                              htmlFor="tahun_akademik"
+                              htmlFor="tahun"
                               className={
-                                "form-control-label " + dataError.tahun_akademik
+                                "form-control-label " + dataError.tahun
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              Tahun Akademik
+                              Tahun
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="2021/2022"
-                              defaultValue={dataBimbingan.tahun_akademik}
-                              id="tahun_akademik"
+                              placeholder="2020"
+                              defaultValue={dataJurnal.tahun}
+                              id="tahun"
                             />
-                            {dataError.tahun_akademik ? (
+                            {dataError.tahun ? (
                               <div className="invalid-feedback">
-                                {dataError.tahun_akademik}
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-4">
+                          <div className="form-group">
+                            <label
+                              htmlFor="volume"
+                              className={
+                                "form-control-label " + dataError.volume
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Volume
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="VII"
+                              defaultValue={dataJurnal.volume}
+                              id="volume"
+                            />
+                            {dataError.volume ? (
+                              <div className="invalid-feedback">
+                                {dataError.volume}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-4">
+                          <div className="form-group">
+                            <label
+                              htmlFor="nomor"
+                              className={
+                                "form-control-label " + dataError.nomor
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Nomor
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="7"
+                              defaultValue={dataJurnal.nomor}
+                              id="nomor"
+                            />
+                            {dataError.nomor ? (
+                              <div className="invalid-feedback">
+                                {dataError.nomor}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-4">
+                          <div className="form-group">
+                            <label
+                              htmlFor="halaman"
+                              className={
+                                "form-control-label " + dataError.halaman
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Halaman
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="20-77"
+                              defaultValue={dataJurnal.halaman}
+                              id="halaman"
+                            />
+                            {dataError.halaman ? (
+                              <div className="invalid-feedback">
+                                {dataError.halaman}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row ">
+                        <div className="col-4 ">
+                          <div className="form-group">
+                            <label
+                              htmlFor="sitasi"
+                              className={
+                                "form-control-label " + dataError.sitasi
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Sitasi
+                            </label>
+                            <input
+                              className="form-control"
+                              type="number"
+                              defaultValue={dataJurnal.sitasi}
+                              id="sitasi"
+                            />
+                            {dataError.sitasi ? (
+                              <div className="invalid-feedback">
+                                {dataError.sitasi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-8">
+                          <div className="form-group">
+                            <label
+                              htmlFor="keterangan"
+                              className={
+                                "form-control-label " + dataError.keterangan
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Keterangan
+                            </label>
+                            <textarea
+                              className="form-control"
+                              placeholder="keterangan"
+                              id="keterangan"
+                              defaultValue={dataJurnal.keterangan}
+                            ></textarea>
+                            {dataError.keterangan ? (
+                              <div className="invalid-feedback">
+                                {dataError.keterangan}
                               </div>
                             ) : (
                               ""
@@ -465,34 +564,103 @@ export default function editbimbingandsn(props) {
                         </div>
                       </div>
                       <hr className="horizontal dark" />
-                      <p className="text-uppercase text-sm">Bukti Laporan</p>
+                      <p className="text-uppercase text-sm">
+                        Kenaggotaan: Anggota Jurnal
+                      </p>
                       <div className="row">
-                        <div className="row">
-                          <div className="col-md-11">
-                            <div className="form-group">
-                              <label
-                                htmlFor="fileBukti"
-                                className={
-                                  dataError.fileBukti ? "is-invalid" : ""
-                                }
-                              >
-                                File Bukti : <span><a href={`${apiurl+dataBimbingan.fileBukti}`}>{dataBimbingan.fileBukti.split("/").slice(-1)[0] }</a></span>
-                              </label>
-                              <input
-                                className="form-control"
-                                type="file"
-                                onChange={handleChangeFile}
-                                id="fileBukti"
-                              />
-                              {dataError.fileBukti ? (
-                                <div className="invalid-feedback">
-                                  {dataError.fileBukti}
-                                </div>
-                              ) : (
-                                ""
-                              )}
+                        <div className="col-12">
+                          <CardSertif judul={"List Anggota"}>
+                            <div className="col-12">
+                              {dataJurnal &&
+                                (dataJurnal.anggota_dosens.length ? (
+                                  dataJurnal.anggota_dosens.map(
+                                    (anggota, indx) => {
+                                      return (
+                                        <div
+                                          className={`row`}
+                                          key={`anggta${indx}`}
+                                        >
+                                          <div className="col-6 d-flex align-items-center">
+                                            <div className="d-flex px-0 py-1 align-items-center">
+                                              <div>
+                                                <i
+                                                  className={`bi bi-align-end fs-6 text-danger opacity-10`}
+                                                ></i>
+                                              </div>
+                                              <div className="ms-3">
+                                                <h6 className="text-sm mb-0">
+                                                  {anggota.NamaDosen}
+                                                </h6>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div className="col-2 d-flex align-items-center">
+                                            <div className="row">
+                                              <div className="col">
+                                                <button className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                                  <i className="bi bi-person-x"></i>
+                                                </button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      );
+                                    }
+                                  )
+                                ) : (
+                                  <></>
+                                ))}
                             </div>
-                          </div>
+                            <div className="col-12">
+                            <div className="row">
+                                <div className="col-md-6">
+                                  <div className="form-group">
+                                    <label
+                                      htmlFor="profil_dosen_id_tambah"
+                                      className={
+                                        "form-control-label " +
+                                        dataError.profil_dosen_id
+                                          ? "is-invalid"
+                                          : ""
+                                      }
+                                    >
+                                      Pilih Dosen
+                                    </label>
+
+                                    <select
+                                      className="form-select"
+                                      aria-label="Default select example"
+                                      id="profil_dosen_id_tambah"
+                                    >
+                                      {userDosens.map((userdosen) => {
+                                        return (
+                                          <option
+                                            value={userdosen.id}
+                                            key={userdosen.id}
+                                          >
+                                            {userdosen.NamaDosen}
+                                          </option>
+                                        );
+                                      })}
+                                    </select>
+
+                                    {dataError.profil_dosen_id ? (
+                                      <div className="invalid-feedback">
+                                        {dataError.profil_dosen_id}
+                                      </div>
+                                    ) : (
+                                      ""
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <button className="btn btn-sm btn-outline-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                  Tambah anggota Jurnal
+                                </button>
+                              </div>
+                            </div>
+                          </CardSertif>
                         </div>
                       </div>
                     </div>

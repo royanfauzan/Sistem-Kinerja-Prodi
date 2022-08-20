@@ -17,11 +17,11 @@ interface Udosen {
   updated_at: string;
 }
 
-export default function inputbimbingandsn() {
+export default function inputjurnaldsn() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState([]);
-  const [dataProdis, setdataProdis] = useState([]);
+  // const [dataProdis, setdataProdis] = useState([]);
   const [userDosen, setuserDosen] = useState();
   const [UsrSekarang, setUsrSekarang] = useState();
   const [filebukti, setfilebuktis] = useState<File>([]);
@@ -55,21 +55,21 @@ export default function inputbimbingandsn() {
         console.log(err.response);
       });
 
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/Prodi/",
-    })
-      .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { Prodi } = response.data;
-        setdataProdis(Prodi);
-        console.log(Prodi);
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+    // axios({
+    //   method: "get",
+    //   url: "http://127.0.0.1:8000/api/Prodi/",
+    // })
+    //   .then(function (response) {
+    //     console.log(response);
+    //     console.log("Sukses");
+    //     const { Prodi } = response.data;
+    //     setdataProdis(Prodi);
+    //     console.log(Prodi);
+    //   })
+    //   .catch(function (err) {
+    //     console.log("gagal");
+    //     console.log(err.response);
+    //   });
   };
 
   // Setelah halaman Loading nya muncul, ini jalan
@@ -130,12 +130,13 @@ export default function inputbimbingandsn() {
     formData.append("halaman", event.target.halaman.value);
     formData.append("kategori_jurnal", event.target.kategori_jurnal.value);
     formData.append("tahun", event.target.tahun.value);
+    formData.append("sitasi", event.target.sitasi.value);
 
     console.log(formData);
 
     axios({
       method: "post",
-      url: "http://127.0.0.1:8000/api/bimbingans",
+      url: "http://127.0.0.1:8000/api/jurnals",
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -149,14 +150,14 @@ export default function inputbimbingandsn() {
         toast.success("Simpan Sukses Sugses!!");
         // console.log(token);
         console.log(profil);
-        router.push("/bimbingan/tabelbimbingandsn");
+        router.push("/bukujurnal/tabeljurnaldsn");
       })
       .catch(function (error) {
         toast.dismiss();
         if (error.response.data.message) {
           toast.error(error.response.data.message);
           setTimeout(() => {
-            router.push("/bimbingan/tabelbimbingandsn");
+            router.push("/bukujurnal/tabeljurnaldsn");
           }, 500);
         } else {
           setError(error.response.data.error);
@@ -297,7 +298,7 @@ export default function inputbimbingandsn() {
                       </div>
                       <hr className="horizontal dark" />
                       <p className="text-uppercase text-sm">
-                        BImbingan: Data Mahasiswa
+                        Jurnal: Detail Jurnal
                       </p>
                       <div className="row">
                         <div className="col-md-9">
@@ -391,7 +392,7 @@ export default function inputbimbingandsn() {
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="nm_jurnal"
+                              placeholder="JiPANI"
                               id="nm_jurnal"
                             />
                             {dataError.nm_jurnal ? (
@@ -430,8 +431,6 @@ export default function inputbimbingandsn() {
                             )}
                           </div>
                         </div>
-
-                        
                       </div>
                       <div className="row">
                         <div className="col-4">
@@ -515,6 +514,35 @@ export default function inputbimbingandsn() {
                             )}
                           </div>
                         </div>
+                        <div className="row ">
+                          <div className="col-4 ">
+                            <div className="form-group">
+                              <label
+                                htmlFor="sitasi"
+                                className={
+                                  "form-control-label " + dataError.sitasi
+                                    ? "is-invalid"
+                                    : ""
+                                }
+                              >
+                                Sitasi
+                              </label>
+                              <input
+                                className="form-control"
+                                type="number"
+                                defaultValue={0}
+                                id="sitasi"
+                              />
+                              {dataError.sitasi ? (
+                                <div className="invalid-feedback">
+                                  {dataError.sitasi}
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                          </div>
+                        </div>
                         <div className="row">
                           <div className="col-8">
                             <div className="form-group">
@@ -526,7 +554,7 @@ export default function inputbimbingandsn() {
                                     : ""
                                 }
                               >
-                                Keterangan Jurnal
+                                Keterangan
                               </label>
                               <textarea
                                 className="form-control"

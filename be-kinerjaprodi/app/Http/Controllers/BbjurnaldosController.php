@@ -100,9 +100,19 @@ class BbjurnaldosController extends Controller
     {
         //
         $jurnal = Bbjurnaldos::with('anggotaDosens')->find($id);
+
+        $listanggota = RelasiJurDos::where('bbjurnaldos_id',$id)->get();
+
+        $idtags = array();
+        foreach ($listanggota as $anggota) {
+            $idtags[] = $anggota->profil_dosen_id;
+        }
+
+        $profilDosens = profilDosen::whereNotIn('id', $idtags)->get();
         return response()->json([
             'success' => true,
             'datajurnal' => $jurnal,
+            'profildosens' => $profilDosens,
             // 'dosenId'=> $dosenId
         ]);
     }

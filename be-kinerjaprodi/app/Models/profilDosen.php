@@ -17,7 +17,7 @@ class profilDosen extends Model
 
     public function bbjurnals()
     {
-        return $this->belongsToMany(Bbjurnaldos::class,'relasi_jur_dos','profil_dosen_id','bbjurnaldos_id')->withPivot('keanggotaan');
+        return $this->belongsToMany(Bbjurnaldos::class,'relasi_jur_dos','profil_dosen_id','bbjurnaldos_id')->withPivot('keanggotaan','id');
     }
 
     public function mengajars()

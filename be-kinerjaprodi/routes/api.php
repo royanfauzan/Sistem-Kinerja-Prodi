@@ -44,6 +44,7 @@ use App\Http\Controllers\ProfildosenController;
 use App\Http\Controllers\RekognisiController;
 use App\Http\Controllers\SdmLaporanController;
 use App\Http\Controllers\RelasiLuaranController;
+use App\Http\Controllers\SeminardosController;
 use App\Http\Controllers\SerkomController;
 use App\Models\Detaildosen;
 use App\Models\MahasiswaAsing;
@@ -321,6 +322,18 @@ Route::put('update_jurnal/{id}', [BbjurnaldosController::class, 'update']);
 Route::post('delete_jurnal/{id}', [BbjurnaldosController::class, 'destroy']);
 Route::post('hapusanggota_jurnal/{id}', [BbjurnaldosController::class, 'hapusAnggota']);
 Route::post('tambahanggota_jurnal/{id}', [BbjurnaldosController::class, 'tambahAnggota']);
+
+// Seminardos
+Route::post('seminardoss', [SeminardosController::class, 'store']);
+Route::get('search_seminardos/', [SeminardosController::class, 'allseminar']);
+Route::get('search_seminardosdsn/', [SeminardosController::class, 'allseminardsn']);
+Route::get('search_seminardos/{search}', [SeminardosController::class, 'searchseminar']);
+Route::get('search_seminardosdsn/{search}', [SeminardosController::class, 'searchseminardsn']);
+Route::get('tampil_seminardos/{id}', [SeminardosController::class, 'show']);
+Route::put('update_seminardos/{id}', [SeminardosController::class, 'update']);
+Route::post('delete_seminardos/{id}', [SeminardosController::class, 'destroy']);
+Route::post('hapusanggota_seminardos/{id}', [SeminardosController::class, 'hapusAnggota']);
+Route::post('tambahanggota_seminardos/{id}', [SeminardosController::class, 'tambahAnggota']);
 
 
 Route::get('profildosens', [ProfildosenController::class, 'index']);

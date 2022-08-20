@@ -15,31 +15,31 @@ import withReactContent from "sweetalert2-react-content";
 export async function getServerSideProps(context) {
   //http request
   const req = await axios.get(
-    `http://127.0.0.1:8000/api/tampil_jurnal/${context.query.id_jurnal}`
+    `http://127.0.0.1:8000/api/tampil_seminardos/${context.query.id_seminar}`
   );
-  const { datajurnal, profildosens } = await req.data;
+  const { dataseminar, profildosens } = await req.data;
 
   return {
     props: {
-      datajurnal: datajurnal, // <-- assign response
+      dataseminar: dataseminar, // <-- assign response
       dataprofils: profildosens, // <-- assign response
     },
   };
 }
 
-export default function editjurnaldsn(props) {
+export default function editseminardsn(props) {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
-  const { datajurnal, dataprofils } = props;
+  const { dataseminar, dataprofils } = props;
   const apiurl = "http://127.0.0.1:8000/";
 
   const [userDosens, setuserDosens] = useState(dataprofils);
   const [dataProdis, setdataProdis] = useState([]);
   const [dataIdKetua, setdataIdKetua] = useState(
-    datajurnal.anggota_dosens[0].pivot.id
+    dataseminar.anggota_dosens[0].pivot.id
   );
   const [userDosen, setuserDosen] = useState();
-  const [dataJurnal, setdataJurnal] = useState(datajurnal);
+  const [dataSeminar, setdataSeminar] = useState(dataseminar);
   const [UsrSekarang, setUsrSekarang] = useState();
   const [filebukti, setfilebuktis] = useState<File>([]);
 
@@ -104,7 +104,7 @@ export default function editjurnaldsn(props) {
 
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 2) {
-          return router.push("/rekognisi/export/exportjurnal");
+          return router.push("/rekognisi/export/exportseminar");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
 
@@ -125,21 +125,16 @@ export default function editjurnaldsn(props) {
 
     let formData = new FormData();
     formData.append("profil_dosen_id", event.target.profil_dosen_id.value);
-    formData.append("judul", event.target.judul.value);
-    formData.append("nm_jurnal", event.target.nm_jurnal.value);
-    formData.append("keterangan", event.target.keterangan.value);
-    formData.append("volume", event.target.volume.value);
-    formData.append("nomor", event.target.nomor.value);
-    formData.append("halaman", event.target.halaman.value);
-    formData.append("kategori_jurnal", event.target.kategori_jurnal.value);
+    formData.append("judul_kegiatan", event.target.judul_kegiatan.value);
+    formData.append("penyelenggara", event.target.penyelenggara.value);
+    formData.append("kategori_seminar", event.target.kategori_seminar.value);
     formData.append("tahun", event.target.tahun.value);
-    formData.append("sitasi", event.target.sitasi.value);
 
     console.log(formData);
 
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/update_jurnal/${dataJurnal.id}?_method=PUT`,
+      url: `http://127.0.0.1:8000/api/update_seminardos/${dataSeminar.id}?_method=PUT`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -153,14 +148,14 @@ export default function editjurnaldsn(props) {
         toast.success("Simpan Sukses Sugses!!");
         // console.log(token);
         console.log(profil);
-        router.push("/bukujurnal/tabeljurnaldsn");
+        router.push("/seminardos/tabelseminardsn");
       })
       .catch(function (error) {
         toast.dismiss();
         if (error.response.data.message) {
           toast.error(error.response.data.message);
           setTimeout(() => {
-            router.push("/bukujurnal/tabeljurnaldsn");
+            router.push("/seminardos/tabelseminardsn");
           }, 500);
         } else {
           setError(error.response.data.error);
@@ -218,16 +213,16 @@ export default function editjurnaldsn(props) {
           // formData.append("profil_dosen_id", refTambahSelect.current.value);
           axios({
             method: "post",
-            url: `http://127.0.0.1:8000/api/hapusanggota_jurnal/${id}`,
+            url: `http://127.0.0.1:8000/api/hapusanggota_seminardos/${id}`,
             headers: {
               Authorization: `Bearer ${lgToken}`,
               "Content-Type": "multipart/form-data",
             },
           })
             .then(function (response) {
-              const { datajurnal, profildosens } = response.data;
+              const { dataseminar, profildosens } = response.data;
               setuserDosens(profildosens);
-              setdataJurnal(datajurnal);
+              setdataSeminar(dataseminar);
               toast.dismiss();
                 toast.success('Anggota Berhasil Dihapus');
             })
@@ -254,7 +249,7 @@ export default function editjurnaldsn(props) {
     formData.append("profil_dosen_id", idusertambah);
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/tambahanggota_jurnal/${id}`,
+      url: `http://127.0.0.1:8000/api/tambahanggota_seminardos/${id}`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -262,9 +257,9 @@ export default function editjurnaldsn(props) {
       },
     })
       .then(function (response) {
-        const { datajurnal, profildosens } = response.data;
+        const { dataseminar, profildosens } = response.data;
         setuserDosens(profildosens);
-        setdataJurnal(datajurnal);
+        setdataSeminar(dataseminar);
         toast.dismiss();
         toast.success('Anggota Berhasil Ditambah');
       })
@@ -314,7 +309,7 @@ export default function editjurnaldsn(props) {
                       </div>
                     </div>
                     <div className="card-body">
-                      <p className="text-uppercase text-sm">Data Jurnal</p>
+                      <p className="text-uppercase text-sm">Data seminar</p>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">
@@ -352,50 +347,47 @@ export default function editjurnaldsn(props) {
                             )}
                           </div>
                         </div>
+                        
                       </div>
                       <hr className="horizontal dark" />
                       <p className="text-uppercase text-sm">
-                        Jurnal: Detail Jurnal
+                        Seminar: Detail Seminar
                       </p>
                       <div className="row">
                         <div className="col-md-9">
                           <div className="form-group">
                             <label
-                              htmlFor="kategori_jurnal"
+                              htmlFor="kategori_seminar"
                               className={
                                 "form-control-label " +
-                                dataError.kategori_jurnal
+                                dataError.kategori_seminar
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              Jenis Jurnal
+                              Kategori seminar
                             </label>
 
                             <select
                               className="form-select"
                               aria-label="Default select example"
-                              defaultValue={dataJurnal.kategori_jurnal}
-                              id="kategori_jurnal"
+                              defaultValue={dataSeminar.kategori_seminar}
+                              id="kategori_seminar"
                             >
-                              <option value={`Jurnal Tidak Terakreditasi`}>
-                                Jurnal Tidak Terakreditasi
+                              <option value={`wilayah`}>
+                                Wilayah/Lokal/Perguruan Tinggi
                               </option>
-                              <option value={`Jurnal Nasional Terakreditasi`}>
-                                Jurnal Nasional Terakreditasi
+                              <option value={`nasional`}>
+                                Nasional
                               </option>
-                              <option value={`Jurnal Internasional`}>
-                                Jurnal Internasional
+                              <option value={`internasional`}>
+                                Internasional
                               </option>
-                              <option value={`Jurnal Internasional Bereputasi`}>
-                                Jurnal Internasional Bereputasi
-                              </option>
-                              <option value={`Bab Buku`}>Bab/Buku</option>
                             </select>
 
-                            {dataError.kategori_jurnal ? (
+                            {dataError.kategori_seminar ? (
                               <div className="invalid-feedback">
-                                {dataError.kategori_jurnal}
+                                {dataError.kategori_seminar}
                               </div>
                             ) : (
                               ""
@@ -405,30 +397,30 @@ export default function editjurnaldsn(props) {
                       </div>
                       <hr className="horizontal dark" />
                       <p className="text-uppercase text-sm">
-                        Jurnal: Data Jurnal
+                        Seminar: Data Seminar
                       </p>
                       <div className="row">
                         <div className="col-8">
                           <div className="form-group">
                             <label
-                              htmlFor="judul"
+                              htmlFor="judul_kegiatan"
                               className={
-                                "form-control-label " + dataError.judul
+                                "form-control-label " + dataError.judul_kegiatan
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              Judul Jurnal
+                              Judul Seminar
                             </label>
                             <textarea
                               className="form-control"
-                              placeholder="judul"
-                              defaultValue={dataJurnal.judul}
-                              id="judul"
+                              placeholder="judul_kegiatan"
+                              id="judul_kegiatan"
+                              defaultValue={dataSeminar.judul_kegiatan}
                             ></textarea>
-                            {dataError.judul ? (
+                            {dataError.judul_kegiatan ? (
                               <div className="invalid-feedback">
-                                {dataError.judul}
+                                {dataError.judul_kegiatan}
                               </div>
                             ) : (
                               ""
@@ -440,23 +432,23 @@ export default function editjurnaldsn(props) {
                             <label
                               htmlFor="JMSC"
                               className={
-                                "form-control-label " + dataError.nm_jurnal
+                                "form-control-label " + dataError.penyelenggara
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              Nama Jurnal
+                              Penyelenggara Seminar
                             </label>
                             <input
                               className="form-control"
                               type="text"
                               placeholder="JiPANI"
-                              defaultValue={dataJurnal.nm_jurnal}
-                              id="nm_jurnal"
+                              defaultValue={dataSeminar.penyelenggara}
+                              id="penyelenggara"
                             />
-                            {dataError.nm_jurnal ? (
+                            {dataError.penyelenggara ? (
                               <div className="invalid-feedback">
-                                {dataError.nm_jurnal}
+                                {dataError.penyelenggara}
                               </div>
                             ) : (
                               ""
@@ -479,7 +471,7 @@ export default function editjurnaldsn(props) {
                               className="form-control"
                               type="text"
                               placeholder="2020"
-                              defaultValue={dataJurnal.tahun}
+                              defaultValue={dataSeminar.tahun}
                               id="tahun"
                             />
                             {dataError.tahun ? (
@@ -492,161 +484,17 @@ export default function editjurnaldsn(props) {
                           </div>
                         </div>
                       </div>
-                      <div className="row">
-                        <div className="col-4">
-                          <div className="form-group">
-                            <label
-                              htmlFor="volume"
-                              className={
-                                "form-control-label " + dataError.volume
-                                  ? "is-invalid"
-                                  : ""
-                              }
-                            >
-                              Volume
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="VII"
-                              defaultValue={dataJurnal.volume}
-                              id="volume"
-                            />
-                            {dataError.volume ? (
-                              <div className="invalid-feedback">
-                                {dataError.volume}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                        <div className="col-4">
-                          <div className="form-group">
-                            <label
-                              htmlFor="nomor"
-                              className={
-                                "form-control-label " + dataError.nomor
-                                  ? "is-invalid"
-                                  : ""
-                              }
-                            >
-                              Nomor
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="7"
-                              defaultValue={dataJurnal.nomor}
-                              id="nomor"
-                            />
-                            {dataError.nomor ? (
-                              <div className="invalid-feedback">
-                                {dataError.nomor}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                        <div className="col-4">
-                          <div className="form-group">
-                            <label
-                              htmlFor="halaman"
-                              className={
-                                "form-control-label " + dataError.halaman
-                                  ? "is-invalid"
-                                  : ""
-                              }
-                            >
-                              Halaman
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="20-77"
-                              defaultValue={dataJurnal.halaman}
-                              id="halaman"
-                            />
-                            {dataError.halaman ? (
-                              <div className="invalid-feedback">
-                                {dataError.halaman}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row ">
-                        <div className="col-4 ">
-                          <div className="form-group">
-                            <label
-                              htmlFor="sitasi"
-                              className={
-                                "form-control-label " + dataError.sitasi
-                                  ? "is-invalid"
-                                  : ""
-                              }
-                            >
-                              Sitasi
-                            </label>
-                            <input
-                              className="form-control"
-                              type="number"
-                              defaultValue={dataJurnal.sitasi}
-                              id="sitasi"
-                            />
-                            {dataError.sitasi ? (
-                              <div className="invalid-feedback">
-                                {dataError.sitasi}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-8">
-                          <div className="form-group">
-                            <label
-                              htmlFor="keterangan"
-                              className={
-                                "form-control-label " + dataError.keterangan
-                                  ? "is-invalid"
-                                  : ""
-                              }
-                            >
-                              Keterangan
-                            </label>
-                            <textarea
-                              className="form-control"
-                              placeholder="keterangan"
-                              id="keterangan"
-                              defaultValue={dataJurnal.keterangan}
-                            ></textarea>
-                            {dataError.keterangan ? (
-                              <div className="invalid-feedback">
-                                {dataError.keterangan}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                      </div>
                       <hr className="horizontal dark" />
                       <p className="text-uppercase text-sm">
-                        Kenaggotaan: Anggota Jurnal
+                        Kenaggotaan: Anggota seminar
                       </p>
                       <div className="row">
                         <div className="col-12">
                           <CardSertif judul={"List Anggota"}>
                             <div className="col-12">
-                              {dataJurnal &&
-                                (dataJurnal.anggota_dosens.length ? (
-                                  dataJurnal.anggota_dosens.map(
+                              {dataSeminar &&
+                                (dataSeminar.anggota_dosens.length ? (
+                                  dataSeminar.anggota_dosens.map(
                                     (anggota, indx) => {
                                       return (
                                         <div
@@ -745,9 +593,9 @@ export default function editjurnaldsn(props) {
                                 <button
                                   className="btn btn-sm btn-outline-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
                                   type={`button`}
-                                  onClick={() => tambahanggota(dataJurnal.id)}
+                                  onClick={() => tambahanggota(dataSeminar.id)}
                                 >
-                                  Tambah anggota Jurnal
+                                  Tambah anggota Seminar
                                 </button>
                               </div>
                             </div>

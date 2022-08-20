@@ -20,6 +20,11 @@ class profilDosen extends Model
         return $this->belongsToMany(Bbjurnaldos::class,'relasi_jur_dos','profil_dosen_id','bbjurnaldos_id')->withPivot('keanggotaan','id');
     }
 
+    public function seminardos()
+    {
+        return $this->belongsToMany(Seminardos::class,'relasi_sem_dos','profil_dosen_id','seminardos_id')->withPivot('keanggotaan','id');
+    }
+
     public function mengajars()
     {
         return $this->hasMany(Mengajar::class,'profil_dosen_id','id');

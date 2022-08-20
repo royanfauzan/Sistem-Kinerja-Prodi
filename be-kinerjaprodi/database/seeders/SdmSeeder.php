@@ -16,6 +16,7 @@ use App\Models\Produk;
 use App\Models\RelasiDosPen;
 use App\Models\RelasiDosProd;
 use App\Models\RelasiJurDos;
+use App\Models\RelasiSemDos;
 use App\Models\Seminardos;
 use App\Models\Serkom;
 use Illuminate\Database\Seeder;
@@ -440,6 +441,52 @@ class SdmSeeder extends Seeder
                 'kategori_seminar' => 'internasional',
             ]
         );
+
+        RelasiSemDos::create([
+            'profil_dosen_id' => 1,
+            'keanggotaan' => 'Ketua',
+            'seminardos_id' => 1,
+        ]);
+        RelasiSemDos::create([
+            'profil_dosen_id' => 2,
+            'keanggotaan' => 'Ketua',
+            'seminardos_id' => 2,
+        ]);
+        RelasiSemDos::create([
+            'profil_dosen_id' => 3,
+            'keanggotaan' => 'Ketua',
+            'seminardos_id' => 3,
+        ]);
+        RelasiSemDos::create([
+            'profil_dosen_id' => 4,
+            'keanggotaan' => 'Ketua',
+            'seminardos_id' => 4,
+        ]);
+        RelasiSemDos::create([
+            'profil_dosen_id' => 1,
+            'keanggotaan' => 'Ketua',
+            'seminardos_id' => 5,
+        ]);
+        RelasiSemDos::create([
+            'profil_dosen_id' => 2,
+            'keanggotaan' => 'Ketua',
+            'seminardos_id' => 6,
+        ]);
+        RelasiSemDos::create([
+            'profil_dosen_id' => 3,
+            'keanggotaan' => 'Ketua',
+            'seminardos_id' => 7,
+        ]);
+        RelasiSemDos::create([
+            'profil_dosen_id' => 4,
+            'keanggotaan' => 'Ketua',
+            'seminardos_id' => 8,
+        ]);
+        RelasiSemDos::create([
+            'profil_dosen_id' => 1,
+            'keanggotaan' => 'Ketua',
+            'seminardos_id' => 9,
+        ]);
 
         // wilayah
         Pagelarandos::create(

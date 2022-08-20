@@ -15,6 +15,7 @@ use App\Models\Pkm;
 use App\Models\Produk;
 use App\Models\RelasiDosPen;
 use App\Models\RelasiDosProd;
+use App\Models\RelasiJurDos;
 use App\Models\Seminardos;
 use App\Models\Serkom;
 use Illuminate\Database\Seeder;
@@ -127,17 +128,17 @@ class SdmSeeder extends Seeder
 
 
         // Seeed untuk 3B4-2
-        // #####tidak terakreditasi
+        // #####Tidak Terakreditasi
         Bbjurnaldos::create(
             [
                 'judul' => 'Sistem informasi penambahan siswa',
-                'kategori_jurnal' => 'tidak terakreditasi',
+                'kategori_jurnal' => 'Jurnal Tidak Terakreditasi',
                 'nm_jurnal' => 'JNNIM',
                 'keterangan' => 'Penelitian mengenai sistem informasi yang dibuat ',
                 'volume' => 'VII',
                 'tahun' => '2021',
                 'nomor' => '6',
-                'halaman' => '127',
+                'halaman' => '70-127',
                 'sitasi' => 0,
             ]
         );
@@ -145,13 +146,13 @@ class SdmSeeder extends Seeder
         Bbjurnaldos::create(
             [
                 'judul' => '2Sistem informasi penambahan siswa',
-                'kategori_jurnal' => 'tidak terakreditasi',
+                'kategori_jurnal' => 'Jurnal Tidak Terakreditasi',
                 'nm_jurnal' => 'JNNIM',
                 'keterangan' => 'Penelitian mengenai sistem informasi yang dibuat ',
                 'volume' => 'VII',
                 'tahun' => '2020',
                 'nomor' => '6',
-                'halaman' => '127',
+                'halaman' => '70-127',
                 'sitasi' => 0,
             ]
         );
@@ -159,28 +160,28 @@ class SdmSeeder extends Seeder
         Bbjurnaldos::create(
             [
                 'judul' => '3Sistem informasi penambahan siswa',
-                'kategori_jurnal' => 'tidak terakreditasi',
+                'kategori_jurnal' => 'Jurnal Tidak Terakreditasi',
                 'nm_jurnal' => 'JNNIM',
                 'keterangan' => 'Penelitian mengenai sistem informasi yang dibuat ',
                 'volume' => 'VII',
                 'tahun' => '2019',
                 'nomor' => '6',
-                'halaman' => '127',
+                'halaman' => '70-127',
                 'sitasi' => 0,
             ]
         );
 
-        // ##### nasional terakreditasi
+        // ##### Nasional Terakreditasi
         Bbjurnaldos::create(
             [
                 'judul' => ' nasional Sistem informasi penambahan siswa',
-                'kategori_jurnal' => 'nasional terakreditasi',
+                'kategori_jurnal' => 'Jurnal Nasional Terakreditasi',
                 'nm_jurnal' => 'JNAS',
                 'keterangan' => 'Penelitian mengenai sistem informasi yang dibuat ',
                 'volume' => 'VII',
                 'tahun' => '2021',
                 'nomor' => '6',
-                'halaman' => '127',
+                'halaman' => '70-127',
                 'sitasi' => 8,
             ]
         );
@@ -188,13 +189,13 @@ class SdmSeeder extends Seeder
         Bbjurnaldos::create(
             [
                 'judul' => '2 nasional Sistem informasi penambahan siswa',
-                'kategori_jurnal' => 'nasional terakreditasi',
+                'kategori_jurnal' => 'Jurnal Nasional Terakreditasi',
                 'nm_jurnal' => 'JNAS',
                 'keterangan' => 'Penelitian mengenai sistem informasi yang dibuat ',
                 'volume' => 'VII',
                 'tahun' => '2020',
                 'nomor' => '6',
-                'halaman' => '127',
+                'halaman' => '70-127',
                 'sitasi' => 3,
             ]
         );
@@ -202,13 +203,13 @@ class SdmSeeder extends Seeder
         Bbjurnaldos::create(
             [
                 'judul' => '2 nasional Sistem informasi penambahan siswa3',
-                'kategori_jurnal' => 'nasional terakreditasi',
+                'kategori_jurnal' => 'Jurnal Nasional Terakreditasi',
                 'nm_jurnal' => 'JNAS',
                 'keterangan' => 'Penelitian mengenai sistem informasi yang dibuat ',
                 'volume' => 'VII',
                 'tahun' => '2019',
                 'nomor' => '6',
-                'halaman' => '127',
+                'halaman' => '70-127',
                 'sitasi' => 2,
             ]
         );
@@ -217,13 +218,13 @@ class SdmSeeder extends Seeder
         Bbjurnaldos::create(
             [
                 'judul' => 'inter Sistem informasi penambahan siswa',
-                'kategori_jurnal' => 'internasional',
+                'kategori_jurnal' => 'Jurnal Internasional',
                 'nm_jurnal' => 'JINTER',
                 'keterangan' => 'Penelitian mengenai sistem informasi yang dibuat ',
                 'volume' => 'VII',
                 'tahun' => '2021',
                 'nomor' => '6',
-                'halaman' => '127',
+                'halaman' => '70-127',
                 'sitasi' => 3,
             ]
         );
@@ -231,13 +232,13 @@ class SdmSeeder extends Seeder
         Bbjurnaldos::create(
             [
                 'judul' => '2 inter Sistem informasi penambahan siswa2',
-                'kategori_jurnal' => 'internasional',
+                'kategori_jurnal' => 'Jurnal Internasional',
                 'nm_jurnal' => 'JINTER',
                 'keterangan' => 'Penelitian mengenai sistem informasi yang dibuat ',
                 'volume' => 'VII',
                 'tahun' => '2020',
                 'nomor' => '6',
-                'halaman' => '127',
+                'halaman' => '70-127',
                 'sitasi' => 3,
             ]
         );
@@ -245,28 +246,28 @@ class SdmSeeder extends Seeder
         Bbjurnaldos::create(
             [
                 'judul' => '3 inter Sistem informasi penambahan siswa3',
-                'kategori_jurnal' => 'internasional',
+                'kategori_jurnal' => 'Jurnal Internasional',
                 'nm_jurnal' => 'JINTER',
                 'keterangan' => 'Penelitian mengenai sistem informasi yang dibuat ',
                 'volume' => 'VII',
                 'tahun' => '2019',
                 'nomor' => '6',
-                'halaman' => '127',
+                'halaman' => '70-127',
                 'sitasi' => 3,
             ]
         );
 
-        // ##### internasional rep
+        // ##### Internasional rep
         Bbjurnaldos::create(
             [
                 'judul' => 'inter Sistem informasi penambahan siswa',
-                'kategori_jurnal' => 'internasional bereputasi',
+                'kategori_jurnal' => 'Jurnal Internasional Bereputasi',
                 'nm_jurnal' => 'JINTERRep',
                 'keterangan' => 'Penelitian mengenai sistem informasi yang dibuat ',
                 'volume' => 'VII',
                 'tahun' => '2021',
                 'nomor' => '6',
-                'halaman' => '127',
+                'halaman' => '70-127',
                 'sitasi' => 3,
             ]
         );
@@ -274,13 +275,13 @@ class SdmSeeder extends Seeder
         // Bbjurnaldos::create(
         //     [
         //         'judul' => '2 inter Sistem informasi penambahan siswa2',
-        //         'kategori_jurnal' => 'internasional bereputasi',
+        //         'kategori_jurnal' => 'Jurnal Internasional Bereputasi',
         //         'nm_jurnal' => 'JINTERRep',
         //         'keterangan' => 'Penelitian mengenai sistem informasi yang dibuat ',
         //         'volume' => 'VII',
         //         'tahun' => '2020',
         //         'nomor' => '6',
-        //         'halaman' => '127',
+        //         'halaman' => '70-127',
         //         'sitasi' => 3,
         //     ]
         // );
@@ -288,16 +289,73 @@ class SdmSeeder extends Seeder
         Bbjurnaldos::create(
             [
                 'judul' => '3 inter Sistem informasi penambahan siswa3',
-                'kategori_jurnal' => 'internasional bereputasi',
+                'kategori_jurnal' => 'Jurnal Internasional Bereputasi',
                 'nm_jurnal' => 'JINTERRep',
                 'keterangan' => 'Penelitian mengenai sistem informasi yang dibuat ',
                 'volume' => 'VII',
                 'tahun' => '2019',
                 'nomor' => '6',
-                'halaman' => '127',
+                'halaman' => '70-127',
                 'sitasi' => 3,
             ]
         );
+
+        RelasiJurDos::create([
+            'profil_dosen_id' => 1,
+            'keanggotaan' => 'Ketua',
+            'bbjurnaldos_id' => 1,
+        ]);
+        RelasiJurDos::create([
+            'profil_dosen_id' => 2,
+            'keanggotaan' => 'Ketua',
+            'bbjurnaldos_id' => 2,
+        ]);
+        RelasiJurDos::create([
+            'profil_dosen_id' => 3,
+            'keanggotaan' => 'Ketua',
+            'bbjurnaldos_id' => 3,
+        ]);
+        RelasiJurDos::create([
+            'profil_dosen_id' => 4,
+            'keanggotaan' => 'Ketua',
+            'bbjurnaldos_id' => 4,
+        ]);
+        RelasiJurDos::create([
+            'profil_dosen_id' => 1,
+            'keanggotaan' => 'Ketua',
+            'bbjurnaldos_id' => 5,
+        ]);
+        RelasiJurDos::create([
+            'profil_dosen_id' => 2,
+            'keanggotaan' => 'Ketua',
+            'bbjurnaldos_id' => 6,
+        ]);
+        RelasiJurDos::create([
+            'profil_dosen_id' => 3,
+            'keanggotaan' => 'Ketua',
+            'bbjurnaldos_id' => 7,
+        ]);
+        RelasiJurDos::create([
+            'profil_dosen_id' => 4,
+            'keanggotaan' => 'Ketua',
+            'bbjurnaldos_id' => 8,
+        ]);
+        RelasiJurDos::create([
+            'profil_dosen_id' => 1,
+            'keanggotaan' => 'Ketua',
+            'bbjurnaldos_id' => 9,
+        ]);
+        RelasiJurDos::create([
+            'profil_dosen_id' => 2,
+            'keanggotaan' => 'Ketua',
+            'bbjurnaldos_id' => 10,
+        ]);
+        RelasiJurDos::create([
+            'profil_dosen_id' => 3,
+            'keanggotaan' => 'Ketua',
+            'bbjurnaldos_id' => 11,
+        ]);
+        
 
         // #####wilayah
         Seminardos::create(

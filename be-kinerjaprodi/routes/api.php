@@ -13,6 +13,7 @@ use App\Http\Controllers\PenelitianController;
 use App\Http\Controllers\PKMController;
 use App\Http\Controllers\ProdukMHSController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\BbjurnaldosController;
 use App\Http\Controllers\BimbinganController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\IpkController;
@@ -308,6 +309,18 @@ Route::get('search_bimbingandsn/{search}', [BimbinganController::class, 'searchb
 Route::get('tampil_bimbingan/{id}', [BimbinganController::class, 'show']);
 Route::put('update_bimbingan/{id}', [BimbinganController::class, 'update']);
 Route::post('delete_bimbingan/{id}', [BimbinganController::class, 'destroy']);
+
+// BbJurnaldos
+Route::post('jurnals', [BbjurnaldosController::class, 'store']);
+Route::get('search_jurnal/', [BbjurnaldosController::class, 'alljurnal']);
+Route::get('search_jurnaldsn/', [BbjurnaldosController::class, 'alljurnaldsn']);
+Route::get('search_jurnal/{search}', [BbjurnaldosController::class, 'searchjurnal']);
+Route::get('search_jurnaldsn/{search}', [BbjurnaldosController::class, 'searchjurnaldsn']);
+Route::get('tampil_jurnal/{id}', [BbjurnaldosController::class, 'show']);
+Route::put('update_jurnal/{id}', [BbjurnaldosController::class, 'update']);
+Route::post('delete_jurnal/{id}', [BbjurnaldosController::class, 'destroy']);
+Route::post('hapusanggota_jurnal/{id}', [BbjurnaldosController::class, 'hapusAnggota']);
+Route::post('tambahanggota_jurnal/{id}', [BbjurnaldosController::class, 'tambahAnggota']);
 
 
 Route::get('profildosens', [ProfildosenController::class, 'index']);

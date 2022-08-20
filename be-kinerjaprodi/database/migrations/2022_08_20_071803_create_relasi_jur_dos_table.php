@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMengajarsTable extends Migration
+class CreateRelasiJurDosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateMengajarsTable extends Migration
      */
     public function up()
     {
-        Schema::create('mengajars', function (Blueprint $table) {
+        Schema::create('relasi_jur_dos', function (Blueprint $table) {
             $table->id();
-            $table->string('tahun_akademik');
-            $table->string('semester');
-            $table->string('kesesuaian')->default('V');
+            $table->foreignId('bbjurnaldos_id')->references('id')
+                ->on('bbjurnaldos')
+                ->onDelete('cascade');
             $table->foreignId('profil_dosen_id')->references('id')
                 ->on('profil_dosens')
-                ->onDelete('cascade');;
-            $table->foreignId('matkul_id');
+                ->onDelete('cascade');
+            $table->string('keanggotaan')->default('anggota');
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ class CreateMengajarsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mengajars');
+        Schema::dropIfExists('relasi_jur_dos');
     }
 }

@@ -26,6 +26,7 @@ export default function editwaktu(props) {
   const router = useRouter();
   const { waktu } = props;
   const [dataWaktu, setWaktu] = useState(waktu);
+  const [dataRole, setRole] = useState('');
 
   console.log(waktu);
 
@@ -72,6 +73,8 @@ export default function editwaktu(props) {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -143,7 +146,7 @@ export default function editwaktu(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">

@@ -13,10 +13,10 @@ export default function SidebarUtama() {
   const listFolderDashboard = ['dashboards'];
   const isMenuDashboard = listFolderDashboard.includes(arrHalaman[1]);
 
-  const listFolderPendidikan = ['dashboards_eva','capkurikulum','integrasi','kepuasanmhs','matkul','mahasiswa'];
+  const listFolderPendidikan = ['dashboardadmin','capkurikulum','integrasi','kepuasanmhs','matkul','mahasiswa'];
   const isMenuPendidikan = listFolderPendidikan.includes(arrHalaman[1]);
 
-  const listFolderCapaian = ['dashboards_capaian_tridarma','prestasi'];
+  const listFolderCapaian = ['dashboards_capaian_tridarma','prestasi','ipk'];
   const isMenuCapaian = listFolderCapaian.includes(arrHalaman[1]);
 
   console.log(arrHalaman)
@@ -77,7 +77,7 @@ export default function SidebarUtama() {
       >
         <ul className="navbar-nav">
           <li className={`nav-item `}>
-            <a className={`nav-link ${isMenuDashboard?'active bg-primary text-white':''}`} href="/dashboards/dashboardadmin">
+            <a className={`nav-link ${isMenuDashboard?'active bg-light text-dark opacity-10':''}`} href="/dashboards/dashboardadmin">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
@@ -85,10 +85,7 @@ export default function SidebarUtama() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a
-              className={`nav-link ${isMenuCapaian?'active bg-primary text-white':''}`}
-              href="/dashboards_capaian_tridarma/dashboardtridarma"
-            >
+          <a className="nav-link " href="#">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
@@ -96,7 +93,7 @@ export default function SidebarUtama() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a className={`nav-link ${isMenuPendidikan?'active bg-primary text-white':''}`} href="/dashboards_eva/dashboardpendidikan">
+          <a className="nav-link " href="#">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
@@ -107,10 +104,7 @@ export default function SidebarUtama() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a
-              className="nav-link "
-              href="/dashboards_capaian_tridarma/dashboardtridarma"
-            >
+            <a className={`nav-link ${isMenuCapaian?'active bg-light text-dark opacity-10':''}`} href="/dashboards_capaian_tridarma/dashboardtridarma" >
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
@@ -120,7 +114,7 @@ export default function SidebarUtama() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboardadmin/dashboardpendidikan">
+          <a className={`nav-link ${isMenuPendidikan?'active bg-light text-dark opacity-10':''}`} href="/dashboardadmin/dashboardpendidikan">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>

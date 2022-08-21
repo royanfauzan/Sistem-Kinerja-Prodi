@@ -6,6 +6,8 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 
 export default function inputluaran() {
@@ -16,6 +18,8 @@ export default function inputluaran() {
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
   const [dataRole, setRole] = useState("");
+  const MySwal = withReactContent(Swal);
+  const [dataError, setError] = useState([]);
 
   const pengambilData = async () => {
 
@@ -81,27 +85,27 @@ export default function inputluaran() {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        const { all_luaran } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(all_luaran);
-        router.push("../luaran/daftarluaran");
-      })
-      .catch(function (error) {
-        //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
-        console.log(error.response);
+    .then(function (response) {
+      MySwal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Berhasil Di Input",
       });
+
+      router.push("../luaran/daftarluaran");
+    })
+
+    .catch(function (error) {
+      //handle error
+      setError(error.response.data.error);
+      console.log(error.response.data.error);
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Data Gagal Di Input",
+      });
+      console.log(error.response);
+    });
   };
 
   return (
@@ -130,7 +134,8 @@ export default function inputluaran() {
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="judul" className="form-control-label">
+                            <label htmlFor="judul" 
+                            className={dataError.judul ? "is-invalid" : ""}>
                               judul
                             </label>
                             <input
@@ -138,13 +143,20 @@ export default function inputluaran() {
                               type="text"
                               placeholder="judul"
                               id="judul"
-                              required
                             />
+                            {dataError.judul ? (
+                              <div className="invalid-feedback">
+                                {dataError.judul}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="keterangan" className="form-control-label">
+                            <label htmlFor="keterangan" 
+                            className={dataError.keterangan ? "is-invalid" : ""}>
                               Keterangan
                             </label>
                             <input
@@ -152,14 +164,21 @@ export default function inputluaran() {
                               type="text"
                               placeholder="Keterangan"
                               id="keterangan"
-                              required
                             />
+                            {dataError.keterangan ? (
+                              <div className="invalid-feedback">
+                                {dataError.keterangan}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tahun" className="form-control-label">
+                            <label htmlFor="tahun" 
+                            className={dataError.tahun ? "is-invalid" : ""}>
                               Tahun
                             </label>
                             <input
@@ -167,14 +186,21 @@ export default function inputluaran() {
                               type="text"
                               placeholder="Tahun"
                               id="tahun"
-                              required
                             />
+                            {dataError.tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="jenis" className="form-control-label">
+                            <label htmlFor="jenis" 
+                            className={dataError.jenis_luaran ? "is-invalid" : ""}>
                               Jenis Luaran
                             </label>
                             <input
@@ -182,8 +208,14 @@ export default function inputluaran() {
                               type="text"
                               placeholder="Jenis Luaran"
                               id="jenis"
-                              required
                             />
+                            {dataError.jenis_luaran ? (
+                              <div className="invalid-feedback">
+                                {dataError.jenis_luaran}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                       </div>

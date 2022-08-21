@@ -14,4 +14,9 @@ class Relasi_pagelaran_mhs extends Model
     {
         return $this->belongsTo(Mahasiswa::class,'mahasiswa_id','id');
     }
+
+    public function pagelaran()
+    {
+        return $this->belongsTo(Pagelaran::class,'pagelaran_id','id');
+    }
 }

@@ -28,4 +28,9 @@ class KP_lulus extends Model
     {
         return $this->hasOne(Waktutunggu::class,'kepuasan_id','id');
     }
+
+    public function presentase()
+    {
+        return $this->hasOne(Presentase::class,'kepuasan_id','id');
+    }
 }

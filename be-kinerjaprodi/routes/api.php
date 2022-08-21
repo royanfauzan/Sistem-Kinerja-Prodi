@@ -115,6 +115,9 @@ Route::get('show_kesesuaian/{id}', [KesesuaianController::class, 'show']);
 Route::post('delete_kesesuaian/{id}', [KesesuaianController::class, 'destroy']);
 
 //Masa Studi
+Route::get('cari_masastudi/{search}', [MasastudiController::class, 'searchmasastudi']);
+Route::get('masastudi/laporan/{tahun}', [MasastudiController::class, 'exportmasastudi']);
+Route::get('masastudilisttahun', [MasastudiController::class, 'listtahun']);
 Route::get('masastudi', [MasastudiController::class, 'index']);
 Route::post('masastudi', [MasastudiController::class, 'store']);
 Route::put('edit_masastudi/{id}', [MasastudiController::class, 'update']);
@@ -132,6 +135,7 @@ Route::get('show_waktutunggu/{id}', [WaktutungguController::class, 'show']);
 Route::post('delete_waktutunggu/{id}', [WaktutungguController::class, 'destroy']);
 
 //Luaran lainnya
+Route::get('cari_luaran/{search}', [LuaranlainnyaController::class, 'searchluaran']);
 Route::post('luaran_mhs/{id}', [LuaranlainnyaController::class, 'pilihmahasiswa']);
 Route::get('luaran', [LuaranlainnyaController::class, 'index']);
 Route::get('tampil_relasi/{id}', [LuaranlainnyaController::class, 'tampilrelasi']);
@@ -143,6 +147,9 @@ Route::post('deletemahasiswa/{id}', [LuaranlainnyaController::class, 'deletemaha
 
 
 //Pagelaran MHS
+Route::get('cari_pagelaran/{search}', [PagelaranController::class, 'searchpagelaran']);
+Route::get('tampil_relasi_pagelaran/{id}', [PagelaranController::class, 'tampilrelasi']);
+Route::post('pagelaran_mhs/{id}', [PagelaranController::class, 'pilihmahasiswa']);
 Route::get('pagelaranlisttahun', [PagelaranController::class, 'listtahun']);
 Route::get('tahun_pagelaran/{tahun}', [PagelaranController::class, 'exportpublikasidos']);
 Route::get('pagelaran', [PagelaranController::class, 'index']);
@@ -150,14 +157,19 @@ Route::post('pagelaran', [PagelaranController::class, 'store']);
 Route::put('edit_pagelaran/{id}', [PagelaranController::class, 'update']);
 Route::get('show_pagelaran/{id}', [PagelaranController::class, 'show']);
 Route::post('delete_pagelaran/{id}', [PagelaranController::class, 'destroy']);
+Route::post('deletemahasiswa_pagelaran/{id}', [PagelaranController::class, 'deletemahasiswa']);
 
 //Tulisan MHS
+Route::get('cari_tulisan/{search}', [TulisanController::class, 'searchtulisan']);
+Route::get('show_tulisan/{id}', [TulisanController::class, 'show']);
 Route::get('tahun_tulisan/{tahun}', [TulisanController::class, 'exportpublikasidos']);
 Route::get('tulisan', [TulisanController::class, 'index']);
 Route::post('tulisan', [TulisanController::class, 'store']);
-Route::put('tulisan/{id}', [TulisanController::class, 'update']);
+Route::put('edit_tulisan/{id}', [TulisanController::class, 'update']);
+Route::post('delete_tulisan/{id}', [TulisanController::class, 'destroy']);
 
 //Seminar MHS
+Route::get('cari_seminar/{search}', [SeminarController::class, 'searchseminar']);
 Route::get('seminar', [SeminarController::class, 'index']);
 Route::post('seminar', [SeminarController::class, 'store']);
 Route::put('edit_seminar/{id}', [SeminarController::class, 'update']);
@@ -165,19 +177,29 @@ Route::post('delete_seminar/{id}', [SeminarController::class, 'destroy']);
 Route::get('show_seminar/{id}', [SeminarController::class, 'show']);
 
 //Buku
+Route::get('cari_buku/{search}', [BukuController::class, 'searchbuku']);
+Route::post('buku_mhs/{id}', [BukuController::class, 'pilihmahasiswa']);
+Route::get('tampil_relasi_buku/{id}', [BukuController::class, 'tampilrelasi']);
 Route::get('buku', [BukuController::class, 'index']);
 Route::post('buku', [BukuController::class, 'store']);
 Route::put('edit_buku/{id}', [BukuController::class, 'update']);
 Route::post('delete_buku/{id}', [BukuController::class, 'destroy']);
 Route::get('show_buku/{id}', [BukuController::class, 'show']);
+Route::post('deletemahasiswa_buku/{id}', [BukuController::class, 'deletemahasiswa']);
 
 //Produk
 Route::post('produk', [ProdukController::class, 'store']);
 Route::put('produk/{id}', [ProdukController::class, 'update']);
 
 //Presentase kepuasan
+Route::get('presentase_Export/{tahun}', [PresentaseController::class, 'exporttahun']);
+Route::get('presentaselisttahun', [PresentaseController::class, 'listtahun']);
+Route::get('presentase/{search}', [PresentaseController::class, 'searchpresentase']);
+Route::get('presentase', [PresentaseController::class, 'index']);
 Route::post('presentase', [PresentaseController::class, 'store']);
 Route::put('presentase/{id}', [PresentaseController::class, 'update']);
+Route::post('delete_presentase/{id}', [PresentaseController::class, 'destroy']);
+Route::get('show_presentase/{id}', [PresentaseController::class, 'show']);
 
 
 Route::post('created', [MitraController::class, 'insertmitra']);
@@ -326,12 +348,15 @@ Route::get('KepuasanMHS_Tahun', [KepuasanMHSController::class, 'listtahun']);
 Route::get('KepuasanMHS_Export/{tahun}', [KepuasanMHSController::class, 'exporttahun']);
 
 //route produk mahasiswa
-Route::get('ProdukMHS_search/{id}', [ProdukMHSController::class, 'searchprodukmhs']);
+Route::get('cari_produk/{search}', [ProdukMHSController::class, 'searchprodukmhs']);
+Route::post('produk_mhs/{id}', [ProdukMHSController::class, 'pilihmahasiswa']);
+Route::get('tampil_relasi_produk/{id}', [ProdukMHSController::class, 'tampilrelasi']);
 Route::get('tampil_ProdukMHS/{id}', [ProdukMHSController::class, 'show']);
 Route::get('ProdukMHS', [ProdukMHSController::class, 'index']);
 Route::post('ProdukMHS', [ProdukMHSController::class, 'store']);
 Route::put('ProdukMHS_Update/{id}', [ProdukMHSController::class, 'update']);
 Route::post('ProdukMHS_Delete/{id}', [ProdukMHSController::class, 'destroy']);
+Route::post('deletemahasiswa_produk/{id}', [ProdukMHSController::class, 'deletemahasiswa']);
 
 //route data capaian kurikulum
 Route::get('CapaianKurikulum_search/{id}', [CapKurikulumController::class, 'searchcapkurikulum']);

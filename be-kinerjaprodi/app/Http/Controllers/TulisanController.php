@@ -34,6 +34,22 @@ class TulisanController extends Controller
         ]);
     }
 
+    public function searchtulisan($search)
+    {
+        return response()->json([
+            'success' => true,
+            'searchtulisan' => Tulisan::with('dosen')
+                ->whereRelation('dosen', 'NamaDosen','LIKE', "%{$search}%")
+                ->orWhereRelation('dosen', 'NIDK','LIKE', "%{$search}%")
+                ->orwhere('judul', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('nm_media', 'LIKE', "%{$search}%")
+                ->orwhere('ruang_lingkup', 'LIKE', "%{$search}%")
+                ->orwhere('file_bukti', 'LIKE', "%{$search}%")
+                ->get()
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -66,7 +82,25 @@ class TulisanController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        $finalPathdokumen = "";
+        try {
+            $folderdokumen = "storage/tulisan/";
+
+            $dokumen = $request->file('file_bukti');
+
+            $namaFiledokumen = $dokumen->getClientOriginalName();
+
+            $dokumen->move($folderdokumen, $namaFiledokumen);
+
+            $finalPathdokumen = $folderdokumen . $namaFiledokumen;
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Menyimpan Dokumen" . $th,
+            ], 400);
         }
 
         $datatulisan = Tulisan::create(
@@ -75,7 +109,7 @@ class TulisanController extends Controller
                 'tahun' => $request->tahun,
                 'nm_media' => $request->nm_media,
                 'ruang_lingkup' => $request->ruang_lingkup,
-                'file_bukti' => $request->file_bukti,
+                'file_bukti' => $finalPathdokumen,
                 'dosen_id' => $request->dosen_id,
             ]
         );
@@ -87,9 +121,9 @@ class TulisanController extends Controller
             'tahun' => $request->tahun,
             'nm_media' => $request->nm_media,
             'ruang_lingkup' => $request->ruang_lingkup,
-            'file_bukti' => $request->file_bukti,
+            'file_bukti' => $finalPathdokumen,
             'dosen_id' => $request->dosen_id,
-            'all_prodi' => Tulisan::all()
+            'all_tulisan' => Tulisan::all()
         ]);
     }
 
@@ -101,7 +135,11 @@ class TulisanController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_tulisan' => Tulisan::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -159,7 +197,7 @@ class TulisanController extends Controller
             'ruang_lingkup' => $request->ruang_lingkup,
             'file_bukti' => $request->file_bukti,
             'dosen_id' => $request->dosen_id,
-            'all_prodi' => Tulisan::all()
+            'all_tulisan' => Tulisan::all()
         ]);
     }
 
@@ -171,7 +209,19 @@ class TulisanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tulisan = Tulisan::find($id);
+        $tulisan->delete();
+
+        if (!$tulisan) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 
     public function exportpublikasidos(Request $request, $tahun)
@@ -328,17 +378,17 @@ class TulisanController extends Controller
         ]);
     }
 
-    public function listtahun(Request $request)
-    {
-        //
-        $allpagelaran = Pagelaran::all()->groupBy('tahun');
-        $arrTahun = array();
-        foreach ($allpagelaran as $key => $pagelaranthn) {
-            $arrTahun[] = $pagelaranthn[0]->tahun;
-        }
-        return response()->json([
-            'success' => true,
-            'tahunpagelarans' => $arrTahun,
-        ]);
-    }
+    // public function listtahun(Request $request)
+    // {
+    //     //
+    //     $allpagelaran = Pagelaran::all()->groupBy('tahun');
+    //     $arrTahun = array();
+    //     foreach ($allpagelaran as $key => $pagelaranthn) {
+    //         $arrTahun[] = $pagelaranthn[0]->tahun;
+    //     }
+    //     return response()->json([
+    //         'success' => true,
+    //         'tahunpagelarans' => $arrTahun,
+    //     ]);
+    // }
 }

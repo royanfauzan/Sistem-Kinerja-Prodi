@@ -138,19 +138,19 @@ export default function dashboardadmin() {
                         <ListCardDash
                           judul={"Capaian Kurikulum"}
                           keterangan={`input`}
-                          halaman={"/publikasidos/export/export_publikasidos"}
+                          halaman={"/capkurikulum/daftarkurikulum"}
                           icon={`bi bi-card-text`}
                         />
                         <ListCardDash
-                          judul={"Data Integrasi"}
+                          judul={"Data Mahasiswa"}
                           keterangan={`kelola data Luaran Dosen`}
-                          halaman={"#"}
+                          halaman={"mahasiswa/daftarmhs"}
                           icon={`bi bi-calendar3-range`}
                         />
                         <ListCardDash
                           judul={"Kepuasan Mahasiswa"}
                           keterangan={`kelola data Luaran Dosen`}
-                          halaman={"#"}
+                          halaman={"kepuasanmhs/daftarkepuasanmhs"}
                           icon={`bi bi-calendar3-range`}
                         />
                       </Carddashboard>

@@ -60,7 +60,7 @@ class PrestasiController extends Controller
 
         //valid credential
         $validator = Validator::make($dataprestasi, [
-            'nm_kegiatan' => 'required|string|',
+            'nm_kegiatan' =>"required",
             'tahun' => 'required',
             'tingkat' => 'required',
             'prestasi_dicapai' => 'required',

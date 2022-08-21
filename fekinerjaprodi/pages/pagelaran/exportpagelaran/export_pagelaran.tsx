@@ -17,6 +17,7 @@ export default function daftarpagelaran() {
   const [isLoaded, setisLoaded] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
   const [allPublikasi, setallPublikasi] = useState();
+  const [dataRole, setRole] = useState('');
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -59,6 +60,8 @@ export default function daftarpagelaran() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -78,7 +81,7 @@ export default function daftarpagelaran() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
@@ -102,7 +105,7 @@ export default function daftarpagelaran() {
 
                     <div className="row justify-content-between mb-4">
                       <div className="col-4">
-                        <Link href={`/prestasi/daftarprestasi/`}>
+                        <Link href={`/pagelaran/daftarpagelaran/`}>
                           <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                             Daftar Tabel
                           </button>
@@ -113,7 +116,7 @@ export default function daftarpagelaran() {
                           id="test-table-xls-button"
                           className="download-table-xls-button btn btn-success mt-3"
                           table="tableprint"
-                          filename="tablexls"
+                          filename="Export Pagelaran"
                           sheet="tablexls"
                           buttonText="Export Excel"
                         />
@@ -148,18 +151,18 @@ export default function daftarpagelaran() {
                               <tr>
                                 <td>{1}</td>
                                 <td>Jurnal penelitian tidak terakreditasi</td>
-                                {allPublikasi.publikasi_ts[2].jurnal_tidak_akreditasi ? (
+                                {allPublikasi.publikasi_ts[2].jurnal_tidak_akreditasi !=null ? (
                                   <>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[2].jurnal_tidak_akreditasi}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[1].jurnal_tidak_akreditasi}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[0].jurnal_tidak_akreditasi}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.jumlah_publikasi_tidak_akreditasi}
                                     </td>
                                   </>
@@ -173,20 +176,20 @@ export default function daftarpagelaran() {
                                 )}
                               </tr>
                               <tr>
-                                <td>{1}</td>
+                                <td>{2}</td>
                                 <td>Jurnal penelitian nasional terakreditasi</td>
-                                {allPublikasi.publikasi_ts[2].jurnal_nasional ? (
+                                {allPublikasi.publikasi_ts[2].jurnal_nasional !=null ? (
                                   <>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[2].jurnal_nasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[1].jurnal_nasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[0].jurnal_nasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.jumlah_publikasi_nasional}
                                     </td>
                                   </>
@@ -200,20 +203,20 @@ export default function daftarpagelaran() {
                                 )}
                               </tr>
                               <tr>
-                                <td>{1}</td>
+                                <td>{3}</td>
                                 <td>Jurnal penelitian internasiona</td>
-                                {allPublikasi.publikasi_ts[2].jurnal_internasional ? (
+                                {allPublikasi.publikasi_ts[2].jurnal_internasional !=null ? (
                                   <>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[2].jurnal_internasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[1].jurnal_internasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[0].jurnal_internasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.jumlah_publikasi_internasional}
                                     </td>
                                   </>
@@ -228,20 +231,20 @@ export default function daftarpagelaran() {
                               </tr>
 
                               <tr>
-                                <td>{1}</td>
+                                <td>{4}</td>
                                 <td>Jurnal penelitian internasional bereputasi</td>
-                                {allPublikasi.publikasi_ts[2].jurnal_internasional_bereputasi ? (
+                                {allPublikasi.publikasi_ts[2].jurnal_internasional_bereputasi !=null ? (
                                   <>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[2].jurnal_internasional_bereputasi}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[1].jurnal_internasional_bereputasi}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[0].jurnal_internasional_bereputasi}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.jumlah_publikasi_internasional_bereputasi}
                                     </td>
                                   </>
@@ -256,20 +259,20 @@ export default function daftarpagelaran() {
                               </tr>
 
                               <tr>
-                                <td>{1}</td>
+                                <td>{5}</td>
                                 <td>Seminar wilayah/lokal/perguruan tinggi</td>
-                                {allPublikasi.publikasi_ts[2].seminar_wilayah ? (
+                                {allPublikasi.publikasi_ts[2].seminar_wilayah !=null ? (
                                   <>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[2].seminar_wilayah}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[1].seminar_wilayah}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[0].seminar_wilayah}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.jumlah_seminar_wilayah}
                                     </td>
                                   </>
@@ -284,20 +287,20 @@ export default function daftarpagelaran() {
                               </tr>
 
                               <tr>
-                                <td>{1}</td>
+                                <td>{6}</td>
                                 <td>Seminar nasional</td>
-                                {allPublikasi.publikasi_ts[2].seminar_nasional ? (
+                                {allPublikasi.publikasi_ts[2].seminar_nasional !=null ? (
                                   <>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[2].seminar_nasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[1].seminar_nasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[0].seminar_nasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.jumlah_seminar_nasional   }
                                     </td>
                                   </>
@@ -312,20 +315,20 @@ export default function daftarpagelaran() {
                               </tr>
 
                               <tr>
-                                <td>{1}</td>
+                                <td>{7}</td>
                                 <td>Seminar internasional</td>
-                                {allPublikasi.publikasi_ts[2].seminar_internasional ? (
+                                {allPublikasi.publikasi_ts[2].seminar_internasional !=null ? (
                                   <>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[2].seminar_internasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[1].seminar_internasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[0].seminar_internasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.jumlah_seminar_internasional}
                                     </td>
                                   </>
@@ -340,20 +343,20 @@ export default function daftarpagelaran() {
                               </tr>
 
                               <tr>
-                                <td>{1}</td>
+                                <td>{8}</td>
                                 <td>Pagelaran/pameran/presentasi dalam forum di tingkat wilayah</td>
-                                {allPublikasi.publikasi_ts[2].pagelaran_wilayah ? (
+                                {allPublikasi.publikasi_ts[2].pagelaran_wilayah !=null ? (
                                   <>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[2].pagelaran_wilayah}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[1].pagelaran_wilayah}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[0].pagelaran_wilayah}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.jumlah_pagelaran_wilayah}
                                     </td>
                                   </>
@@ -368,20 +371,20 @@ export default function daftarpagelaran() {
                               </tr>
 
                               <tr>
-                                <td>{1}</td>
+                                <td>{9}</td>
                                 <td>Pagelaran/pameran/presentasi dalam forum di tingkat nasional</td>
-                                {allPublikasi.publikasi_ts[2].pagelaran_nasional ? (
+                                {allPublikasi.publikasi_ts[2].pagelaran_nasional !=null ? (
                                   <>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[2].pagelaran_nasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[1].pagelaran_nasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[0].pagelaran_nasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.jumlah_pagelaran_nasional}
                                     </td>
                                   </>
@@ -395,20 +398,20 @@ export default function daftarpagelaran() {
                                 )}
                               </tr>
                               <tr>
-                                <td>{1}</td>
+                                <td>{10}</td>
                                 <td>Pagelaran/pameran/presentasi dalam forum di tingkat internasional</td>
-                                {allPublikasi.publikasi_ts[2].pagelaran_internasional ? (
+                                {allPublikasi.publikasi_ts[2].pagelaran_internasional !=null ? (
                                   <>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[2].pagelaran_internasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[1].pagelaran_internasional}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[0].pagelaran_internasional}
-                                    </td>
-                                    <td>
+                                    </td >
+                                    <td className="text-center">
                                       {allPublikasi.jumlah_pagelaran_internasional}
                                     </td>
                                   </>
@@ -424,27 +427,27 @@ export default function daftarpagelaran() {
 
                               <tr>
                                 <td className="text-center" colspan="2">Jumlah</td>
-                                {allPublikasi.publikasi_ts[2]?(
+                                {allPublikasi.publikasi_ts !=null ?(
                                   <>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[2].totalts}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[1].totalts}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.publikasi_ts[0].totalts}
                                     </td>
-                                    <td>
+                                    <td className="text-center">
                                       {allPublikasi.jumlah_total}
                                     </td>
                                   </>
                                 ) : (
                                   <>
-                                    <td>{0}</td>
-                                    <td>{0}</td>
-                                    <td>{0}</td>
-                                    <td>{0}</td>
+                                    <td className="text-center">{0}</td>
+                                    <td className="text-center">{0}</td>
+                                    <td className="text-center">{0}</td>
+                                    <td className="text-center">{0}</td>
                                   </>
                                 )}
                               </tr>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KP_lulus;
 use App\Models\Presentase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -15,7 +16,61 @@ class PresentaseController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_presentase' => Presentase::with('kepuasan')->get(),
+        ]);
+    }
+
+    public function searchpresentase($search)
+    {
+        return response()->json([
+            'success' => true,
+            'searchpresentase' =>  Presentase::with('kepuasan')
+                ->whereRelation('kepuasan', 'tahun', 'LIKE', "%{$search}%")
+                ->orwhere('etika_4', 'LIKE', "%{$search}%")
+                ->orwhere('etika_3', 'LIKE', "%{$search}%")
+                ->orwhere('etika_2', 'LIKE', "%{$search}%")
+                ->orwhere('etika_1', 'LIKE', "%{$search}%")
+                ->orwhere('tindak_etika', 'LIKE', "%{$search}%")
+
+                ->orwhere('keahlian_bidang_4', 'LIKE', "%{$search}%")
+                ->orwhere('keahlian_bidang_3', 'LIKE', "%{$search}%")
+                ->orwhere('keahlian_bidang_2', 'LIKE', "%{$search}%")
+                ->orwhere('keahlian_bidang_1', 'LIKE', "%{$search}%")
+                ->orwhere('tindak_bidang', 'LIKE', "%{$search}%")
+
+                ->orwhere('bhs_asing_4', 'LIKE', "%{$search}%")
+                ->orwhere('bhs_asing_3', 'LIKE', "%{$search}%")
+                ->orwhere('bhs_asing_2', 'LIKE', "%{$search}%")
+                ->orwhere('bhs_asing_1', 'LIKE', "%{$search}%")
+                ->orwhere('tindak_bahasa', 'LIKE', "%{$search}%")
+
+                ->orwhere('penggunaan_ti_4', 'LIKE', "%{$search}%")
+                ->orwhere('penggunaan_ti_3', 'LIKE', "%{$search}%")
+                ->orwhere('penggunaan_ti_2', 'LIKE', "%{$search}%")
+                ->orwhere('penggunaan_ti_1', 'LIKE', "%{$search}%")
+                ->orwhere('tindak_ti', 'LIKE', "%{$search}%")
+
+                ->orwhere('komunikasi_4', 'LIKE', "%{$search}%")
+                ->orwhere('komunikasi_3', 'LIKE', "%{$search}%")
+                ->orwhere('komunikasi_2', 'LIKE', "%{$search}%")
+                ->orwhere('komunikasi_1', 'LIKE', "%{$search}%")
+                ->orwhere('tindak_komunikasi', 'LIKE', "%{$search}%")
+
+                ->orwhere('kerjasama_4', 'LIKE', "%{$search}%")
+                ->orwhere('kerjasama_3', 'LIKE', "%{$search}%")
+                ->orwhere('kerjasama_2', 'LIKE', "%{$search}%")
+                ->orwhere('kerjasama_1', 'LIKE', "%{$search}%")
+                ->orwhere('tindak_kerjasama', 'LIKE', "%{$search}%")
+
+                ->orwhere('pengembangan_diri_4', 'LIKE', "%{$search}%")
+                ->orwhere('pengembangan_diri_3', 'LIKE', "%{$search}%")
+                ->orwhere('pengembangan_diri_2', 'LIKE', "%{$search}%")
+                ->orwhere('pengembangan_diri_1', 'LIKE', "%{$search}%")
+                ->orwhere('tindak_pengembangan', 'LIKE', "%{$search}%")
+                ->get()
+        ]);
     }
 
     /**
@@ -117,7 +172,7 @@ class PresentaseController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $datapresentase = Presentase::create(
@@ -200,7 +255,7 @@ class PresentaseController extends Controller
             'pengembangan_diri_1' => $request->pengembangan_diri_1,
             'tindak_pengembangan' => $request->tindak_pengembangan,
             'kepuasan_id' => $request->kepuasan_id,
-            'all_tabel' => Presentase::all()
+            'all_presentase' => Presentase::all()
         ]);
     }
 
@@ -212,7 +267,11 @@ class PresentaseController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_presentase' => Presentase::find($id),
+            'id' => $id
+        ]);
     }
 
     /**
@@ -397,7 +456,7 @@ class PresentaseController extends Controller
             'pengembangan_diri_1' => $request->pengembangan_diri_1,
             'tindak_pengembangan' => $request->tindak_pengembangan,
             'kepuasan_id' => $request->kepuasan_id,
-            'all_tabel' => Presentase::all()
+            'all_presentase' => Presentase::all()
         ]);
     }
 
@@ -409,6 +468,43 @@ class PresentaseController extends Controller
      */
     public function destroy($id)
     {
+        $prestasi = Presentase::find($id);
+        $prestasi->delete();
+
+        if (!$prestasi) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
+    }
+
+    public function listtahun(Request $request)
+    {
         //
+        $allpresentase = KP_lulus::all()->groupBy('tahun');
+        $arrTahun = array();
+        foreach ($allpresentase as $key => $presentasethn) {
+            $arrTahun[] = $presentasethn[0]->tahun;
+        }
+        return response()->json([
+            'success' => true,
+            'tahunpresentases' => $arrTahun,
+        ]);
+    }
+
+    public function exporttahun(Request $request,$tahun)
+    {
+        //
+        $allewmps = KP_lulus::with('presentase')->where('tahun', $tahun)->first();
+        
+        return response()->json([
+            'success' => true,
+            'exportpresentase' => $allewmps,
+        ]);
     }
 }

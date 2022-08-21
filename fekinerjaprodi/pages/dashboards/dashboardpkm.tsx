@@ -81,32 +81,28 @@ export default function dashboardadmin() {
       {stadmin && (
         <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
+          <div className="col-6">
+              <div className="card mb-4 px-3 pb-3 bg-light">
             <div className="row">
-              <div className="col-6">
-                <div className="card mb-4 px-3 pb-3 bg-light">
-                  <div className="row">
-                    <div className="col-12 mt-3">
-                      <div className="card">
-                        <div className="card-body">
-                          <h5 className="card-title">Data Penelitian</h5>
-                          <p className="card-text">
-                            With supporting text below as a natural lead-in to
-                            additional content.
-                          </p>
-                          <a
-                            href="/penelitian/daftarpenelitian"
-                            className="btn btn-primary"
-                          >
-                            Kelola Data
-                          </a>
-                        </div>
-                      </div>
-                    </div>
+              <div className="col-12 mt-3">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      Data Pengabdian Kepada Masyarakat
+                    </h5>
+                    <p className="card-text">
+                      With supporting text below as a natural lead-in to
+                      additional content.
+                    </p>
+                    <a href="/PkM/daftarpkm" className="btn btn-primary">
+                      Kelola Data
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
-
+              </div>
+            </div>
             <FooterUtama />
           </div>
         </LayoutForm>

@@ -185,21 +185,32 @@ class IntegrasiController extends Controller
             return response()->json(['error' => $validator->errors()], 200);
         }
 
+        $dtintegrasi = Integrasi::find($id);
+
         if ($request->file('file_bukti')) {
             $finalPathdokumen = "";
+            $validasiFile = Validator::make($request->only('file_bukti'),["file_bukti" => "mimetypes:application/pdf|max:10000",]);
+            if ($validasiFile->fails()) {
+                return response()->json(['error' => $validasiFile->errors()], 400);
+            }
             try {
-                $folderdokumen = "storage/inetgrasi/";
+                $folderdokumen = "storage/integrasi/";
 
                 $dokumen = $request->file('file_bukti');
 
-                $namaFiledokumen = $dokumen->getClientOriginalName();
+                $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".", $dokumen->getClientOriginalName(), 2)[0])) . "-" . time() . "." . $dokumen->getClientOriginalExtension();
 
                 $dokumen->move($folderdokumen, $namaFiledokumen);
 
                 $finalPathdokumen = $folderdokumen . $namaFiledokumen;
 
+                $filedihapus = File::exists(public_path($dtintegrasi->file_bukti));
 
-                $integrasi->file_bukti = $finalPathdokumen;
+                if ($filedihapus) {
+                    File::delete(public_path($dtintegrasi->file_bukti));
+                }
+
+                $dtintegrasi->file_bukti = $finalPathdokumen;
             } catch (\Throwable $th) {
                 return response()->json([
                     'success' => false,

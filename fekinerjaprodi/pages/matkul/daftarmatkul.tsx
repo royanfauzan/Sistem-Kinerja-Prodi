@@ -168,7 +168,7 @@ export default function daftarmatkul() {
                     <div className="row justify-content-end">
                   <div className="col-3 d-flex flex-row-reverse pe-2">
                     <input
-                      className="form-control d-flex flex-row-reverse me-3"
+                      className="form-control d-flex flex-row-reverse"
                       type="search"
                       placeholder="Search.."
                       aria-label="Search"
@@ -214,7 +214,7 @@ export default function daftarmatkul() {
                             SKS
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Prodi ID
+                            Program Studi
                           </th>
                           <th className="text-secondary opacity-7"></th>
                         </tr>
@@ -248,7 +248,7 @@ export default function daftarmatkul() {
 
                               <td className="align-middle text-sm ps-2">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {matakuliah.prodi_id}
+                                  {matakuliah.prodi.prodi + ` ` + matakuliah.prodi.nama_prodi}
                                 </p>
                               </td>
                               

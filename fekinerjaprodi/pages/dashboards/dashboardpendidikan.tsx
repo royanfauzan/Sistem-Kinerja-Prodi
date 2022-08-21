@@ -88,13 +88,37 @@ export default function dashboardadmin() {
                     <div className="col-12 mt-3">
                       <div className="card">
                         <div className="card-body">
-                          <h5 className="card-title">Data Penelitian</h5>
+                          <h5 className="card-title">Data Mata Kuliah</h5>
                           <p className="card-text">
                             With supporting text below as a natural lead-in to
                             additional content.
                           </p>
                           <a
-                            href="/penelitian/daftarpenelitian"
+                            href="/matkul/daftarmatkul"
+                            className="btn btn-primary"
+                          >
+                            Kelola Data
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-6">
+                <div className="card mb-4 px-3 pb-3 bg-light">
+                  <div className="row">
+                    <div className="col-12 mt-3">
+                      <div className="card">
+                        <div className="card-body">
+                          <h5 className="card-title">Data Integrasi</h5>
+                          <p className="card-text">
+                            With supporting text below as a natural lead-in to
+                            additional content.
+                          </p>
+                          <a
+                            href="/integrasi/daftarintegrasi"
                             className="btn btn-primary"
                           >
                             Kelola Data
@@ -106,7 +130,6 @@ export default function dashboardadmin() {
                 </div>
               </div>
             </div>
-
             <FooterUtama />
           </div>
         </LayoutForm>

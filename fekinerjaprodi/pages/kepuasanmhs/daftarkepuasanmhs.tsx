@@ -196,7 +196,7 @@ export default function daftarkepuasanmhs() {
                 <div className="row justify-content-end">
                   <div className="col-3 d-flex flex-row-reverse pe-2">
                     <input
-                      className="form-control d-flex flex-row-reverse me-3"
+                      className="form-control d-flex flex-row-reverse me-3 "
                       type="search"
                       placeholder="Search.."
                       aria-label="Search"

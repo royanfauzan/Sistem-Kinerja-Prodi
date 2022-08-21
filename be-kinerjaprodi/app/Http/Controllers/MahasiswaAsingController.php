@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\MahasiswaAsing;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class MahasiswaAsingController extends Controller
 {
@@ -11,18 +13,10 @@ class MahasiswaAsingController extends Controller
     {
         return response()->json([
             'success' => true,
-            'mahasiswa_asing' => MahasiswaAsing::with('prodi')->get()
+            'mahasiswa_asing' => MahasiswaAsing::with('prodi')->orderBy('Tahun_Akademik', 'asc')->get()
         ]);
     }
-    public function tampilprodi_mahasiswa_asing($prodi)
-    {
-        return response()->json([
-            'success' => true,
-            'tampil_mahasiswa_asing' => MahasiswaAsing::with('prodi')
-                ->whereRelation('prodi', 'nama_prodi', 'LIKE', "%{$prodi}%")
-                ->get()
-        ]);
-    }
+
     public function search_mahasiswa_asing($search)
     {
         return response()->json([
@@ -39,20 +33,21 @@ class MahasiswaAsingController extends Controller
     public function tampilexport_mahasiswa_asing($tahun)
     {
 
-        // memecah isi data menjadi array
-        $delimiter = ',';
-        $words = explode($delimiter, $tahun);
-        $tahunn = array();
 
-        foreach ($words as $word) {
-            $tahunn[] = $word;
+        $tahunn = array();
+        $tahunn[] = $tahun;
+        $tahunn[] = $tahun - 1;
+        $tahunn[] = $tahun - 2;
+
+        $mhsarray = array();
+
+        foreach ($tahunn as $key => $th) {
+            array_push($mhsarray, MahasiswaAsing::with('prodi')->where('mahasiswa_asings.Tahun_Akademik', $th)->first());
         }
         return response()->json([
             'success' => true,
-            'data' => $tahunn,
-            'ts1' =>  MahasiswaAsing::with('prodi')->where('mahasiswa_asings.Tahun_Akademik', $tahunn[0])->first(),
-            'ts2' =>  MahasiswaAsing::with('prodi')->where('mahasiswa_asings.Tahun_Akademik', $tahunn[1])->first(),
-            'ts3' =>  MahasiswaAsing::with('prodi')->where('mahasiswa_asings.Tahun_Akademik', $tahunn[2])->first(),
+            'mhs' => $mhsarray
+
         ]);
     }
     public function tester(Request $request)

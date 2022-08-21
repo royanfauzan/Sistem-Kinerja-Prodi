@@ -147,7 +147,7 @@ export default function update_datamitra(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Input Data Mitra</p>
+                      <p className="text-uppercase text-sm"> <h5>FORM EDIT DATA MITRA </h5> </p>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -157,7 +157,7 @@ export default function update_datamitra(props) {
                       </div>
                     </div>
                     <div className="card-body">
-                      <p className="text-uppercase text-sm"> MITRA </p>
+                      
                       <div className="row">
                         <div className="col-md-12">
                           <div className="form-group">
@@ -172,7 +172,7 @@ export default function update_datamitra(props) {
                             <input
                               className="form-control"
                               type="text"
-                              placeholder=" Alamat"
+                              placeholder=" Nama Mitra"
                               id="namamitra"
                               defaultValue={dataMitras.namamitra}
                             />

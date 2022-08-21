@@ -208,7 +208,7 @@ export default function edit_penggunaan_dana(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Input Data Penggunaan Dana</p>
+                      <p className="text-uppercase text-sm"> <h5>FORM EDIT DATA PENGGUNAAN DANA </h5> </p>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -218,7 +218,7 @@ export default function edit_penggunaan_dana(props) {
                       </div>
                     </div>
                     <div className="card-body">
-                      <p className="text-uppercase text-sm"> Penggunaan Dana</p>
+                     
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">

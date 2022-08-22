@@ -37,6 +37,7 @@ use App\Http\Controllers\KerjasamaController;
 use App\Http\Controllers\LuaranlaindosenController;
 use App\Http\Controllers\MahasiswaAsingController;
 use App\Http\Controllers\MengajarController;
+use App\Http\Controllers\PagelarandosController;
 use App\Http\Controllers\PendidikanController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\PengabdianController;
@@ -336,6 +337,19 @@ Route::put('update_seminardos/{id}', [SeminardosController::class, 'update']);
 Route::post('delete_seminardos/{id}', [SeminardosController::class, 'destroy']);
 Route::post('hapusanggota_seminardos/{id}', [SeminardosController::class, 'hapusAnggota']);
 Route::post('tambahanggota_seminardos/{id}', [SeminardosController::class, 'tambahAnggota']);
+
+// Pagelarandos
+Route::post('pagelarandoss', [PagelarandosController::class, 'store']);
+Route::get('search_pagelarandos/', [PagelarandosController::class, 'allpagelaran']);
+Route::get('search_pagelarandosdsn/', [PagelarandosController::class, 'allpagelarandsn']);
+Route::get('search_pagelarandos/{search}', [PagelarandosController::class, 'searchpagelaran']);
+Route::get('search_pagelarandosdsn/{search}', [PagelarandosController::class, 'searchpagelarandsn']);
+Route::get('tampil_pagelarandos/{id}', [PagelarandosController::class, 'show']);
+Route::put('update_pagelarandos/{id}', [PagelarandosController::class, 'update']);
+Route::post('delete_pagelarandos/{id}', [PagelarandosController::class, 'destroy']);
+Route::post('hapusanggota_pagelarandos/{id}', [PagelarandosController::class, 'hapusAnggota']);
+Route::post('tambahanggota_pagelarandos/{id}', [PagelarandosController::class, 'tambahAnggota']);
+
 
 // Produkos
 Route::post('produkdoss', [ProdukController::class, 'store']);

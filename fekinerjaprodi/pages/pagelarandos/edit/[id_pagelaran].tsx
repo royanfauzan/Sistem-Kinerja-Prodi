@@ -15,31 +15,31 @@ import withReactContent from "sweetalert2-react-content";
 export async function getServerSideProps(context) {
   //http request
   const req = await axios.get(
-    `http://127.0.0.1:8000/api/tampil_seminardos/${context.query.id_seminar}`
+    `http://127.0.0.1:8000/api/tampil_pagelarandos/${context.query.id_pagelaran}`
   );
-  const { dataseminar, profildosens } = await req.data;
+  const { datapagelaran, profildosens } = await req.data;
 
   return {
     props: {
-      dataseminar: dataseminar, // <-- assign response
+      datapagelaran: datapagelaran, // <-- assign response
       dataprofils: profildosens, // <-- assign response
     },
   };
 }
 
-export default function editseminardsn(props) {
+export default function editpagelarandsn(props) {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
-  const { dataseminar, dataprofils } = props;
+  const { datapagelaran, dataprofils } = props;
   const apiurl = "http://127.0.0.1:8000/";
 
   const [userDosens, setuserDosens] = useState(dataprofils);
   const [dataProdis, setdataProdis] = useState([]);
   const [dataIdKetua, setdataIdKetua] = useState(
-    dataseminar.anggota_dosens[0].pivot.id
+    datapagelaran.anggota_dosens[0].pivot.id
   );
   const [userDosen, setuserDosen] = useState();
-  const [dataSeminar, setdataSeminar] = useState(dataseminar);
+  const [dataPagelaran, setdataPagelaran] = useState(datapagelaran);
   const [UsrSekarang, setUsrSekarang] = useState();
   const [filebukti, setfilebuktis] = useState<File>([]);
 
@@ -104,7 +104,7 @@ export default function editseminardsn(props) {
 
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 2) {
-          return router.push("/rekognisi/export/exportseminar");
+          return router.push("/rekognisi/export/exportpagelaran");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
 
@@ -125,16 +125,17 @@ export default function editseminardsn(props) {
 
     let formData = new FormData();
     formData.append("profil_dosen_id", event.target.profil_dosen_id.value);
-    formData.append("judul_kegiatan", event.target.judul_kegiatan.value);
+    formData.append("judul", event.target.judul.value);
     formData.append("penyelenggara", event.target.penyelenggara.value);
-    formData.append("kategori_seminar", event.target.kategori_seminar.value);
+    formData.append("ruang_lingkup", event.target.ruang_lingkup.value);
     formData.append("tahun", event.target.tahun.value);
+    formData.append("file_bukti", filebukti);
 
     console.log(formData);
 
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/update_seminardos/${dataSeminar.id}?_method=PUT`,
+      url: `http://127.0.0.1:8000/api/update_pagelarandos/${dataPagelaran.id}?_method=PUT`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -148,14 +149,14 @@ export default function editseminardsn(props) {
         toast.success("Simpan Sukses Sugses!!");
         // console.log(token);
         console.log(profil);
-        router.push("/seminardos/tabelseminardsn");
+        router.push("/pagelarandos/tabelpagelarandsn");
       })
       .catch(function (error) {
         toast.dismiss();
         if (error.response.data.message) {
           toast.error(error.response.data.message);
           setTimeout(() => {
-            router.push("/seminardos/tabelseminardsn");
+            router.push("/pagelarandos/tabelpagelarandsn");
           }, 500);
         } else {
           setError(error.response.data.error);
@@ -213,16 +214,16 @@ export default function editseminardsn(props) {
           // formData.append("profil_dosen_id", refTambahSelect.current.value);
           axios({
             method: "post",
-            url: `http://127.0.0.1:8000/api/hapusanggota_seminardos/${id}`,
+            url: `http://127.0.0.1:8000/api/hapusanggota_pagelarandos/${id}`,
             headers: {
               Authorization: `Bearer ${lgToken}`,
               "Content-Type": "multipart/form-data",
             },
           })
             .then(function (response) {
-              const { dataseminar, profildosens } = response.data;
+              const { datapagelaran, profildosens } = response.data;
               setuserDosens(profildosens);
-              setdataSeminar(dataseminar);
+              setdataPagelaran(datapagelaran);
               toast.dismiss();
                 toast.success('Anggota Berhasil Dihapus');
             })
@@ -249,7 +250,7 @@ export default function editseminardsn(props) {
     formData.append("profil_dosen_id", idusertambah);
     axios({
       method: "post",
-      url: `http://127.0.0.1:8000/api/tambahanggota_seminardos/${id}`,
+      url: `http://127.0.0.1:8000/api/tambahanggota_pagelarandos/${id}`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -257,9 +258,9 @@ export default function editseminardsn(props) {
       },
     })
       .then(function (response) {
-        const { dataseminar, profildosens } = response.data;
+        const { datapagelaran, profildosens } = response.data;
         setuserDosens(profildosens);
-        setdataSeminar(dataseminar);
+        setdataPagelaran(datapagelaran);
         toast.dismiss();
         toast.success('Anggota Berhasil Ditambah');
       })
@@ -309,7 +310,7 @@ export default function editseminardsn(props) {
                       </div>
                     </div>
                     <div className="card-body">
-                      <p className="text-uppercase text-sm">Data seminar</p>
+                      <p className="text-uppercase text-sm">Data Pagelaran</p>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">
@@ -351,28 +352,28 @@ export default function editseminardsn(props) {
                       </div>
                       <hr className="horizontal dark" />
                       <p className="text-uppercase text-sm">
-                        Seminar: Detail Seminar
+                        Pagelaran: Detail Pagelaran
                       </p>
                       <div className="row">
                         <div className="col-md-9">
                           <div className="form-group">
                             <label
-                              htmlFor="kategori_seminar"
+                              htmlFor="ruang_lingkup"
                               className={
                                 "form-control-label " +
-                                dataError.kategori_seminar
+                                dataError.ruang_lingkup
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              Kategori seminar
+                              Kategori Pagelaran
                             </label>
 
                             <select
                               className="form-select"
                               aria-label="Default select example"
-                              defaultValue={dataSeminar.kategori_seminar}
-                              id="kategori_seminar"
+                              defaultValue={dataPagelaran.ruang_lingkup}
+                              id="ruang_lingkup"
                             >
                               <option value={`Wilayah`}>
                                 Wilayah/Lokal/Perguruan Tinggi
@@ -385,9 +386,9 @@ export default function editseminardsn(props) {
                               </option>
                             </select>
 
-                            {dataError.kategori_seminar ? (
+                            {dataError.ruang_lingkup ? (
                               <div className="invalid-feedback">
-                                {dataError.kategori_seminar}
+                                {dataError.ruang_lingkup}
                               </div>
                             ) : (
                               ""
@@ -397,30 +398,30 @@ export default function editseminardsn(props) {
                       </div>
                       <hr className="horizontal dark" />
                       <p className="text-uppercase text-sm">
-                        Seminar: Data Seminar
+                        Pagelaran: Data Pagelaran
                       </p>
                       <div className="row">
                         <div className="col-8">
                           <div className="form-group">
                             <label
-                              htmlFor="judul_kegiatan"
+                              htmlFor="judul"
                               className={
-                                "form-control-label " + dataError.judul_kegiatan
+                                "form-control-label " + dataError.judul
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              Judul Seminar
+                              Judul Pagelaran
                             </label>
                             <textarea
                               className="form-control"
-                              placeholder="judul_kegiatan"
-                              id="judul_kegiatan"
-                              defaultValue={dataSeminar.judul_kegiatan}
+                              placeholder="judul"
+                              id="judul"
+                              defaultValue={dataPagelaran.judul}
                             ></textarea>
-                            {dataError.judul_kegiatan ? (
+                            {dataError.judul ? (
                               <div className="invalid-feedback">
-                                {dataError.judul_kegiatan}
+                                {dataError.judul}
                               </div>
                             ) : (
                               ""
@@ -437,13 +438,13 @@ export default function editseminardsn(props) {
                                   : ""
                               }
                             >
-                              Penyelenggara Seminar
+                              Penyelenggara Pagelaran
                             </label>
                             <input
                               className="form-control"
                               type="text"
                               placeholder="JiPANI"
-                              defaultValue={dataSeminar.penyelenggara}
+                              defaultValue={dataPagelaran.penyelenggara}
                               id="penyelenggara"
                             />
                             {dataError.penyelenggara ? (
@@ -471,7 +472,7 @@ export default function editseminardsn(props) {
                               className="form-control"
                               type="text"
                               placeholder="2020"
-                              defaultValue={dataSeminar.tahun}
+                              defaultValue={dataPagelaran.tahun}
                               id="tahun"
                             />
                             {dataError.tahun ? (
@@ -483,18 +484,43 @@ export default function editseminardsn(props) {
                             )}
                           </div>
                         </div>
+                        <div className="col-md-11">
+                          <div className="form-group">
+                            <label
+                              htmlFor="file_bukti"
+                              className={
+                                dataError.file_bukti ? "is-invalid" : ""
+                              }
+                            >
+                              File Bukti : <span><a href={`${apiurl+dataPagelaran.file_bukti}`}>{dataPagelaran.file_bukti.split("/").slice(-1)[0] }</a></span>
+                            </label>
+                            <input
+                              className="form-control"
+                              type="file"
+                              onChange={handleChangeFile}
+                              id="file_bukti"
+                            />
+                            {dataError.file_bukti ? (
+                              <div className="invalid-feedback">
+                                {dataError.file_bukti}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
                       </div>
                       <hr className="horizontal dark" />
                       <p className="text-uppercase text-sm">
-                        Kenaggotaan: Anggota seminar
+                        Kenaggotaan: Anggota pagelaran
                       </p>
                       <div className="row">
                         <div className="col-12">
                           <CardSertif judul={"List Anggota"}>
                             <div className="col-12">
-                              {dataSeminar &&
-                                (dataSeminar.anggota_dosens.length ? (
-                                  dataSeminar.anggota_dosens.map(
+                              {dataPagelaran &&
+                                (dataPagelaran.anggota_dosens.length ? (
+                                  dataPagelaran.anggota_dosens.map(
                                     (anggota, indx) => {
                                       return (
                                         <div
@@ -593,9 +619,9 @@ export default function editseminardsn(props) {
                                 <button
                                   className="btn btn-sm btn-outline-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
                                   type={`button`}
-                                  onClick={() => tambahanggota(dataSeminar.id)}
+                                  onClick={() => tambahanggota(dataPagelaran.id)}
                                 >
-                                  Tambah anggota Seminar
+                                  Tambah anggota pagelaran
                                 </button>
                               </div>
                             </div>

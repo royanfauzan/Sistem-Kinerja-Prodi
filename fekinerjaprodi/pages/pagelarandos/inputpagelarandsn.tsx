@@ -17,7 +17,7 @@ interface Udosen {
   updated_at: string;
 }
 
-export default function inputseminardsn() {
+export default function inputpagelarandsn() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState([]);
@@ -122,16 +122,17 @@ export default function inputseminardsn() {
 
     let formData = new FormData();
     formData.append("profil_dosen_id", event.target.profil_dosen_id.value);
-    formData.append("judul_kegiatan", event.target.judul_kegiatan.value);
+    formData.append("judul", event.target.judul.value);
     formData.append("penyelenggara", event.target.penyelenggara.value);
-    formData.append("kategori_seminar", event.target.kategori_seminar.value);
+    formData.append("ruang_lingkup", event.target.ruang_lingkup.value);
     formData.append("tahun", event.target.tahun.value);
+    formData.append("file_bukti", filebukti);
 
     console.log(formData);
 
     axios({
       method: "post",
-      url: "http://127.0.0.1:8000/api/seminardoss",
+      url: "http://127.0.0.1:8000/api/pagelarandoss",
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -145,14 +146,14 @@ export default function inputseminardsn() {
         toast.success("Simpan Sukses Sugses!!");
         // console.log(token);
         console.log(profil);
-        router.push("/seminardos/tabelseminardsn");
+        router.push("/pagelarandos/tabelpagelarandsn");
       })
       .catch(function (error) {
         toast.dismiss();
         if (error.response.data.message) {
           toast.error(error.response.data.message);
           setTimeout(() => {
-            router.push("/seminardos/tabelseminardsn");
+            router.push("/pagelarandos/tabelpagelarandsn");
           }, 500);
         } else {
           setError(error.response.data.error);
@@ -197,7 +198,7 @@ export default function inputseminardsn() {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Data Seminar</p>
+                        <p className="mb-0">Data pagelaran</p>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -208,7 +209,7 @@ export default function inputseminardsn() {
                     </div>
 
                     <div className="card-body">
-                      <p className="text-uppercase text-sm">Data seminar</p>
+                      <p className="text-uppercase text-sm">Data Pagelaran</p>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">
@@ -293,43 +294,41 @@ export default function inputseminardsn() {
                       </div>
                       <hr className="horizontal dark" />
                       <p className="text-uppercase text-sm">
-                        Seminar: Detail Seminar
+                        Pagelaran: Detail Pagelaran
                       </p>
                       <div className="row">
                         <div className="col-md-9">
                           <div className="form-group">
                             <label
-                              htmlFor="kategori_seminar"
+                              htmlFor="ruang_lingkup"
                               className={
                                 "form-control-label " +
-                                dataError.kategori_seminar
+                                dataError.ruang_lingkup
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              Kategori seminar
+                              Ruang Lingkup 
                             </label>
 
                             <select
                               className="form-select"
                               aria-label="Default select example"
                               defaultValue={`Wilayah`}
-                              id="kategori_seminar"
+                              id="ruang_lingkup"
                             >
                               <option value={`Wilayah`}>
                                 Wilayah/Lokal/Perguruan Tinggi
                               </option>
-                              <option value={`Nasional`}>
-                                Nasional
-                              </option>
-                              <option value={`Internasional`}>
+                              <option value={`Nasional`}>Nasional</option>
+                              <option value={`Nnternasional`}>
                                 Internasional
                               </option>
                             </select>
 
-                            {dataError.kategori_seminar ? (
+                            {dataError.ruang_lingkup ? (
                               <div className="invalid-feedback">
-                                {dataError.kategori_seminar}
+                                {dataError.ruang_lingkup}
                               </div>
                             ) : (
                               ""
@@ -339,29 +338,29 @@ export default function inputseminardsn() {
                       </div>
                       <hr className="horizontal dark" />
                       <p className="text-uppercase text-sm">
-                        Seminar: Data Seminar
+                        Pagelaran: Data Pagelaran
                       </p>
                       <div className="row">
                         <div className="col-8">
                           <div className="form-group">
                             <label
-                              htmlFor="judul_kegiatan"
+                              htmlFor="judul"
                               className={
-                                "form-control-label " + dataError.judul_kegiatan
+                                "form-control-label " + dataError.judul
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              Judul Seminar
+                              Judul Pagelaran
                             </label>
                             <textarea
                               className="form-control"
-                              placeholder="judul_kegiatan"
-                              id="judul_kegiatan"
+                              placeholder="judul"
+                              id="judul"
                             ></textarea>
-                            {dataError.judul_kegiatan ? (
+                            {dataError.judul ? (
                               <div className="invalid-feedback">
-                                {dataError.judul_kegiatan}
+                                {dataError.judul}
                               </div>
                             ) : (
                               ""
@@ -378,7 +377,7 @@ export default function inputseminardsn() {
                                   : ""
                               }
                             >
-                              Penyelenggara Seminar
+                              Penyelenggara Pagelaran
                             </label>
                             <input
                               className="form-control"
@@ -422,8 +421,32 @@ export default function inputseminardsn() {
                             )}
                           </div>
                         </div>
+                        <div className="col-md-11">
+                          <div className="form-group">
+                            <label
+                              htmlFor="file_bukti"
+                              className={
+                                dataError.file_bukti ? "is-invalid" : ""
+                              }
+                            >
+                              File Bukti
+                            </label>
+                            <input
+                              className="form-control"
+                              type="file"
+                              onChange={handleChangeFile}
+                              id="file_bukti"
+                            />
+                            {dataError.file_bukti ? (
+                              <div className="invalid-feedback">
+                                {dataError.file_bukti}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
                       </div>
-                      
                     </div>
                   </div>
                 </form>

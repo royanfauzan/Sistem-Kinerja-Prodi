@@ -367,7 +367,7 @@ class SdmSeeder extends Seeder
                 'tahun' => '2021',
                 'judul_kegiatan' => 'judul wilayah 1',
                 'penyelenggara' => 'penyelenggara wilayah 1',
-                'kategori_seminar' => 'wilayah',
+                'kategori_seminar' => 'Wilayah',
             ]
         );
 
@@ -376,7 +376,7 @@ class SdmSeeder extends Seeder
                 'tahun' => '2020',
                 'judul_kegiatan' => 'judul wilayah 2',
                 'penyelenggara' => 'penyelenggara wilayah 2',
-                'kategori_seminar' => 'wilayah',
+                'kategori_seminar' => 'Wilayah',
             ]
         );
 
@@ -385,7 +385,7 @@ class SdmSeeder extends Seeder
                 'tahun' => '2019',
                 'judul_kegiatan' => 'judul wilayah 3',
                 'penyelenggara' => 'penyelenggara wilayah 3',
-                'kategori_seminar' => 'wilayah',
+                'kategori_seminar' => 'Wilayah',
             ]
         );
 
@@ -395,7 +395,7 @@ class SdmSeeder extends Seeder
                 'tahun' => '2021',
                 'judul_kegiatan' => 'judul nasional 1',
                 'penyelenggara' => 'penyelenggara nasional 1',
-                'kategori_seminar' => 'nasional',
+                'kategori_seminar' => 'Nasional',
             ]
         );
 
@@ -404,7 +404,7 @@ class SdmSeeder extends Seeder
                 'tahun' => '2020',
                 'judul_kegiatan' => 'judul nasional 2',
                 'penyelenggara' => 'penyelenggara nasional 2',
-                'kategori_seminar' => 'nasional',
+                'kategori_seminar' => 'Nasional',
             ]
         );
 
@@ -413,7 +413,7 @@ class SdmSeeder extends Seeder
                 'tahun' => '2019',
                 'judul_kegiatan' => 'judul nasional 3',
                 'penyelenggara' => 'penyelenggara nasional 3',
-                'kategori_seminar' => 'nasional',
+                'kategori_seminar' => 'Nasional',
             ]
         );
 
@@ -423,7 +423,7 @@ class SdmSeeder extends Seeder
                 'tahun' => '2021',
                 'judul_kegiatan' => 'judul internasional 1',
                 'penyelenggara' => 'penyelenggara internasional 1',
-                'kategori_seminar' => 'internasional',
+                'kategori_seminar' => 'Internasional',
             ]
         );
 
@@ -432,7 +432,7 @@ class SdmSeeder extends Seeder
                 'tahun' => '2020',
                 'judul_kegiatan' => 'judul internasional 2',
                 'penyelenggara' => 'penyelenggara internasional 2',
-                'kategori_seminar' => 'internasional',
+                'kategori_seminar' => 'Internasional',
             ]
         );
 
@@ -441,7 +441,7 @@ class SdmSeeder extends Seeder
                 'tahun' => '2019',
                 'judul_kegiatan' => 'judul internasional 3',
                 'penyelenggara' => 'penyelenggara internasional 3',
-                'kategori_seminar' => 'internasional',
+                'kategori_seminar' => 'Internasional',
             ]
         );
 
@@ -497,7 +497,7 @@ class SdmSeeder extends Seeder
                 'judul' => 'judul pag wilayah 1',
                 'tahun' => '2021',
                 'penyelenggara' => 'penyelenggara wilayah 1',
-                'ruang_lingkup' => 'wilayah',
+                'ruang_lingkup' => 'Wilayah',
                 'file_bukti' => 'storage/testarea/image.jpg',
             ]
         );
@@ -507,7 +507,7 @@ class SdmSeeder extends Seeder
                 'judul' => 'judul pag wilayah 2',
                 'tahun' => '2020',
                 'penyelenggara' => 'penyelenggara wilayah 2',
-                'ruang_lingkup' => 'wilayah',
+                'ruang_lingkup' => 'Wilayah',
                 'file_bukti' => 'storage/testarea/image.jpg',
             ]
         );
@@ -517,7 +517,7 @@ class SdmSeeder extends Seeder
                 'judul' => 'judul pag wilayah 3',
                 'tahun' => '2019',
                 'penyelenggara' => 'penyelenggara wilayah 3',
-                'ruang_lingkup' => 'wilayah',
+                'ruang_lingkup' => 'Wilayah',
                 'file_bukti' => 'storage/testarea/image.jpg',
             ]
         );
@@ -528,7 +528,7 @@ class SdmSeeder extends Seeder
                 'judul' => 'judul pag nasional 1',
                 'tahun' => '2021',
                 'penyelenggara' => 'penyelenggara nasional 1',
-                'ruang_lingkup' => 'nasional',
+                'ruang_lingkup' => 'Nasional',
                 'file_bukti' => 'storage/testarea/image.jpg',
             ]
         );
@@ -538,7 +538,7 @@ class SdmSeeder extends Seeder
                 'judul' => 'judul pag nasional 2',
                 'tahun' => '2020',
                 'penyelenggara' => 'penyelenggara nasional 2',
-                'ruang_lingkup' => 'nasional',
+                'ruang_lingkup' => 'Nasional',
                 'file_bukti' => 'storage/testarea/image.jpg',
             ]
         );
@@ -548,7 +548,7 @@ class SdmSeeder extends Seeder
                 'judul' => 'judul pag nasional 3',
                 'tahun' => '2019',
                 'penyelenggara' => 'penyelenggara nasional 3',
-                'ruang_lingkup' => 'nasional',
+                'ruang_lingkup' => 'Nasional',
                 'file_bukti' => 'storage/testarea/image.jpg',
             ]
         );
@@ -559,7 +559,7 @@ class SdmSeeder extends Seeder
                 'judul' => 'judul pag internasional 1',
                 'tahun' => '2021',
                 'penyelenggara' => 'penyelenggara internasional 1',
-                'ruang_lingkup' => 'internasional',
+                'ruang_lingkup' => 'Internasional',
                 'file_bukti' => 'storage/testarea/image.jpg',
             ]
         );
@@ -569,7 +569,7 @@ class SdmSeeder extends Seeder
                 'judul' => 'judul pag internasional 2',
                 'tahun' => '2020',
                 'penyelenggara' => 'penyelenggara internasional 2',
-                'ruang_lingkup' => 'internasional',
+                'ruang_lingkup' => 'Internasional',
                 'file_bukti' => 'storage/testarea/image.jpg',
             ]
         );
@@ -579,7 +579,7 @@ class SdmSeeder extends Seeder
                 'judul' => 'judul pag internasional 3',
                 'tahun' => '2019',
                 'penyelenggara' => 'penyelenggara internasional 3',
-                'ruang_lingkup' => 'internasional',
+                'ruang_lingkup' => 'Internasional',
                 'file_bukti' => 'storage/testarea/image.jpg',
             ]
         );

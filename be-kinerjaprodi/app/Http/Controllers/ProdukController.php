@@ -25,14 +25,6 @@ class ProdukController extends Controller
         ]);
     }
 
-    public function tampilrelasi($id)
-    {
-        return response()->json([
-            'success' => true,
-            'all_relasi' => relasi_produkmhs::with('mahasiswa')->where('produk_id',$id)->get(),
-        ]);
-        
-    }
 
     /**
      * Show the form for creating a new resource.

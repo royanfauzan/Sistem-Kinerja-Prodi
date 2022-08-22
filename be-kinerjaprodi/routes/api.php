@@ -213,6 +213,7 @@ Route::get('read_penggunaan_dana', [PenggunaanDanaController::class, 'tampil_pen
 Route::get('read_penggunaan_dana/{search}', [PenggunaanDanaController::class, 'search_penggunaandana']);
 Route::post('update_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'edit_penggunaan_dana']);
 Route::get('export_penggunaan_dana/{tahun}', [PenggunaanDanaController::class, 'export_penggunaan_dana']);
+Route::get('tampil_export_penggunaan_dana/', [PenggunaanDanaController::class, 'tampil_export_penggunaan_dana']);
 Route::get('show_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'tampil_edit_dana']);
 Route::post('delete_penggunaan_dana/{id}', [PenggunaanDanaController::class, 'delete_penggunaan_dana']);
 
@@ -229,6 +230,7 @@ Route::post('delete_mahasiswa_asing/{id}', [MahasiswaAsingController::class, 'de
 Route::post('create_penerimaan_mahasiswa', [PenerimaanController::class, 'insert_penerimaan_mahasiswa']);
 Route::get('read_penerimaan_mahasiswa', [PenerimaanController::class, 'tampilmahasiswa']);
 Route::get('search_penerimaan_mahasiswa/{search}', [PenerimaanController::class, 'searchmahasiswa']);
+Route::get('pilih_penerimaan_mahasiswa/{tahun}', [PenerimaanController::class, 'tampilexport_penerimaan']);
 Route::get('show_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'tampil_edit_penerimaan']);
 Route::post('update_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'edit_penerimaan_mahasiswa']);
 Route::post('delete_penerimaan_mahasiswa/{id}', [PenerimaanController::class, 'delete_penerimaan_mahasiswa']);

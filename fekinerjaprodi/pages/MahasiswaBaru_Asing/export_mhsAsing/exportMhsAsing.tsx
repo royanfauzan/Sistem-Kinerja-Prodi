@@ -15,41 +15,17 @@ export default function penerimaanMahasiswa() {
   const [dataSelectTahun, setSelectTahun] = useState([])
   console.log(dataSelectTahun)
   const [dataRole, setRole] = useState("")
-  const [tampilMhsAsingTs1, settampilMhsAsingTs1] = useState([])
-  const [tampilMhsAsingTs2, settampilMhsAsingTs2] = useState([])
-  const [tampilMhsAsingTs3, settampilMhsAsingTs3] = useState([])
+  const [listtahun, setlisttahun] = useState([0])
+
   const [tampilMhsAsing, settampilMhsAsing] = useState([])
-  const [dataProdis, sethataProdi] = useState([])
-  const [prodis, setprodis] = useState([])
-  const [tampildataProdis, settampildataProdi] = useState([])
 
   const handleChange = (e) => {
-    const value = Array.from(
-      e.target.selectedOptions,
-      (options) => options.value
-    )
-    setSelectTahun(value)
+    setSelectTahun(e.target.value)
   }
-  const handleChangeProdi = (e) => {
-    sethataProdi(e.target.value)
-  }
+
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token")
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/Prodi",
-    })
-      .then(function (response) {
-        console.log(response)
-        console.log("Sukses")
-        const { Prodi } = response.data
-        setprodis(Prodi)
-        console.log(dataProdis)
-      })
-      .catch(function (err) {
-        console.log("gagal")
-        console.log(err.response)
-      })
+
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/read_mahasiswa_asing",
@@ -92,6 +68,7 @@ export default function penerimaanMahasiswa() {
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         setStadmin(true)
         pengambilData()
+        gettahun()
       })
       .catch(function (err) {
         console.log("gagal")
@@ -100,53 +77,29 @@ export default function penerimaanMahasiswa() {
       })
   }, [])
 
-  const deletePenerimaan = (id) => {
-    axios({
-      method: "post",
-      url: `http://127.0.0.1:8000/api/delete_penerimaan_mahasiswa/${id}`,
-    })
-      .then(function (response) {
-        router.reload()
-      })
-      .catch(function (err) {
-        console.log("gagal")
-        console.log(err.response)
-      })
-  }
   const tampildata = (tahun) => {
     axios({
       method: "get",
       url: `http://127.0.0.1:8000/api/export_mahasiswa_asing/${tahun}`,
     })
       .then(function (response) {
-        const { ts1 } = response.data
-        const { ts2 } = response.data
-        const { ts3 } = response.data
-        settampilMhsAsingTs1(ts1)
-        settampilMhsAsingTs2(ts2)
-        settampilMhsAsingTs3(ts3)
-        console.log(response.data)
-        console.log(ts1)
-        console.log(ts2)
-        console.log(ts3)
+        settampilMhsAsing(response.data.mhs)
+        console.log(response.data.mhs)
       })
       .catch(function (err) {
         console.log("gagal")
         console.log(err.response)
       })
   }
-  const tampilprodi = (prodi) => {
-    axios({
-      method: "get",
-      url: `http://127.0.0.1:8000/api/tampilprodi_mahasiswa_asing/${prodi}`,
-    })
-      .then(function (response) {
-        settampildataProdi(response.data.tampil_mahasiswa_asing)
-      })
-      .catch(function (err) {
-        console.log("gagal")
-        console.log(err.response)
-      })
+  const gettahun = () => {
+    const tahun = new Date().getFullYear()
+    let tahunarr = []
+
+    for (let i = 0; i < 6; i++) {
+      tahunarr[i] = tahun - i
+    }
+    setlisttahun(tahunarr)
+    console.log(tahunarr)
   }
 
   return (
@@ -161,15 +114,9 @@ export default function penerimaanMahasiswa() {
                   <div className="card-header pb-0">
                     <div className="d-flex ">
                       <h4>Mahasiswa Asing</h4>
+
                       <button
-                        className="btn btn-primary btn-sm  ms-auto "
-                        type="submit"
-                        onClick={() => tampilprodi(dataProdis)}
-                      >
-                        Tampil Prodi
-                      </button>
-                      <button
-                        className="btn btn-primary btn-sm ms-2 "
+                        className="btn btn-primary btn-sm ms-auto "
                         type="submit"
                         onClick={() => tampildata(dataSelectTahun)}
                       >
@@ -178,36 +125,7 @@ export default function penerimaanMahasiswa() {
                     </div>
                   </div>
 
-                  <div className="card-body pb-0">
-                    <h5>Pilih Prodi</h5>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <div className="form-group">
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue={dataProdis}
-                            id="tahun"
-                            onChange={handleChangeProdi}
-                          >
-                            <option value="">Pilih Prodi</option>
-                            {prodis.map((dataprodi) => {
-                              return (
-                                <option
-                                  value={dataprodi.nama_prodi}
-                                  key={dataprodi.id}
-                                >
-                                  {dataprodi.nama_prodi}
-                                </option>
-                              )
-                            })}
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="card-body pt-0">
+                  <div className="card-body  pt-0">
                     <h5>Pilih Tahun</h5>
                     <div className="row">
                       <div className="col-md-12">
@@ -218,15 +136,12 @@ export default function penerimaanMahasiswa() {
                             defaultValue={dataSelectTahun}
                             id="tahun"
                             onChange={handleChange}
-                            multiple
                           >
-                            {tampilMhsAsing.map((dataMhsasing) => {
+                            <option value="">Pilih Tahun</option>
+                            {listtahun.map((tahun) => {
                               return (
-                                <option
-                                  value={dataMhsasing.Tahun_Akademik}
-                                  key={dataMhsasing.id}
-                                >
-                                  {dataMhsasing.Tahun_Akademik}
+                                <option value={tahun} key={tahun}>
+                                  {tahun}
                                 </option>
                               )
                             })}
@@ -304,151 +219,129 @@ export default function penerimaanMahasiswa() {
                           </th>
                         </tr>
                         <tr>
-                          {!tampilMhsAsingTs3.Tahun_Akademik ? (
-                            <th>TS3</th>
-                          ) : (
-                            <th>
-                              <h3 className="mb-0 text-sm">
-                                {tampilMhsAsingTs3.Tahun_Akademik}
-                              </h3>
-                            </th>
-                          )}
-                          {!tampilMhsAsingTs2.Tahun_Akademik ? (
-                            <th>TS2</th>
-                          ) : (
-                            <th>
-                              <h3 className="mb-0 text-sm">
-                                {tampilMhsAsingTs2.Tahun_Akademik}
-                              </h3>
-                            </th>
-                          )}
-                          {!tampilMhsAsingTs1.Tahun_Akademik ? (
-                            <th>TS1</th>
-                          ) : (
-                            <th>
-                              <h3 className="mb-0 text-sm">
-                                {tampilMhsAsingTs1.Tahun_Akademik}
-                              </h3>
-                            </th>
-                          )}
-                          {!tampilMhsAsingTs3.Tahun_Akademik ? (
-                            <th>TS3</th>
-                          ) : (
-                            <th>
-                              <h3 className="mb-0 text-sm">
-                                {tampilMhsAsingTs3.Tahun_Akademik}
-                              </h3>
-                            </th>
-                          )}
-                          {!tampilMhsAsingTs2.Tahun_Akademik ? (
-                            <th>TS2</th>
-                          ) : (
-                            <th>
-                              <h3 className="mb-0 text-sm">
-                                {tampilMhsAsingTs2.Tahun_Akademik}
-                              </h3>
-                            </th>
-                          )}
-                          {!tampilMhsAsingTs1.Tahun_Akademik ? (
-                            <th>TS1</th>
-                          ) : (
-                            <th>
-                              <h3 className="mb-0 text-sm">
-                                {tampilMhsAsingTs1.Tahun_Akademik}
-                              </h3>
-                            </th>
-                          )}
-                          {!tampilMhsAsingTs3.Tahun_Akademik ? (
-                            <th>TS3</th>
-                          ) : (
-                            <th>
-                              <h3 className="mb-0 text-sm">
-                                {tampilMhsAsingTs3.Tahun_Akademik}
-                              </h3>
-                            </th>
-                          )}
-                          {!tampilMhsAsingTs2.Tahun_Akademik ? (
-                            <th>TS2</th>
-                          ) : (
-                            <th>
-                              <h3 className="mb-0 text-sm">
-                                {tampilMhsAsingTs2.Tahun_Akademik}
-                              </h3>
-                            </th>
-                          )}
-                          {!tampilMhsAsingTs1.Tahun_Akademik ? (
-                            <th>TS1</th>
-                          ) : (
-                            <th>
-                              <h3 className="mb-0 text-sm">
-                                {tampilMhsAsingTs1.Tahun_Akademik}
-                              </h3>
-                            </th>
-                          )}
+                          <th>
+                            <h3 className="mb-0 text-sm">TS-2</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS-1</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS-2</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS-1</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS-2</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS-1</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS</h3>
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {tampildataProdis.map((mhsasing, index) => {
-                          return (
-                            <tr key={`tprodi` + mhsasing.id}>
-                              {/* no */}
-                              <th>
-                                <h4 className="mb-0 text-sm">{index + 1}</h4>
-                              </th>
-                              {/* prodi */}
-                              <th>
-                                <h4 className="mb-0 text-sm">
-                                  {mhsasing.prodi.nama_prodi}
-                                </h4>
-                              </th>
-                              <th>
-                                <h4 className="mb-0 text-sm">
-                                  {tampilMhsAsingTs3.Mahasiswa_Aktif}
-                                </h4>
-                              </th>
-                              <th>
-                                <h4 className="mb-0 text-sm">
-                                  {tampilMhsAsingTs2.Mahasiswa_Aktif}
-                                </h4>
-                              </th>
-                              <th>
-                                <h4 className="mb-0 text-sm">
-                                  {tampilMhsAsingTs1.Mahasiswa_Aktif}
-                                </h4>
-                              </th>
-                              <th>
-                                <h4 className="mb-0 text-sm">
-                                  {tampilMhsAsingTs3.Mahasiswa_Aktif_Fulltime}
-                                </h4>
-                              </th>
-                              <th>
-                                <h4 className="mb-0 text-sm">
-                                  {tampilMhsAsingTs2.Mahasiswa_Aktif_Fulltime}
-                                </h4>
-                              </th>
-                              <th>
-                                <h4 className="mb-0 text-sm">
-                                  {tampilMhsAsingTs1.Mahasiswa_Aktif_Fulltime}
-                                </h4>
-                              </th>
-                              <th>
-                                <h4 className="mb-0 text-sm">
-                                  {tampilMhsAsingTs3.Mahasiswa_Aktif_Parttime}
-                                </h4>
-                              </th>
-                              <th>
-                                <h4 className="mb-0 text-sm">
-                                  {tampilMhsAsingTs2.Mahasiswa_Aktif_Parttime}
-                                </h4>
-                              </th>
-                              <th>
-                                <h4 className="mb-0 text-sm">
-                                  {tampilMhsAsingTs1.Mahasiswa_Aktif_Parttime}
-                                </h4>
-                              </th>
-                            </tr>
-                          )
-                        })}
+                        <tr>
+                          {/* no */}
+                          <th>
+                            <h4 className="mb-0 text-sm">1</h4>
+                          </th>
+                          {/* prodi */}
+                          <th>
+                            <h4 className="mb-0 text-sm">
+                              D3 Manajemen Informatika
+                            </h4>
+                          </th>
+                          <th>
+                            {tampilMhsAsing[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilMhsAsing[2].Mahasiswa_Aktif}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {!tampilMhsAsing[1] ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilMhsAsing[1].Mahasiswa_Aktif}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {!tampilMhsAsing[0] ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilMhsAsing[0].Mahasiswa_Aktif}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {!tampilMhsAsing[2] ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilMhsAsing[2].Mahasiswa_Aktif_Fulltime}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {!tampilMhsAsing[1] ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilMhsAsing[1].Mahasiswa_Aktif_Fulltime}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {!tampilMhsAsing[0] ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilMhsAsing[0].Mahasiswa_Aktif_Fulltime}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {!tampilMhsAsing[2] ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilMhsAsing[2].Mahasiswa_Aktif_Parttime}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {!tampilMhsAsing[1] ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilMhsAsing[1].Mahasiswa_Aktif_Parttime}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {!tampilMhsAsing[0] ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilMhsAsing[0].Mahasiswa_Aktif_Parttime}
+                              </h4>
+                            )}
+                          </th>
+                        </tr>
                       </tbody>
                     </table>
                   </div>

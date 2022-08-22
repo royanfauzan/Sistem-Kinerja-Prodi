@@ -80,7 +80,8 @@ export default function penerimaanMahasiswa() {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, hapus!",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.isConfirmed) {
@@ -116,12 +117,14 @@ export default function penerimaanMahasiswa() {
   }
   const exportKjs = () => {
     MySwal.fire({
-      title: "EXport",
-      text: "Are you sure? ",
+      title: "Export Data Seleksi Mahasiswa",
+      text: "Apa kamu yakin? ",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -132,12 +135,14 @@ export default function penerimaanMahasiswa() {
   }
   const tambahKjs = () => {
     MySwal.fire({
-      title: "Tambah",
-      text: "Are you sure? ",
+      title: "Tambah Data Seleksi Mahasiswa",
+      text: "Apa Kamu Yakin? ",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -148,12 +153,14 @@ export default function penerimaanMahasiswa() {
   }
   const editPenerimaan = (id) => {
     MySwal.fire({
-      title: "Edit",
-      text: "Are you sure? ",
+      title: "Edit Data Seleksi Mahasiswa",
+      text: "Apa kamu yakin?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -173,27 +180,28 @@ export default function penerimaanMahasiswa() {
               <div className="card mb-4">
                 <div className="card-header pb-0">
                   <div className="row justify-content-between">
+                  <p className="text-uppercase text-sm text-center"> <h5>TABEL  SELEKSI MAHASISWA </h5> </p>
                     <div className="col-8">
                       <button
                         onClick={() => tambahKjs()}
                         className="btn btn-sm btn-success border-0 shadow-sm  m-0"
                       >
-                        Tambah
+                        Tambah Data
                       </button>
 
                       <button
                         onClick={() => exportKjs()}
                         className="btn ms-2 btn-sm btn-success border-0 shadow-sm  m-0"
                       >
-                        Export
+                        Export Data
                       </button>
                     </div>
 
                     <div className="col-4 d-flex flex-row-reverse">
                       <input
-                        className="rounded-3"
+                          className="form-control d-flex flex-row-reverse me-2 mt-3 mb-0"
                         type="text"
-                        placeholder="search.."
+                        placeholder="Cari Data Seleksi Mahasiswa..."
                         defaultValue=""
                         id="search"
                         onChange={searchdata}

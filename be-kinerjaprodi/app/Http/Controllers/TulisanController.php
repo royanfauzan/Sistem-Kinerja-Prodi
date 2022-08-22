@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Pagelaran;
 use App\Models\Seminar;
 use App\Models\Tulisan;
 use Illuminate\Http\Request;

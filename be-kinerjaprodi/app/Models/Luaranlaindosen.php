@@ -12,6 +12,6 @@ class Luaranlaindosen extends Model
 
     public function anggotaDosens()
     {
-        return $this->belongsToMany(profilDosen::class, 'rel_luar_dos', 'luaranlaindosen_id', 'profil_dosen_id')->withPivot('keanggotaan');
+        return $this->belongsToMany(profilDosen::class, 'rel_luar_dos', 'luaranlaindosen_id', 'profil_dosen_id')->withPivot('keanggotaan','id');
     }
 }

@@ -34,6 +34,7 @@ use App\Http\Controllers\DetaildosenController;
 use App\Http\Controllers\EwmpController;
 use App\Http\Controllers\MitraController;
 use App\Http\Controllers\KerjasamaController;
+use App\Http\Controllers\LuaranlaindosenController;
 use App\Http\Controllers\MahasiswaAsingController;
 use App\Http\Controllers\MengajarController;
 use App\Http\Controllers\PendidikanController;
@@ -46,6 +47,7 @@ use App\Http\Controllers\SdmLaporanController;
 use App\Http\Controllers\RelasiLuaranController;
 use App\Http\Controllers\SeminardosController;
 use App\Http\Controllers\SerkomController;
+use App\Http\Controllers\TulisandosController;
 use App\Models\Detaildosen;
 use App\Models\MahasiswaAsing;
 use App\Models\PenggunaanDana;
@@ -176,8 +178,8 @@ Route::post('delete_buku/{id}', [BukuController::class, 'destroy']);
 Route::get('show_buku/{id}', [BukuController::class, 'show']);
 
 //Produk
-Route::post('produk', [ProdukController::class, 'store']);
-Route::put('produk/{id}', [ProdukController::class, 'update']);
+// Route::post('produk', [ProdukController::class, 'store']);
+// Route::put('produk/{id}', [ProdukController::class, 'update']);
 
 //Presentase kepuasan
 Route::post('presentase', [PresentaseController::class, 'store']);
@@ -335,6 +337,29 @@ Route::post('delete_seminardos/{id}', [SeminardosController::class, 'destroy']);
 Route::post('hapusanggota_seminardos/{id}', [SeminardosController::class, 'hapusAnggota']);
 Route::post('tambahanggota_seminardos/{id}', [SeminardosController::class, 'tambahAnggota']);
 
+// Produkos
+Route::post('produkdoss', [ProdukController::class, 'store']);
+Route::get('search_produkdos/', [ProdukController::class, 'allproduk']);
+Route::get('search_produkdosdsn/', [ProdukController::class, 'allprodukdsn']);
+Route::get('search_produkdos/{search}', [ProdukController::class, 'searchproduk']);
+Route::get('search_produkdosdsn/{search}', [ProdukController::class, 'searchprodukdsn']);
+Route::get('tampil_produkdos/{id}', [ProdukController::class, 'show']);
+Route::put('update_produkdos/{id}', [ProdukController::class, 'update']);
+Route::post('delete_produkdos/{id}', [ProdukController::class, 'destroy']);
+Route::post('hapusanggota_produkdos/{id}', [ProdukController::class, 'hapusAnggota']);
+Route::post('tambahanggota_produkdos/{id}', [ProdukController::class, 'tambahAnggota']);
+
+// Luarandos
+Route::post('luarandoss', [LuaranlaindosenController::class, 'store']);
+Route::get('search_luarandos/', [LuaranlaindosenController::class, 'allluaran']);
+Route::get('search_luarandosdsn/', [LuaranlaindosenController::class, 'allluarandsn']);
+Route::get('search_luarandos/{search}', [LuaranlaindosenController::class, 'searchluaran']);
+Route::get('search_luarandosdsn/{search}', [LuaranlaindosenController::class, 'searchluarandsn']);
+Route::get('tampil_luarandos/{id}', [LuaranlaindosenController::class, 'show']);
+Route::put('update_luarandos/{id}', [LuaranlaindosenController::class, 'update']);
+Route::post('delete_luarandos/{id}', [LuaranlaindosenController::class, 'destroy']);
+Route::post('hapusanggota_luarandos/{id}', [LuaranlaindosenController::class, 'hapusAnggota']);
+Route::post('tambahanggota_luarandos/{id}', [LuaranlaindosenController::class, 'tambahAnggota']);
 
 Route::get('profildosens', [ProfildosenController::class, 'index']);
 Route::group(['middleware' => ['adminonly']], function () {
@@ -351,6 +376,16 @@ Route::get('search_rekognisidsn/{search}', [RekognisiController::class, 'searchr
 Route::get('tampil_rekognisi/{id}', [RekognisiController::class, 'show']);
 Route::put('update_rekognisi/{id}', [RekognisiController::class, 'update']);
 Route::post('delete_rekognisi/{id}', [RekognisiController::class, 'destroy']);
+
+// Tulisan
+Route::post('tulisandosens', [TulisandosController::class, 'store']);
+Route::get('search_tulisandos/', [TulisandosController::class, 'alltulisan']);
+Route::get('search_tulisandosdsn/', [TulisandosController::class, 'alltulisandsn']);
+Route::get('search_tulisandos/{search}', [TulisandosController::class, 'searchtulisan']);
+Route::get('search_tulisandosdsn/{search}', [TulisandosController::class, 'searchtulisandsn']);
+Route::get('tampil_tulisandos/{id}', [TulisandosController::class, 'show']);
+Route::put('update_tulisandos/{id}', [TulisandosController::class, 'update']);
+Route::post('delete_tulisandos/{id}', [TulisandosController::class, 'destroy']);
 
 // Mengajar
 Route::post('mengajardosens', [MengajarController::class, 'store']);

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Bbjurnaldos;
 use App\Models\Bimbingan;
 use App\Models\Detaildosen;
+use App\Models\Luaranlaindosen;
 use App\Models\Mahasiswa;
 use App\Models\Matkul;
 use App\Models\Mengajar;
@@ -16,7 +17,9 @@ use App\Models\Produk;
 use App\Models\RelasiDosPen;
 use App\Models\RelasiDosProd;
 use App\Models\RelasiJurDos;
+use App\Models\RelasiPagDos;
 use App\Models\RelasiSemDos;
+use App\Models\RelLuarDos;
 use App\Models\Seminardos;
 use App\Models\Serkom;
 use Illuminate\Database\Seeder;
@@ -581,6 +584,52 @@ class SdmSeeder extends Seeder
             ]
         );
 
+        RelasiPagDos::create([
+            'profil_dosen_id' => 1,
+            'keanggotaan' => 'Ketua',
+            'pagelarandos_id' => 1,
+        ]);
+        RelasiPagDos::create([
+            'profil_dosen_id' => 2,
+            'keanggotaan' => 'Ketua',
+            'pagelarandos_id' => 2,
+        ]);
+        RelasiPagDos::create([
+            'profil_dosen_id' => 3,
+            'keanggotaan' => 'Ketua',
+            'pagelarandos_id' => 3,
+        ]);
+        RelasiPagDos::create([
+            'profil_dosen_id' => 4,
+            'keanggotaan' => 'Ketua',
+            'pagelarandos_id' => 4,
+        ]);
+        RelasiPagDos::create([
+            'profil_dosen_id' => 1,
+            'keanggotaan' => 'Ketua',
+            'pagelarandos_id' => 5,
+        ]);
+        RelasiPagDos::create([
+            'profil_dosen_id' => 2,
+            'keanggotaan' => 'Ketua',
+            'pagelarandos_id' => 6,
+        ]);
+        RelasiPagDos::create([
+            'profil_dosen_id' => 3,
+            'keanggotaan' => 'Ketua',
+            'pagelarandos_id' => 7,
+        ]);
+        RelasiPagDos::create([
+            'profil_dosen_id' => 4,
+            'keanggotaan' => 'Ketua',
+            'pagelarandos_id' => 8,
+        ]);
+        RelasiPagDos::create([
+            'profil_dosen_id' => 1,
+            'keanggotaan' => 'Ketua',
+            'pagelarandos_id' => 9,
+        ]);
+
         Produk::create(
             [
                 'nm_produk' => 'nama produk 1',
@@ -666,6 +715,91 @@ class SdmSeeder extends Seeder
                 'profil_dosen_id'=> 2,
                 'produk_id' => 1,
                 'keanggotaan' => 'anggota', 
+            ]
+        );
+
+        Luaranlaindosen::create(
+            [
+                'judul' => 'Speed Of Spatial Query Of Satellite Data On Various Database Storage Engine',
+                'keterangan' => 'Keterangan 1',
+                'tahun' => '2019',
+                'jenis_luaran' => 'I',
+            ]
+        );
+
+        Luaranlaindosen::create(
+            [
+                'judul' => 'Luaran 2',
+                'keterangan' => 'Keterangan 2',
+                'tahun' => '2020',
+                'jenis_luaran' => 'II',
+            ]
+        );
+
+        Luaranlaindosen::create(
+            [
+                'judul' => 'Luaran 3',
+                'keterangan' => 'Keterangan 3',
+                'tahun' => '2020',
+                'jenis_luaran' => 'III',
+            ]
+        );
+
+        Luaranlaindosen::create(
+            [
+                'judul' => 'Luaran 4',
+                'keterangan' => 'Keterangan 4',
+                'tahun' => '2020',
+                'jenis_luaran' => 'IV',
+            ]
+        );
+
+        Luaranlaindosen::create(
+            [
+                'judul' => 'Luaran 5',
+                'keterangan' => 'Keterangan 5',
+                'tahun' => '2020',
+                'jenis_luaran' => 'I',
+            ]
+        );
+
+        RelLuarDos::create(
+            [
+                'profil_dosen_id'=> 2,
+                'luaranlaindosen_id' => 1,
+                'keanggotaan' => 'Ketua', 
+            ]
+        );
+
+        RelLuarDos::create(
+            [
+                'profil_dosen_id'=> 1,
+                'luaranlaindosen_id' => 2,
+                'keanggotaan' => 'Ketua', 
+            ]
+        );
+
+        RelLuarDos::create(
+            [
+                'profil_dosen_id'=> 2,
+                'luaranlaindosen_id' => 3,
+                'keanggotaan' => 'Ketua', 
+            ]
+        );
+
+        RelLuarDos::create(
+            [
+                'profil_dosen_id'=> 2,
+                'luaranlaindosen_id' => 4,
+                'keanggotaan' => 'Ketua', 
+            ]
+        );
+
+        RelLuarDos::create(
+            [
+                'profil_dosen_id'=> 2,
+                'luaranlaindosen_id' => 5,
+                'keanggotaan' => 'Ketua', 
             ]
         );
 

@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produk;
+use App\Models\profilDosen;
+use App\Models\RelasiDosProd;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ProdukController extends Controller
 {
@@ -36,7 +40,7 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        $dataproduk = $request->only('nm_produk', 'deskripsi', 'tahun', 'deskripsi_bukti', 'file_bukti');
+        $dataproduk = $request->only('profil_dosen_id','nm_produk', 'deskripsi', 'tahun', 'deskripsi_bukti', 'file_bukti');
 
         //valid credential
         $validator = Validator::make($dataproduk, [
@@ -44,30 +48,35 @@ class ProdukController extends Controller
             'deskripsi' => 'required',
             'tahun' => 'required',
             'deskripsi_bukti' => 'required',
+            'profil_dosen_id' => 'required',
             "file_bukti" => "required|mimetypes:application/pdf|max:10000",
         ]);
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $finalPathdokumen = "";
-        try {
-            $folderdokumen = "storage/detailproduk/";
+        if ($request->file('file_bukti')) {
+            $finalPathdokumen = "";
+            
+            try {
+                $folderdokumen = "storage/detailproduk/";
 
-            $dokumen = $request->file('file_bukti');
+                $dokumen = $request->file('file_bukti');
 
-            $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".",$dokumen->getClientOriginalName(),2)[0])) . "-". time() . "." . $dokumen->getClientOriginalExtension();
+                $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".", $dokumen->getClientOriginalName(), 2)[0])) . "-" . time() . "." . $dokumen->getClientOriginalExtension();
 
-            $dokumen->move($folderdokumen, $namaFiledokumen);
+                $dokumen->move($folderdokumen, $namaFiledokumen);
 
-            $finalPathdokumen = $folderdokumen . $namaFiledokumen;
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => "Gagal Menyimpan Dokumen".$th,
-            ], 400);
+                $finalPathdokumen = $folderdokumen . $namaFiledokumen;
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Gagal Menyimpan Dokumen" . $th,
+                ], 400);
+            }
         }
 
         $dataproduk = Produk::create(
@@ -77,6 +86,14 @@ class ProdukController extends Controller
                 'tahun' => $request->tahun,
                 'deskripsi_bukti' => $request->deskripsi_bukti,
                 'file_bukti' => $finalPathdokumen,
+            ]
+        );
+
+        $anggotaBaru = RelasiDosProd::create(
+            [
+                'profil_dosen_id'=> $request->profil_dosen_id,
+                'produk_id' => $dataproduk->id,
+                'keanggotaan' => 'Ketua', 
             ]
         );
 
@@ -101,6 +118,22 @@ class ProdukController extends Controller
     public function show($id)
     {
         //
+        $produk = Produk::with('anggotaDosens')->find($id);
+
+        $listanggota = RelasiDosProd::where('produk_id',$id)->get();
+
+        $idtags = array();
+        foreach ($listanggota as $anggota) {
+            $idtags[] = $anggota->profil_dosen_id;
+        }
+
+        $profilDosens = profilDosen::whereNotIn('id', $idtags)->get();
+        return response()->json([
+            'success' => true,
+            'dataproduk' => $produk,
+            'profildosens' => $profilDosens,
+            // 'dosenId'=> $dosenId
+        ]);
     }
 
     /**
@@ -123,8 +156,8 @@ class ProdukController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $produk = Produk::where('id', $id)->first();
-        $dataproduk = $request->only('nm_produk', 'deskripsi', 'tahun', 'deskripsi_bukti', 'file_bukti');
+        $produk = Produk::find($id);
+        $dataproduk = $request->only('nm_produk', 'deskripsi', 'tahun', 'deskripsi_bukti','profil_dosen_id');
 
         //valid credential
         $validator = Validator::make($dataproduk, [
@@ -132,7 +165,7 @@ class ProdukController extends Controller
             'deskripsi' => 'required',
             'tahun' => 'required',
             'deskripsi_bukti' => 'required',
-            'file_bukti' => 'required',
+            'profil_dosen_id' => 'required',
         ]);
 
         //Send failed response if request is not valid
@@ -140,11 +173,41 @@ class ProdukController extends Controller
             return response()->json(['error' => $validator->errors()], 200);
         }
 
+        if ($request->file('file_bukti')) {
+            $finalPathdokumen = "";
+            $validasiFile = Validator::make($request->only('file_bukti'), ["file_bukti" => "mimetypes:application/pdf|max:10000",]);
+            if ($validasiFile->fails()) {
+                return response()->json(['error' => $validasiFile->errors()], 400);
+            }
+            try {
+                $folderdokumen = "storage/detailproduk/";
+
+                $dokumen = $request->file('file_bukti');
+
+                $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".", $dokumen->getClientOriginalName(), 2)[0])) . "-" . time() . "." . $dokumen->getClientOriginalExtension();
+
+                $dokumen->move($folderdokumen, $namaFiledokumen);
+
+                $filedihapus = File::exists(public_path($produk->file_bukti));
+
+                if ($filedihapus) {
+                    File::delete(public_path($produk->file_bukti));
+                }
+
+                $finalPathdokumen = $folderdokumen . $namaFiledokumen;
+                $produk->file_bukti = $finalPathdokumen;
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Gagal Menyimpan Dokumen" . $th,
+                ], 400);
+            }
+        }
+
         $produk->nm_produk = $request->nm_produk;
         $produk->deskripsi = $request->deskripsi;
         $produk->tahun = $request->tahun;
         $produk->deskripsi_bukti = $request->deskripsi_bukti;
-        $produk->file_bukti = $request->file_bukti;
         $produk->save();
 
         //Token created, return with success response and jwt token
@@ -168,5 +231,187 @@ class ProdukController extends Controller
     public function destroy($id)
     {
         //
+        $produkdos = Produk::find($id);
+
+        $filedihapus = File::exists(public_path($produkdos->file_bukti));
+
+        if ($filedihapus) {
+            File::delete(public_path($produkdos->file_bukti));
+        }
+
+        $produkdos->delete();
+
+        if (!$produkdos) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus",
+            'dataproduks' => Produk::with('anggotaDosens')->orderBy('tahun', 'DESC')->get()
+        ]);
+    }
+
+    public function tambahAnggota(Request $request, $id)
+    {
+        //
+        $databuku = $request->only('profil_dosen_id');
+
+        //valid credential
+        $validator = Validator::make($databuku, [
+            'profil_dosen_id' => 'required',
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        $anggotaBaru = RelasiDosProd::create([
+            'profil_dosen_id' => $request->profil_dosen_id,
+            'produk_id' => $id,
+        ]);
+
+        $databuku = Produk::find($id);
+
+
+
+        $listanggota = RelasiDosProd::where('produk_id', $id)->get();
+
+        $idtags = array();
+        foreach ($listanggota as $anggota) {
+            $idtags[] = $anggota->profil_dosen_id;
+        }
+
+        $profilDosens = profilDosen::whereNotIn('id', $idtags)->get();
+
+        $produk = Produk::with('anggotaDosens')->find($id);
+
+        return response()->json([
+            'success' => true,
+            'dataproduk' => $produk,
+            'profildosens' => $profilDosens,
+        ]);
+    }
+
+    public function hapusAnggota($id)
+    {
+        //
+        $anggotaHapus = RelasiDosProd::find($id);
+
+        $produk_id = $anggotaHapus->produk_id;
+
+        $anggotaHapus->delete();
+
+        $listanggota = RelasiDosProd::where('produk_id', $produk_id)->get();
+
+        $idtags = array();
+        foreach ($listanggota as $anggota) {
+            $idtags[] = $anggota->profil_dosen_id;
+        }
+
+        $profilDosens = profilDosen::whereNotIn('id', $idtags)->get();
+
+        $produk = Produk::with('anggotaDosens')->find($produk_id);
+
+        return response()->json([
+            'success' => true,
+            'dataproduk' => $produk,
+            'profildosens' => $profilDosens,
+        ]);
+    }
+
+
+    public function searchproduk(Request $request, $search)
+    {
+        //
+
+        $produks = Produk::with('anggotaDosens')->whereRelation('anggotaDosens', 'NamaDosen', 'LIKE', "%{$search}%")
+            ->orWhere('tahun', 'LIKE', "%{$search}%")
+            ->orWhere('nm_produk', 'LIKE', "%{$search}%")
+            ->orderBy('tahun', 'DESC')
+            ->get();
+
+        $arrproduk = array();
+        foreach ($produks as $key => $produk) {
+            $arrproduk[] = $produk;
+        }
+        return response()->json([
+            'success' => true,
+            'dataproduks' => $arrproduk,
+        ]);
+    }
+
+    public function allproduk(Request $request)
+    {
+        //
+
+        $produks = Produk::with('anggotaDosens')
+            ->orderBy('tahun', 'DESC')
+            ->get();
+        $arrproduk = array();
+        foreach ($produks as $key => $produk) {
+            $arrproduk[] = $produk;
+        }
+        return response()->json([
+            'success' => true,
+            'dataproduks' => $arrproduk,
+        ]);
+    }
+
+
+    public function searchprodukdsn(Request $request, $search)
+    {
+        //
+
+        $user = JWTAuth::parseToken()->authenticate();
+        $dosenId = $user->profilDosen->id;
+
+        $produks = Produk::with('anggotaDosens')->whereRelation('anggotaDosens', 'NamaDosen', 'LIKE', "%{$search}%")
+            ->orWhere('tahun', 'LIKE', "%{$search}%")
+            ->orWhere('nm_produk', 'LIKE', "%{$search}%")
+            ->orderBy('tahun', 'DESC')
+            ->get();
+
+        $arrproduk = array();
+        foreach ($produks as $key => $produk) {
+            foreach ($produk->anggotaDosens as $key2 => $anggota) {
+                if ($anggota->id == $dosenId) {
+                    $arrproduk[] = $produk;
+                }
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'dataproduks' => $arrproduk,
+        ]);
+    }
+
+    public function allprodukdsn(Request $request)
+    {
+        //
+        $user = JWTAuth::parseToken()->authenticate();
+        $dosenId = $user->profilDosen->id;
+
+        $produks = Produk::with('anggotaDosens')
+            ->orderBy('tahun', 'DESC')
+            ->get();
+      
+        $arrproduk = array();
+        foreach ($produks as $key => $produk) {
+            foreach ($produk->anggotaDosens as $key2 => $anggota) {
+                if ($anggota->id == $dosenId) {
+                    $arrproduk[] = $produk;
+                }
+            }
+        }
+        return response()->json([
+            'success' => true,
+            'dataproduks' => $arrproduk,
+        ]);
     }
 }

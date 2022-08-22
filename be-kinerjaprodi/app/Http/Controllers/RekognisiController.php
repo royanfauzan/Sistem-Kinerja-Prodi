@@ -234,6 +234,13 @@ class RekognisiController extends Controller
     {
         //
         $rekognisi = Rekognisi::find($id);
+
+        $filedihapus = File::exists(public_path($rekognisi->fileBukti));
+
+        if ($filedihapus) {
+            File::delete(public_path($rekognisi->fileBukti));
+        }
+
         $rekognisi->delete();
 
         if (!$rekognisi) {

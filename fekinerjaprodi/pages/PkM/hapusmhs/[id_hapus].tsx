@@ -109,14 +109,14 @@ export default function hapusmhs(props) {
 
     const searchdata = async (e) => {
         if (e.target.value == "") {
-            const req = await axios.get(`http://127.0.0.1:8000/api/PKM/`)
-            const res = await req.data.all_penelitian
+            const req = await axios.get(`http://127.0.0.1:8000/api/PKM_relasimhs/${id_pkm}`)
+            const res = await req.data.all_relasi
             setpkm(res)
         } else {
             const req = await axios.get(
-                `http://127.0.0.1:8000/api/PKM_search/${e.target.value}`
+                `http://127.0.0.1:8000/api/PKM_relasisearchmhs/${id_pkm}/${e.target.value}`
             )
-            const res = await req.data.searchpenelitian
+            const res = await req.data.searchhapusmhs
             setpkm(res)
         }
     }

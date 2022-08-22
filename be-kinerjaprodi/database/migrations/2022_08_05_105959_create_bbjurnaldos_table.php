@@ -17,13 +17,13 @@ class CreateBbjurnaldosTable extends Migration
             $table->id();
             $table->string('judul');
             $table->string('kategori_jurnal');
-            $table->string('nm_jurnal');
-            $table->string('keterangan');
+            $table->string('nm_jurnal')->default('');
+            $table->string('keterangan')->default('');
             $table->string('volume');
             $table->string('tahun');
-            $table->string('nomor');
+            $table->string('nomor')->default('');
             $table->string('halaman');
-            $table->integer('sitasi');
+            $table->integer('sitasi')->default(0);
             $table->timestamps();
         });
     }

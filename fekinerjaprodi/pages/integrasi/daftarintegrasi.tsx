@@ -16,6 +16,8 @@ export default function daftarintgrs() {
   const [stadmin, setStadmin] = useState(false);
   const [integrasi, setintegrasi] = useState([]);
   const MySwal = withReactContent(Swal);
+  const url = "http://127.0.0.1:8000/storage/integrasi/"
+  const [dataurl, setUrl] = useState(url);
 
   const [dataRole, setRole] = useState('');
 
@@ -59,7 +61,7 @@ export default function daftarintgrs() {
         console.log("Sukses");
         const { level_akses } = response.data.user;
 
-        const {role} = response.data.user;
+        const { role } = response.data.user;
         setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 2) {
@@ -128,7 +130,7 @@ export default function daftarintgrs() {
   };
 
 
-  const deleteintegrasi= (id) => {
+  const deleteintegrasi = (id) => {
     MySwal.fire({
       title: "Apakah anda yakin?",
       text: "Anda tidak akan dapat mengembalikan ini!",
@@ -156,7 +158,7 @@ export default function daftarintgrs() {
     });
   };
 
-  const searchdata= async (e) => {
+  const searchdata = async (e) => {
     if (e.target.value == "") {
       const req = await axios.get(`http://127.0.0.1:8000/api/Integrasi/`)
       const res = await req.data.all_integrasi
@@ -194,10 +196,10 @@ export default function daftarintgrs() {
                       onChange={searchdata}
                     />
                   </div>
-                  </div>
+                </div>
                 <div className="row justify-content-between mb-4">
-                <div className="col-5">
-                      <div className="col-5">
+                  <div className="col-5">
+                    <div className="col-5">
                       <td className="align-middle">
                         <button
                           onClick={() => tambahintegrasi()}
@@ -207,18 +209,18 @@ export default function daftarintgrs() {
                         </button>
                       </td>
                     </div>
-                      </div>
-                      
-                    <div className="col-4 d-flex flex-row-reverse">
-                      <td className="align-middle">
-                        <button
-                          onClick={() => exportintegrasi()}
-                          className="btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
-                        >
-                          Export Tabel
-                        </button>
-                      </td>
-                    </div>
+                  </div>
+
+                  <div className="col-4 d-flex flex-row-reverse">
+                    <td className="align-middle">
+                      <button
+                        onClick={() => exportintegrasi()}
+                        className="btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                      >
+                        Export Tabel
+                      </button>
+                    </td>
+                  </div>
                 </div>
                 <div className="card-body p-3">
                   <div className="table-responsive p-0">
@@ -306,13 +308,17 @@ export default function daftarintgrs() {
                                   {intgrs.tahun}
                                 </p>
                               </td>
-                              <td className="align-middle text-sm">
-                                <span className="text-dark text-xs font-weight-bold">
-                                  <p className="text-xs font-weight-bold mb-0 pe-3">
-                                    {intgrs.file_bukti}
-                                  </p>
+                              <td className="align-middle ">
+                                <span className="text-secondary text-xs font-weight-bold">
+                                  <h6 className="mb-0 text-sm">
+                                    <a href={dataurl + intgrs.file_bukti}>
+                                      {" "}
+                                      {intgrs.file_bukti}
+                                    </a>{" "}
+                                  </h6>
                                 </span>
                               </td>
+
 
                               <td className="align-middle pe-3 text-end">
 

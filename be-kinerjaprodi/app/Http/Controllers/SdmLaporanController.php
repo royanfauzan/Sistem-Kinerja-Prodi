@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bbjurnaldos;
 use App\Models\Ewmp;
 use App\Models\Integrasi;
+use App\Models\Mengajar;
 use App\Models\Pagelarandos;
 use App\Models\Penelitian;
 use App\Models\Pkm;
@@ -370,10 +371,7 @@ class SdmLaporanController extends Controller
     {
         $tahunlist = $this->tahuntsgenerator($tahun, 'akademik');
 
-        $profildos = profilDosen::with('mengajars.matkul.prodi', 'pendidikans', 'detaildosen.serkoms')->where('StatusDosen', 'Dosen Tetap')
-            ->whereRelation('mengajars.matkul', 'tahun_akademik', $tahunlist->ts)
-            ->orWhereRelation('mengajars.matkul', 'tahun_akademik', $tahunlist->ts1)
-            ->orWhereRelation('mengajars.matkul', 'tahun_akademik', $tahunlist->ts2)->get();
+        $profildos = profilDosen::with('pendidikans', 'detaildosen','serkoms')->where('StatusDosen', 'Dosen Tetap')->get();
 
         $listDosen = array();
         $listMengajars = array();
@@ -384,7 +382,10 @@ class SdmLaporanController extends Controller
             $profilSementara = $profilds;
             if (!strcmp($profilSementara->StatusDosen, 'Dosen Tetap')) {
                 $callProfilSementara = collect($profilSementara);
-                $profilmengajar = $profilds->mengajars;
+                $profilmengajar = Mengajar::whereRelation('matkul', 'tahun_akademik', $tahunlist->ts)
+                ->orWhereRelation('matkul', 'tahun_akademik', $tahunlist->ts1)
+                ->orWhereRelation('matkul', 'tahun_akademik', $tahunlist->ts2)->get();
+                $profilmengajar = $profilmengajar->where('profil_dosen_id',$profilSementara->id);
                 $listMengajars[] = $profilmengajar->where('matkul.prodi_id', 1);
                 $listMengajarLuars[] = $profilmengajar->where('matkul.prodi_id', '!=', 1);
                 $mengajars = $listMengajars[$key];

@@ -6,8 +6,8 @@ export default function NavbarUtama() {
   const pathHalaman = router.asPath;
   const arrHalaman = pathHalaman.split("/");
 
-  const listHalaman = ['dashboardadmin','tabelewmp','tabelewmpdsn','dashboarddosen'];
-  const namaHalaman = ['Dashboard Admin','Tabel List Ewmp','List Ewmp Dosen','Dashboard Dosen'];
+  const listHalaman = ['dashboardadmin','tabelewmp','tabelewmpdsn','dashboarddosen', 'daftarmatkul'];
+  const namaHalaman = ['Dashboard Admin','Tabel List Ewmp','List Ewmp Dosen','Dashboard Dosen', 'Mata Kuliah'];
   const indexNama = listHalaman.findIndex((a)=>{return a == arrHalaman.slice(-1)[0]});
   let namaHalamanIni = namaHalaman[indexNama];
   if (!namaHalamanIni) {

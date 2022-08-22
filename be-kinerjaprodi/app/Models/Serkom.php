@@ -10,8 +10,8 @@ class Serkom extends Model
     use HasFactory;
     protected $guarded = ["id"];
 
-    public function detailDosen()
+    public function profilDosen()
     {
-        return $this->belongsTo(Detaildosen::class,'detaildosen_id','id');
+        return $this->belongsTo(profilDosen::class,'profil_dosen_id','id');
     }
 }

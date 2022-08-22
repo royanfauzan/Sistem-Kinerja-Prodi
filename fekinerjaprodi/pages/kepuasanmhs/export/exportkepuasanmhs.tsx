@@ -148,12 +148,14 @@ export default function kepuasanmahasiswa() {
                         />
                       </div>
                     </div>
-                    <div className="col-md-4 pe-0">
+                    <div className="col-md-5 pe-0">
                       <div className="row">
                         <div className="col-6"><h6>Pilih Tahun</h6>
                         </div>
+                      </div>
 
-                        <div className="col-md-6 px-0">
+                      <div className="row">
+                        <div className="col-md-6">
                           <div className="form-group">
 
                             <select

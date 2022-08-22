@@ -6,6 +6,8 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 
 // Untuk Ngambil Data Berdasarkan ID
@@ -40,6 +42,8 @@ export default function update_dataPKM(props) {
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
+  const [dataError, setError] = useState([]);
+  const MySwal = withReactContent(Swal);
 
   const [dataRole, setRole] = useState("");
 
@@ -126,26 +130,25 @@ export default function update_dataPKM(props) {
       },
     })
       .then(function (response) {
-        const { profil } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(response.data);
-        router.push("../../PkM/daftarpkm");
+        MySwal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data Berhasil Di Edit",
+        })
+
+        router.push("/PkM/daftarpkm")
       })
       .catch(function (error) {
         //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
-        console.log(error.response);
-      });
+        setError(error.response.data.error)
+        console.log(error.response.data.error)
+        MySwal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Data Gagal Di Edit",
+        })
+        console.log(error.response)
+      })
   };
 
   return (
@@ -160,7 +163,7 @@ export default function update_dataPKM(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <h6 className="mb-0">Edit Data Pengabdian Kepada Masyarakat (PKM)</h6>
+                        <h6 className="mb-3">Edit Data Pengabdian Kepada Masyarakat (PKM)</h6>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -174,7 +177,8 @@ export default function update_dataPKM(props) {
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tema_sesuai_roadmap" className="form-control-label">
+                            <label htmlFor="tema_sesuai_roadmap"
+                              className={dataError.tema_sesuai_roadmap ? "is-invalid" : ""}>
                               Tema Sesuai Roadmap
                             </label>
                             <input
@@ -183,13 +187,20 @@ export default function update_dataPKM(props) {
                               type="text"
                               placeholder="Tema Sesuai Roadmap"
                               id="tema_sesuai_roadmap"
-                              required
                             />
+                            {dataError.tema_sesuai_roadmap ? (
+                              <div className="invalid-feedback">
+                                {dataError.tema_sesuai_roadmap}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="judul_kegiatan" className="form-control-label">
+                            <label htmlFor="judul_kegiatan"
+                              className={dataError.judul_kegiatan ? "is-invalid" : ""}>
                               Judul kegiatan
                             </label>
                             <input
@@ -198,14 +209,21 @@ export default function update_dataPKM(props) {
                               type="text"
                               placeholder="Judul kegiatan"
                               id="judul_kegiatan"
-                              required
                             />
+                            {dataError.judul_kegiatan ? (
+                              <div className="invalid-feedback">
+                                {dataError.judul_kegiatan}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="lokasi" className="form-control-label">
+                            <label htmlFor="lokasi"
+                              className={dataError.lokasi ? "is-invalid" : ""}>
                               Lokasi
                             </label>
                             <input
@@ -214,14 +232,21 @@ export default function update_dataPKM(props) {
                               type="text"
                               placeholder="Lokasi"
                               id="lokasi"
-                              required
                             />
+                            {dataError.lokasi ? (
+                              <div className="invalid-feedback">
+                                {dataError.lokasi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tahun" className="form-control-label">
+                            <label htmlFor="tahun"
+                              className={dataError.tahun ? "is-invalid" : ""}>
                               Tahun
                             </label>
                             <input
@@ -230,14 +255,21 @@ export default function update_dataPKM(props) {
                               type="text"
                               placeholder="Tahun"
                               id="tahun"
-                              required
                             />
+                            {dataError.tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="sumber_dana_pt_mandiri" className="form-control-label">
+                            <label htmlFor="sumber_dana_pt_mandiri"
+                              className={dataError.sumber_dana_PT_mandiri ? "is-invalid" : ""}>
                               Sumber Dana PT Mandiri
                             </label>
                             <input
@@ -246,14 +278,21 @@ export default function update_dataPKM(props) {
                               type="text"
                               placeholder="Sumber Dana PT Mandiri"
                               id="sumber_dana_pt_mandiri"
-                              required
                             />
+                            {dataError.sumber_dana_PT_mandiri ? (
+                              <div className="invalid-feedback">
+                                {dataError.sumber_dana_PT_mandiri}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="dana_pt_mandiri" className="form-control-label">
+                            <label htmlFor="dana_pt_mandiri"
+                              className={dataError.dana_PT_Mandiri ? "is-invalid" : ""}>
                               Dana PT Mandiri
                             </label>
                             <input
@@ -262,14 +301,21 @@ export default function update_dataPKM(props) {
                               type="number"
                               placeholder="Dana PT Mandiri"
                               id="dana_pt_mandiri"
-                              required
                             />
+                            {dataError.dana_PT_Mandiri ? (
+                              <div className="invalid-feedback">
+                                {dataError.dana_PT_Mandiri}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="sumber_dlm_negri" className="form-control-label">
+                            <label htmlFor="sumber_dlm_negri"
+                              className={dataError.sumber_dalam_negri ? "is-invalid" : ""}>
                               Sumber Dalam Negri
                             </label>
                             <input
@@ -278,14 +324,21 @@ export default function update_dataPKM(props) {
                               type="text"
                               placeholder="Sumber Dalam Negri"
                               id="sumber_dlm_negri"
-                              required
                             />
+                            {dataError.sumber_dalam_negri ? (
+                              <div className="invalid-feedback">
+                                {dataError.sumber_dalam_negri}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="dana_dlm_negri" className="form-control-label">
+                            <label htmlFor="dana_dlm_negri"
+                              className={dataError.dana_dalam_negri ? "is-invalid" : ""}>
                               Dana Dalam Negri
                             </label>
                             <input
@@ -294,14 +347,21 @@ export default function update_dataPKM(props) {
                               type="number"
                               placeholder="Dana Dalam Negri"
                               id="dana_dlm_negri"
-                              required
                             />
+                            {dataError.dana_dalam_negri ? (
+                              <div className="invalid-feedback">
+                                {dataError.dana_dalam_negri}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="sumber_luar_negri" className="form-control-label">
+                            <label htmlFor="sumber_luar_negri"
+                              className={dataError.sumber_luar_negri ? "is-invalid" : ""}>
                               Sumber Luar Negri
                             </label>
                             <input
@@ -310,14 +370,21 @@ export default function update_dataPKM(props) {
                               type="text"
                               placeholder="Sumber Luar Negri"
                               id="sumber_luar_negri"
-                              required
                             />
+                            {dataError.sumber_luar_negri ? (
+                              <div className="invalid-feedback">
+                                {dataError.sumber_luar_negri}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="dana_luar_negri" className="form-control-label">
+                            <label htmlFor="dana_luar_negri"
+                              className={dataError.dana_luar_negri ? "is-invalid" : ""}>
                               Dana Luar Negri
                             </label>
                             <input
@@ -326,8 +393,14 @@ export default function update_dataPKM(props) {
                               type="number"
                               placeholder="Dana Luar Negri"
                               id="dana_luar_negri"
-                              required
                             />
+                            {dataError.dana_luar_negri ? (
+                              <div className="invalid-feedback">
+                                {dataError.dana_luar_negri}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                       </div>

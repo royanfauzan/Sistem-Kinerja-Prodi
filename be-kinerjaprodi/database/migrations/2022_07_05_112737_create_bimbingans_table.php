@@ -18,9 +18,14 @@ class CreateBimbingansTable extends Migration
             $table->string('tahun_akademik');
             $table->string('judul_ta');
             $table->string('fileBukti');
-            $table->foreignId('profil_dosen_id');
-            $table->foreignId('prodi_id');
-            $table->foreignId('mahasiswa_id');
+            $table->foreignId('profil_dosen_id')->references('id')
+                ->on('profil_dosens')
+                ->onDelete('cascade');
+            $table->foreignId('prodi_id')->references('id')
+                ->on('prodis')
+                ->onDelete('cascade');
+            $table->foreignId('mahasiswa_id')->references('id')
+                ->on('mahasiswas');
             $table->timestamps();
         });
     }

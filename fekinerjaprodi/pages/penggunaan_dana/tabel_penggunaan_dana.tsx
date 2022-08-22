@@ -74,13 +74,14 @@ export default function daftarprofil() {
 
   const deletePenggunaanDana = (id) => {
     MySwal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Apakah yakin untuk hapus data?",
+      text: "Data Tidak Dapat Kembali Jika Sudah Di Hapus",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.isConfirmed) {
@@ -101,12 +102,14 @@ export default function daftarprofil() {
   }
   const tambahDana = () => {
     MySwal.fire({
-      title: "Tambah",
-      text: "Are you sure? ",
+      title: "Tambah Data Penggunaan Dana",
+      text: "Apa Kamu Yakin? ",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -117,12 +120,14 @@ export default function daftarprofil() {
   }
   const exportDana = () => {
     MySwal.fire({
-      title: "EXport",
-      text: "Are you sure? ",
+      title: "Export Data Penggunaan Dana",
+      text: "Apa kamu yakin? ",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -133,12 +138,14 @@ export default function daftarprofil() {
   }
   const editDana = (id) => {
     MySwal.fire({
-      title: "Edit",
-      text: "Are you sure? ",
+      title: "Edit Data Penggunaan Dana",
+      text: "Apa kamu yakin?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -174,6 +181,7 @@ export default function daftarprofil() {
               <div className="card mb-4">
                 <div className="card-header pb-0">
                   <div className="row justify-content-between">
+                  <p className="text-uppercase text-sm text-center"> <h5>TABEL  PENGGUNAAN DANA </h5> </p>
                     <div className="col-8">
                       <button
                         onClick={() => tambahDana()}
@@ -191,9 +199,9 @@ export default function daftarprofil() {
                     </div>
                     <div className="col-4 d-flex flex-row-reverse">
                       <input
-                        className="rounded-3"
+                       className="form-control d-flex flex-row-reverse me-2 mt-3 mb-0"
                         type="text"
-                        placeholder="search.."
+                        placeholder="Cari Data Penggunaan Dana..."
                         defaultValue=""
                         id="search"
                         onChange={searchdata}

@@ -176,7 +176,7 @@ export default function editkerjasama(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Input Data</p>
+                      <p className="text-uppercase text-sm"> <h5>FORM EDIT DATA KERJASAMA </h5> </p>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"

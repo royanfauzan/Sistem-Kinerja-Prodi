@@ -104,7 +104,7 @@ export default function tabelmitra() {
 
   const resetUser = (id) => {
     MySwal.fire({
-      title: "Edit Data Mitra",
+      title: "Edit Data User?",
       text: "Yakin Edit Data? ",
       icon: "warning",
       showCancelButton: true,

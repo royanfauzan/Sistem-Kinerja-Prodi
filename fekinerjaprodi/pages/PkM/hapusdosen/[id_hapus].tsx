@@ -19,7 +19,7 @@ export async function getServerSideProps(context) {
 
     return {
         props: {
-            pkmmhs: res // <-- assign response
+            pkmdosen: res // <-- assign response
         },
     }
 }
@@ -27,10 +27,10 @@ export async function getServerSideProps(context) {
 export default function hapusmhs(props) {
     const router = useRouter();
     const { id_hapus } = router.query;
-    const { pkmmhs } = props;
+    const { pkmdosen } = props;
 
     const [stadmin, setStadmin] = useState(false);
-    const [pkm, setpkm] = useState(pkmmhs);
+    const [pkm, setpkm] = useState(pkmdosen);
     const [id_pkm, setid_pkm] = useState(id_hapus);
     const MySwal = withReactContent(Swal);
     const [dataRole, setRole] = useState("");
@@ -109,17 +109,20 @@ export default function hapusmhs(props) {
 
     const searchdata = async (e) => {
         if (e.target.value == "") {
-            const req = await axios.get(`http://127.0.0.1:8000/api/PKM/`)
-            const res = await req.data.all_penelitian
+            const req = await axios.get(`http://127.0.0.1:8000/api/PKM_relasidosen/${id_pkm}`)
+            const res = await req.data.all_relasi
             setpkm(res)
         } else {
             const req = await axios.get(
-                `http://127.0.0.1:8000/api/PKM_search/${e.target.value}`
+                `http://127.0.0.1:8000/api/PKM_relasisearch/${id_pkm}/${e.target.value}`
             )
-            const res = await req.data.searchpenelitian
+            const res = await req.data.searchhapus
             setpkm(res)
+            console.log(pkm);
+            console.log(res);
         }
     }
+
 
 
     return (

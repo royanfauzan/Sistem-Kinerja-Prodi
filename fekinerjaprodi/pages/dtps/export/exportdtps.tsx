@@ -257,8 +257,8 @@ export default function exportdtps() {
                           </thead>
                           <tbody>
                             {dataDTPS.map((dtps, index) => {
-                              const stats = dtps.mengajarUns[0].kesesuaian
-                                ? "V"
+                              const stats = dtps.mengajarUns[0]
+                                ?dtps.mengajarUns[0].kesesuaian? "V":''
                                 : "";
                               return (
                                 <tr key={`tdtps` + dtps.id}>
@@ -269,10 +269,20 @@ export default function exportdtps() {
                                   <td>{dtps.NIDK}</td>
                                   <td>{dtps.pascasarjana.magister}</td>
                                   <td>{dtps.pascasarjana.doktor}</td>
-                                  <td>{dtps.detaildosen.bidangKeahlian}</td>
-                                  <td>{dtps.detaildosen.kesesuaian}</td>
-                                  <td>{dtps.detaildosen.jabatanAkademik}</td>
-                                  <td>
+                                  {dtps.detaildosen?(
+                                    <>
+                                    <td>{dtps.detaildosen.bidangKeahlian}</td>
+                                    <td>{dtps.detaildosen.kesesuaian}</td>
+                                    </>
+                                  ):(
+                                    <>
+                                    <td></td>
+                                    <td></td>
+                                    </>
+                                  )}
+                                  <td>{dtps.JabatanAkademik}</td>
+                                  {dtps.detaildosen?(
+                                    <td>
                                     <a
                                       href={
                                         `http://127.0.0.1:8000/` +
@@ -282,11 +292,14 @@ export default function exportdtps() {
                                       {dtps.detaildosen.noSertifPendidik}
                                     </a>
                                   </td>
+                                  ):(
+                                    <td></td>
+                                  )}
                                   <td>
-                                    {dtps.detaildosen.serkoms.map((serkom, indx) => {
+                                    {dtps.serkoms.map((serkom, indx) => {
                                       return (
                                         <>
-                                          {`${indx+1}.${serkom.nama_sertifikat}(${serkom.keterangan})`}
+                                          {`${indx+1}.${serkom.nama_skema}/${serkom.nomor_sertifikat}`}
                                           <br />
                                         </>
                                       );

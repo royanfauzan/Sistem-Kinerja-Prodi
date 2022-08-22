@@ -21,7 +21,9 @@ class CreateRekognisisTable extends Migration
             $table->string("tahun");
             $table->text("deskripsi");
             $table->string("fileBukti");
-            $table->foreignId('profil_dosen_id');
+            $table->foreignId('profil_dosen_id')->references('id')
+                ->on('profil_dosens')
+                ->onDelete('cascade');;
             $table->timestamps();
         });
     }

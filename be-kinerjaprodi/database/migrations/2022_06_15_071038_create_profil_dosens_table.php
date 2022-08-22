@@ -15,7 +15,9 @@ class CreateProfilDosensTable extends Migration
     {
         Schema::create('profil_dosens', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('NIDK');
+            $table->string('NIDK');
+            $table->foreign('NIDK')->references('NIDK')
+                ->on('users')->onUpdate('cascade');
             $table->string('NamaDosen');
             $table->string('NIK');
             $table->string('TempatLahir');

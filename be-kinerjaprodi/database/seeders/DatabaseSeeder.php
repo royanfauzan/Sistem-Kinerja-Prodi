@@ -111,8 +111,9 @@ class DatabaseSeeder extends Seeder
             'NIK' => "12345678",
             'TempatLahir' => 'Tabanan',
             'TanggalLahir' => '2000-12-25',
-            'JenisKelamin' => 'L',
+            'JenisKelamin' => 'Laki-Laki',
             'StatusPerkawinan' => 'Belum Kawin',
+            'JabatanAkademik'=>'Lektor Kepala',
             'Agama' => 'Kristen',
         ]);
 
@@ -122,8 +123,9 @@ class DatabaseSeeder extends Seeder
             'NIK' => "911111111",
             'TempatLahir' => 'Singaraja',
             'TanggalLahir' => '1998-12-25',
-            'JenisKelamin' => 'L',
+            'JenisKelamin' => 'Laki-Laki',
             'StatusPerkawinan' => 'Kawin',
+            'JabatanAkademik'=>'Lektor Kepala',
             'Agama' => 'Hindu',
         ]);
 
@@ -133,8 +135,9 @@ class DatabaseSeeder extends Seeder
             'NIK' => "922222222",
             'TempatLahir' => 'Singaraja',
             'TanggalLahir' => '1998-12-25',
-            'JenisKelamin' => 'L',
+            'JenisKelamin' => 'Laki-Laki',
             'StatusPerkawinan' => 'Kawin',
+            'JabatanAkademik'=>'Lektor Kepala',
             'Agama' => 'Hindu',
         ]);
 
@@ -144,8 +147,9 @@ class DatabaseSeeder extends Seeder
             'NIK' => "933333333",
             'TempatLahir' => 'Singaraja',
             'TanggalLahir' => '1998-12-25',
-            'JenisKelamin' => 'L',
+            'JenisKelamin' => 'Laki-Laki',
             'StatusPerkawinan' => 'Kawin',
+            'JabatanAkademik'=>'Lektor Kepala',
             'Agama' => 'Hindu',
         ]);
 
@@ -155,7 +159,7 @@ class DatabaseSeeder extends Seeder
             'NIK'=>"944444444",
             'TempatLahir'=>'Singaraja',
             'TanggalLahir'=>'1998-12-25',
-            'JenisKelamin'=>'L',
+            'JenisKelamin'=>'Laki-Laki',
             'StatusPerkawinan'=>'Kawin',
             'Agama'=>'Hindu',
         ]);

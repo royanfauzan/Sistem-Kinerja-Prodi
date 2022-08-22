@@ -62,6 +62,40 @@ class PenelitianController extends Controller
         ]);
     }
 
+    public function searchhapus($id,$search)
+    {
+        $datarelasi = RelasiDosPen::with('dosen')
+        ->whereRelation('dosen', 'NamaDosen', 'LIKE', "%{$search}%")
+        ->orWhereRelation('dosen', 'NIDK', 'LIKE', "%{$search}%")     
+        ->get();
+
+        $datafilter = $datarelasi->where('penelitian_id',$id);
+
+        return response()->json([
+            'success' => true,
+            'searchhapus' =>  $datafilter,
+            
+        ]);
+    }
+
+    public function searchhapusmhs($id,$search)
+    {
+        $datarelasi = RelasiPenMhs::with('mahasiswa')
+        ->whereRelation('mahasiswa', 'nama', 'LIKE', "%{$search}%")
+        ->orWhereRelation('mahasiswa', 'nim', 'LIKE', "%{$search}%")     
+        ->get();
+
+        $datafilter = $datarelasi->where('penelitian_id',$id);
+
+        return response()->json([
+            'success' => true,
+            'searchhapusmhs' =>  $datafilter,
+            
+        ]);
+    }
+
+    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -186,7 +220,7 @@ class PenelitianController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $penelitian->tema_sesuai_roadmap = $request->tema_sesuai_roadmap;

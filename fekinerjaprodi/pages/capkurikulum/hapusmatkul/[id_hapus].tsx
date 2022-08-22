@@ -14,12 +14,12 @@ import withReactContent from "sweetalert2-react-content"
 export async function getServerSideProps(context) {
 
     //http request
-    const req = await axios.get(`http://127.0.0.1:8000/api/PKM_relasidosen/${context.query.id_hapus}`)
+    const req = await axios.get(`http://127.0.0.1:8000/api/CapaianKurikulum_relasimatkul/${context.query.id_hapus}`)
     const res = await req.data.all_relasi
 
     return {
         props: {
-            pkmdosen: res // <-- assign response
+            kurikulum: res // <-- assign response
         },
     }
 }
@@ -27,29 +27,29 @@ export async function getServerSideProps(context) {
 export default function hapusmhs(props) {
     const router = useRouter();
     const { id_hapus } = router.query;
-    const { pkmdosen } = props;
+    const { kurikulum } = props;
 
     const [stadmin, setStadmin] = useState(false);
-    const [pkm, setpkm] = useState(pkmdosen);
-    const [id_pkm, setid_pkm] = useState(id_hapus);
+    const [kurikulummatkul, setkurikulummatkul] = useState(kurikulum);
+    const [id_kurikulum, setid_kurikulum] = useState(id_hapus);
     const MySwal = withReactContent(Swal);
     const [dataRole, setRole] = useState("");
 
-
+    
 
     const pengambilData = async () => {
         const lgToken = localStorage.getItem("token");
 
         axios({
             method: "get",
-            url: `http://127.0.0.1:8000/api/PKM_relasidosen/${id_pkm}`,
+            url: `http://127.0.0.1:8000/api/CapaianKurikulum_relasimatkul/${id_kurikulum}`,
             headers: { Authorization: `Bearer ${lgToken}` },
         })
             .then(function (response) {
                 console.log(response);
                 console.log("Sukses");
                 const { all_relasi } = response.data;
-                setpkm(all_relasi);
+                setkurikulummatkul(all_relasi);
 
                 console.log(id_hapus);
             })
@@ -79,7 +79,7 @@ export default function hapusmhs(props) {
                 const { role } = response.data.user;
                 setRole(role);
                 // kalo ga admin dipindah ke halaman lain
-                if (level_akses !== 2) {
+                if (level_akses !== 3) {
                     return router.push("/");
                 }
                 // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -93,10 +93,10 @@ export default function hapusmhs(props) {
             });
     }, []);
 
-    const deletepkm = (id) => {
+    const deletepenelitian = (id) => {
         axios({
             method: "post",
-            url: `http://127.0.0.1:8000/api/PKM_Deleterelasi_dosen/${id}`,
+            url: `http://127.0.0.1:8000/api/CapaianKurikulum_Deleterelasi_matkul/${id}`,
         })
             .then(function (response) {
                 router.reload();
@@ -109,20 +109,17 @@ export default function hapusmhs(props) {
 
     const searchdata = async (e) => {
         if (e.target.value == "") {
-            const req = await axios.get(`http://127.0.0.1:8000/api/PKM_relasidosen/${id_pkm}`)
+            const req = await axios.get(`http://127.0.0.1:8000/api/CapaianKurikulum_relasimatkul/`)
             const res = await req.data.all_relasi
-            setpkm(res)
+            setkurikulummatkul(res)
         } else {
             const req = await axios.get(
-                `http://127.0.0.1:8000/api/PKM_relasisearch/${id_pkm}/${e.target.value}`
+                `http://127.0.0.1:8000/api/CapaianKurikulum_relasisearch/${e.target.value}`
             )
             const res = await req.data.searchhapus
-            setpkm(res)
-            console.log(pkm);
-            console.log(res);
+            setkurikulummatkul(res)
         }
     }
-
 
 
     return (
@@ -134,7 +131,7 @@ export default function hapusmhs(props) {
                         <div className="col-12">
                             <div className="card mb-4">
                                 <div className="card-header pb-0">
-                                    <h6>Tabel PKM</h6>
+                                    <h6>Hapus ID Matkul</h6>
                                 </div>
                                 <div className="row justify-content-end">
                                     <div className="col-3 d-flex flex-row-reverse pe-2">
@@ -152,7 +149,7 @@ export default function hapusmhs(props) {
                                 <div className="row justify-content-between mb-4">
                                     <div className="col-4">
                                         <div className="align-middle">
-                                            <Link href={`/PkM/daftarpkm/`}>
+                                            <Link href={`/capkurikulum/daftarkurikulum/`}>
                                                 <button className=" btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                                                     Daftar Tabel
                                                 </button>
@@ -170,10 +167,10 @@ export default function hapusmhs(props) {
                                                         NO
                                                     </th>
                                                     <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-3">
-                                                        Nama Dosen
+                                                        Kode Matkul
                                                     </th>
                                                     <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-3">
-                                                        NIDK
+                                                        Nama Matkul
                                                     </th>
 
 
@@ -181,33 +178,37 @@ export default function hapusmhs(props) {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {pkm.map((pkm, number) => {
+                                                {kurikulummatkul.map((kurikulum, number) => {
                                                     return (
-                                                        <tr key={`pkm` + pkm.id}>
+                                                        <tr key={`kurikulum` + kurikulum.id}>
 
                                                             <td className="ps-3 pe-3">
                                                                 <p className="mb-0 text-sm">{number + 1}</p>
                                                             </td>
 
 
-                                                            <td className="align-middle  text-sm">
-                                                                <p className="text-xs font-weight-bold mb-0">
-                                                                    {pkm.dosen.NamaDosen}
-                                                                </p>
-                                                            </td>
 
                                                             <td className="align-middle  text-sm">
                                                                 <p className="text-xs font-weight-bold mb-0">
-                                                                    {pkm.dosen.NIDK}
+                                                                    {kurikulum.matkul.kode_matkul}
                                                                 </p>
                                                             </td>
+
+
+                                                            <td className="align-middle  text-sm">
+                                                                <p className="text-xs font-weight-bold mb-0">
+                                                                    {kurikulum.matkul.nama_matkul}
+                                                                </p>
+                                                            </td>
+
+
 
 
                                                             <td className="align-middle pe-3 text-end">
 
 
                                                                 <button
-                                                                    onClick={() => deletepkm(pkm.id)}
+                                                                    onClick={() => deletepenelitian(kurikulum.id)}
                                                                     className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                                                 >
                                                                     Hapus

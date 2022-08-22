@@ -74,7 +74,7 @@ export default function daftarpenelitian() {
       });
   }, []);
 
-  const pilihdosen = () => {
+  const pilihdosen = (id) => {
     MySwal.fire({
       title: "Pilih Dosen",
       text: "Apakah anda yakin? ",
@@ -91,7 +91,7 @@ export default function daftarpenelitian() {
     });
   };
 
-  const pilihmhs = () => {
+  const pilihmhs = (id) => {
     MySwal.fire({
       title: "Pilih Mahasiswa",
       text: "Apakah anda yakin? ",
@@ -108,7 +108,7 @@ export default function daftarpenelitian() {
     });
   };
 
-  const hapusdosen = () => {
+  const hapusdosen = (id) => {
     MySwal.fire({
       title: "Hapus Dosen",
       text: "Apakah anda yakin? ",
@@ -137,7 +137,7 @@ export default function daftarpenelitian() {
       // <--
       if (result.value) {
         // <-- if confirmed
-        router.push(`/penelitian/hapusdosen/${id}`);
+        router.push(`/penelitian/hapusmhs/${id}`);
       }
     });
   };
@@ -387,7 +387,7 @@ export default function daftarpenelitian() {
 
                               <td>
                                 <p className="text-xs font-weight-bold mb-0 ps-2 pe-3">
-                                  {penelitian.dana_PT_mandiri}
+                                  {penelitian.dana_PT_Mandiri}
                                 </p>
                               </td>
 
@@ -431,31 +431,35 @@ export default function daftarpenelitian() {
                                     Hapus Penelitian
                                   </button>
 
-                                  <Link href={`/penelitian/pilih_dosen/${penelitian.id}`}>
-                                    <button className="btn btn-sm btn-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                      Pilih Dosen
-                                    </button>
-                                  </Link>
+                                  <button
+                                    onClick={() => pilihdosen(penelitian.id)}
+                                    className="btn btn-sm btn-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
+                                  >
+                                    Pilih Dosen
+                                  </button>
                                 </tr>
 
                                 <tr>
-                                  <Link href={`/penelitian/pilih_mahasiswa/${penelitian.id}`}>
-                                    <button className="btn btn-sm btn-dark border-0 shadow-sm  ps-3 pe-3 mb-3 me-3 mt-3">
-                                      Pilih mahasiswa
-                                    </button>
-                                  </Link>
+                                <button
+                                    onClick={() => pilihmhs(penelitian.id)}
+                                    className="btn btn-sm btn-secondary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
+                                  >
+                                    Pilih Mahasiswa
+                                  </button>
 
-                                  <Link href={`/penelitian/hapusmhs/${penelitian.id}`}>
-                                    <button className="btn btn-sm btn-secondary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                      Hapus mahasiswa
-                                    </button>
-                                  </Link>
+                                  <button
+                                    onClick={() => hapusmhs(penelitian.id)}
+                                    className="btn btn-sm btn-dark border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
+                                  >
+                                    Hapus Mahasiswa
+                                  </button>
 
-                                  <Link href={`/penelitian/hapusdosen/${penelitian.id}`}>
-                                    <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                      Hapus Dosen
-                                    </button>
-                                  </Link>
+                                  <button
+                                    onClick={() => hapusdosen(penelitian.id)}
+                                    className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
+                                  >
+                                    Hapus Dosen
+                                  </button>
 
                                 </tr>
                               </td>

@@ -35,7 +35,7 @@ export default function hapusmhs(props) {
     const MySwal = withReactContent(Swal);
     const [dataRole, setRole] = useState("");
 
-    
+
 
     const pengambilData = async () => {
         const lgToken = localStorage.getItem("token");
@@ -109,14 +109,14 @@ export default function hapusmhs(props) {
 
     const searchdata = async (e) => {
         if (e.target.value == "") {
-            const req = await axios.get(`http://127.0.0.1:8000/api/Penelitian/`)
-            const res = await req.data.all_penelitian
+            const req = await axios.get(`http://127.0.0.1:8000/api/Penelitian_relasimhs/${id_penelitian}`)
+            const res = await req.data.all_relasi
             setpenelitian(res)
         } else {
             const req = await axios.get(
-                `http://127.0.0.1:8000/api/Penelitian_search/${e.target.value}`
+                `http://127.0.0.1:8000/api/Penelitian_relasisearchmhs/${id_penelitian}/${e.target.value}`
             )
-            const res = await req.data.searchpenelitian
+            const res = await req.data.searchhapusmhs
             setpenelitian(res)
         }
     }

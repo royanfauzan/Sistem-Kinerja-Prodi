@@ -19,7 +19,7 @@ export async function getServerSideProps(context) {
 
     return {
         props: {
-            penelitianmhs: res // <-- assign response
+            penelitiandosen: res // <-- assign response
         },
     }
 }
@@ -27,10 +27,10 @@ export async function getServerSideProps(context) {
 export default function hapusmhs(props) {
     const router = useRouter();
     const { id_hapusdosen } = router.query;
-    const { penelitianmhs } = props;
+    const { penelitiandosen } = props;
 
     const [stadmin, setStadmin] = useState(false);
-    const [penelitian, setpenelitian] = useState(penelitianmhs);
+    const [penelitian, setpenelitian] = useState(penelitiandosen);
     const [id_penelitian, setid_penelitian] = useState(id_hapusdosen);
     const MySwal = withReactContent(Swal);
     const [dataRole, setRole] = useState("");
@@ -109,14 +109,14 @@ export default function hapusmhs(props) {
 
     const searchdata = async (e) => {
         if (e.target.value == "") {
-            const req = await axios.get(`http://127.0.0.1:8000/api/Penelitian/`)
-            const res = await req.data.all_penelitian
+            const req = await axios.get(`http://127.0.0.1:8000/api/Penelitian_relasidosen/${id_penelitian}`)
+            const res = await req.data.all_relasi
             setpenelitian(res)
         } else {
             const req = await axios.get(
-                `http://127.0.0.1:8000/api/Penelitian_search/${e.target.value}`
+                `http://127.0.0.1:8000/api/Penelitian_relasisearch/${id_penelitian}/${e.target.value}`
             )
-            const res = await req.data.searchpenelitian
+            const res = await req.data.searchhapus
             setpenelitian(res)
         }
     }
@@ -167,10 +167,10 @@ export default function hapusmhs(props) {
                                                         NO
                                                     </th>
                                                     <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-3">
-                                                        Nama Mahasiswa
+                                                        Nama Dosen
                                                     </th>
                                                     <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-3">
-                                                        NIM
+                                                        NIDK
                                                     </th>
 
 

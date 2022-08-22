@@ -24,11 +24,32 @@ export default function inputmatkul() {
   const [userDosens, setuserDosens] = useState<Udosen[]>([]);
   const [dataError, setError] = useState([]);
   const MySwal = withReactContent(Swal);
+  const [userProdis, setuserProdis] = useState([]);
 
   const [dataRole, setRole] = useState("");
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
+
+  const pengambilDataProdi = async () => {
+    axios({
+      method: "get",
+      url: "http://127.0.0.1:8000/api/Prodi",
+    })
+      .then(function (response) {
+        console.log(response);
+        console.log("Sukses");
+        const { Prodi } = response.data;
+        setuserProdis(Prodi);
+        console.log(Prodi);
+      })
+      .catch(function (err) {
+        console.log("gagal");
+        console.log(err.response);
+      });
+
+
+  }
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () => {
@@ -79,7 +100,7 @@ export default function inputmatkul() {
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         setStadmin(true);
-        pengambilData();
+        pengambilDataProdi();
       })
       .catch(function (err) {
         console.log('gagal');
@@ -233,20 +254,33 @@ export default function inputmatkul() {
                             )}
                           </div>
                         </div>
+                        
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="prodi_id"
-                              className={
-                                dataError.prodi_id ? "is-invalid" : ""
-                              }>
-                              Prodi ID
+                            <label
+                              htmlFor="prodi_id"
+                              className={dataError.prodi_id ? "is-invalid" : ""}
+                            >
+                              Program Studi
                             </label>
-                            <input
-                              className="form-control"
-                              type="number"
-                              placeholder="Prodi ID"
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
                               id="prodi_id"
-                            />
+                            >
+                              <option value="">Pilih Program Studi</option>
+                              {userProdis.map((dataProdi) => {
+                                return (
+                                  <option
+                                    value={dataProdi.id}
+                                    key={dataProdi.id}
+                                  >
+                                    {dataProdi.prodi + ' ' + dataProdi.nama_prodi}
+                                  </option>
+                                )
+                              })}
+                            </select>
                             {dataError.prodi_id ? (
                               <div className="invalid-feedback">
                                 {dataError.prodi_id}

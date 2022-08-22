@@ -85,7 +85,7 @@ export default function capkurikulum() {
         console.log(response);
         console.log('Sukses');
         const { level_akses } = response.data.user;
-        const {role} = response.data.user;
+        const { role } = response.data.user;
         setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
@@ -109,22 +109,28 @@ export default function capkurikulum() {
 
     toast.loading("Loading...");
     const lgToken = localStorage.getItem("token");
+    const mata_kuliah_kompetensi = event.target.mata_kuliah_kompetensi.checked ? "V" : " ";
+    const sikap = event.target.sikap.checked ? "V" : " ";
+    const pengetahuan = event.target.pengetahuan.checked ? "V" : " ";
+    const ketrampilan_umum = event.target.ketrampilan_umum.checked ? "V" : " ";
+    const ketrampilan_khusus = event.target.ketrampilan_khusus.checked ? "V" : " ";
+    const dok_ren_pembelajaran = event.target.dok_ren_pembelajaran.checked ? "V" : " ";
 
     let formData = new FormData();
     formData.append("prodi_ID", event.target.prodi.value);
     formData.append("matkul_ID", event.target.matkul.value);
     formData.append("semester", event.target.semester.value);
     formData.append("tahun", event.target.tahun.value);
-    formData.append("mata_kuliah_kompetensi", event.target.matkul_kompetensi.value);
+    formData.append("mata_kuliah_kompetensi", mata_kuliah_kompetensi);
     formData.append("kuliah_responsi_tutorial", event.target.kuliah_responsi_tutorial.value);
     formData.append("seminar", event.target.seminar.value);
     formData.append("praktikum", event.target.praktikum.value);
     formData.append("konversi_kredit_jam", event.target.konv_kredit_jam.value);
-    formData.append("sikap", event.target.sikap.value);
-    formData.append("pengetahuan", event.target.pengetahuan.value);
-    formData.append("ketrampilan_umum", event.target.ketrampilan_umum.value);
-    formData.append("ketrampilan_khusus", event.target.ketrampilan_khusus.value);
-    formData.append("dok_ren_pembelajaran", event.target.dok_ren_pembelajaran.value);
+    formData.append("sikap", sikap);
+    formData.append("pengetahuan", pengetahuan);
+    formData.append("ketrampilan_umum", ketrampilan_umum);
+    formData.append("ketrampilan_khusus", ketrampilan_khusus);
+    formData.append("dok_ren_pembelajaran", dok_ren_pembelajaran);
     formData.append("unit_penyelenggara", event.target.unit_penyelenggara.value);
 
     console.log(formData);
@@ -183,7 +189,7 @@ export default function capkurikulum() {
                     </div>
                     <div className="card-body">
                       <div className="row">
-                      <div className="col-md-6">
+                        <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="prodi"
@@ -240,7 +246,7 @@ export default function capkurikulum() {
                                     value={dataMatkul.id}
                                     key={dataMatkul.id}
                                   >
-                                    {dataMatkul.nama_matkul + ' ' + dataMatkul.sks}
+                                    {dataMatkul.kode_matkul + ' ' + dataMatkul.nama_matkul}
                                   </option>
                                 )
                               })}
@@ -306,17 +312,12 @@ export default function capkurikulum() {
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="matkul_kompetensi"
-                              className={
-                                dataError.mata_kuliah_kompetensi ? "is-invalid" : ""
-                              }>
-                              Mata Kuliah Kompetensi
-                            </label>
                             <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Mata Kuliah Kompetensi"
-                              id="matkul_kompetensi"
+                              className="form-check-input"
+                              type="checkbox"
+                              value="V"
+                              id="mata_kuliah_kompetensi"
+                              defaultChecked={true}
                             />
                             {dataError.mata_kuliah_kompetensi ? (
                               <div className="invalid-feedback">
@@ -325,6 +326,47 @@ export default function capkurikulum() {
                             ) : (
                               ""
                             )}
+                            <label
+                              className={
+                                "form-check-label " + dataError.mata_kuliah_kompetensi
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                              htmlFor="mata_kuliah_kompetensi"
+                            >
+                              Mata Kuliah Kompetensi
+                            </label>
+
+
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              value="V"
+                              id="dok_ren_pembelajaran"
+                              defaultChecked={true}
+                            />
+                            {dataError.dok_ren_pembelajaran ? (
+                              <div className="invalid-feedback">
+                                {dataError.dok_ren_pembelajaran}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                            <label
+                              className={
+                                "form-check-label " + dataError.dok_ren_pembelajaran
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                              htmlFor="dok_ren_pembelajaran"
+                            >
+                              Dokumen Rencana Pembelajaran
+                            </label>
                           </div>
                         </div>
 
@@ -424,19 +466,33 @@ export default function capkurikulum() {
                           </div>
                         </div>
 
+                        <div className="col-md-6 mt-4">
+                          <div className="form-group">
+
+                            <label
+
+
+                            >
+                              Capaian Pembelajaran
+                            </label>
+                          </div>
+                        </div>
+
+                        <div className="col-md-6 ">
+                          <div className="form-group">
+
+                            
+                          </div>
+                        </div>
+
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="sikap"
-                              className={
-                                dataError.sikap ? "is-invalid" : ""
-                              }>
-                              Sikap
-                            </label>
                             <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Sikap"
+                              className="form-check-input"
+                              type="checkbox"
+                              value="V"
                               id="sikap"
+                              defaultChecked={true}
                             />
                             {dataError.sikap ? (
                               <div className="invalid-feedback">
@@ -445,22 +501,27 @@ export default function capkurikulum() {
                             ) : (
                               ""
                             )}
+                            <label
+                              className={
+                                "form-check-label " + dataError.sikap
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                              htmlFor="sikap"
+                            >
+                              Sikap
+                            </label>
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="pengetahuan"
-                              className={
-                                dataError.pengetahuan ? "is-invalid" : ""
-                              }>
-                              Pengetahuan
-                            </label>
                             <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Pengetahuan"
+                              className="form-check-input"
+                              type="checkbox"
+                              value="V"
                               id="pengetahuan"
+                              defaultChecked={true}
                             />
                             {dataError.pengetahuan ? (
                               <div className="invalid-feedback">
@@ -469,22 +530,27 @@ export default function capkurikulum() {
                             ) : (
                               ""
                             )}
+                            <label
+                              className={
+                                "form-check-label " + dataError.pengetahuan
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                              htmlFor="pengetahuan"
+                            >
+                              Pengetahuan
+                            </label>
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="ketrampilan_umum"
-                              className={
-                                dataError.ketrampilan_umum ? "is-invalid" : ""
-                              }>
-                              Ketrampilan Umum
-                            </label>
                             <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Ketrampilan Umum"
+                              className="form-check-input"
+                              type="checkbox"
+                              value="V"
                               id="ketrampilan_umum"
+                              defaultChecked={true}
                             />
                             {dataError.ketrampilan_umum ? (
                               <div className="invalid-feedback">
@@ -493,22 +559,27 @@ export default function capkurikulum() {
                             ) : (
                               ""
                             )}
+                            <label
+                              className={
+                                "form-check-label " + dataError.ketrampilan_umum
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                              htmlFor="ketrampilan_umum"
+                            >
+                              Ketrampilan Umum
+                            </label>
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="khusus"
-                              className={
-                                dataError.ketrampilan_khusus ? "is-invalid" : ""
-                              }>
-                              Ketrampilan Khusus
-                            </label>
                             <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Ketrampilan Khusus"
+                              className="form-check-input"
+                              type="checkbox"
+                              value="V"
                               id="ketrampilan_khusus"
+                              defaultChecked={true}
                             />
                             {dataError.ketrampilan_khusus ? (
                               <div className="invalid-feedback">
@@ -517,32 +588,20 @@ export default function capkurikulum() {
                             ) : (
                               ""
                             )}
+                            <label
+                              className={
+                                "form-check-label " + dataError.ketrampilan_khusus
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                              htmlFor="ketrampilan_khusus"
+                            >
+                              Ketrampilan Khusus
+                            </label>
                           </div>
                         </div>
 
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label htmlFor="dok_ren_pembelajaran"
-                              className={
-                                dataError.dok_ren_pembelajaran ? "is-invalid" : ""
-                              }>
-                              Dokumen Rencana Pembelajaran
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Dokumen Rencana Pembelajaran"
-                              id="dok_ren_pembelajaran"
-                            />
-                            {dataError.dok_ren_pembelajaran ? (
-                              <div className="invalid-feedback">
-                                {dataError.dok_ren_pembelajaran}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
+
 
                         <div className="col-md-6">
                           <div className="form-group">

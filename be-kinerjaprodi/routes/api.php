@@ -391,6 +391,7 @@ Route::post('KepuasanMHS', [KepuasanMHSController::class, 'store']);
 Route::put('KepuasanMHS_Update/{id}', [KepuasanMHSController::class, 'update']);
 Route::get('KepuasanMHS_Tahun', [KepuasanMHSController::class, 'listtahun']);
 Route::get('KepuasanMHS_Export/{tahun}', [KepuasanMHSController::class, 'exporttahun']);
+Route::post('KepuasanMHS_Delete/{id}', [KepuasanMHSController::class, 'destroy']);
 
 //route produk mahasiswa
 Route::get('ProdukMHS_search/{id}', [ProdukMHSController::class, 'searchprodukmhs']);
@@ -401,14 +402,20 @@ Route::put('ProdukMHS_Update/{id}', [ProdukMHSController::class, 'update']);
 Route::post('ProdukMHS_Delete/{id}', [ProdukMHSController::class, 'destroy']);
 
 //route data capaian kurikulum
+Route::get('CapaianKurikulum_relasisearch/{search}', [CapKurikulumController::class, 'searchhapus']);
 Route::get('CapaianKurikulum_search/{id}', [CapKurikulumController::class, 'searchcapkurikulum']);
 Route::get('tampil_CapaianKurikulum/{id}', [CapKurikulumController::class, 'show']);
 Route::get('CapaianKurikulum', [CapKurikulumController::class, 'index']);
 Route::post('CapaianKurikulum', [CapKurikulumController::class, 'store']);
 Route::put('CapaianKurikulum_Update/{id}', [CapKurikulumController::class, 'update']);
 Route::post('CapaianKurikulum_Delete/{id}', [CapKurikulumController::class, 'destroy']);
+Route::get('CapaianKurikulum_relasimatkul/{id}', [CapKurikulumController::class, 'relasiCapMatkul']);
+Route::post('CapaianKurikulum_matkul/{id}', [CapKurikulumController::class, 'pilihmatkul']);
+Route::post('CapaianKurikulum_Deleterelasi_matkul/{id}', [CapKurikulumController::class, 'deletematkul']);
 
 //route data PKM
+Route::get('PKM_relasisearchmhs/{id}/{search}', [PKMController::class, 'searchhapusmhs']);
+Route::get('PKM_relasisearch/{id}/{search}', [PKMController::class, 'searchhapus']);
 Route::get('PKM_search/{id}', [PKMController::class, 'searchpkm']);
 Route::get('tampil_PKM/{id}', [PKMController::class, 'show']);
 Route::get('PKM', [PKMController::class, 'index']);
@@ -423,6 +430,8 @@ Route::post('PKM_Deleterelasi_dosen/{id}', [PKMController::class, 'deletedosen']
 Route::post('PKM_Deleterelasi_mhs/{id}', [PKMController::class, 'deletemhs']);
 
 //route penelitian
+Route::get('Penelitian_relasisearchmhs/{id}/{search}', [PenelitianController::class, 'searchhapusmhs']);
+Route::get('Penelitian_relasisearch/{id}/{search}', [PenelitianController::class, 'searchhapus']);
 Route::get('Penelitian_search/{id}', [PenelitianController::class, 'searchpenelitian']);
 Route::post('Penelitian_dosen/{id}', [PenelitianController::class, 'pilihdosen']);
 Route::post('Penelitian_mahasiswa/{id}', [PenelitianController::class, 'pilihmahasiswa']);

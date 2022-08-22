@@ -70,7 +70,7 @@ export default function SidebarDosen() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards_eva/dashboardpendidikan">
+            <a className="nav-link " href="/dashboards/dashboardpendidikan">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
@@ -78,7 +78,7 @@ export default function SidebarDosen() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards_eva/dashboardpenelitian">
+            <a className="nav-link " href="/dashboards/dashboardpenelitian">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
@@ -86,7 +86,7 @@ export default function SidebarDosen() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards_eva/dashboardpkm">
+            <a className="nav-link " href="/dashboards/dashboardpkm">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>

@@ -261,7 +261,7 @@ export default function inputintegrasi() {
                               htmlFor="profil_dosen_id"
                               className={dataError.dosen_id ? "is-invalid" : ""}
                             >
-                              Program Studi
+                              Dosen
                             </label>
                             <select
                               className="form-select"
@@ -269,7 +269,7 @@ export default function inputintegrasi() {
                               defaultValue="0"
                               id="profil_dosen_id"
                             >
-                              <option value="">Pilih Program Studi</option>
+                              <option value="">Pilih Dosen</option>
                               {userProfilDosens.map((dataProfilDosen) => {
                                 return (
                                   <option

@@ -211,7 +211,7 @@ export default function daftarluaran() {
                       <td className="align-middle">
                         <button
                           onClick={() => exportKjs()}
-                          className="btn btn-success border-0 shadow-sm ps-3 ps-3 me-2 mt-3 mb-0"
+                          className="btn btn-outline-success shadow-sm ps-3 ps-3 mt-3 mb-0 me-1"
                         >
                           Export
                         </button>
@@ -300,6 +300,18 @@ export default function daftarluaran() {
 
                               <td className="align-middle pe-0">
                                 <tr>
+                                <Link href={`/luaran/pilih/${lurn.id}`}>
+                                  <button className="btn btn-sm btn-outline-success shadow-sm ps-3 pe-3 mb-2 mt-2 me-2">
+                                    Pilih mahasiswa
+                                  </button>
+                                </Link>
+
+                                <Link href={`/luaran/hapus/${lurn.id}`}>
+                                  <button className="btn btn-sm btn-outline-danger shadow-sm ps-3 pe-3 mb-2 mt-2 me-2">
+                                    Hapus mahasiswa
+                                  </button>
+                                </Link>
+
                                 <button
                                   onClick={() => editprestasi(lurn.id)}
                                   className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 mt-2 me-2"
@@ -313,18 +325,6 @@ export default function daftarluaran() {
                                 >
                                   Hapus
                                 </button>
-
-                                <Link href={`/luaran/pilih/${lurn.id}`}>
-                                  <button className="btn btn-sm btn-success border-0 shadow-sm ps-3 pe-3 mb-2 me-2 mt-2">
-                                    Pilih mahasiswa
-                                  </button>
-                                </Link>
-
-                                <Link href={`/luaran/hapus/${lurn.id}`}>
-                                  <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Hapus mahasiswa
-                                  </button>
-                                </Link>
                                 </tr>
                               </td>
                             </tr>

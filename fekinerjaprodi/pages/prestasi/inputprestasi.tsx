@@ -195,6 +195,36 @@ export default function inputprestasi() {
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
+                              htmlFor="tahun"
+                              className={dataError.tahun ? "is-invalid" : ""}
+                            >
+                              Tahun
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tahun"
+                              id="tahun"
+                            />
+                            {dataError.tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold" />
+                        <p className="text-uppercase text-sm">
+                          Prestasi: Akademik dan Non Akademik
+                        </p>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
                               htmlFor="nm_kegiatan"
                               className={
                                 dataError.nm_kegiatan ? "is-invalid" : ""
@@ -211,29 +241,6 @@ export default function inputprestasi() {
                             {dataError.nm_kegiatan ? (
                               <div className="invalid-feedback">
                                 {dataError.nm_kegiatan}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label
-                              htmlFor="tahun"
-                              className={dataError.tahun ? "is-invalid" : ""}
-                            >
-                              Tahun
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Tahun"
-                              id="tahun"
-                            />
-                            {dataError.tahun ? (
-                              <div className="invalid-feedback">
-                                {dataError.tahun}
                               </div>
                             ) : (
                               ""

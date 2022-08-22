@@ -147,7 +147,7 @@ export default function inputipk() {
                     <div className="card-body">
                       <p className="text-uppercase text-sm">IPK Mahasiswa</p>
                       <div className="row">
-                        <div className="col-md-6">
+                        <div className="col-md-12">
                           <div className="form-group">
                             <label
                               htmlFor="prodi"
@@ -234,6 +234,12 @@ export default function inputipk() {
                           </div>
                         </div>
 
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold" />
+                        <p className="text-uppercase text-sm">
+                          Nilai IPK Mahasiswa 
+                        </p>
+
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
@@ -246,7 +252,7 @@ export default function inputipk() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="IPK Minimal"
                               id="min"
                             />
@@ -269,7 +275,7 @@ export default function inputipk() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="IPK Maksimal"
                               id="max"
                             />{dataError.ipk_max ? (
@@ -291,7 +297,7 @@ export default function inputipk() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="IPK Rata - rata"
                               id="avg"
                             />

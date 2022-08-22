@@ -228,10 +228,19 @@ export default function daftarseminar() {
                                 <h6 className="mb-0 text-sm ps-2">{number + 1}</h6>
                               </td>
 
-                              <td className="align-middle  text-sm">
-                                <p className="text-xs font-weight-bold mb-0">
-                                  {smnr.mahasiswa.nama}
-                                </p>
+                              <td>
+                                {smnr.anggota_mahasiswas.map(
+                                  (anggota_mahasiswas) => {
+                                    return (
+                                      <p
+                                        className="mb-0 text-sm"
+                                        key="anggota.id"
+                                      >
+                                        {anggota_mahasiswas.nama}
+                                      </p>
+                                    );
+                                  }
+                                )}
                               </td>
 
                               <td className="align-middle  text-sm">
@@ -259,9 +268,22 @@ export default function daftarseminar() {
                               </td>
 
                               <td className="align-middle pe-0">
+                              <Link href={`/seminar/pilih/${smnr.id}`}>
+                                  <button className="btn btn-sm btn-success border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                    Pilih mahasiswa
+                                  </button>
+                                </Link>
+
+                                <Link href={`/seminar/hapus/${smnr.id}`}>
+                                  <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                    Hapus mahasiswa
+                                  </button>
+                                </Link>
+
+
                               <button
                                   onClick={() => editipk(smnr.id)}
-                                  className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 mt-2 me-2"
+                                  className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 mt-2 me-3"
                                 >
                                   EDIT
                                 </button>

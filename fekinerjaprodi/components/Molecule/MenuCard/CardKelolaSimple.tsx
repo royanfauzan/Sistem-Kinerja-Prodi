@@ -5,6 +5,7 @@ interface KelolaCardProps {
   keterangan: string;
   halaman: string;
   icon?: string;
+  lebar?: string;
 }
 
 export default function CardKelolaSimple(props: Partial<KelolaCardProps>) {
@@ -13,13 +14,19 @@ export default function CardKelolaSimple(props: Partial<KelolaCardProps>) {
   if (props.icon) {
     icon = props.icon;
   }
+
+  let lebar = "col-4";
+  if (props.lebar) {
+    lebar = props.lebar;
+  }
+
   return (
-    <div className="col-4 mt-3">
+    <div className={`${lebar} mt-3`}>
       <div className="card">
         <div className="card-body">
-          <div className="row mb-3">
+          <div className="row mb-4">
             <div className="col-9">
-            <h5 className="card-title">{judul}</h5>
+              <h5 className="card-title">{judul}</h5>
               <p className="card-text">{keterangan}</p>
             </div>
             <div className="col-3">

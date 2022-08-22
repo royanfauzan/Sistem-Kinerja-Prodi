@@ -60,7 +60,7 @@ export default function daftarprodkmhs() {
         const { role } = response.data.user;
         setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 2) {
+        if (level_akses !== 3) {
           return router.push("/");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -87,6 +87,23 @@ export default function daftarprodkmhs() {
       if (result.value) {
         // <-- if confirmed
         router.push(`/produkMHS/produkmhs`);
+      }
+    });
+  };
+
+  const exportproduk = () => {
+    MySwal.fire({
+      title: "Export Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/produkMHS/exportproduk/exportprodukmhs`);
       }
     });
   };
@@ -145,7 +162,7 @@ export default function daftarprodkmhs() {
       setprodukmhs(res)
     } else {
       const req = await axios.get(
-        `http://127.0.0.1:8000/api/ProdukMHS_search/${e.target.value}`
+        `http://127.0.0.1:8000/api/cari_produk/${e.target.value}`
       )
       const res = await req.data.searchprodukmhs
       setprodukmhs(res)
@@ -176,18 +193,29 @@ export default function daftarprodkmhs() {
                     />
                   </div>
                   </div>
-                <div className="row justify-content-between mb-4">
-                <div className="col-4 ms-3">
+
+                  <div className="row justify-content-between mb-4 ps-3 pe-2">
+                    <div className="col-4">
                       <td className="align-middle">
                         <button
                           onClick={() => tambahproduk()}
-                          className="btn btn-primary border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                          className="btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
                         >
                           Tambah Data
                         </button>
                       </td>
                     </div>
-                </div>
+                    <div className="col-4 d-flex flex-row-reverse">
+                      <td className="align-middle">
+                        <button
+                          onClick={() => exportproduk()}
+                          className="btn btn-success border-0 shadow-sm ps-3 ps-3 me-2 mt-3 mb-0"
+                        >
+                          Export
+                        </button>
+                      </td>
+                    </div>
+                  </div>
                 <div className="card-body p-3">
                   <div className="table-responsive p-0">
                     <table  className="table align-items-center mb-0 table table-striped table-hover">
@@ -195,6 +223,9 @@ export default function daftarprodkmhs() {
                         <tr>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-7 ps-3">
                             NO
+                          </th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-7 ps-2">
+                            Nama Mahasiswa
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-7 ps-2">
                             Nama Produk
@@ -221,6 +252,21 @@ export default function daftarprodkmhs() {
 
                               <td className="ps-3">
                                 <p className="mb-0 text-sm ">{number + 1}</p>
+                              </td>
+
+                              <td>
+                                {prodkmhs.anggota_mahasiswas.map(
+                                  (anggota_mahasiswas) => {
+                                    return (
+                                      <p
+                                        className="mb-0 text-sm"
+                                        key="anggota.id"
+                                      >
+                                        {anggota_mahasiswas.nama}
+                                      </p>
+                                    );
+                                  }
+                                )}
                               </td>
 
                               <td className="align-middle text-sm">
@@ -260,6 +306,18 @@ export default function daftarprodkmhs() {
                                 >
                                   Edit
                                 </button>
+
+                                <Link href={`/produkMHS/pilih/${prodkmhs.id}`}>
+                                  <button className="btn btn-sm btn-success border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                    Pilih mahasiswa
+                                  </button>
+                                </Link>
+
+                                <Link href={`/produkMHS/hapus/${prodkmhs.id}`}>
+                                  <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                    Hapus mahasiswa
+                                  </button>
+                                </Link>
 
                                 <button
                                   onClick={() => deleteprodukMHS(prodkmhs.id)}

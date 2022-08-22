@@ -8,12 +8,15 @@ import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 import Link from "next/link";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export default function daftarbidang() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
+  const MySwal = withReactContent(Swal);
   const [dataRole, setRole] = useState('');
 
   const pengambilData = async () => {
@@ -86,18 +89,83 @@ export default function daftarbidang() {
     }
   };
 
-  const deletekesesuaian = (id) => {
-    axios({
-      method: "post",
-      url: `http://127.0.0.1:8000/api/delete_kesesuaian/${id}`,
-    })
-      .then(function (response) {
-        router.reload();
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+  const tambahbidang = () => {
+    MySwal.fire({
+      title: "Tambah Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/bidang/inputbidang`);
+      }
+    });
+  };
+
+  const exportbidang = () => {
+    MySwal.fire({
+      title: "Export Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/bidang/exportbidang/export_bidang`);
+      }
+    });
+  };
+
+  const editbidang = (id) => {
+    MySwal.fire({
+      title: "Edit Data",
+      text: "Apakah kalian yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/bidang/edit/${id}`);
+      }
+    });
+  };
+
+  const deletebidang = (id) => {
+    MySwal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, hapus ini!",
+    }).then((result) => {
+      // <--
+      if (result.isConfirmed) {
+        // <-- if confirmed
+        axios({
+          method: "post",
+          url: `http://127.0.0.1:8000/api/delete_kesesuaian/${id}`,
+        })
+          .then(function (response) {
+            router.reload();
+          })
+          .catch(function (err) {
+            console.log("gagal");
+            console.log(err.response);
+          });
+      }
+    });
   };
 
   return (
@@ -132,20 +200,22 @@ export default function daftarbidang() {
                   <div className="row justify-content-between mb-4">
                     <div className="col-4">
                       <td className="align-middle">
-                        <Link href={`/bidang/inputbidang/`}>
-                          <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                            Tambah Data
-                          </button>
-                        </Link>
+                        <button
+                          onClick={() => tambahbidang()}
+                          className="btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                        >
+                          Tambah Data
+                        </button>
                       </td>
                     </div>
                     <div className="col-4 d-flex flex-row-reverse">
                       <td className="align-middle">
-                        <Link href={`/bidang/exportbidang/export_bidang`}>
-                          <button className=" btn btn-success border-0 shadow-sm ps-3 ps-3 me-2 mt-3 mb-0">
-                            Export Excel
-                          </button>
-                        </Link>
+                        <button
+                          onClick={() => exportbidang()}
+                          className="btn btn-success border-0 shadow-sm ps-3 ps-3 me-2 mt-3 mb-0"
+                        >
+                          Export
+                        </button>
                       </td>
                     </div>
                   </div>
@@ -210,14 +280,15 @@ export default function daftarbidang() {
                               </td>
 
                               <td className="align-middle pe-0">
-                                <Link href={`/bidang/edit/${ksn.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
+                                <button
+                                  onClick={() => editbidang(ksn.id)}
+                                  className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 mt-2 me-2"
+                                >
+                                  EDIT
+                                </button>
 
                                 <button
-                                  onClick={() => deletekesesuaian(ksn.id)}
+                                  onClick={() => deletebidang(ksn.id)}
                                   className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
                                   Hapus

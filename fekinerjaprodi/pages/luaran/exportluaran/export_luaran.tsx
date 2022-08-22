@@ -15,6 +15,7 @@ export default function daftarprestasi() {
 
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
+  const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -55,6 +56,8 @@ export default function daftarprestasi() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -74,7 +77,7 @@ export default function daftarprestasi() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
@@ -129,7 +132,7 @@ export default function daftarprestasi() {
                         <thead>
                           <tr>
                             <th rowspan="2">No</th>
-                            <th  rowspan="2" >Nama Kegiatan</th>
+                            <th  rowspan="2" >Luaran Penelitian dan PKM</th>
                             <th rowspan="2">Waktu Pengelolaan</th>
                             <th colspan="3">Tingkat</th>
                             <th rowspan="2">Prestasi yang Dicapai</th>

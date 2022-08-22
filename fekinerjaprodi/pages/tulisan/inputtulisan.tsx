@@ -17,6 +17,7 @@ export default function inputtulisan() {
   const [filebukti, setfilebuktis] = useState<File>([]);
   const [dataError, setError] = useState([]);
   const MySwal = withReactContent(Swal);
+  const [dataRole, setRole] = useState("");
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -67,6 +68,8 @@ export default function inputtulisan() {
             console.log(response);
             console.log('Sukses');
             const {level_akses} = response.data.user;
+            const { role } = response.data.user;
+            setRole(role);
             // kalo ga admin dipindah ke halaman lain
             if(level_akses !== 3){
               return router.push('/');
@@ -139,7 +142,7 @@ export default function inputtulisan() {
     <>
     <LoadingUtama loadStatus={stadmin}/>
       {stadmin  &&(
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
         <div className="container-fluid py-4">
           <div className="row">
             <div className="col-md-8">
@@ -200,7 +203,8 @@ export default function inputtulisan() {
 
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="judul" className="form-control-label">
+                          <label htmlFor="judul" 
+                          className={dataError.judul ? "is-invalid" : ""}>
                             Judul Tulisan
                           </label>
                           <input
@@ -208,13 +212,20 @@ export default function inputtulisan() {
                             type="text"
                             placeholder="Judul Tulisan"
                             id="judul"
-                            required
                           />
+                          {dataError.judul ? (
+                              <div className="invalid-feedback">
+                                {dataError.judul}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="tahun" className="form-control-label">
+                          <label htmlFor="tahun" 
+                          className={dataError.tahun ? "is-invalid" : ""}>
                             Tahun
                           </label>
                           <input
@@ -222,14 +233,21 @@ export default function inputtulisan() {
                             type="text"
                             placeholder="Tahun"
                             id="tahun"
-                            required
                           />
+                          {dataError.tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
 
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="media" className="form-control-label">
+                          <label htmlFor="media" 
+                          className={dataError.nm_media ? "is-invalid" : ""}>
                           Nama Media
                           </label>
                           <input
@@ -237,8 +255,14 @@ export default function inputtulisan() {
                             type="text"
                             placeholder="Nama Media"
                             id="media"
-                            required
                           />
+                          {dataError.nm_media ? (
+                              <div className="invalid-feedback">
+                                {dataError.nm_media}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
 
@@ -273,9 +297,10 @@ export default function inputtulisan() {
                           </div>
                         </div>
 
-                      <div className="col-md-6">
+                        <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="bukti" className="form-control-label">
+                          <label htmlFor="bukti" 
+                          className={dataError.file_bukti ? "is-invalid" : ""}>
                             File Bukti
                           </label>
                           <input
@@ -283,8 +308,14 @@ export default function inputtulisan() {
                             type="file"
                             onChange={handleChangeFile}
                             id="bukti"
-                            required
                           />
+                          {dataError.file_bukti ? (
+                              <div className="invalid-feedback">
+                                {dataError.file_bukti}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div> 
 

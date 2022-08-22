@@ -6,6 +6,8 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 // Untuk Ngambil Data Berdasarkan ID
 export async function getServerSideProps(context) {
@@ -27,6 +29,10 @@ export default function editpagelaran(props) {
   const { pagelaran } = props;
   const [dataPagelaran, setPagelaran] = useState(pagelaran);
   const [filebukti, setfilebuktis] = useState<File>([]);
+  const MySwal = withReactContent(Swal);
+  
+  const [dataError, setError] = useState([]);
+  const [dataRole, setRole] = useState('');
 
   console.log(pagelaran);
 
@@ -75,6 +81,8 @@ export default function editpagelaran(props) {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -116,28 +124,27 @@ export default function editpagelaran(props) {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        const { all_pagelaran } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(all_pagelaran);
-        router.push("../../pagelaran/daftarpagelaran");
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
-        console.log(error.response);
+    .then(function (response) {
+      MySwal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Berhasil Di Input",
       });
+
+      router.push("../../pagelaran/daftarpagelaran");
+    })
+
+    .catch(function (error) {
+      //handle error
+      setError(error.response.data.error);
+      console.log(error.response.data.error);
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Data Gagal Di Input",
+      });
+      console.log(error.response);
+    });
   };
 
   const handleChangeFile = (e) => {
@@ -149,7 +156,7 @@ export default function editpagelaran(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -180,7 +187,6 @@ export default function editpagelaran(props) {
                             placeholder="Judul Pagelaran"
                             id="judul"
                             defaultValue={dataPagelaran.judul}
-                            required
                           />
                         </div>
                       </div>
@@ -195,7 +201,6 @@ export default function editpagelaran(props) {
                             placeholder="Tahun"
                             id="tahun"
                             defaultValue={dataPagelaran.tahun}
-                            required
                           />
                         </div>
                       </div>

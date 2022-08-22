@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\relasi_bukumhs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,7 +18,35 @@ class BukuController extends Controller
     {
         return response()->json([
             'success' => true,
-            'all_buku' => Buku::all()
+            'all_buku' => Buku::with(['anggotaMahasiswas'])->get(),
+        ]);
+    }
+
+    public function tampilrelasi($id)
+    {
+        return response()->json([
+            'success' => true,
+            'all_relasi' => relasi_bukumhs::with('mahasiswa')->where('buku_id',$id)->get(),
+        ]);
+        
+    }
+
+    public function searchbuku($search)
+    {
+        return response()->json([
+            'success' => true,
+            'searchbuku' => Buku::with('anggotaMahasiswas')
+                ->whereRelation('anggotaMahasiswas', 'nama','LIKE', "%{$search}%")
+                ->orwhere('judul', 'LIKE', "%{$search}%")
+                ->orwhere('kategori_jurnal', 'LIKE', "%{$search}%")
+                ->orwhere('nm_jurnal', 'LIKE', "%{$search}%")
+                ->orwhere('keterangan', 'LIKE', "%{$search}%")
+                ->orwhere('volume', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('nomor', 'LIKE', "%{$search}%")
+                ->orwhere('halaman', 'LIKE', "%{$search}%")
+                ->orwhere('sitasi', 'LIKE', "%{$search}%")
+                ->get()
         ]);
     }
 
@@ -56,7 +85,7 @@ class BukuController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $databuku = Buku::create(
@@ -184,6 +213,59 @@ class BukuController extends Controller
         $buku->delete();
 
         if (!$buku) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
+    }
+
+    public function pilihmahasiswa(Request $request, $id)
+    {
+        $buku = Buku::where('id', $id)->first();
+        $databuku = $request->only('mahasiswa_id', 'buku_id', 'keanggotaan');
+
+        //valid credential
+        $validator = Validator::make($databuku, [
+            'mahasiswa_id' => 'required',
+            'buku_id' => 'required',
+            'keanggotaan' => 'required',
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        $relasimahasiswa = relasi_bukumhs::create(
+            [
+                'mahasiswa_id' => $request->mahasiswa_id,
+                'buku_id' => $request->buku_id,
+                'keanggotaan' => $request->keanggotaan,
+            ]
+        );
+
+
+        //Token created, return with success response and jwt token
+        return response()->json([
+            'success' => true,
+            'mahasiswa_id' => $request->mahasiswa_id,
+            'buku_id' => $request->buku_id,
+            'keanggotaan' => $request->keanggotaan,
+            'all_buku' => Buku::all()
+        ]);
+    }
+
+    public function deletemahasiswa($id)
+    {
+        $luaran = relasi_bukumhs::find($id);
+        $luaran->delete();
+
+        if (!$luaran) {
             return response()->json([
                 'success' => false,
                 'message' => "Gagal Dihapus"

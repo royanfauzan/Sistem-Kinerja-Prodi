@@ -12,7 +12,7 @@ class Produk extends Model
 
     public function anggotaDosens()
     {
-        return $this->belongsToMany(profilDosen::class,'relasi_dos_prods','produk_id','profil_dosen_id')->withPivot('keanggotaan');
+        return $this->belongsToMany(profilDosen::class,'relasi_dos_prods','produk_id','profil_dosen_id')->withPivot('keanggotaan','id');
     }
 
     public function ketuaProduk()

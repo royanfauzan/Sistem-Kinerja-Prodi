@@ -60,6 +60,8 @@ class BbjurnaldosController extends Controller
             return response()->json(['error' => $validator->errors()], 400);
         }
 
+        
+
         $databuku = Bbjurnaldos::create(
             [
                 'judul' => $request->judul,
@@ -73,6 +75,12 @@ class BbjurnaldosController extends Controller
                 'sitasi' => $request->sitasi,
             ]
         );
+
+        $anggotaBaru = RelasiJurDos::create([
+            'profil_dosen_id' => $request->profil_dosen_id,
+            'bbjurnaldos_id' => $databuku->id,
+            'keanggotaan' => 'Ketua',
+        ]);
 
         //Token created, return with success response and jwt token
         return response()->json([
@@ -100,9 +108,19 @@ class BbjurnaldosController extends Controller
     {
         //
         $jurnal = Bbjurnaldos::with('anggotaDosens')->find($id);
+
+        $listanggota = RelasiJurDos::where('bbjurnaldos_id',$id)->get();
+
+        $idtags = array();
+        foreach ($listanggota as $anggota) {
+            $idtags[] = $anggota->profil_dosen_id;
+        }
+
+        $profilDosens = profilDosen::whereNotIn('id', $idtags)->get();
         return response()->json([
             'success' => true,
             'datajurnal' => $jurnal,
+            'profildosens' => $profilDosens,
             // 'dosenId'=> $dosenId
         ]);
     }
@@ -212,13 +230,14 @@ class BbjurnaldosController extends Controller
             return response()->json(['error' => $validator->errors()], 400);
         }
 
-        $databuku = Bbjurnaldos::find($id);
-
         $anggotaBaru = RelasiJurDos::create([
             'profil_dosen_id' => $request->profil_dosen_id,
             'bbjurnaldos_id' => $id,
-            'keanggotaan' => 'Ketua',
         ]);
+
+        $databuku = Bbjurnaldos::find($id);
+
+        
 
         $listanggota = RelasiJurDos::where('bbjurnaldos_id', $id)->get();
 
@@ -256,7 +275,7 @@ class BbjurnaldosController extends Controller
 
         $profilDosens = profilDosen::whereNotIn('id', $idtags)->get();
 
-        $jurnal = Bbjurnaldos::with('anggotaDosens')->find($id);
+        $jurnal = Bbjurnaldos::with('anggotaDosens')->find($jurnal_id);
 
         return response()->json([
             'success' => true,

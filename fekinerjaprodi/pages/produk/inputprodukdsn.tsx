@@ -17,12 +17,13 @@ interface Udosen {
   updated_at: string;
 }
 
-export default function inputjurnaldsn() {
+export default function inputprodukdsn() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState([]);
   // const [dataProdis, setdataProdis] = useState([]);
   const [userDosen, setuserDosen] = useState();
+
   const [UsrSekarang, setUsrSekarang] = useState();
   const [filebukti, setfilebuktis] = useState<File>([]);
 
@@ -122,21 +123,17 @@ export default function inputjurnaldsn() {
 
     let formData = new FormData();
     formData.append("profil_dosen_id", event.target.profil_dosen_id.value);
-    formData.append("judul", event.target.judul.value);
-    formData.append("nm_jurnal", event.target.nm_jurnal.value);
-    formData.append("keterangan", event.target.keterangan.value);
-    formData.append("volume", event.target.volume.value);
-    formData.append("nomor", event.target.nomor.value);
-    formData.append("halaman", event.target.halaman.value);
-    formData.append("kategori_jurnal", event.target.kategori_jurnal.value);
+    formData.append("nm_produk", event.target.nm_produk.value);
     formData.append("tahun", event.target.tahun.value);
-    formData.append("sitasi", event.target.sitasi.value);
+    formData.append("deskripsi", event.target.deskripsi.value);
+    formData.append("deskripsi_bukti", event.target.deskripsi_bukti.value);
+    formData.append("file_bukti", filebukti);
 
     console.log(formData);
 
     axios({
       method: "post",
-      url: "http://127.0.0.1:8000/api/jurnals",
+      url: "http://127.0.0.1:8000/api/produkdoss",
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -150,14 +147,14 @@ export default function inputjurnaldsn() {
         toast.success("Simpan Sukses Sugses!!");
         // console.log(token);
         console.log(profil);
-        router.push("/bukujurnal/tabeljurnaldsn");
+        router.push("/produk/tabelprodukdsn");
       })
       .catch(function (error) {
         toast.dismiss();
         if (error.response.data.message) {
           toast.error(error.response.data.message);
           setTimeout(() => {
-            router.push("/bukujurnal/tabeljurnaldsn");
+            router.push("/produk/tabelprodukdsn");
           }, 500);
         } else {
           setError(error.response.data.error);
@@ -202,7 +199,7 @@ export default function inputjurnaldsn() {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Data Bab/Buku/Jurnal</p>
+                        <p className="mb-0">Data Seminar</p>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -213,7 +210,7 @@ export default function inputjurnaldsn() {
                     </div>
 
                     <div className="card-body">
-                      <p className="text-uppercase text-sm">Data Jurnal</p>
+                      <p className="text-uppercase text-sm">Data seminar</p>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">
@@ -298,106 +295,29 @@ export default function inputjurnaldsn() {
                       </div>
                       <hr className="horizontal dark" />
                       <p className="text-uppercase text-sm">
-                        Jurnal: Detail Jurnal
-                      </p>
-                      <div className="row">
-                        <div className="col-md-9">
-                          <div className="form-group">
-                            <label
-                              htmlFor="kategori_jurnal"
-                              className={
-                                "form-control-label " +
-                                dataError.kategori_jurnal
-                                  ? "is-invalid"
-                                  : ""
-                              }
-                            >
-                              Jenis Jurnal
-                            </label>
-
-                            <select
-                              className="form-select"
-                              aria-label="Default select example"
-                              defaultValue={`Jurnal Tidak Terakreditasi`}
-                              id="kategori_jurnal"
-                            >
-                              <option value={`Jurnal Tidak Terakreditasi`}>
-                                Jurnal Tidak Terakreditasi
-                              </option>
-                              <option value={`Jurnal Nasional Terakreditasi`}>
-                                Jurnal Nasional Terakreditasi
-                              </option>
-                              <option value={`Jurnal Internasional`}>
-                                Jurnal Internasional
-                              </option>
-                              <option value={`Jurnal Internasional Bereputasi`}>
-                                Jurnal Internasional Bereputasi
-                              </option>
-                              <option value={`Bab Buku`}>Bab/Buku</option>
-                            </select>
-
-                            {dataError.kategori_jurnal ? (
-                              <div className="invalid-feedback">
-                                {dataError.kategori_jurnal}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <hr className="horizontal dark" />
-                      <p className="text-uppercase text-sm">
-                        Jurnal: Data Jurnal
+                        Produk: Data Produk
                       </p>
                       <div className="row">
                         <div className="col-8">
                           <div className="form-group">
                             <label
-                              htmlFor="judul"
+                              htmlFor="nm_produk"
                               className={
-                                "form-control-label " + dataError.judul
+                                "form-control-label " + dataError.nm_produk
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              Judul Jurnal
+                              Nama Produk
                             </label>
                             <textarea
                               className="form-control"
-                              placeholder="judul"
-                              id="judul"
+                              placeholder="Mesin wifi coin"
+                              id="nm_produk"
                             ></textarea>
-                            {dataError.judul ? (
+                            {dataError.nm_produk ? (
                               <div className="invalid-feedback">
-                                {dataError.judul}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                        <div className="col-6">
-                          <div className="form-group">
-                            <label
-                              htmlFor="JMSC"
-                              className={
-                                "form-control-label " + dataError.nm_jurnal
-                                  ? "is-invalid"
-                                  : ""
-                              }
-                            >
-                              Nama Jurnal
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="JiPANI"
-                              id="nm_jurnal"
-                            />
-                            {dataError.nm_jurnal ? (
-                              <div className="invalid-feedback">
-                                {dataError.nm_jurnal}
+                                {dataError.nm_produk}
                               </div>
                             ) : (
                               ""
@@ -431,144 +351,89 @@ export default function inputjurnaldsn() {
                             )}
                           </div>
                         </div>
+                        <div className="col-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="JMSC"
+                              className={
+                                "form-control-label " + dataError.deskripsi
+                                  ? "is-invalid"
+                                  : ""
+                              }
+                            >
+                              Deskripsi produk
+                            </label>
+                            <textarea
+                              className="form-control"
+                              placeholder="Ket"
+                              id="deskripsi"
+                            />
+                            {dataError.deskripsi ? (
+                              <div className="invalid-feedback">
+                                {dataError.deskripsi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
                       </div>
+                      <hr className="horizontal dark" />
+                      <p className="text-uppercase text-sm">
+                        Produk: Data Produk
+                      </p>
                       <div className="row">
                         <div className="col-4">
                           <div className="form-group">
                             <label
-                              htmlFor="volume"
+                              htmlFor="deskripsi_bukti"
                               className={
-                                "form-control-label " + dataError.volume
+                                "form-control-label " +
+                                dataError.deskripsi_bukti
                                   ? "is-invalid"
                                   : ""
                               }
                             >
-                              Volume
+                              Ket.Bukti
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="VII"
-                              id="volume"
+                              placeholder="Dokumentasi Marketing"
+                              id="deskripsi_bukti"
                             />
-                            {dataError.volume ? (
+                            {dataError.deskripsi_bukti ? (
                               <div className="invalid-feedback">
-                                {dataError.volume}
+                                {dataError.deskripsi_bukti}
                               </div>
                             ) : (
                               ""
                             )}
                           </div>
                         </div>
-                        <div className="col-4">
+                        <div className="col-md-11">
                           <div className="form-group">
                             <label
-                              htmlFor="nomor"
+                              htmlFor="file_bukti"
                               className={
-                                "form-control-label " + dataError.nomor
-                                  ? "is-invalid"
-                                  : ""
+                                dataError.file_bukti ? "is-invalid" : ""
                               }
                             >
-                              Nomor
+                              File Bukti
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="7"
-                              id="nomor"
+                              type="file"
+                              onChange={handleChangeFile}
+                              id="file_bukti"
                             />
-                            {dataError.nomor ? (
+                            {dataError.file_bukti ? (
                               <div className="invalid-feedback">
-                                {dataError.nomor}
+                                {dataError.file_bukti}
                               </div>
                             ) : (
                               ""
                             )}
-                          </div>
-                        </div>
-                        <div className="col-4">
-                          <div className="form-group">
-                            <label
-                              htmlFor="halaman"
-                              className={
-                                "form-control-label " + dataError.halaman
-                                  ? "is-invalid"
-                                  : ""
-                              }
-                            >
-                              Halaman
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="20-77"
-                              id="halaman"
-                            />
-                            {dataError.halaman ? (
-                              <div className="invalid-feedback">
-                                {dataError.halaman}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                        <div className="row ">
-                          <div className="col-4 ">
-                            <div className="form-group">
-                              <label
-                                htmlFor="sitasi"
-                                className={
-                                  "form-control-label " + dataError.sitasi
-                                    ? "is-invalid"
-                                    : ""
-                                }
-                              >
-                                Sitasi
-                              </label>
-                              <input
-                                className="form-control"
-                                type="number"
-                                defaultValue={0}
-                                id="sitasi"
-                              />
-                              {dataError.sitasi ? (
-                                <div className="invalid-feedback">
-                                  {dataError.sitasi}
-                                </div>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-8">
-                            <div className="form-group">
-                              <label
-                                htmlFor="keterangan"
-                                className={
-                                  "form-control-label " + dataError.keterangan
-                                    ? "is-invalid"
-                                    : ""
-                                }
-                              >
-                                Keterangan
-                              </label>
-                              <textarea
-                                className="form-control"
-                                placeholder="keterangan"
-                                id="keterangan"
-                              ></textarea>
-                              {dataError.keterangan ? (
-                                <div className="invalid-feedback">
-                                  {dataError.keterangan}
-                                </div>
-                              ) : (
-                                ""
-                              )}
-                            </div>
                           </div>
                         </div>
                       </div>

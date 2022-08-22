@@ -10,36 +10,35 @@ import Link from "next/link";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-export default function tabeljurnal() {
+export default function tabelproduk() {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
   const [stadmin, setStadmin] = useState(false);
-  const apiurl = "http://127.0.0.1:8000/"
+  const apiurl = "http://127.0.0.1:8000/";
 
-  const [dataJurnals, setdataJurnals] = useState([]);
+  const [dataProduks, setdataProduks] = useState([]);
   const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
-    const lgToken = localStorage.getItem("token");
+  const lgToken = localStorage.getItem("token");
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/search_jurnaldsn/",
+      url: "http://127.0.0.1:8000/api/search_produkdosdsn/",
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { datajurnals } = response.data;
-        setdataJurnals(datajurnals);
+        const { dataproduks } = response.data;
+        setdataProduks(dataproduks);
 
-        console.log(datajurnals);
+        console.log(dataproduks);
       })
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
       });
-    
   };
 
   useEffect(() => {
@@ -65,7 +64,7 @@ export default function tabeljurnal() {
 
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 2) {
-          return router.push("/bukujurnal/export/exportjurnal");
+          return router.push("/produk/export/exportproduk");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         setStadmin(true);
@@ -75,13 +74,11 @@ export default function tabeljurnal() {
         console.log(err.response);
         return router.push("/dashboard/dashboardadmin");
       });
-
-    
   }, []);
 
-  const deletejurnal = (id) => {
+  const deleteproduk = (id) => {
     MySwal.fire({
-      title: "Yakin Hapus Data Jurnal?",
+      title: "Yakin Hapus Data produk?",
       text: "Data yang dihapus tidak dapat dikembalikan!",
       icon: "warning",
       showCancelButton: true,
@@ -95,11 +92,11 @@ export default function tabeljurnal() {
         // <-- if confirmed
         axios({
           method: "post",
-          url: `http://127.0.0.1:8000/api/delete_jurnal/${id}`,
+          url: `http://127.0.0.1:8000/api/delete_produkdos/${id}`,
         })
           .then(function (response) {
-            const { datajurnals } = response.data;
-            setdataJurnals(datajurnals);
+            const { dataproduks } = response.data;
+            setdataProduks(dataproduks);
           })
           .catch(function (err) {
             console.log("gagal");
@@ -108,27 +105,31 @@ export default function tabeljurnal() {
       }
     });
   };
- 
+
   const searchdata = async (e) => {
     const lgToken = localStorage.getItem("token");
     if (e.target.value == "") {
-      const req = await axios.get(`http://127.0.0.1:8000/api/search_jurnaldsn/`, {
-        headers: {
-          Authorization: `Bearer ${lgToken}`
-        }
-      });
-      const res = await req.data.datajurnals;
-      setdataJurnals(res);
-    } else {
       const req = await axios.get(
-        `http://127.0.0.1:8000/api/search_jurnaldsn/${e.target.value}`, {
+        `http://127.0.0.1:8000/api/search_produkdosdsn/`,
+        {
           headers: {
-            Authorization: `Bearer ${lgToken}`
-          }
+            Authorization: `Bearer ${lgToken}`,
+          },
         }
       );
-      const res = await req.data.datajurnals;
-      setdataJurnals(res);
+      const res = await req.data.dataproduks;
+      setdataProduks(res);
+    } else {
+      const req = await axios.get(
+        `http://127.0.0.1:8000/api/search_produkdosdsn/${e.target.value}`,
+        {
+          headers: {
+            Authorization: `Bearer ${lgToken}`,
+          },
+        }
+      );
+      const res = await req.data.dataproduks;
+      setdataProduks(res);
     }
   };
   return (
@@ -143,7 +144,7 @@ export default function tabeljurnal() {
                   <div className="card-header pb-0 px-3">
                     <div className="row">
                       <div className="col-4">
-                        <h4>Tabel Jurnal</h4>
+                        <h4>Tabel Produk</h4>
                       </div>
                     </div>
 
@@ -172,18 +173,16 @@ export default function tabeljurnal() {
                       </div>
                       <div className="col-6">
                         <div className="row">
-                          <div className="col-4 d-flex flex-row-reverse">
-                            
-                          </div>
+                          <div className="col-4 d-flex flex-row-reverse"></div>
 
                           <div className="col-8 d-flex justify-content-end">
-                          <Link href={`/bukujurnal/inputjurnaldsn/`}>
+                            <Link href={`/produk/inputprodukdsn/`}>
                               <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                                 Tambah Data
                               </button>
                             </Link>
                             <Link
-                              href={`/jurnal/export/exportjurnal`}
+                              href={`/publikasidos/export/exportpublikasidos`}
                             >
                               <button className=" btn btn-outline-success shadow-sm ps-3 ps-3 me-2 mt-3 mb-0">
                                 Cek Laporan
@@ -201,79 +200,78 @@ export default function tabeljurnal() {
                       <thead>
                         <tr className={`text-center`}>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Nama Anggota
+                            Nama Peserta
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Judul
-                          </th>                          
+                            Produk
+                          </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Nama Jurnal
+                            Deskripsi
+                          </th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
+                            Bukti
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
                             Tahun
                           </th>
-                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Kategori Jurnal
-                          </th>
-                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Sitasi
-                          </th>
-                          
                           <th className="text-uppercase text-dark text-xs text-center font-weight-bolder opacity-9 ps-2">
                             Aksi
                           </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {dataJurnals.map((jurnal) => {
+                        {dataProduks.map((produk) => {
                           return (
                             <tr
                               className="text-center"
-                              key={`tjurnal` + jurnal.id}
+                              key={`tproduk` + produk.id}
                             >
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {jurnal.anggota_dosens.map((anggota_dosen)=>{
-                                    return (<span className={`d-block`} key={anggota_dosen.id+`anggta`}>
-                                    {anggota_dosen.NamaDosen}
-                                    </span>)
-                                  })}
-                                </p>
-                              </td>
-                              <td className="align-middle text-sm" >
-                                <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {`${jurnal.judul.slice(0,40)}...`}
-                                </p>
-                              </td>
-                              <td className="align-middle text-sm">
-                                <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {`${jurnal.nm_jurnal} ${jurnal.volume} No. ${jurnal.nomor}, Hal. ${jurnal.halaman} `}
+                                  {produk.anggota_dosens.map(
+                                    (anggota_dosen) => {
+                                      return (
+                                        <span
+                                          className={`d-block`}
+                                          key={anggota_dosen.id + `anggta`}
+                                        >
+                                          {anggota_dosen.NamaDosen}
+                                        </span>
+                                      );
+                                    }
+                                  )}
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {jurnal.tahun}
+                                  {`${produk.nm_produk.slice(0, 70)}...`}
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {jurnal.kategori_jurnal}
+                                  {`${produk.deskripsi.slice(0, 70)}...`}
+                                </p>
+                              </td>
+                              
+                              <td className="align-middle text-sm">
+                                <p className="text-xs font-weight-bold mb-0 pe-3">
+                                <a href={`${apiurl+produk.file_bukti}`}>{produk.deskripsi_bukti }</a>
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {`${jurnal.sitasi}`}
+                                  {produk.tahun}
                                 </p>
                               </td>
                               <td className="align-middle pe-3 text-end">
-                                <Link href={`/bukujurnal/edit/${jurnal.id}`}>
+                                <Link href={`/produk/edit/${produk.id}`}>
                                   <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                     Edit
                                   </button>
                                 </Link>
 
                                 <button
-                                  onClick={() => deletejurnal(jurnal.id)}
+                                  onClick={() => deleteproduk(produk.id)}
                                   className="btn btn-sm btn-outline-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
                                   Hapus
@@ -285,7 +283,7 @@ export default function tabeljurnal() {
                       </tbody>
                     </table>
                   </div>
-                </div>
+                  </div>
               </div>
             </div>
             <FooterUtama />

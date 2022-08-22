@@ -10,13 +10,13 @@ import Link from "next/link";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-export default function tabeljurnal() {
+export default function tabelluaran() {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
   const [stadmin, setStadmin] = useState(false);
-  const apiurl = "http://127.0.0.1:8000/"
+  const apiurl = "http://127.0.0.1:8000/";
 
-  const [dataJurnals, setdataJurnals] = useState([]);
+  const [dataLuarans, setdataLuarans] = useState([]);
   const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
@@ -24,22 +24,21 @@ export default function tabeljurnal() {
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/search_jurnaldsn/",
+      url: "http://127.0.0.1:8000/api/search_luarandosdsn/",
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { datajurnals } = response.data;
-        setdataJurnals(datajurnals);
+        const { dataluarans } = response.data;
+        setdataLuarans(dataluarans);
 
-        console.log(datajurnals);
+        console.log(dataluarans);
       })
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
       });
-    
   };
 
   useEffect(() => {
@@ -65,7 +64,7 @@ export default function tabeljurnal() {
 
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 2) {
-          return router.push("/bukujurnal/export/exportjurnal");
+          return router.push("/luarandos/export/exportluaran");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         setStadmin(true);
@@ -75,13 +74,11 @@ export default function tabeljurnal() {
         console.log(err.response);
         return router.push("/dashboard/dashboardadmin");
       });
-
-    
   }, []);
 
-  const deletejurnal = (id) => {
+  const deleteluaran = (id) => {
     MySwal.fire({
-      title: "Yakin Hapus Data Jurnal?",
+      title: "Yakin Hapus Data Luaran?",
       text: "Data yang dihapus tidak dapat dikembalikan!",
       icon: "warning",
       showCancelButton: true,
@@ -95,11 +92,11 @@ export default function tabeljurnal() {
         // <-- if confirmed
         axios({
           method: "post",
-          url: `http://127.0.0.1:8000/api/delete_jurnal/${id}`,
+          url: `http://127.0.0.1:8000/api/delete_luaran/${id}`,
         })
           .then(function (response) {
-            const { datajurnals } = response.data;
-            setdataJurnals(datajurnals);
+            const { dataluarans } = response.data;
+            setdataLuarans(dataluarans);
           })
           .catch(function (err) {
             console.log("gagal");
@@ -108,27 +105,31 @@ export default function tabeljurnal() {
       }
     });
   };
- 
+
   const searchdata = async (e) => {
     const lgToken = localStorage.getItem("token");
     if (e.target.value == "") {
-      const req = await axios.get(`http://127.0.0.1:8000/api/search_jurnaldsn/`, {
-        headers: {
-          Authorization: `Bearer ${lgToken}`
-        }
-      });
-      const res = await req.data.datajurnals;
-      setdataJurnals(res);
-    } else {
       const req = await axios.get(
-        `http://127.0.0.1:8000/api/search_jurnaldsn/${e.target.value}`, {
+        `http://127.0.0.1:8000/api/search_luarandosdsn/`,
+        {
           headers: {
-            Authorization: `Bearer ${lgToken}`
-          }
+            Authorization: `Bearer ${lgToken}`,
+          },
         }
       );
-      const res = await req.data.datajurnals;
-      setdataJurnals(res);
+      const res = await req.data.dataluarans;
+      setdataLuarans(res);
+    } else {
+      const req = await axios.get(
+        `http://127.0.0.1:8000/api/search_luarandosdsn/${e.target.value}`,
+        {
+          headers: {
+            Authorization: `Bearer ${lgToken}`,
+          },
+        }
+      );
+      const res = await req.data.dataluarans;
+      setdataLuarans(res);
     }
   };
   return (
@@ -143,7 +144,7 @@ export default function tabeljurnal() {
                   <div className="card-header pb-0 px-3">
                     <div className="row">
                       <div className="col-4">
-                        <h4>Tabel Jurnal</h4>
+                        <h4>Tabel Luaran</h4>
                       </div>
                     </div>
 
@@ -172,18 +173,16 @@ export default function tabeljurnal() {
                       </div>
                       <div className="col-6">
                         <div className="row">
-                          <div className="col-4 d-flex flex-row-reverse">
-                            
-                          </div>
+                          <div className="col-4 d-flex flex-row-reverse"></div>
 
                           <div className="col-8 d-flex justify-content-end">
-                          <Link href={`/bukujurnal/inputjurnaldsn/`}>
+                            <Link href={`/luaranlaindos/inputluarandsn/`}>
                               <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                                 Tambah Data
                               </button>
                             </Link>
                             <Link
-                              href={`/jurnal/export/exportjurnal`}
+                              href={`/publikasidos/export/exportpublikasidos`}
                             >
                               <button className=" btn btn-outline-success shadow-sm ps-3 ps-3 me-2 mt-3 mb-0">
                                 Cek Laporan
@@ -201,79 +200,71 @@ export default function tabeljurnal() {
                       <thead>
                         <tr className={`text-center`}>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Nama Anggota
+                            Nama Peserta
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Judul
-                          </th>                          
+                            Judul Luaran
+                          </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Nama Jurnal
+                            Jenis Luaran
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
                             Tahun
                           </th>
-                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Kategori Jurnal
-                          </th>
-                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Sitasi
-                          </th>
-                          
                           <th className="text-uppercase text-dark text-xs text-center font-weight-bolder opacity-9 ps-2">
                             Aksi
                           </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {dataJurnals.map((jurnal) => {
+                        {dataLuarans.map((luaran) => {
                           return (
                             <tr
                               className="text-center"
-                              key={`tjurnal` + jurnal.id}
+                              key={`tluaran` + luaran.id}
                             >
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {jurnal.anggota_dosens.map((anggota_dosen)=>{
-                                    return (<span className={`d-block`} key={anggota_dosen.id+`anggta`}>
-                                    {anggota_dosen.NamaDosen}
-                                    </span>)
-                                  })}
-                                </p>
-                              </td>
-                              <td className="align-middle text-sm" >
-                                <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {`${jurnal.judul.slice(0,40)}...`}
-                                </p>
-                              </td>
-                              <td className="align-middle text-sm">
-                                <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {`${jurnal.nm_jurnal} ${jurnal.volume} No. ${jurnal.nomor}, Hal. ${jurnal.halaman} `}
+                                  {luaran.anggota_dosens.map(
+                                    (anggota_dosen) => {
+                                      return (
+                                        <span
+                                          className={`d-block`}
+                                          key={anggota_dosen.id + `anggta`}
+                                        >
+                                          {anggota_dosen.NamaDosen}
+                                        </span>
+                                      );
+                                    }
+                                  )}
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {jurnal.tahun}
+                                  {`${luaran.judul.slice(0, 70)}...`}
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {jurnal.kategori_jurnal}
+                                  <a href="#keteranganJenis">
+                                  {luaran.jenis_luaran}
+                                  </a>
                                 </p>
                               </td>
                               <td className="align-middle text-sm">
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
-                                  {`${jurnal.sitasi}`}
+                                  {luaran.tahun}
                                 </p>
                               </td>
                               <td className="align-middle pe-3 text-end">
-                                <Link href={`/bukujurnal/edit/${jurnal.id}`}>
+                                <Link href={`/luaranlaindos/edit/${luaran.id}`}>
                                   <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                     Edit
                                   </button>
                                 </Link>
 
                                 <button
-                                  onClick={() => deletejurnal(jurnal.id)}
+                                  onClick={() => deleteluaran(luaran.id)}
                                   className="btn btn-sm btn-outline-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
                                   Hapus
@@ -284,6 +275,88 @@ export default function tabeljurnal() {
                         })}
                       </tbody>
                     </table>
+                  </div>
+                  <div className="row mt-2">
+                    <div className="col-8 ms-3 mt-2" id={`keteranganJenis`}>
+                      <div className="card ">
+                        <div className="card-header p-3 pb-0">
+                          <div className="d-flex justify-content-between">
+                            <p className="mb-2 text-secondary text-xs fw-italic fw-bolder">
+                              Ket. Jenis Luaran
+                            </p>
+                          </div>
+                        </div>
+                        <div className="card-body p-0 ">
+                          <div className="row">
+                            <div className="col-10">
+                            <table className="table align-items-center mb-0 ms-4 me-4 pe-3 mw-80">
+                              <thead>
+                                <tr className={`text-start`}>
+                                  <th className="text-uppercase text-dark text-xs font-weight-bold opacity-8 ps-2">
+                                    Jenis
+                                  </th>
+                                  <th className="text-uppercase text-dark text-xs font-weight-bold opacity-8 ps-2">
+                                    Cakupan Luaran
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr className={`text-start`}>
+                                  <td className="align-middle text-sm">
+                                    <p className="text-xs font-weight-bold mb-0 pe-3 ms-2">
+                                      I
+                                    </p>
+                                  </td>
+                                  <td className="align-middle text-sm">
+                                    <p className="text-xs font-weight-bold mb-0 pe-3 text-start">
+                                      HKI: a) Paten, b) Paten Sederhana
+                                    </p>
+                                  </td>
+                                </tr>
+                                <tr className={`text-start`}>
+                                  <td className="align-middle text-sm">
+                                    <p className="text-xs font-weight-bold mb-0 pe-3 ms-2">
+                                      II
+                                    </p>
+                                  </td>
+                                  <td className="align-middle text-sm">
+                                    <p className="text-xs font-weight-bold mb-0 pe-3 text-start text-wrap">
+                                    HKI: a) Hak Cipta, b) Desain Produk Industri,  c) Perlindungan Varietas Tanaman (Sertifikat Perlindungan Varietas Tanaman, Sertifikat Pelepasan Varietas, Sertifikat Pendaftaran Varietas), d) Desain Tata Letak Sirkuit Terpadu, e) dll.)
+                                    </p>
+                                  </td>
+                                </tr>
+                                <tr className={`text-start`}>
+                                  <td className="align-middle text-sm">
+                                    <p className="text-xs font-weight-bold mb-0 pe-3 ms-2">
+                                      III
+                                    </p>
+                                  </td>
+                                  <td className="align-middle text-sm">
+                                    <p className="text-xs font-weight-bold mb-0 pe-3 text-start text-wrap">
+                                    Teknologi Tepat Guna, Produk (Produk Terstandarisasi, Produk Tersertifikasi), Karya Seni, Rekayasa Sosial
+                                    </p>
+                                  </td>
+                                </tr>
+                                <tr className={`text-start`}>
+                                  <td className="align-middle text-sm">
+                                    <p className="text-xs font-weight-bold mb-0 pe-3 ms-2">
+                                      IV
+                                    </p>
+                                  </td>
+                                  <td className="align-middle text-sm">
+                                    <p className="text-xs font-weight-bold mb-0 pe-3 text-start text-wrap">
+                                      Buku ber-ISBN, Book Chapter
+                                    </p>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            </div>
+                          </div>
+                         
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -9,6 +9,7 @@ class RelasiDosProd extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
     public function profil_dosen()
     {
         return $this->belongsTo(profilDosen::class, 'profil_dosen_id', 'id');

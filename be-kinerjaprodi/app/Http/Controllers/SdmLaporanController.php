@@ -250,22 +250,22 @@ class SdmLaporanController extends Controller
         foreach ($arrTahun as $key => $th) {
             $listjurnalts = $JurnalDosens->where('tahun', $th);
             $listjuranl = $listjurnalts;
-            $tidakakreditasi = $listjurnalts->where('kategori_jurnal', 'tidak terakreditasi')->count();
-            $nasional = $listjurnalts->where('kategori_jurnal', 'nasional terakreditasi')->count();
-            $inter = $listjurnalts->where('kategori_jurnal', 'internasional')->count();
-            $interrep = $listjurnalts->where('kategori_jurnal', 'internasional bereputasi')->count();
+            $tidakakreditasi = $listjurnalts->where('kategori_jurnal', 'Jurnal Tidak Terakreditasi')->count();
+            $nasional = $listjurnalts->where('kategori_jurnal', 'Jurnal Nasional Terakreditasi')->count();
+            $inter = $listjurnalts->where('kategori_jurnal', 'Jurnal Internasional')->count();
+            $interrep = $listjurnalts->where('kategori_jurnal', 'Jurnal Internasional Bereputasi')->count();
 
             $listSeminarts = $SeminarDosens->where('tahun', $th);
             $listsmnrl = $listSeminarts;
-            $SeminarWilayah = $listSeminarts->where('kategori_seminar', 'wilayah')->count();
-            $SeminarNasional = $listSeminarts->where('kategori_seminar', 'nasional')->count();
-            $SeminarInternasional = $listSeminarts->where('kategori_seminar', 'internasional')->count();
+            $SeminarWilayah = $listSeminarts->where('kategori_seminar', 'Wilayah')->count();
+            $SeminarNasional = $listSeminarts->where('kategori_seminar', 'Nasional')->count();
+            $SeminarInternasional = $listSeminarts->where('kategori_seminar', 'Internasional')->count();
 
             $listPagelarants = $PagelaranDosens->where('tahun', $th);
             $listpagelarl = $listPagelarants;
-            $PagelaranWilayah = $listPagelarants->where('ruang_lingkup', 'wilayah')->count();
-            $PagelaranNasional = $listPagelarants->where('ruang_lingkup', 'nasional')->count();
-            $PagelaranInternasional = $listPagelarants->where('ruang_lingkup', 'internasional')->count();
+            $PagelaranWilayah = $listPagelarants->where('ruang_lingkup', 'Wilayah')->count();
+            $PagelaranNasional = $listPagelarants->where('ruang_lingkup', 'Nasional')->count();
+            $PagelaranInternasional = $listPagelarants->where('ruang_lingkup', 'Internasional')->count();
 
 
             $arrJurnaltidakakreditasi[] = $tidakakreditasi;

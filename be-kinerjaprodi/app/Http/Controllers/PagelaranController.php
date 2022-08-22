@@ -237,11 +237,12 @@ class PagelaranController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-        $dtpagelaran = Pagelaran::find($id);
+        $pagelaran = Pagelaran::find($id);
 
+        $finalPathdokumen = "";
         if ($request->file('file_bukti')) {
             $finalPathdokumen = "";
-            $validasiFile = Validator::make($request->only('file_bukti'),["file_bukti" => "mimetypes:application/pdf|max:10000",]);
+            $validasiFile = Validator::make($request->only('filBukti'), ["file_bukti" => "mimetypes:application/pdf|max:10000",]);
             if ($validasiFile->fails()) {
                 return response()->json(['error' => $validasiFile->errors()], 400);
             }
@@ -250,19 +251,19 @@ class PagelaranController extends Controller
 
                 $dokumen = $request->file('file_bukti');
 
-                $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".", $dokumen->getClientOriginalName(), 2)[0])) . "-" . time() . "." . $dokumen->getClientOriginalExtension();
+                $namaFiledokumen = preg_replace('/\s+/', ' ', trim(explode(".", $dokumen->getClientOriginalName(), 2)[0])) . "-" . time() . "." . $dokumen->getClientOriginalExtension();
 
                 $dokumen->move($folderdokumen, $namaFiledokumen);
 
                 $finalPathdokumen = $folderdokumen . $namaFiledokumen;
 
-                $filedihapus = File::exists(public_path($dtpagelaran->file_bukti));
+                $filedihapus = File::exists(public_path($pagelaran->file_bukti));
 
                 if ($filedihapus) {
-                    File::delete(public_path($dtpagelaran->file_bukti));
+                    File::delete(public_path($pagelaran->file_bukti));
                 }
 
-                $dtpagelaran->file_bukti = $finalPathdokumen;
+                $pagelaran->file_bukti = $namaFiledokumen;
             } catch (\Throwable $th) {
                 return response()->json([
                     'success' => false,
@@ -270,14 +271,12 @@ class PagelaranController extends Controller
                 ], 400);
             }
         }
-    
-
 
         $pagelaran->judul = $request->judul;
         $pagelaran->tahun = $request->judul;
         $pagelaran->penyelenggara = $request->penyelenggara;
         $pagelaran->ruang_lingkup = $request->ruang_lingkup;
-        $pagelaran->file_bukti = $namaFiledokumen;
+        // $pagelaran->file_bukti = $namaFiledokumen;
         $pagelaran->save();
 
 
@@ -288,7 +287,7 @@ class PagelaranController extends Controller
             'tahun' => $request->tahun,
             'penyelenggara' => $request->penyelenggara,
             'ruang_lingkup' => $request->ruang_lingkup,
-            'file_bukti' => $namaFiledokumen,
+            // 'file_bukti' => $namaFiledokumen,
             'all_pagelaran' => Pagelaran::all()
         ]);
     }

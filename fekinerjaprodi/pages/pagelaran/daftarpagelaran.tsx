@@ -18,9 +18,8 @@ export default function daftarprestasi() {
   const [profilDosen, setprofilDosen] = useState([]);
   const [dataRole, setRole] = useState("");
   const MySwal = withReactContent(Swal);
-  const url = "http://127.0.0.1:8000/storage/pagelaran/"
-  const [dataurl, setUrl] = useState(url)
-
+  const url = "http://127.0.0.1:8000/storage/pagelaran/";
+  const [dataurl, setUrl] = useState(url);
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -302,25 +301,21 @@ export default function daftarprestasi() {
                                 </p>
                               </td>
 
-                              <td className="align-middle text-center">
-                                <span className="text-secondary text-xs font-weight-bold">
-                                  <h6 className="mb-0 text-sm">
-                                    <a href={dataurl + pglrn.file_bukti}>
-                                      {" "}
-                                      {pglrn.file_bukti}
-                                    </a>{" "}
-                                  </h6>
+                              <td className="align-middle pe-3">
+                              <span className="text-dark text-xs font-weight-bold">
+                                <p className="text-xs font-weight-bold mb-0">
+                                  <a href={`${dataurl + pglrn.file_bukti}`}>
+                                    {
+                                      pglrn.file_bukti
+                                        .split("/")
+                                        .slice(-1)[0]
+                                    }
+                                  </a>
+                                </p>
                                 </span>
                               </td>
 
-
-                              <td className="align-middle pe-0">
-                              <button
-                                  onClick={() => editipk(pglrn.id)}
-                                  className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 mt-2 me-2"
-                                >
-                                  EDIT
-                                </button>
+                              <td className="align-middle pe-0 ms-3 pe-3">
 
                                 <Link href={`/pagelaran/pilih/${pglrn.id}`}>
                                   <button className="btn btn-sm btn-success border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
@@ -333,6 +328,13 @@ export default function daftarprestasi() {
                                     Hapus mahasiswa
                                   </button>
                                 </Link>
+
+                                <button
+                                  onClick={() => editipk(pglrn.id)}
+                                  className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 mt-2 me-2"
+                                >
+                                  EDIT
+                                </button>
 
                                 <button
                                   onClick={() => deleteipk(pglrn.id)}

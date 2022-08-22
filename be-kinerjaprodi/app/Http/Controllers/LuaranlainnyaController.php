@@ -241,4 +241,18 @@ class LuaranlainnyaController extends Controller
             'message' => "Berhasil Dihapus"
         ]);
     }
+
+    public function listjenis(Request $request)
+    {
+        //
+        $allluaran = Luaranlainnya::all()->groupBy('jenis_luaran');
+        $arrjenis = array();
+        foreach ($allluaran as $key => $luaranjns) {
+            $arrjenis[] = $luaranjns[0]->jenis_luaran;
+        }
+        return response()->json([
+            'success' => true,
+            'jenisluarans' => $arrjenis,
+        ]);
+    }
 }

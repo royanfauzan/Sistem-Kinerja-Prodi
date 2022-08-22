@@ -9,8 +9,8 @@ class Seminar extends Model
 {
     use HasFactory;
     protected $guarded = ["id"];
-    public function mahasiswa()
+    public function anggotaMahasiswas()
     {
-        return $this->belongsTo(Mahasiswa::class,'mahasiswa_id','id');
+        return $this->belongsToMany(Mahasiswa::class, 'relasi_seminarmhs', 'seminar_id', 'mahasiswa_id')->withPivot('keanggotaan');
     }
 }

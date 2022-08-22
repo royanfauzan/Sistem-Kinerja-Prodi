@@ -172,12 +172,15 @@ Route::put('edit_tulisan/{id}', [TulisanController::class, 'update']);
 Route::post('delete_tulisan/{id}', [TulisanController::class, 'destroy']);
 
 //Seminar MHS
+Route::get('tampil_relasi_seminar/{id}', [SeminarController::class, 'tampilrelasi']);
+Route::post('seminar_mhs/{id}', [SeminarController::class, 'pilihmahasiswa']);
 Route::get('cari_seminar/{search}', [SeminarController::class, 'searchseminar']);
 Route::get('seminar', [SeminarController::class, 'index']);
 Route::post('seminar', [SeminarController::class, 'store']);
 Route::put('edit_seminar/{id}', [SeminarController::class, 'update']);
 Route::post('delete_seminar/{id}', [SeminarController::class, 'destroy']);
 Route::get('show_seminar/{id}', [SeminarController::class, 'show']);
+Route::post('deletemahasiswa_seminar/{id}', [SeminarController::class, 'deletemahasiswa']);
 
 //Buku
 Route::get('cari_buku/{search}', [BukuController::class, 'searchbuku']);

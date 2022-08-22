@@ -146,33 +146,6 @@ export default function inputseminar() {
                     <div className="row">
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="mahasiswa" className="form-control-label">
-                            Nama Mahasiswa
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="mahasiswa"
-                          >
-                            <option>Pilih Mahasiswa</option>
-                            {userDosens.map((usermahasiswa) => {
-                               {
-                                return (
-                                  <option
-                                    value={usermahasiswa.id}
-                                    key={usermahasiswa.id}
-                                  >
-                                    {usermahasiswa.nama}
-                                  </option>
-                                );
-                              }
-                            })}
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
                           <label htmlFor="tahun" className="form-control-label">
                             Tahun
                           </label>

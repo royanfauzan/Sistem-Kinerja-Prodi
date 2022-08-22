@@ -212,7 +212,7 @@ export default function daftaripk() {
                       <td className="align-middle">
                         <button
                           onClick={() => exportKjs()}
-                          className="btn btn-success border-0 shadow-sm ps-3 ps-3 me-2 mt-3 mb-0"
+                          className="btn btn-outline-success shadow-sm ps-3 ps-3 me-2 mt-3 mb-0"
                         >
                           Export
                         </button>

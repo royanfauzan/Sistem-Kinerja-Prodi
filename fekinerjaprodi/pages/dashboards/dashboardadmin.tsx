@@ -137,20 +137,20 @@ export default function dashboardadmin() {
                       <Carddashboard judul={`Kriteria Pendidikan`}>
                         <ListCardDash
                           judul={"Capaian Kurikulum"}
-                          keterangan={`input`}
+                          keterangan={`Kelola Data Capaian Kurikulum`}
                           halaman={"/capkurikulum/daftarkurikulum"}
                           icon={`bi bi-card-text`}
                         />
                         <ListCardDash
                           judul={"Data Mahasiswa"}
-                          keterangan={`kelola data Luaran Dosen`}
-                          halaman={"mahasiswa/daftarmhs"}
+                          keterangan={`Kelola Data Mahasiswa`}
+                          halaman={"/mahasiswa/daftarmhs"}
                           icon={`bi bi-calendar3-range`}
                         />
                         <ListCardDash
                           judul={"Kepuasan Mahasiswa"}
-                          keterangan={`kelola data Luaran Dosen`}
-                          halaman={"kepuasanmhs/daftarkepuasanmhs"}
+                          keterangan={`Kelola Data Kepuasan Mahasiswa`}
+                          halaman={"/kepuasanmhs/daftarkepuasanmhs"}
                           icon={`bi bi-calendar3-range`}
                         />
                       </Carddashboard>

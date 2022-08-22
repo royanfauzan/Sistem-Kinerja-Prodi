@@ -416,7 +416,7 @@ Route::put('update_rekognisi/{id}', [RekognisiController::class, 'update']);
 Route::post('delete_rekognisi/{id}', [RekognisiController::class, 'destroy']);
 
 // Tulisan
-Route::post('tulisandosens', [TulisandosController::class, 'store']);
+Route::post('tulisandoss', [TulisandosController::class, 'store']);
 Route::get('search_tulisandos/', [TulisandosController::class, 'alltulisan']);
 Route::get('search_tulisandosdsn/', [TulisandosController::class, 'alltulisandsn']);
 Route::get('search_tulisandos/{search}', [TulisandosController::class, 'searchtulisan']);

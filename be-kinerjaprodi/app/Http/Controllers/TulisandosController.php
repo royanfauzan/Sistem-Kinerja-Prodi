@@ -116,7 +116,7 @@ class TulisandosController extends Controller
         $tulisandos = Tulisandos::with('profilDosen')->find($id);
         return response()->json([
             'success' => true,
-            'datatulisandoss' => $tulisandos,
+            'datatulisan' => $tulisandos,
             // 'dosenId'=> $dosenId
         ]);
     }
@@ -200,7 +200,7 @@ class TulisandosController extends Controller
         $tulisan->tahun = $request->tahun;
         $tulisan->nm_media = $request->nm_media;
         $tulisan->ruang_lingkup = $request->ruang_lingkup;
-        $tulisan->dosen_id = $request->profil_dosen_id;
+        $tulisan->profil_dosen_id = $request->profil_dosen_id;
         $tulisan->save();
 
 
@@ -240,7 +240,7 @@ class TulisandosController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Berhasil Dihapus",
-            'datatulisandoss' => Tulisandos::with('profilDosen')->orderBy('tahun', 'DESC')->get()
+            'datatulisans' => Tulisandos::with('profilDosen')->orderBy('tahun', 'DESC')->get()
         ]);
     }
 
@@ -257,7 +257,7 @@ class TulisandosController extends Controller
             ->get();
         return response()->json([
             'success' => true,
-            'datatulisandoss' => $tulisandoss,
+            'datatulisans' => $tulisandoss,
         ]);
     }
 
@@ -270,7 +270,7 @@ class TulisandosController extends Controller
             ->get();
         return response()->json([
             'success' => true,
-            'datatulisandoss' => $tulisandoss,
+            'datatulisans' => $tulisandoss,
         ]);
     }
 
@@ -298,7 +298,7 @@ class TulisandosController extends Controller
 
         return response()->json([
             'success' => true,
-            'datatulisandoss' => $arrtulisandos,
+            'datatulisans' => $arrtulisandos,
         ]);
     }
 
@@ -319,7 +319,7 @@ class TulisandosController extends Controller
         }
         return response()->json([
             'success' => true,
-            'datatulisandoss' => $arrtulisandos,
+            'datatulisans' => $arrtulisandos,
         ]);
     }
 }

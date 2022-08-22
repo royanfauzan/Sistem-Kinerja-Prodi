@@ -1,5 +1,6 @@
 import React from "react";
 import Carddashboard from "../../components/Molecule/MenuCard/Carddashboard";
+import CardKelolaSimple from "../../components/Molecule/MenuCard/CardKelolaSimple";
 import CardSertif from "../../components/Molecule/MenuCard/CardSertif";
 import CardSimple from "../../components/Molecule/MenuCard/CardSimple";
 import ListCardDash from "../../components/Molecule/MenuCard/ListCardDash";
@@ -18,6 +19,12 @@ export default function MenuCardTest() {
       <CardSimple
         judul={`Tulisan Media`}
         icon={`bi bi-pencil text-success`}
+        halaman={`/TulisanMedia/`}
+        keterangan={"Data tulisan media yang dibuat oleh dosen"}
+      />
+      <CardKelolaSimple
+        judul={`Tulisan Media`}
+        icon={`bi bi-pencil`}
         halaman={`/TulisanMedia/`}
         keterangan={"Data tulisan media yang dibuat oleh dosen"}
       />

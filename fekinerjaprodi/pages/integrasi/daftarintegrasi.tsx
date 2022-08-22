@@ -16,8 +16,7 @@ export default function daftarintgrs() {
   const [stadmin, setStadmin] = useState(false);
   const [integrasi, setintegrasi] = useState([]);
   const MySwal = withReactContent(Swal);
-  const url = "http://127.0.0.1:8000/storage/integrasi/"
-  const [dataurl, setUrl] = useState(url);
+  const apiurl = "http://127.0.0.1:8000/"
 
   const [dataRole, setRole] = useState('');
 
@@ -311,10 +310,7 @@ export default function daftarintgrs() {
                               <td className="align-middle ">
                                 <span className="text-secondary text-xs font-weight-bold">
                                   <h6 className="mb-0 text-sm">
-                                    <a href={dataurl + intgrs.file_bukti}>
-                                      {" "}
-                                      {intgrs.file_bukti}
-                                    </a>{" "}
+                                  <a href={`${apiurl+intgrs.file_bukti}`}>{intgrs.file_bukti.split("/").slice(-1)[0] }</a>
                                   </h6>
                                 </span>
                               </td>

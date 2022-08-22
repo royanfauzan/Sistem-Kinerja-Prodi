@@ -80,8 +80,7 @@ export default function update_dataintegrasi(props) {
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
-  const url = "http://127.0.0.1:8000/";
-  const [dataurl, setUrl] = useState(url);
+  const apiurl = "http://127.0.0.1:8000/"
   const [selectDosen, setSelectDosen] = useState(integrasi.dosen_id);
   const [selectPenelitian, setSelectPenelitian] = useState(integrasi.penelitian_id);
   const [selectPKM, setselectPKM] = useState(integrasi.PkM_id);
@@ -178,7 +177,7 @@ export default function update_dataintegrasi(props) {
     formData.append("tahun", event.target.tahun.value);
     formData.append("file_bukti", filebukti);
 
-    console.log(filebukti);
+    console.log(formData);
 
 
     axios({
@@ -457,17 +456,17 @@ export default function update_dataintegrasi(props) {
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="file_bukti"
+                            <label htmlFor="filebukti"
                               className={dataError.file_bukti ? "is-invalid" : ""}>
                               File Bukti
                             </label>
                             <div>
-                              <a href={dataurl + dataIntegrasi.file_bukti}> {dataIntegrasi.file_bukti}</a> </div>
+                            <a href={`${apiurl+dataIntegrasi.file_bukti}`}>{dataIntegrasi.file_bukti.split("/").slice(-1)[0] }</a> </div>
                             <input
                               className="form-control"
                               type="file"
                               onChange={handleChangeFile}
-                              id="file_bukti"
+                              id="filebukti"
                             />
                             {dataError.file_bukti ? (
                               <div className="invalid-feedback">

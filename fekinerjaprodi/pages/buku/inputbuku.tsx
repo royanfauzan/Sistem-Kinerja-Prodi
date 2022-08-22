@@ -13,6 +13,7 @@ export default function inputpagelaran() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState([]);
+  const [dataBukus, setBukus] = useState([]);
   const [filebukti, setfilebuktis] = useState<File>([]);
   const [dataError, setError] = useState([]);
   const MySwal = withReactContent(Swal);
@@ -22,7 +23,23 @@ export default function inputpagelaran() {
   const [stadmin, setStadmin] = useState(false);
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () => {};
+  const pengambilData = async () => {
+    axios({
+      method: "get",
+      url: "http://127.0.0.1:8000/api/Mahasiswa",
+    })
+      .then(function (response) {
+        console.log(response);
+        console.log("Sukses");
+        const { all_mhs } = response.data;
+        setBukus(all_mhs);
+        console.log(dataBukus);
+      })
+      .catch(function (err) {
+        console.log("gagal");
+        console.log(err.response);
+      });
+  };
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
@@ -138,15 +155,14 @@ export default function inputpagelaran() {
                       </div>
                     </div>
                     <div className="card-body">
-                      <p className="text-uppercase text-sm">
-                        Pagelaran Mahasiswa
-                      </p>
+                      <p className="text-uppercase text-sm">Jurnal Mahasiswa</p>
                       <div className="row">
+
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="judul"
-                              className="form-control-label"
+                              className={dataError.judul ? "is-invalid" : ""}
                             >
                               Judul
                             </label>
@@ -155,8 +171,14 @@ export default function inputpagelaran() {
                               type="text"
                               placeholder="Judul"
                               id="judul"
-                              required
                             />
+                             {dataError.judul ? (
+                              <div className="invalid-feedback">
+                                {dataError.judul}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -204,7 +226,7 @@ export default function inputpagelaran() {
                           <div className="form-group">
                             <label
                               htmlFor="nama"
-                              className="form-control-label"
+                              className={dataError.nm_jurnal ? "is-invalid" : ""}
                             >
                               Nama Jurnal
                             </label>
@@ -213,8 +235,14 @@ export default function inputpagelaran() {
                               type="text"
                               placeholder="Nama Jurnal"
                               id="nama"
-                              required
                             />
+                            {dataError.nm_jurnal ? (
+                              <div className="invalid-feedback">
+                                {dataError.nm_jurnal}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -222,7 +250,7 @@ export default function inputpagelaran() {
                           <div className="form-group">
                             <label
                               htmlFor="keterangan"
-                              className="form-control-label"
+                              className={dataError.keterangan ? "is-invalid" : ""}
                             >
                               Keterangan
                             </label>
@@ -231,8 +259,14 @@ export default function inputpagelaran() {
                               type="text"
                               placeholder="Keterangan"
                               id="keterangan"
-                              required
                             />
+                            {dataError.keterangan ? (
+                              <div className="invalid-feedback">
+                                {dataError.keterangan}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -240,7 +274,7 @@ export default function inputpagelaran() {
                           <div className="form-group">
                             <label
                               htmlFor="volume"
-                              className="form-control-label"
+                              className={dataError.volume ? "is-invalid" : ""}
                             >
                               Volume
                             </label>
@@ -249,8 +283,14 @@ export default function inputpagelaran() {
                               type="text"
                               placeholder="Volume"
                               id="volume"
-                              required
                             />
+                            {dataError.volume ? (
+                              <div className="invalid-feedback">
+                                {dataError.volume}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -258,7 +298,7 @@ export default function inputpagelaran() {
                           <div className="form-group">
                             <label
                               htmlFor="tahun"
-                              className="form-control-label"
+                              className={dataError.tahun ? "is-invalid" : ""}
                             >
                               Tahun
                             </label>
@@ -267,8 +307,14 @@ export default function inputpagelaran() {
                               type="text"
                               placeholder="Tahun"
                               id="tahun"
-                              required
                             />
+                            {dataError.tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -276,7 +322,7 @@ export default function inputpagelaran() {
                           <div className="form-group">
                             <label
                               htmlFor="nomor"
-                              className="form-control-label"
+                              className={dataError.nomor ? "is-invalid" : ""}
                             >
                               Nomor
                             </label>
@@ -285,8 +331,14 @@ export default function inputpagelaran() {
                               type="text"
                               placeholder="Nomor"
                               id="nomor"
-                              required
                             />
+                            {dataError.nomor ? (
+                              <div className="invalid-feedback">
+                                {dataError.nomor}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -294,7 +346,7 @@ export default function inputpagelaran() {
                           <div className="form-group">
                             <label
                               htmlFor="halaman"
-                              className="form-control-label"
+                              className={dataError.halaman ? "is-invalid" : ""}
                             >
                               Halaman
                             </label>
@@ -303,8 +355,14 @@ export default function inputpagelaran() {
                               type="text"
                               placeholder="Halaman"
                               id="halaman"
-                              required
                             />
+                            {dataError.halaman ? (
+                              <div className="invalid-feedback">
+                                {dataError.halaman}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
@@ -312,7 +370,7 @@ export default function inputpagelaran() {
                           <div className="form-group">
                             <label
                               htmlFor="sitasi"
-                              className="form-control-label"
+                              className={dataError.sitasi ? "is-invalid" : ""}
                             >
                               Sitasi
                             </label>
@@ -321,8 +379,14 @@ export default function inputpagelaran() {
                               type="text"
                               placeholder="Sitasi"
                               id="sitasi"
-                              required
                             />
+                            {dataError.sitasi ? (
+                              <div className="invalid-feedback">
+                                {dataError.sitasi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                       </div>

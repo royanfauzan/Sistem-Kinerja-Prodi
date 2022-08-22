@@ -6,6 +6,8 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 
 // Untuk Ngambil Data Berdasarkan ID
@@ -15,9 +17,13 @@ export async function getServerSideProps(context) {
   const req = await axios.get(`http://127.0.0.1:8000/api/tampil_Matkul/${context.query.id_matkul}`)
   const res = await req.data.all_matkul
 
+  const reqprodi = await axios.get(`http://127.0.0.1:8000/api/Prodi/`)
+  const prodi = await reqprodi.data.Prodi
+
   return {
     props: {
-      matkul: res // <-- assign response
+      matkul: res,
+      prodi: prodi // <-- assign response
     },
   }
 }
@@ -32,6 +38,8 @@ export async function getServerSideProps(context) {
 export default function update_datamatkul(props) {
   const { matkul } = props;
   console.log(matkul);
+  const { prodi } = props;
+  console.log(prodi);
 
   const router = useRouter();
 
@@ -40,6 +48,10 @@ export default function update_datamatkul(props) {
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
+  const [dataError, setError] = useState([]);
+  const MySwal = withReactContent(Swal);
+  const [dataprodi, setdataprodi] = useState(prodi);
+  const [selectProdi, setselectProdi] = useState(matkul.prodi_id);
 
   const [dataRole, setRole] = useState("");
 
@@ -120,27 +132,30 @@ export default function update_datamatkul(props) {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        const { profil } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(response.data);
-        router.push("../../matkul/daftarmatkul");
+    .then(function (response) {
+      MySwal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Berhasil Di Edit",
       })
-      .catch(function (error) {
-        //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
 
-        console.log("tidak success");
-        console.log(error.response);
-      });
+      router.push("/matkul/daftarmatkul")
+    })
+    .catch(function (error) {
+      //handle error
+      setError(error.response.data.error)
+      console.log(error.response.data.error)
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Data Gagal Di Edit",
+      })
+      console.log(error.response)
+    })
+  };
+
+  const handleChangeProdi = (e) => {
+    setselectProdi(e.target.value);
   };
 
   return (
@@ -170,7 +185,8 @@ export default function update_datamatkul(props) {
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="kode_matkul" className="form-control-label">
+                            <label htmlFor="kode_matkul" 
+                            className={dataError.kode_matkul ? "is-invalid" : ""}>
                               Kode Mata kuliah
                             </label>
                             <input
@@ -179,14 +195,21 @@ export default function update_datamatkul(props) {
                               type="text"
                               placeholder="Kode Matkul"
                               id="kode_matkul"
-                              required
                             />
+                            {dataError.kode_matkul ? (
+                              <div className="invalid-feedback">
+                                {dataError.kode_matkul}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="nama_matkul" className="form-control-label">
+                            <label htmlFor="nama_matkul" 
+                            className={dataError.nama_matkul ? "is-invalid" : ""}>
                               Nama Mata kuliah
                             </label>
                             <input
@@ -195,13 +218,20 @@ export default function update_datamatkul(props) {
                               type="text"
                               placeholder="Nama Matkul"
                               id="nama_matkul"
-                              required
                             />
+                            {dataError.nama_matkul ? (
+                              <div className="invalid-feedback">
+                                {dataError.nama_matkul}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="sks" className="form-control-label">
+                            <label htmlFor="sks" 
+                            className={dataError.sks ? "is-invalid" : ""}>
                               SKS
                             </label>
                             <input
@@ -210,23 +240,54 @@ export default function update_datamatkul(props) {
                               type="text"
                               placeholder="SKS"
                               id="sks"
-                              required
                             />
+                            {dataError.sks ? (
+                              <div className="invalid-feedback">
+                                {dataError.sks}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
-                        </div>
+                        </div> 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="prodi_id" className="form-control-label">
-                              Prodi ID
+                            <label
+                              htmlFor="prodi_id"
+                              className={dataError.prodi_id ? "is-invalid" : ""}
+                            >
+                              Prodi
                             </label>
-                            <input
-                              defaultValue={dataMatkul.prodi_id}
-                              className="form-control"
-                              type="text"
-                              placeholder="Prodi ID"
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
                               id="prodi_id"
-                              required
-                            />
+
+                              value={selectProdi}
+                              onChange={handleChangeProdi}
+                            >
+                              <option value="">Pilih Prodi</option>
+                              {dataprodi.map((userprodi) => {
+                                return (
+                                  <option
+                                    value={userprodi.id}
+                                    key={userprodi.id}
+                                  >
+                                    {userprodi.prodi +
+                                      ` ` +
+                                      userprodi.nama_prodi}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                            {dataError.prodi_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.prodi_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 

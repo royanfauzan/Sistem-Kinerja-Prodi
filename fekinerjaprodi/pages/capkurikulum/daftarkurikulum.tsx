@@ -228,6 +228,9 @@ export default function daftarkurikulum() {
                             Prodi
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
+                            Kode Mata Kuliah
+                          </th>
+                          <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
                             Mata Kuliah
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
@@ -285,6 +288,12 @@ export default function daftarkurikulum() {
                               <td className="align-middle text-sm" >
                                 <p className="text-xs font-weight-bold mb-0 pe-3">
                                   {kurikulum.prodi.prodi + ' ' + kurikulum.prodi.nama_prodi}
+                                </p>
+                              </td>
+
+                              <td className="align-middle text-sm">
+                                <p className="text-xs font-weight-bold mb-0 pe-3">
+                                  {kurikulum.matkul.kode_matkul}
                                 </p>
                               </td>
 

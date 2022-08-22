@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Buku;
 use App\Models\Pagelaran;
+use App\Models\Relasi_pagelaran_mhs;
 use App\Models\Seminar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class PagelaranController extends Controller
@@ -34,6 +36,47 @@ class PagelaranController extends Controller
         ]);
     }
 
+    public function tampilrelasi($id)
+    {
+        return response()->json([
+            'success' => true,
+            'all_relasi' => Relasi_pagelaran_mhs::with('pagelaran','mahasiswa')->where('pagelaran_id',$id)->get(),
+        ]);
+        
+    }
+
+    public function deletemahasiswa($id)
+    {
+        $pagelaran = Relasi_pagelaran_mhs::find($id);
+        $pagelaran->delete();
+
+        if (!$pagelaran) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
+    }
+
+    public function searchpagelaran($search)
+    {
+        return response()->json([
+            'success' => true,
+            'searchpagelaran' => Pagelaran::with('anggotaMahasiswas')
+                ->whereRelation('anggotaMahasiswas', 'nama','LIKE', "%{$search}%")
+                ->orwhere('judul', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('penyelenggara', 'LIKE', "%{$search}%")
+                ->orwhere('ruang_lingkup', 'LIKE', "%{$search}%")
+                ->orwhere('file_bukti', 'LIKE', "%{$search}%")
+                ->get()
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -56,11 +99,11 @@ class PagelaranController extends Controller
 
         //valid credential
         $validator = Validator::make($datapagelaran, [
-            'judul' => 'required',
-            'tahun' => 'required',
+            'judul' =>"required",
+            'tahun' =>"required",
             'penyelenggara' => 'required',
             'ruang_lingkup' => 'required',
-            'file_bukti' => 'required',
+            'file_bukti' => ['required', 'mimes:pdf,docx', 'max:10048'],
         ]);
 
         //Send failed response if request is not valid
@@ -92,7 +135,7 @@ class PagelaranController extends Controller
                 'tahun' => $request->tahun,
                 'penyelenggara' => $request->penyelenggara,
                 'ruang_lingkup' => $request->ruang_lingkup,
-                'file_bukti' => $finalPathdokumen,
+                'file_bukti' => $namaFiledokumen,
             ]
         );
 
@@ -103,7 +146,7 @@ class PagelaranController extends Controller
             'tahun' => $request->tahun,
             'penyelenggara' => $request->penyelenggara,
             'ruang_lingkup' => $request->ruang_lingkup,
-            'file_bukti' => $finalPathdokumen,
+            'file_bukti' => $namaFiledokumen,
             'all_pagelaran' => Pagelaran::all()
         ]);
     }
@@ -120,6 +163,42 @@ class PagelaranController extends Controller
             'success' => true,
             'all_pagelaran' => Pagelaran::find($id),
             'id' => $id
+        ]);
+    }
+
+    public function pilihmahasiswa(Request $request, $id)
+    {
+        $luaran = Pagelaran::where('id', $id)->first();
+        $dataluaran = $request->only('mahasiswa_id', 'pagelaran_id', 'keanggotaan');
+
+        //valid credential
+        $validator = Validator::make($dataluaran, [
+            'mahasiswa_id' => 'required',
+            'pagelaran_id' => 'required',
+            'keanggotaan' => 'required',
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        $relasimahasiswa = Relasi_pagelaran_mhs::create(
+            [
+                'mahasiswa_id' => $request->mahasiswa_id,
+                'pagelaran_id' => $request->pagelaran_id,
+                'keanggotaan' => $request->keanggotaan,
+            ]
+        );
+
+
+        //Token created, return with success response and jwt token
+        return response()->json([
+            'success' => true,
+            'mahasiswa_id' => $request->mahasiswa_id,
+            'pagelaran_id' => $request->pagelaran_id,
+            'keanggotaan' => $request->keanggotaan,
+            'all_luaran' => Pagelaran::all()
         ]);
     }
 
@@ -144,7 +223,7 @@ class PagelaranController extends Controller
     public function update(Request $request, $id)
     {
         $pagelaran = Pagelaran::where('id', $id)->first();
-        $datapagelaran = $request->only('judul', 'tahun', 'penyelenggara', 'ruang_lingkup', 'file_bukti');
+        $datapagelaran = $request->only('judul', 'tahun', 'penyelenggara', 'ruang_lingkup');
 
         //valid credential
         $validator = Validator::make($datapagelaran, [
@@ -152,37 +231,53 @@ class PagelaranController extends Controller
             'tahun' => 'required',
             'penyelenggara' => 'required',
             'ruang_lingkup' => 'required',
-            'file_bukti' => 'required',
         ]);
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
+        $dtpagelaran = Pagelaran::find($id);
 
-        $finalPathdokumen = "";
-        try {
-            $folderdokumen = "storage/pagelaran/";
+        if ($request->file('file_bukti')) {
+            $finalPathdokumen = "";
+            $validasiFile = Validator::make($request->only('file_bukti'),["file_bukti" => "mimetypes:application/pdf|max:10000",]);
+            if ($validasiFile->fails()) {
+                return response()->json(['error' => $validasiFile->errors()], 400);
+            }
+            try {
+                $folderdokumen = "storage/pagelaran/";
 
-            $dokumen = $request->file('file_bukti');
+                $dokumen = $request->file('file_bukti');
 
-            $namaFiledokumen = $dokumen->getClientOriginalName();
+                $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".", $dokumen->getClientOriginalName(), 2)[0])) . "-" . time() . "." . $dokumen->getClientOriginalExtension();
 
-            $dokumen->move($folderdokumen, $namaFiledokumen);
+                $dokumen->move($folderdokumen, $namaFiledokumen);
 
-            $finalPathdokumen = $folderdokumen . $namaFiledokumen;
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => "Gagal Menyimpan Dokumen" . $th,
-            ], 400);
+                $finalPathdokumen = $folderdokumen . $namaFiledokumen;
+
+                $filedihapus = File::exists(public_path($dtpagelaran->file_bukti));
+
+                if ($filedihapus) {
+                    File::delete(public_path($dtpagelaran->file_bukti));
+                }
+
+                $dtpagelaran->file_bukti = $finalPathdokumen;
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Gagal Menyimpan Dokumen" . $th,
+                ], 400);
+            }
         }
+    
+
 
         $pagelaran->judul = $request->judul;
-        $pagelaran->tahun = $request->tahun;
+        $pagelaran->tahun = $request->judul;
         $pagelaran->penyelenggara = $request->penyelenggara;
         $pagelaran->ruang_lingkup = $request->ruang_lingkup;
-        $pagelaran->file_bukti = $finalPathdokumen;;
+        $pagelaran->file_bukti = $namaFiledokumen;
         $pagelaran->save();
 
 
@@ -193,7 +288,7 @@ class PagelaranController extends Controller
             'tahun' => $request->tahun,
             'penyelenggara' => $request->penyelenggara,
             'ruang_lingkup' => $request->ruang_lingkup,
-            'file_bukti' => $finalPathdokumen,
+            'file_bukti' => $namaFiledokumen,
             'all_pagelaran' => Pagelaran::all()
         ]);
     }

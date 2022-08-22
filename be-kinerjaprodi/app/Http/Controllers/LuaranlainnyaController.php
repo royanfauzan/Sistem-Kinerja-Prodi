@@ -26,9 +26,23 @@ class LuaranlainnyaController extends Controller
     {
         return response()->json([
             'success' => true,
-            'all_relasi' => relasi_luaran_mhs::with('mahasiswa')->where('luaranlainnya_id',$id)->get(),
+            'all_relasi' => relasi_luaran_mhs::with('mahasiswa','luaran')->where('luaranlainnya_id',$id)->get(),
         ]);
         
+    }
+
+    public function searchluaran($search)
+    {
+        return response()->json([
+            'success' => true,
+            'searchluaran' => Luaranlainnya::with('anggotaMahasiswas')
+                ->whereRelation('anggotaMahasiswas', 'nama','LIKE', "%{$search}%")
+                ->orwhere('judul', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('keterangan', 'LIKE', "%{$search}%")
+                ->orwhere('jenis_luaran', 'LIKE', "%{$search}%")
+                ->get()
+        ]);
     }
 
     /**

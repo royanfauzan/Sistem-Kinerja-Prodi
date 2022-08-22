@@ -250,6 +250,21 @@ export default function dashboardadmin() {
                   <div className="col-4 mt-3">
                     <div className="card">
                       <div className="card-body">
+                        <h6 className="card-title">Data Tulisan Mahasiswa</h6>
+                        <p className="card-text">
+                          With supporting text below as a natural lead-in to
+                          additional content.
+                        </p>
+                        <a href="/tulisan/daftartulisan" className="btn btn-primary">
+                          Kelola Data
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-4 mt-3">
+                    <div className="card">
+                      <div className="card-body">
                         <h6 className="card-title">Data Jurnal Mahasiswa</h6>
                         <p className="card-text">
                           With supporting text below as a natural lead-in to

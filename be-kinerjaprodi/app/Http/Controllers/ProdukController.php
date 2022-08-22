@@ -19,7 +19,19 @@ class ProdukController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'all_produk' => Produk::with(['anggotaMahasiswas'])->get(),
+        ]);
+    }
+
+    public function tampilrelasi($id)
+    {
+        return response()->json([
+            'success' => true,
+            'all_relasi' => relasi_produkmhs::with('mahasiswa')->where('produk_id',$id)->get(),
+        ]);
+        
     }
 
     /**

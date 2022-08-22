@@ -12,6 +12,7 @@ export default function inputseminar() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState([]);
+  const [dataRole, setRole] = useState('');
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -54,6 +55,8 @@ export default function inputseminar() {
             console.log(response);
             console.log('Sukses');
             const {level_akses} = response.data.user;
+            const { role } = response.data.user;
+            setRole(role);
             // kalo ga admin dipindah ke halaman lain
             if(level_akses !== 3){
               return router.push('/');
@@ -121,7 +124,7 @@ export default function inputseminar() {
     <>
     <LoadingUtama loadStatus={stadmin}/>
       {stadmin  &&(
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
         <div className="container-fluid py-4">
           <div className="row">
             <div className="col-md-8">
@@ -178,7 +181,6 @@ export default function inputseminar() {
                             type="text"
                             placeholder="Tahun"
                             id="tahun"
-                            required
                           />
                         </div>
                       </div>
@@ -192,7 +194,6 @@ export default function inputseminar() {
                             type="text"
                             placeholder="Judul Kegiatan"
                             id="judul"
-                            required
                           />
                         </div>
                       </div>

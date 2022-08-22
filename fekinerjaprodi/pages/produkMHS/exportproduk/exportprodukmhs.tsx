@@ -6,15 +6,17 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
-import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import Link from "next/link";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
-
-export default function daftarprestasi() {
+export default function daftarprodkmhs() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
-  const [profilDosen, setprofilDosen] = useState([]);
+  const [produkmhs, setprodukmhs] = useState([]);
+  const MySwal = withReactContent(Swal);
   const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
@@ -22,16 +24,16 @@ export default function daftarprestasi() {
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/prestasi",
+      url: "http://127.0.0.1:8000/api/ProdukMHS",
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_prestasi } = response.data;
-        setprofilDosen(all_prestasi);
+        const { all_produk } = response.data;
+        setprodukmhs(all_produk);
 
-        console.log(all_prestasi);
+        console.log(all_produk);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -73,6 +75,82 @@ export default function daftarprestasi() {
       });
   }, []);
 
+  const tambahproduk = () => {
+    MySwal.fire({
+      title: "Tambah Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/produkMHS/produkmhs`);
+      }
+    });
+  };
+
+  const editproduk = (id) => {
+    MySwal.fire({
+      title: "Edit Data",
+      text: "Apakah kalian yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/produkMHS/edit/${id}`);
+      }
+    });
+  };
+
+  const deleteprodukMHS = (id) => {
+    MySwal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, hapus ini!",
+    }).then((result) => {
+      // <--
+      if (result.isConfirmed) {
+        // <-- if confirmed
+        axios({
+          method: "post",
+          url: `http://127.0.0.1:8000/api/ProdukMHS_Delete/${id}`,
+        })
+          .then(function (response) {
+            router.reload();
+          })
+          .catch(function (err) {
+            console.log("gagal");
+            console.log(err.response);
+          });
+      }
+    });
+  };
+
+  const searchdata = async (e) => {
+    if (e.target.value == "") {
+      const req = await axios.get(`http://127.0.0.1:8000/api/ProdukMHS/`);
+      const res = await req.data.all_produk;
+      setprodukmhs(res);
+    } else {
+      const req = await axios.get(
+        `http://127.0.0.1:8000/api/ProdukMHS_search/${e.target.value}`
+      );
+      const res = await req.data.searchprodukmhs;
+      setprodukmhs(res);
+    }
+  };
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -102,7 +180,7 @@ export default function daftarprestasi() {
 
                     <div className="row justify-content-between mb-4">
                       <div className="col-4">
-                        <Link href={`/prestasi/daftarprestasi/`}>
+                        <Link href={`/produkMHS/daftarprodukmhs/`}>
                           <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                             Daftar Tabel
                           </button>
@@ -132,28 +210,47 @@ export default function daftarprestasi() {
                         <thead>
                           <tr>
                             <th rowspan="2">No</th>
-                            <th  rowspan="2" >Nama Kegiatan</th>
-                            <th rowspan="2">Waktu Pengelolaan</th>
-                            <th colspan="3">Tingkat</th>
-                            <th rowspan="2">Prestasi yang Dicapai</th>
-                          </tr>
-                          <tr>
-                            <th>Lokal / Wilayah</th>
-                            <th>Nasional</th>
-                            <th>Internasional</th>
+                            <th rowspan="2">Nama Mahasiswa</th>
+                            <th rowspan="2">Nama Produk / Jasa</th>
+                            <th rowspan="2">Deskripsi Produk / Jasa</th>
+                            <th rowspan="2">Bukti</th>
+                            <th rowspan="2">Tahun (YYYY)</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {profilDosen.map((kpsn, number) => {
+                          {produkmhs.map((kpsn, number) => {
                             return (
                               <tr key={`kpsn` + kpsn.id}>
                                 <th>
-                                  <p className="mb-0 text-sm font-weight-bold">{number + 1}</p>
+                                  <p className="mb-0 text-sm font-weight-bold">
+                                    {number + 1}
+                                  </p>
                                 </th>
+
+                                <td>
+                                  {kpsn.anggota_mahasiswas.map(
+                                    (anggota_mahasiswas) => {
+                                      return (
+                                        <p
+                                          className="mb-0 text-sm"
+                                          key="anggota.id"
+                                        >
+                                          {anggota_mahasiswas.nama}
+                                        </p>
+                                      );
+                                    }
+                                  )}
+                                </td>
 
                                 <th className="align-middle  text-sm">
                                   <p className="text-xs font-weight-bold mb-0">
-                                    {kpsn.nm_kegiatan}
+                                    {kpsn.nama_produk}
+                                  </p>
+                                </th>
+
+                                <th className="align-middle  text-sm">
+                                  <p className="text-xs text-center font-weight-bold mb-0">
+                                    {kpsn.deskripsi}
                                   </p>
                                 </th>
 
@@ -163,57 +260,12 @@ export default function daftarprestasi() {
                                   </p>
                                 </th>
 
-                                {kpsn.tingkat == "Lokal" ? (
-                                  <>
-                                    {" "}
-                                    <th></th> <th> </th>{" "}
-                                    <th>
-                                      {" "}
-                                      <p className="mb-0 text-sm">Lokal </p>
-                                    </th>
-                                  </>
-                                ) : (
-                                  ""
-                                )}
-
-                                {kpsn.tingkat == "Nasional" ? (
-                                  <>
-                                    {" "}
-                                    <th></th>{" "}
-                                    <th>
-                                      {" "}
-                                      <p className="mb-0 text-sm">
-                                        Nasional{" "}
-                                      </p>
-                                    </th>{" "}
-                                    <th> </th>{" "}
-                                  </>
-                                ) : (
-                                  ""
-                                )}
-
-                                {kpsn.tingkat == "Internasional" ? (
-                                  <>
-                                    {" "}
-                                    <th>
-                                      {" "}
-                                      <p className="mb-0 text-sm">
-                                        internasional{" "}
-                                      </p>
-                                    </th>{" "}
-                                    <th></th> <th> </th>{" "}
-                                  </>
-                                ) : (
-                                  ""
-                                )}
-
-                                <th className="align-middle ">
-                                  <p className="text-xs font-weight-bold mb-0">
-                                    {kpsn.prestasi_dicapai}
+                                <th className="align-middle  text-sm">
+                                  <p className="text-xs text-center font-weight-bold mb-0">
+                                    {kpsn.deskripsi}
                                   </p>
                                 </th>
                               </tr>
-                              
                             );
                           })}
                         </tbody>

@@ -6,6 +6,8 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 // Untuk Ngambil Data Berdasarkan ID
 export async function getServerSideProps(context) {
@@ -36,6 +38,8 @@ export default function editluaran(props) {
   const [selectPenelitian, setSelectPenelitian] = useState(penelitian.profil_dosen_id);
   const [selectId, setSelectId] = useState(id_pilih_dosen);
   const [dataDosen, setdataDosen] = useState();
+  const [dataError, setError] = useState([]);
+  const MySwal = withReactContent(Swal);
 
   const [dataRole, setRole] = useState("");
 
@@ -124,28 +128,26 @@ export default function editluaran(props) {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        const { all_luaran } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(all_luaran);
-        router.push("../../penelitian/daftarpenelitian");
-        console.log(response.data);
+    .then(function (response) {
+      MySwal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Berhasil Di Input",
       })
-      .catch(function (error) {
-        //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
 
-        console.log("tidak success");
-        console.log(error.response);
-      });
+      router.push("/penelitian/daftarpenelitian")
+    })
+    .catch(function (error) {
+      //handle error
+      setError(error.response.data.error)
+      console.log(error.response.data.error)
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Data Gagal Di Input",
+      })
+      console.log(error.response)
+    })
   };
 
   return (

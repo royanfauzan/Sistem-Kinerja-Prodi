@@ -166,7 +166,7 @@ export default function editpenerimaan(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Input Data Seleksi Mahasiswa</p>
+                      <p className="text-uppercase text-sm"> <h5>EDIT DATA SELEKSI MAHASISWA </h5> </p>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"

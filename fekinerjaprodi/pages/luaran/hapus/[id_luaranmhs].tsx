@@ -28,7 +28,7 @@ export default function daftarluaran(props) {
   const { id_luaranmhs } = router.query;
   const { luaran } = props;
 
-  console.log(router.query)
+  console.log(router.query);
 
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState(luaran);
@@ -48,7 +48,7 @@ export default function daftarluaran(props) {
         console.log("Sukses");
         const { all_relasi } = response.data;
         setprofilDosen(all_relasi);
-        console.log('aaaaaaaaaaaaaaaaa');
+        console.log("aaaaaaaaaaaaaaaaa");
         console.log(id_luaran);
       })
       .catch(function (err) {
@@ -154,10 +154,10 @@ export default function daftarluaran(props) {
                             Nama Mahasiswa
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Judul
+                            NIM
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            NIM
+                            Judul
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2 pe-0"></th>
                         </tr>
@@ -181,6 +181,12 @@ export default function daftarluaran(props) {
                               <td className="align-middle  text-sm">
                                 <p className="text-xs font-weight-bold mb-0">
                                   {lurn.mahasiswa.nim}
+                                </p>
+                              </td>
+
+                              <td className="align-middle  text-sm">
+                                <p className="text-xs font-weight-bold mb-0">
+                                  {lurn.luaran.judul}
                                 </p>
                               </td>
 

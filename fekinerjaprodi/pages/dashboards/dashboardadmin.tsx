@@ -138,19 +138,19 @@ export default function dashboardadmin() {
                         <ListCardDash
                           judul={"Capaian Kurikulum"}
                           keterangan={`input`}
-                          halaman={"/publikasidos/export/export_publikasidos"}
+                          halaman={"/capkurikulum/daftarkurikulum"}
                           icon={`bi bi-card-text`}
                         />
                         <ListCardDash
-                          judul={"Data Integrasi"}
+                          judul={"Data Mahasiswa"}
                           keterangan={`kelola data Luaran Dosen`}
-                          halaman={"#"}
+                          halaman={"mahasiswa/daftarmhs"}
                           icon={`bi bi-calendar3-range`}
                         />
                         <ListCardDash
                           judul={"Kepuasan Mahasiswa"}
                           keterangan={`kelola data Luaran Dosen`}
-                          halaman={"#"}
+                          halaman={"kepuasanmhs/daftarkepuasanmhs"}
                           icon={`bi bi-calendar3-range`}
                         />
                       </Carddashboard>
@@ -190,6 +190,62 @@ export default function dashboardadmin() {
                       </Carddashboard>
                     </div>
                   </div>
+
+                  <div className="col-6 ">
+                    <div className="row d-flex justify-content-around">
+                      <Carddashboard judul={`Kriteria Kerjasama`}>
+                        <ListCardDash
+                          judul={"Data Kriteria Kerjasama"}
+                          keterangan={`Mengelola Data Kerjasama Pendidikan, Penelitian dan Pengabdian Masyarakat`}
+                          halaman={"/kerjasama/tabelkerjasama"}
+                          icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                          </Carddashboard>
+                      <Carddashboard
+                        judul={`Kriteria Mahasiswa`}
+                      >
+                        <ListCardDash
+                          judul={"Seleksi Mahasiswa Baru"}
+                          keterangan={`Mengelola Data Penerimaan Mahasiswa`}
+                          halaman={"/MahasiswaBaru_Asing/tabel_penerimaan"}
+                          icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                         <ListCardDash
+                          judul={"Mahasiswa Asing"}
+                          keterangan={`Mengelola Data Mahasiswa Asing`}
+                          halaman={"/MahasiswaBaru_Asing/tabel_mahasiswa_asing"}
+                          icon={`bi bi-file-spreadsheet`}
+                        />
+                      </Carddashboard>
+
+                      <Carddashboard
+                        judul={`Kriteria Keuangan, Sarana dan Prasarana`}
+                      >
+                        <ListCardDash
+                          judul={"Penggunaan Dana"}
+                          keterangan={`Mengelola Data Penggunaan Dana`}
+                          halaman={"/penggunaan_dana/tabel_penggunaan_dana"}
+                          icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                      
+                      </Carddashboard>
+
+                      <Carddashboard
+                        judul={` Mitra`}
+                      >
+                        <ListCardDash
+                          judul={"Data Mitra"}
+                          keterangan={`Mengelola Data Penggunaan Dana`}
+                          halaman={"/mitra/tabelmitra"}
+                          icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                      
+                      </Carddashboard>
+
+                    </div>
+                  </div>
+
+
                 </div>
               </div>
             </div>

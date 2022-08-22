@@ -63,6 +63,55 @@ class PKMController extends Controller
         ]);
     }
 
+    public function searchhapus($id,$search)
+    {
+        $datarelasi = RelasiPkmDos::with('dosen')
+        ->whereRelation('dosen', 'NamaDosen', 'LIKE', "%{$search}%")
+        ->orWhereRelation('dosen', 'NIDK', 'LIKE', "%{$search}%")     
+        ->get();
+
+        // $datafilter = $datarelasi->where('pkm_id',$id);
+        $arrRekognisi = array();
+        foreach ($datarelasi as $key => $Rekognisi) {
+            if ($Rekognisi->pkm_id == $id) {
+                $arrRekognisi[] = $Rekognisi;
+            }
+        }
+
+
+        return response()->json([
+            'success' => true,
+            'searchhapus' =>  $arrRekognisi, 
+            'searchrelasi' =>  $datarelasi,
+            
+        ]);
+    }
+
+
+    public function searchhapusmhs($id,$search)
+    {
+        $datarelasi = RelasiPkmMhs::with('mahasiswa')
+        ->whereRelation('mahasiswa', 'nim', 'LIKE', "%{$search}%")
+        ->orWhereRelation('mahasiswa', 'nama', 'LIKE', "%{$search}%")     
+        ->get();
+
+        // $datafilter = $datarelasi->where('pkm_id',$id);
+        $arrRekognisi = array();
+        foreach ($datarelasi as $key => $Rekognisi) {
+            if ($Rekognisi->pkm_id == $id) {
+                $arrRekognisi[] = $Rekognisi;
+            }
+        }
+
+
+        return response()->json([
+            'success' => true,
+            'searchhapusmhs' =>  $arrRekognisi, 
+            'searchrelasi' =>  $datarelasi,
+            
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -191,7 +240,7 @@ class PKMController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $pkm->tema_sesuai_roadmap = $request->tema_sesuai_roadmap;

@@ -12,89 +12,39 @@ import ReactHTMLTableToExcel from "react-html-table-to-excel"
 interface Prodi {
   nama_prodi: string
 }
-// Untuk Ngambil Data Berdasarkan ID
-// export async function getServerSideProps(context) {
-//   //http request
-//   const reqtahun1 = await axios.get(
-//     `http://127.0.0.1:8000/api/export_penggunaan_dana/${context.query.tahun1}`
-//   )
-//   const pgdanath1 = await reqtahun1.data.tampil_ts
-//   const danapkmth1 = await reqtahun1.data.dana_pkm
-//   const danapenelitianth1 = await reqtahun1.data.dana_penelitian
 
-//   const reqtahun2 = await axios.get(
-//     `http://127.0.0.1:8000/api/export_penggunaan_dana/${context.query.tahun2}`
-//   )
-//   const pgdanath2 = await reqtahun2.data.tampil_ts
-//   const danapkmth2 = await reqtahun2.data.dana_pkm
-//   const danapenelitianth2 = await reqtahun2.data.dana_penelitian
-
-//   const reqtahun3 = await axios.get(
-//     `http://127.0.0.1:8000/api/export_penggunaan_dana/${context.query.tahun3}`
-//   )
-//   const pgdanath3 = await reqtahun3.data.tampil_ts
-//   const danapkmth3 = await reqtahun3.data.dana_pkm
-//   const danapenelitianth3 = await reqtahun3.data.dana_penelitian
-//   return {
-//     props: {
-//       ts1: pgdanath1,
-//       dnpkm1: danapkmth1,
-//       dnpenelitian1: danapenelitianth1,
-//       ts2: pgdanath2,
-//       dnpkm2: danapkmth2,
-//       dnpenelitian2: danapenelitianth2,
-//       ts3: pgdanath3,
-//       dnpkm3: danapkmth3,
-//       dnpenelitian3: danapenelitianth3,
-//       // <-- assign response
-//     },
-//   }
-// }
-export default function input_mahasiswa_asing(props) {
+export default function export_dana() {
   const router = useRouter()
-  // untuk ngambil data tahun
-  // const ts1 = props.ts1
-  // const { dnpkm1 } = props
-  // const { dnpenelitian1 } = props
-  // const ts2 = props.ts2
-  // const { dnpkm2 } = props
-  // const { dnpenelitian2 } = props
-  // const ts3 = props.ts3
-  // const { dnpkm3 } = props
-  // const { dnpenelitian3 } = props
-  // console.log(ts1)
-  // console.log(ts2)
-  // console.log(ts3)
-  const [dataTs1, sethataTs1] = useState([])
-  const [dataDnpkm1, sethataDnpkm1] = useState([])
-  const [dataDnpenelitian1, sethataDnpenelitian1] = useState([])
-  const [dataTs2, sethataTs2] = useState([])
-  const [dataDnpkm2, sethataDnpkm2] = useState([])
-  const [dataDnpenelitian2, sethataDnpenelitian2] = useState([])
-  const [dataTs3, sethataTs3] = useState([])
-  const [dataDnpkm3, sethataDnpkm3] = useState([])
-  const [dataDnpenelitian3, sethataDnpenelitian3] = useState([])
+  const [listtahun, setlisttahun] = useState([0])
 
   const [dataSelectTahun, setSelectTahun] = useState([])
   const [dataRole, setRole] = useState("")
-  const [dataError, setError] = useState([])
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false)
-  const [tampildana, sethataDana] = useState([])
+
+  const [tampildana, setdataDana] = useState([])
+  const [tampilpkm, setdataPkm] = useState([])
+  const [tampilpenelitian, setdataPenelitian] = useState([])
+  const [tampilrata, setdataRata] = useState([])
+  const [tampiljumlah, setdataJumlah] = useState([])
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () => {
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/read_penggunaan_dana",
+      url: "http://127.0.0.1:8000/api/tampil_export_penggunaan_dana",
     })
       .then(function (response) {
         console.log(response)
         console.log("Sukses")
         const { tampil_penggunaan_dana } = response.data
-        sethataDana(tampil_penggunaan_dana)
-        console.log(tampildana)
+        setdataDana(tampil_penggunaan_dana)
+        setdataPkm(response.data.tampil_pkm)
+        setdataPenelitian(response.data.tampil_penelitian)
+        setdataRata(response.data.rata)
+        setdataJumlah(response.data.jumlah)
+        console.log(response.data)
       })
       .catch(function (err) {
         console.log("gagal")
@@ -130,6 +80,7 @@ export default function input_mahasiswa_asing(props) {
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         setStadmin(true)
         pengambilData()
+        gettahun()
       })
       .catch(function (err) {
         console.log("gagal")
@@ -139,14 +90,8 @@ export default function input_mahasiswa_asing(props) {
   }, [])
 
   const handleChange = (e) => {
-    const value = Array.from(
-      e.target.selectedOptions,
-      (options) => options.value
-    )
-
-    setSelectTahun(value)
-
-    // setSelectTahun(value)
+    setSelectTahun(e.target.value)
+    console.log(e.target.value)
   }
   const tampildata = (tahun) => {
     console.log(tahun)
@@ -155,40 +100,28 @@ export default function input_mahasiswa_asing(props) {
       url: `http://127.0.0.1:8000/api/export_penggunaan_dana/${tahun}`,
     })
       .then(function (response) {
-        const { tampil_ts1 } = response.data
-        const { tampil_ts2 } = response.data
-        const { tampil_ts3 } = response.data
-        sethataTs1(tampil_ts1)
-        sethataTs2(tampil_ts2)
-        sethataTs3(tampil_ts3)
-        const { dana_penelitian1 } = response.data
-        const { dana_penelitian2 } = response.data
-        const { dana_penelitian3 } = response.data
-        sethataDnpenelitian1(dana_penelitian1)
-        sethataDnpenelitian2(dana_penelitian2)
-        sethataDnpenelitian3(dana_penelitian3)
-        const { dana_pkm1 } = response.data
-        const { dana_pkm2 } = response.data
-        const { dana_pkm3 } = response.data
-        sethataDnpkm1(dana_pkm1)
-        sethataDnpkm2(dana_pkm2)
-        sethataDnpkm3(dana_pkm3)
-        console.log(tampil_ts1)
-        console.log(tampil_ts2)
-        console.log(tampil_ts3)
-        console.log(dana_penelitian1)
-        console.log(dana_penelitian2)
-        console.log(dana_penelitian3)
-        console.log(dana_pkm1)
-        console.log(dana_pkm2)
-        console.log(dana_pkm3)
+        setdataDana(response.data.tampil_penggunaan_dana)
+        setdataPkm(response.data.tampil_pkm)
+        setdataPenelitian(response.data.tampil_penelitian)
+        setdataJumlah(response.data.jumlah)
+        setdataRata(response.data.rata)
+        console.log(response.data)
       })
       .catch(function (err) {
         console.log("gagal")
         console.log(err.response)
       })
   }
+  const gettahun = () => {
+    const tahun = new Date().getFullYear()
+    let tahunarr = []
 
+    for (let i = 0; i < 6; i++) {
+      tahunarr[i] = tahun - i
+    }
+    setlisttahun(tahunarr)
+    console.log(tahunarr)
+  }
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -222,15 +155,12 @@ export default function input_mahasiswa_asing(props) {
                             defaultValue={dataSelectTahun}
                             id="tahun"
                             onChange={handleChange}
-                            multiple
                           >
-                            {tampildana.map((datadana) => {
+                            <option value="">Pilih Tahun</option>
+                            {listtahun.map((tahun) => {
                               return (
-                                <option
-                                  value={datadana.Tahun}
-                                  key={datadana.id}
-                                >
-                                  {datadana.Tahun}
+                                <option value={tahun} key={tahun}>
+                                  {tahun}
                                 </option>
                               )
                             })}
@@ -256,7 +186,7 @@ export default function input_mahasiswa_asing(props) {
                   border-collapse: collapse;
                 }
               `}</style>
-              <div className="card mb-4 mt-2">
+              <div className="card mb-4 mt-5">
                 <div className="card-header pb-0">
                   <div className="row justify-content-between">
                     <div className="col-4">
@@ -274,7 +204,6 @@ export default function input_mahasiswa_asing(props) {
                     </div>
                   </div>
                 </div>
-
                 <div className="card-body ">
                   <div className="table-responsive p-0">
                     <table id="table1" border={1}>
@@ -303,59 +232,30 @@ export default function input_mahasiswa_asing(props) {
                           </th>
                         </tr>
                         <tr>
-                          {!dataTs1.Tahun ? (
-                            <>
-                              {" "}
-                              <th>TS-2</th>
-                              <th>TS-1</th>
-                              <th>TS</th>
-                              <th>Rata-rata</th>
-                              <th>TS-2</th>
-                              <th>TS-1</th>
-                              <th>TS</th>
-                              <th>Rata-rata</th>
-                            </>
-                          ) : (
-                            <>
-                              {" "}
-                              <th>
-                                <h3 className="mb-0 text-sm">
-                                  {dataTs3.Tahun}
-                                </h3>
-                              </th>
-                              <th>
-                                <h3 className="mb-0 text-sm">
-                                  {dataTs2.Tahun}
-                                </h3>
-                              </th>
-                              <th>
-                                <h3 className="mb-0 text-sm">
-                                  {dataTs1.Tahun}
-                                </h3>
-                              </th>
-                              <th>
-                                <h3 className="mb-0 text-sm">Rata-rata</h3>
-                              </th>
-                              <th>
-                                <h3 className="mb-0 text-sm">
-                                  {dataTs3.Tahun}
-                                </h3>
-                              </th>
-                              <th>
-                                <h3 className="mb-0 text-sm">
-                                  {dataTs2.Tahun}
-                                </h3>
-                              </th>
-                              <th>
-                                <h3 className="mb-0 text-sm">
-                                  {dataTs1.Tahun}
-                                </h3>
-                              </th>
-                              <th>
-                                <h3 className="mb-0 text-sm">Rata-rata</h3>
-                              </th>
-                            </>
-                          )}
+                          <th>
+                            <h3 className="mb-0 text-sm">TS-2</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS-1</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">Rata-rata</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS-2</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS-1</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">Rata-rata</h3>
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -391,56 +291,78 @@ export default function input_mahasiswa_asing(props) {
                             </h4>
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Dosen_UPPS}
-                            </h4>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Dosen_UPPS}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Dosen_UPPS}
-                            </h4>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Dosen_UPPS}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Dosen_UPPS}
-                            </h4>
-                          </th>
-                          {/* rata-rata */}
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataTs3.Biaya_Dosen_UPPS) +
-                                  parseInt(dataTs2.Biaya_Dosen_UPPS) +
-                                  parseInt(dataTs1.Biaya_Dosen_UPPS)) /
-                                  3
-                              )}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Dosen_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Dosen_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Dosen_Prodi}
-                            </h4>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Dosen_UPPS}
+                              </h4>
+                            )}
                           </th>
                           {/* rata-rata */}
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataTs3.Biaya_Dosen_Prodi) +
-                                  parseInt(dataTs2.Biaya_Dosen_Prodi) +
-                                  parseInt(dataTs1.Biaya_Dosen_Prodi)) /
-                                  3
-                              )}
-                            </h4>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].bdsn_upps)}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Dosen_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Dosen_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Dosen_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].bdsn_prodi)}
+                              </h4>
+                            )}
                           </th>
                         </tr>
                         <tr>
@@ -452,68 +374,78 @@ export default function input_mahasiswa_asing(props) {
                             </h4>
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Tenaga_Kependidikan_UPPS}
-                            </h4>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Tenaga_Kependidikan_UPPS}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Tenaga_Kependidikan_UPPS}
-                            </h4>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Tenaga_Kependidikan_UPPS}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Tenaga_Kependidikan_UPPS}
-                            </h4>
-                          </th>
-                          {/* rata-rata */}
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(
-                                  dataTs3.Biaya_Tenaga_Kependidikan_UPPS
-                                ) +
-                                  parseInt(
-                                    dataTs2.Biaya_Tenaga_Kependidikan_UPPS
-                                  ) +
-                                  parseInt(
-                                    dataTs1.Biaya_Tenaga_Kependidikan_UPPS
-                                  )) /
-                                  3
-                              )}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Tenaga_Kependidikan_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Tenaga_Kependidikan_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Tenaga_Kependidikan_Prodi}
-                            </h4>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Tenaga_Kependidikan_UPPS}
+                              </h4>
+                            )}
                           </th>
                           {/* rata-rata */}
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(
-                                  dataTs3.Biaya_Tenaga_Kependidikan_Prodi
-                                ) +
-                                  parseInt(
-                                    dataTs2.Biaya_Tenaga_Kependidikan_Prodi
-                                  ) +
-                                  parseInt(
-                                    dataTs1.Biaya_Tenaga_Kependidikan_Prodi
-                                  )) /
-                                  3
-                              )}
-                            </h4>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].btenaga_upps)}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Tenaga_Kependidikan_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Tenaga_Kependidikan_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Tenaga_Kependidikan_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].btenaga_prodi)}
+                              </h4>
+                            )}
                           </th>
                         </tr>
                         <tr>
@@ -526,70 +458,106 @@ export default function input_mahasiswa_asing(props) {
                             </h4>
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Operasional_Pembelajaran_UPPS}
-                            </h4>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[2]
+                                    .Biaya_Operasional_Pembelajaran_UPPS
+                                }
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Operasional_Pembelajaran_UPPS}
-                            </h4>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[1]
+                                    .Biaya_Operasional_Pembelajaran_UPPS
+                                }
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Operasional_Pembelajaran_UPPS}
-                            </h4>
-                          </th>
-                          {/* rata-rata */}
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(
-                                  dataTs3.Biaya_Operasional_Pembelajaran_UPPS
-                                ) +
-                                  parseInt(
-                                    dataTs2.Biaya_Operasional_Pembelajaran_UPPS
-                                  ) +
-                                  parseInt(
-                                    dataTs1.Biaya_Operasional_Pembelajaran_UPPS
-                                  )) /
-                                  3
-                              )}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Operasional_Pembelajaran_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Operasional_Pembelajaran_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Operasional_Pembelajaran_Prodi}
-                            </h4>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[0]
+                                    .Biaya_Operasional_Pembelajaran_UPPS
+                                }
+                              </h4>
+                            )}
                           </th>
                           {/* rata-rata */}
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(
-                                  dataTs3.Biaya_Operasional_Pembelajaran_Prodi
-                                ) +
-                                  parseInt(
-                                    dataTs2.Biaya_Operasional_Pembelajaran_Prodi
-                                  ) +
-                                  parseInt(
-                                    dataTs1.Biaya_Operasional_Pembelajaran_Prodi
-                                  )) /
-                                  3
-                              )}
-                            </h4>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].boperasional_pmbljrn_upps
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                          {/* Biaya_Operasional_Pembelajaran_Prodi */}
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[2]
+                                    .Biaya_Operasional_Pembelajaran_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[1]
+                                    .Biaya_Operasional_Pembelajaran_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[0]
+                                    .Biaya_Operasional_Pembelajaran_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].boperasional_pmbljrn_prodi
+                                )}
+                              </h4>
+                            )}
                           </th>
                         </tr>
+                        {/* end Biaya_Operasional_Pembelajaran_Prodi */}
+
+                        {/* Biaya Operasional Tidak Langsung UPPS */}
                         <tr>
                           <th></th>
                           <th></th>
@@ -602,70 +570,108 @@ export default function input_mahasiswa_asing(props) {
                             </h4>
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Operasional_TidakLangsung_UPPS}
-                            </h4>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[2]
+                                    .Biaya_Operasional_TidakLangsung_UPPS
+                                }
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Operasional_TidakLangsung_UPPS}
-                            </h4>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[1]
+                                    .Biaya_Operasional_TidakLangsung_UPPS
+                                }
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Operasional_TidakLangsung_UPPS}
-                            </h4>
-                          </th>
-                          {/* rata-rata */}
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(
-                                  dataTs3.Biaya_Operasional_TidakLangsung_UPPS
-                                ) +
-                                  parseInt(
-                                    dataTs2.Biaya_Operasional_TidakLangsung_UPPS
-                                  ) +
-                                  parseInt(
-                                    dataTs1.Biaya_Operasional_TidakLangsung_UPPS
-                                  )) /
-                                  3
-                              )}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Operasional_TidakLangsung_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Operasional_TidakLangsung_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Operasional_TidakLangsung_Prodi}
-                            </h4>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[0]
+                                    .Biaya_Operasional_TidakLangsung_UPPS
+                                }
+                              </h4>
+                            )}
                           </th>
                           {/* rata-rata */}
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(
-                                  dataTs3.Biaya_Operasional_TidakLangsung_Prodi
-                                ) +
-                                  parseInt(
-                                    dataTs2.Biaya_Operasional_TidakLangsung_Prodi
-                                  ) +
-                                  parseInt(
-                                    dataTs1.Biaya_Operasional_TidakLangsung_Prodi
-                                  )) /
-                                  3
-                              )}
-                            </h4>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].boperasional_tdklgsg_upps
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                          {/* end  Biaya_Operasional_TidakLangsung_UPPS*/}
+
+                          {/* Biaya_Operasional_TidakLangsung_Prodi */}
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[2]
+                                    .Biaya_Operasional_TidakLangsung_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[1]
+                                    .Biaya_Operasional_TidakLangsung_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[0]
+                                    .Biaya_Operasional_TidakLangsung_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].boperasional_tdklgsg_prodi
+                                )}
+                              </h4>
+                            )}
                           </th>
                         </tr>
+                        {/* end  Biaya_Operasional_TidakLangsung_Prodi*/}
+
+                        {/* Biaya operasional kemahasiswaan UPPS */}
                         <tr>
                           <th>
                             <h4 className="mb-0 text-sm">2</h4>
@@ -678,70 +684,108 @@ export default function input_mahasiswa_asing(props) {
                             </h4>
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Operasional_Kemahasiswaan_UPPS}
-                            </h4>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[2]
+                                    .Biaya_Operasional_Kemahasiswaan_UPPS
+                                }
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Operasional_Kemahasiswaan_UPPS}
-                            </h4>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[1]
+                                    .Biaya_Operasional_Kemahasiswaan_UPPS
+                                }
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Operasional_Kemahasiswaan_UPPS}
-                            </h4>
-                          </th>
-                          {/* rata-rata */}
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(
-                                  dataTs3.Biaya_Operasional_Kemahasiswaan_UPPS
-                                ) +
-                                  parseInt(
-                                    dataTs2.Biaya_Operasional_Kemahasiswaan_UPPS
-                                  ) +
-                                  parseInt(
-                                    dataTs1.Biaya_Operasional_Kemahasiswaan_UPPS
-                                  )) /
-                                  3
-                              )}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Operasional_Kemahasiswaan_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Operasional_Kemahasiswaan_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Operasional_Kemahasiswaan_Prodi}
-                            </h4>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[0]
+                                    .Biaya_Operasional_Kemahasiswaan_UPPS
+                                }
+                              </h4>
+                            )}
                           </th>
                           {/* rata-rata */}
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(
-                                  dataTs3.Biaya_Operasional_Kemahasiswaan_Prodi
-                                ) +
-                                  parseInt(
-                                    dataTs2.Biaya_Operasional_Kemahasiswaan_Prodi
-                                  ) +
-                                  parseInt(
-                                    dataTs1.Biaya_Operasional_Kemahasiswaan_Prodi
-                                  )) /
-                                  3
-                              )}
-                            </h4>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].boperasional_mhs_upps
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                          {/* end Biaya_Operasional_Kemahasiswaan_UPPS */}
+
+                          {/* Biaya_Operasional_Kemahasiswaan_Prodi */}
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[2]
+                                    .Biaya_Operasional_Kemahasiswaan_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[1]
+                                    .Biaya_Operasional_Kemahasiswaan_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[0]
+                                    .Biaya_Operasional_Kemahasiswaan_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].boperasional_mhs_prodi
+                                )}
+                              </h4>
+                            )}
                           </th>
                         </tr>
+                        {/* end Biaya_Operasional_Kemahasiswaan_Prodi */}
+
+                        {/* Jumlah UPPS */}
                         <tr>
                           <th></th>
                           <th></th>
@@ -749,209 +793,94 @@ export default function input_mahasiswa_asing(props) {
                             <h4 className="mb-0 text-sm">Jumlah</h4>
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataTs3.Biaya_Dosen_UPPS) +
-                                parseInt(
-                                  dataTs3.Biaya_Tenaga_Kependidikan_UPPS
-                                ) +
-                                parseInt(
-                                  dataTs3.Biaya_Operasional_Pembelajaran_UPPS
-                                ) +
-                                parseInt(
-                                  dataTs3.Biaya_Operasional_TidakLangsung_UPPS
-                                ) +
-                                parseInt(
-                                  dataTs3.Biaya_Operasional_Kemahasiswaan_UPPS
-                                )}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_bo_ts2_upps}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataTs2.Biaya_Dosen_UPPS) +
-                                parseInt(
-                                  dataTs2.Biaya_Tenaga_Kependidikan_UPPS
-                                ) +
-                                parseInt(
-                                  dataTs2.Biaya_Operasional_Pembelajaran_UPPS
-                                ) +
-                                parseInt(
-                                  dataTs2.Biaya_Operasional_TidakLangsung_UPPS
-                                ) +
-                                parseInt(
-                                  dataTs2.Biaya_Operasional_Kemahasiswaan_UPPS
-                                )}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_bo_ts1_upps}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataTs2.Biaya_Dosen_UPPS) +
-                                parseInt(
-                                  dataTs2.Biaya_Tenaga_Kependidikan_UPPS
-                                ) +
-                                parseInt(
-                                  dataTs1.Biaya_Operasional_Pembelajaran_UPPS
-                                ) +
-                                parseInt(
-                                  dataTs1.Biaya_Operasional_TidakLangsung_UPPS
-                                ) +
-                                parseInt(
-                                  dataTs1.Biaya_Operasional_Kemahasiswaan_UPPS
-                                )}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_bo_ts_upps}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataTs3.Biaya_Dosen_UPPS) +
-                                  parseInt(dataTs2.Biaya_Dosen_UPPS) +
-                                  parseInt(dataTs1.Biaya_Dosen_UPPS)) /
-                                  3 +
-                                  (parseInt(
-                                    dataTs3.Biaya_Tenaga_Kependidikan_UPPS
-                                  ) +
-                                    parseInt(
-                                      dataTs2.Biaya_Tenaga_Kependidikan_UPPS
-                                    ) +
-                                    parseInt(
-                                      dataTs1.Biaya_Tenaga_Kependidikan_UPPS
-                                    )) /
-                                    3 +
-                                  (parseInt(
-                                    dataTs3.Biaya_Operasional_Pembelajaran_UPPS
-                                  ) +
-                                    parseInt(
-                                      dataTs2.Biaya_Operasional_Pembelajaran_UPPS
-                                    ) +
-                                    parseInt(
-                                      dataTs1.Biaya_Operasional_Pembelajaran_UPPS
-                                    )) /
-                                    3 +
-                                  (parseInt(
-                                    dataTs3.Biaya_Operasional_TidakLangsung_UPPS
-                                  ) +
-                                    parseInt(
-                                      dataTs2.Biaya_Operasional_TidakLangsung_UPPS
-                                    ) +
-                                    parseInt(
-                                      dataTs1.Biaya_Operasional_TidakLangsung_UPPS
-                                    )) /
-                                    3 +
-                                  (parseInt(
-                                    dataTs3.Biaya_Operasional_Kemahasiswaan_UPPS
-                                  ) +
-                                    parseInt(
-                                      dataTs2.Biaya_Operasional_Kemahasiswaan_UPPS
-                                    ) +
-                                    parseInt(
-                                      dataTs1.Biaya_Operasional_Kemahasiswaan_UPPS
-                                    )) /
-                                    3
-                              )}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].bdsn_upps +
+                                    tampilrata[0].btenaga_upps +
+                                    tampilrata[0].boperasional_pmbljrn_upps +
+                                    tampilrata[0].boperasional_tdklgsg_upps +
+                                    tampilrata[0].boperasional_mhs_upps
+                                )}
+                              </h4>
+                            )}
                           </th>
+                          {/* End Jumlah UPPS */}
+
                           {/* PRODI */}
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataTs3.Biaya_Dosen_Prodi) +
-                                parseInt(
-                                  dataTs3.Biaya_Tenaga_Kependidikan_Prodi
-                                ) +
-                                parseInt(
-                                  dataTs3.Biaya_Operasional_Pembelajaran_Prodi
-                                ) +
-                                parseInt(
-                                  dataTs3.Biaya_Operasional_TidakLangsung_Prodi
-                                ) +
-                                parseInt(
-                                  dataTs3.Biaya_Operasional_Kemahasiswaan_Prodi
-                                )}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_bo_ts2_prodi}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataTs2.Biaya_Dosen_Prodi) +
-                                parseInt(
-                                  dataTs2.Biaya_Tenaga_Kependidikan_Prodi
-                                ) +
-                                parseInt(
-                                  dataTs2.Biaya_Operasional_Pembelajaran_Prodi
-                                ) +
-                                parseInt(
-                                  dataTs2.Biaya_Operasional_TidakLangsung_Prodi
-                                ) +
-                                parseInt(
-                                  dataTs2.Biaya_Operasional_Kemahasiswaan_Prodi
-                                )}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_bo_ts1_prodi}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataTs2.Biaya_Dosen_Prodi) +
-                                parseInt(
-                                  dataTs2.Biaya_Tenaga_Kependidikan_Prodi
-                                ) +
-                                parseInt(
-                                  dataTs1.Biaya_Operasional_Pembelajaran_Prodi
-                                ) +
-                                parseInt(
-                                  dataTs1.Biaya_Operasional_TidakLangsung_Prodi
-                                ) +
-                                parseInt(
-                                  dataTs1.Biaya_Operasional_Kemahasiswaan_Prodi
-                                )}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_bo_ts_prodi}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataTs3.Biaya_Dosen_Prodi) +
-                                  parseInt(dataTs2.Biaya_Dosen_Prodi) +
-                                  parseInt(dataTs1.Biaya_Dosen_Prodi)) /
-                                  3 +
-                                  (parseInt(
-                                    dataTs3.Biaya_Tenaga_Kependidikan_Prodi
-                                  ) +
-                                    parseInt(
-                                      dataTs2.Biaya_Tenaga_Kependidikan_Prodi
-                                    ) +
-                                    parseInt(
-                                      dataTs1.Biaya_Tenaga_Kependidikan_Prodi
-                                    )) /
-                                    3 +
-                                  (parseInt(
-                                    dataTs3.Biaya_Operasional_Pembelajaran_Prodi
-                                  ) +
-                                    parseInt(
-                                      dataTs2.Biaya_Operasional_Pembelajaran_Prodi
-                                    ) +
-                                    parseInt(
-                                      dataTs1.Biaya_Operasional_Pembelajaran_Prodi
-                                    )) /
-                                    3 +
-                                  (parseInt(
-                                    dataTs3.Biaya_Operasional_TidakLangsung_Prodi
-                                  ) +
-                                    parseInt(
-                                      dataTs2.Biaya_Operasional_TidakLangsung_Prodi
-                                    ) +
-                                    parseInt(
-                                      dataTs1.Biaya_Operasional_TidakLangsung_Prodi
-                                    )) /
-                                    3 +
-                                  (parseInt(
-                                    dataTs3.Biaya_Operasional_Kemahasiswaan_Prodi
-                                  ) +
-                                    parseInt(
-                                      dataTs2.Biaya_Operasional_Kemahasiswaan_Prodi
-                                    ) +
-                                    parseInt(
-                                      dataTs1.Biaya_Operasional_Kemahasiswaan_Prodi
-                                    )) /
-                                    3
-                              )}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].bdsn_prodi +
+                                    tampilrata[0].btenaga_prodi +
+                                    tampilrata[0].boperasional_pmbljrn_prodi +
+                                    tampilrata[0].boperasional_tdklgsg_prodi +
+                                    tampilrata[0].boperasional_mhs_prodi
+                                )}
+                              </h4>
+                            )}
                           </th>
                         </tr>
+                        {/*Biaya Penelitian  */}
                         <tr>
                           <th>
                             <h4 className="mb-0 text-sm">3</h4>
@@ -961,58 +890,83 @@ export default function input_mahasiswa_asing(props) {
                             <h4 className="mb-0 text-sm">Biaya Penelitian</h4>
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataDnpenelitian3.dana_PT_Mandiri}
-                            </h4>
+                            {tampilpenelitian[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpenelitian[2].dana_PT_Mandiri}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataDnpenelitian2.dana_PT_Mandiri}
-                            </h4>
+                            {tampilpenelitian[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpenelitian[1].dana_PT_Mandiri}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataDnpenelitian1.dana_PT_Mandiri}
-                            </h4>
-                          </th>
-                          {/* rata-rata */}
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataDnpenelitian3.dana_PT_Mandiri) +
-                                  parseInt(dataDnpenelitian2.dana_PT_Mandiri) +
-                                  parseInt(dataDnpenelitian1.dana_PT_Mandiri)) /
-                                  3
-                              )}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataDnpenelitian3.dana_PT_Mandiri}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataDnpenelitian2.dana_PT_Mandiri}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataDnpenelitian1.dana_PT_Mandiri}
-                            </h4>
+                            {tampilpenelitian[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpenelitian[0].dana_PT_Mandiri}
+                              </h4>
+                            )}
                           </th>
                           {/* rata-rata */}
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataDnpenelitian3.dana_PT_Mandiri) +
-                                  parseInt(dataDnpenelitian2.dana_PT_Mandiri) +
-                                  parseInt(dataDnpenelitian1.dana_PT_Mandiri)) /
-                                  3
-                              )}
-                            </h4>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].bpenelitian_upps)}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpenelitian[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpenelitian[2].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpenelitian[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpenelitian[1].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpenelitian[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpenelitian[0].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].bpenelitian_prodi)}
+                              </h4>
+                            )}
                           </th>
                         </tr>
+                        {/* end biaya penelitian */}
+
+                        {/* Biaya PKM */}
                         <tr>
                           <th>
                             <h4 className="mb-0 text-sm">4</h4>
@@ -1022,58 +976,83 @@ export default function input_mahasiswa_asing(props) {
                             <h4 className="mb-0 text-sm">Biaya PKM</h4>
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataDnpkm3.dana_PT_Mandiri}
-                            </h4>
+                            {tampilpkm[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpkm[2].dana_PT_Mandiri}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataDnpkm2.dana_PT_Mandiri}
-                            </h4>
+                            {tampilpkm[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpkm[1].dana_PT_Mandiri}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataDnpkm1.dana_PT_Mandiri}
-                            </h4>
-                          </th>
-                          {/* rata-rata */}
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataDnpkm3.dana_PT_Mandiri) +
-                                  parseInt(dataDnpkm2.dana_PT_Mandiri) +
-                                  parseInt(dataDnpkm3.dana_PT_Mandiri)) /
-                                  3
-                              )}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataDnpkm3.dana_PT_Mandiri}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataDnpkm2.dana_PT_Mandiri}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataDnpkm1.dana_PT_Mandiri}
-                            </h4>
+                            {tampilpkm[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpkm[0].dana_PT_Mandiri}
+                              </h4>
+                            )}
                           </th>
                           {/* rata-rata */}
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataDnpkm3.dana_PT_Mandiri) +
-                                  parseInt(dataDnpkm2.dana_PT_Mandiri) +
-                                  parseInt(dataDnpkm3.dana_PT_Mandiri)) /
-                                  3
-                              )}
-                            </h4>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].bpkm_upps)}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpkm[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpkm[2].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpkm[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpkm[1].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpkm[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpkm[0].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].bpkm_prodi)}
+                              </h4>
+                            )}
                           </th>
                         </tr>
+                        {/* end biaya pkm */}
+
+                        {/* jumlah pkm penlitain  */}
                         <tr>
                           <th></th>
                           <th></th>
@@ -1081,70 +1060,87 @@ export default function input_mahasiswa_asing(props) {
                             <h4 className="mb-0 text-sm">Jumlah</h4>
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataDnpenelitian3.dana_PT_Mandiri) +
-                                parseInt(dataDnpkm3.dana_PT_Mandiri)}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_pp_ts2_upps}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataDnpenelitian2.dana_PT_Mandiri) +
-                                parseInt(dataDnpkm2.dana_PT_Mandiri)}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_pp_ts1_upps}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataDnpenelitian1.dana_PT_Mandiri) +
-                                parseInt(dataDnpkm1.dana_PT_Mandiri)}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_pp_ts_upps}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataDnpenelitian3.dana_PT_Mandiri) +
-                                  parseInt(dataDnpenelitian2.dana_PT_Mandiri) +
-                                  parseInt(dataDnpenelitian1.dana_PT_Mandiri)) /
-                                  3 +
-                                  (parseInt(dataDnpkm3.dana_PT_Mandiri) +
-                                    parseInt(dataDnpkm2.dana_PT_Mandiri) +
-                                    parseInt(dataDnpkm3.dana_PT_Mandiri)) /
-                                    3
-                              )}
-                            </h4>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].bpkm_upps +
+                                    tampilrata[0].bpenelitian_upps
+                                )}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataDnpenelitian3.dana_PT_Mandiri) +
-                                parseInt(dataDnpkm3.dana_PT_Mandiri)}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_pp_ts2_prodi}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataDnpenelitian2.dana_PT_Mandiri) +
-                                parseInt(dataDnpkm2.dana_PT_Mandiri)}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_pp_ts1_prodi}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataDnpenelitian1.dana_PT_Mandiri) +
-                                parseInt(dataDnpkm1.dana_PT_Mandiri)}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_pp_ts_prodi}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataDnpenelitian3.dana_PT_Mandiri) +
-                                  parseInt(dataDnpenelitian2.dana_PT_Mandiri) +
-                                  parseInt(dataDnpenelitian1.dana_PT_Mandiri)) /
-                                  3 +
-                                  (parseInt(dataDnpkm3.dana_PT_Mandiri) +
-                                    parseInt(dataDnpkm2.dana_PT_Mandiri) +
-                                    parseInt(dataDnpkm3.dana_PT_Mandiri)) /
-                                    3
-                              )}
-                            </h4>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].bpkm_prodi +
+                                    tampilrata[0].bpenelitian_prodi
+                                )}
+                              </h4>
+                            )}
                           </th>
                         </tr>
+                        {/* end jumlah pkm penelitian */}
+
+                        {/*  Biaya Investasi SDM */}
                         <tr>
                           <th>
                             <h4 className="mb-0 text-sm">5</h4>
@@ -1156,58 +1152,83 @@ export default function input_mahasiswa_asing(props) {
                             </h4>
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Investasi_SDM_UPPS}
-                            </h4>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Investasi_SDM_UPPS}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Investasi_SDM_UPPS}
-                            </h4>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Investasi_SDM_UPPS}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Investasi_SDM_UPPS}
-                            </h4>
-                          </th>
-                          {/* rata-rata */}
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataTs3.Biaya_Investasi_SDM_UPPS) +
-                                  parseInt(dataTs2.Biaya_Investasi_SDM_UPPS) +
-                                  parseInt(dataTs1.Biaya_Investasi_SDM_UPPS)) /
-                                  3
-                              )}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Investasi_SDM_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Investasi_SDM_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Investasi_SDM_Prodi}
-                            </h4>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Investasi_SDM_UPPS}
+                              </h4>
+                            )}
                           </th>
                           {/* rata-rata */}
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataTs3.Biaya_Investasi_SDM_UPPS) +
-                                  parseInt(dataTs2.Biaya_Investasi_SDM_UPPS) +
-                                  parseInt(dataTs1.Biaya_Investasi_SDM_UPPS)) /
-                                  3
-                              )}
-                            </h4>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].binvestasi_sdm_upps)}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Investasi_SDM_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Investasi_SDM_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Investasi_SDM_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].binvestasi_sdm_prodi)}
+                              </h4>
+                            )}
                           </th>
                         </tr>
+                        {/* end biaya investasi sdm  */}
+
+                        {/* Biaya Investasi Sarana */}
                         <tr>
                           <th>
                             <h4 className="mb-0 text-sm">6</h4>
@@ -1219,68 +1240,87 @@ export default function input_mahasiswa_asing(props) {
                             </h4>
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Investasi_Sarana_UPPS}
-                            </h4>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Investasi_Sarana_UPPS}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Investasi_Sarana_UPPS}
-                            </h4>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Investasi_Sarana_UPPS}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Investasi_Sarana_UPPS}
-                            </h4>
-                          </th>
-                          {/* rata-rata */}
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataTs3.Biaya_Investasi_Sarana_UPPS) +
-                                  parseInt(
-                                    dataTs2.Biaya_Investasi_Sarana_UPPS
-                                  ) +
-                                  parseInt(
-                                    dataTs1.Biaya_Investasi_Sarana_UPPS
-                                  )) /
-                                  3
-                              )}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Investasi_Sarana_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Investasi_Sarana_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Investasi_Sarana_Prodi}
-                            </h4>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Investasi_Sarana_UPPS}
+                              </h4>
+                            )}
                           </th>
                           {/* rata-rata */}
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(
-                                  dataTs3.Biaya_Investasi_Sarana_Prodi
-                                ) +
-                                  parseInt(
-                                    dataTs2.Biaya_Investasi_Sarana_Prodi
-                                  ) +
-                                  parseInt(
-                                    dataTs1.Biaya_Investasi_Sarana_Prodi
-                                  )) /
-                                  3
-                              )}
-                            </h4>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].binvestasi_sarana_upps
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Investasi_Sarana_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Investasi_Sarana_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Investasi_Sarana_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].binvestasi_sarana_prodi
+                                )}
+                              </h4>
+                            )}
                           </th>
                         </tr>
+                        {/* biaya sarana  */}
+
+                        {/* biaya prasarana */}
                         <tr>
                           <th>
                             <h4 className="mb-0 text-sm">7</h4>
@@ -1292,70 +1332,85 @@ export default function input_mahasiswa_asing(props) {
                             </h4>
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Investasi_Prasarana_UPPS}
-                            </h4>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Investasi_Prasarana_UPPS}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Investasi_Prasarana_UPPS}
-                            </h4>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Investasi_Prasarana_UPPS}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Investasi_Prasarana_UPPS}
-                            </h4>
-                          </th>
-                          {/* rata-rata */}
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(
-                                  dataTs3.Biaya_Investasi_Prasarana_UPPS
-                                ) +
-                                  parseInt(
-                                    dataTs2.Biaya_Investasi_Prasarana_UPPS
-                                  ) +
-                                  parseInt(
-                                    dataTs1.Biaya_Investasi_Prasarana_UPPS
-                                  )) /
-                                  3
-                              )}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs3.Biaya_Investasi_Prasarana_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs2.Biaya_Investasi_Prasarana_Prodi}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {dataTs1.Biaya_Investasi_Prasarana_Prodi}
-                            </h4>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Investasi_Prasarana_UPPS}
+                              </h4>
+                            )}
                           </th>
                           {/* rata-rata */}
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(
-                                  dataTs3.Biaya_Investasi_Prasarana_Prodi
-                                ) +
-                                  parseInt(
-                                    dataTs2.Biaya_Investasi_Prasarana_Prodi
-                                  ) +
-                                  parseInt(
-                                    dataTs1.Biaya_Investasi_Prasarana_Prodi
-                                  )) /
-                                  3
-                              )}
-                            </h4>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].binvestasi_prasarana_upps
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Investasi_Prasarana_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Investasi_Prasarana_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Investasi_Prasarana_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].binvestasi_prasarana_prodi
+                                )}
+                              </h4>
+                            )}
                           </th>
                         </tr>
+                        {/* biaya prasarana */}
                         <tr>
                           <th></th>
                           <th></th>
@@ -1363,120 +1418,86 @@ export default function input_mahasiswa_asing(props) {
                             <h4 className="mb-0 text-sm">Jumlah</h4>
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataTs3.Biaya_Investasi_SDM_UPPS) +
-                                parseInt(dataTs3.Biaya_Investasi_Sarana_UPPS) +
-                                parseInt(
-                                  dataTs3.Biaya_Investasi_Prasarana_UPPS
-                                )}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_investasi_ts2_upps}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataTs2.Biaya_Investasi_SDM_UPPS) +
-                                parseInt(dataTs2.Biaya_Investasi_Sarana_UPPS) +
-                                parseInt(
-                                  dataTs2.Biaya_Investasi_Prasarana_UPPS
-                                )}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_investasi_ts1_upps}
+                              </h4>
+                            )}
                           </th>
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataTs1.Biaya_Investasi_SDM_UPPS) +
-                                parseInt(dataTs1.Biaya_Investasi_Sarana_UPPS) +
-                                parseInt(
-                                  dataTs1.Biaya_Investasi_Prasarana_UPPS
-                                )}
-                            </h4>
-                          </th>
-                          {/* rata-rata */}
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataTs3.Biaya_Investasi_SDM_UPPS) +
-                                  parseInt(dataTs2.Biaya_Investasi_SDM_UPPS) +
-                                  parseInt(dataTs1.Biaya_Investasi_SDM_UPPS)) /
-                                  3 +
-                                  (parseInt(
-                                    dataTs3.Biaya_Investasi_Sarana_UPPS
-                                  ) +
-                                    parseInt(
-                                      dataTs2.Biaya_Investasi_Sarana_UPPS
-                                    ) +
-                                    parseInt(
-                                      dataTs1.Biaya_Investasi_Sarana_UPPS
-                                    )) /
-                                    3 +
-                                  (parseInt(
-                                    dataTs3.Biaya_Investasi_Prasarana_UPPS
-                                  ) +
-                                    parseInt(
-                                      dataTs2.Biaya_Investasi_Prasarana_UPPS
-                                    ) +
-                                    parseInt(
-                                      dataTs1.Biaya_Investasi_Prasarana_UPPS
-                                    )) /
-                                    3
-                              )}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataTs2.Biaya_Investasi_SDM_Prodi) +
-                                parseInt(dataTs2.Biaya_Investasi_Sarana_Prodi) +
-                                parseInt(
-                                  dataTs2.Biaya_Investasi_Prasarana_Prodi
-                                )}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataTs1.Biaya_Investasi_SDM_Prodi) +
-                                parseInt(dataTs1.Biaya_Investasi_Sarana_Prodi) +
-                                parseInt(
-                                  dataTs1.Biaya_Investasi_Prasarana_Prodi
-                                )}
-                            </h4>
-                          </th>
-                          <th>
-                            <h4 className="mb-0 text-sm">
-                              {parseInt(dataTs1.Biaya_Investasi_SDM_Prodi) +
-                                parseInt(dataTs1.Biaya_Investasi_Sarana_Prodi) +
-                                parseInt(
-                                  dataTs1.Biaya_Investasi_Prasarana_Prodi
-                                )}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_investasi_ts_upps}
+                              </h4>
+                            )}
                           </th>
                           {/* rata-rata */}
                           <th>
-                            <h4 className="mb-0 text-sm">
-                              {Math.round(
-                                (parseInt(dataTs3.Biaya_Investasi_SDM_Prodi) +
-                                  parseInt(dataTs2.Biaya_Investasi_SDM_Prodi) +
-                                  parseInt(dataTs1.Biaya_Investasi_SDM_Prodi)) /
-                                  3 +
-                                  (parseInt(
-                                    dataTs3.Biaya_Investasi_Sarana_Prodi
-                                  ) +
-                                    parseInt(
-                                      dataTs2.Biaya_Investasi_Sarana_Prodi
-                                    ) +
-                                    parseInt(
-                                      dataTs1.Biaya_Investasi_Sarana_Prodi
-                                    )) /
-                                    3 +
-                                  (parseInt(
-                                    dataTs3.Biaya_Investasi_Prasarana_Prodi
-                                  ) +
-                                    parseInt(
-                                      dataTs2.Biaya_Investasi_Prasarana_Prodi
-                                    ) +
-                                    parseInt(
-                                      dataTs1.Biaya_Investasi_Prasarana_Prodi
-                                    )) /
-                                    3
-                              )}
-                            </h4>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].binvestasi_sdm_upps +
+                                    tampilrata[0].binvestasi_sarana_upps +
+                                    tampilrata[0].binvestasi_prasarana_upps
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_investasi_ts2_prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_investasi_ts1_prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_investasi_ts_prodi}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].binvestasi_sdm_prodi +
+                                    tampilrata[0].binvestasi_sarana_prodi +
+                                    tampilrata[0].binvestasi_prasarana_prodi
+                                )}
+                              </h4>
+                            )}
                           </th>
                         </tr>
                       </tbody>

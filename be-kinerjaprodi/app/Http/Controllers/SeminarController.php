@@ -21,6 +21,20 @@ class SeminarController extends Controller
         ]);
     }
 
+    public function searchseminar($search)
+    {
+        return response()->json([
+            'success' => true,
+            'searchseminar' => Seminar::with('mahasiswa')
+                ->whereRelation('mahasiswa', 'nama','LIKE', "%{$search}%")
+                ->orwhere('judul_kegiatan', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('penyelenggara', 'LIKE', "%{$search}%")
+                ->orwhere('kategori_seminar', 'LIKE', "%{$search}%")
+                ->get()
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

@@ -75,13 +75,14 @@ export default function tabelmitra() {
 
   const deleteMitra = (id) => {
     MySwal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Yakin Hapus Data Mitra?",
+      text: "Data Tidak Dapat Dikembalikan Jika di Hapus",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Tidak",
+      confirmButtonText: "Ya",
     }).then((result) => {
       // <--
       if (result.isConfirmed) {
@@ -107,8 +108,10 @@ export default function tabelmitra() {
       text: "Yakin Edit Data? ",
       icon: "warning",
       showCancelButton: true,
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Tidak",
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      confirmButtonText: "Iya",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -125,7 +128,9 @@ export default function tabelmitra() {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -158,20 +163,22 @@ export default function tabelmitra() {
               <div className="card mb-4">
                 <div className="card-header pb-0">
                   <div className="row justify-content-between">
+                  <p className="text-uppercase text-sm text-center"> <h5>TABEL DATA MITRA </h5> </p>
                     <div className="col-8">
+                    
                       <button
                         onClick={() => tambahMitra()}
                         className="btn btn-sm btn-success border-0 shadow-sm  m-0"
                       >
-                        Tambah
+                        Tambah Data Mitra
                       </button>
                     </div>
 
                     <div className="col-4 d-flex flex-row-reverse">
                       <input
-                        className="rounded-3"
+                         className="form-control d-flex flex-row-reverse me-2 mt-3 mb-0"
                         type="text"
-                        placeholder="search.."
+                        placeholder="Cari Data Mitra..."
                         defaultValue=""
                         id="search"
                         onChange={searchdata}

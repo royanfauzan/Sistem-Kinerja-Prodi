@@ -8,14 +8,14 @@ interface KelolaCardProps {
   lebar?: string;
 }
 
-export default function CardKelolaSimple(props: Partial<KelolaCardProps>) {
+export default function CardKelolaSimpletridarma(props: Partial<KelolaCardProps>) {
   const { judul, keterangan, halaman } = props;
   let icon = "bi bi-box";
   if (props.icon) {
     icon = props.icon;
   }
 
-  let lebar = "col-4";
+  let lebar = "col-12";
   if (props.lebar) {
     lebar = props.lebar;
   }

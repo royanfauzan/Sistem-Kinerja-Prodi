@@ -1,14 +1,17 @@
 import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
+import Carddashboard from "../../components/Molecule/MenuCard/Carddashboard";
+import ListCardDash from "../../components/Molecule/MenuCard/ListCardDash";
 import MenuCardUtama from "../../components/Molecule/MenuCard/MenuCardUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutDashboardBlue from "../../components/Organism/Layout/LayoutDashboardBlue";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 
-export default function dashboarddosen() {
+export default function dashboardadmin() {
   const router = useRouter();
 
   const linkKelola = {
@@ -18,6 +21,8 @@ export default function dashboarddosen() {
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
   const [dataRole, setRole] = useState("");
+  const [dataDashboardadmin, setdataDashboardadmin] = useState();
+  const [progresEwmp, setprogresEwmp] = useState(0);
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -34,6 +39,25 @@ export default function dashboarddosen() {
         setprofilDosen(profilDosens);
 
         console.log(profilDosens);
+      })
+      .catch(function (err) {
+        console.log("gagal");
+        console.log(err.response);
+      });
+
+    axios({
+      method: "get",
+      url: "http://127.0.0.1:8000/api/data_dashboard",
+      headers: { Authorization: `Bearer ${lgToken}` },
+    })
+      .then(function (response) {
+        console.log(response);
+        console.log("Sukses");
+        const { data } = response;
+        setdataDashboardadmin(data);
+        setprogresEwmp(data.progres_ewmp);
+
+        console.log(data);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -61,11 +85,13 @@ export default function dashboarddosen() {
         const { role } = response.data.user;
         setRole(role);
 
-        if (level_akses == 3) {
-          return router.push("/dashboards/darboardadmin");
+        // kalo ga admin dipindah ke halaman lain
+        if (level_akses !== 2) {
+          return router.push("/dashboards/dashboarddosen");
         }
-        setStadmin(true);
+        // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         pengambilData();
+        setStadmin(true);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -79,80 +105,131 @@ export default function dashboarddosen() {
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
         <LayoutDashboardBlue rlUser={dataRole}>
-          <div className="container-fluid py-4">
-            <div className="row">
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
+          <div className="container-fluid pb-4 pt-0 mt-0">
+            <div className="row mx-3 my-3 bg-white rounded">
+              <div className="col-12 mx-2 my-2">
+                <div className="row justify-content-center mt-3">
+                  <div className="col-10 border-bottom">
+                    <h3 className="text-center">
+                      {" "}
+                      Sistem Informasi Kinerja Program Studi{" "}
+                    </h3>
+                  </div>
+                </div>
+                <div className="row mt-4 ">
+                  <div className="col-6">
+                    <div className="row d-flex justify-content-around">
+                      <Carddashboard judul={`Kriteria Sumber Daya Manusia`}>
+                        <ListCardDash
+                          judul={"Profil Dosen"}
+                          keterangan={`mengelola data profil dosen`}
+                          halaman={"/profildosen/tabelprofil"}
+                          icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                          judul={"Luaran Lainnya"}
+                          keterangan={`kelola data Luaran Dosen`}
+                          halaman={"#"}
+                          icon={`bi bi-calendar3-range`}
+                        />
+                      </Carddashboard>
 
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
+                      <Carddashboard judul={`Kriteria Pendidikan`}>
+                        <ListCardDash
+                          judul={"Mata Kuliah"}
+                          keterangan={`Kelola Data Mata Kuliah`}
+                          halaman={"/matkul/daftarmatkul"}
+                          icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                          judul={"Data Integrasi"}
+                          keterangan={`Kelola Data Integrasi`}
+                          halaman={"/integrasi/daftarintegrasi"}
+                          icon={`bi bi-calendar3-range`}
+                        />
+                      </Carddashboard>
+                    </div>
+                  </div>
+                  <div className="col-6 ">
+                    <div className="row d-flex justify-content-around">
+                      <Carddashboard judul={`Kriteria Penelitian`}>
+                        <ListCardDash
+                          judul={"Data Penelitian Dosen"}
+                          keterangan={`Kelola Data Penelitian Dosen`}
+                          halaman={"/penelitian/daftarpenelitian"}
+                          icon={`bi bi-card-text`}
+                        />
+                      </Carddashboard>
+                      <Carddashboard
+                        judul={`Kriteria Pengabdian Kepada Masyarakat`}
+                      >
+                        <ListCardDash
+                          judul={"Data Pengabdian Kepada Masysrakat"}
+                          keterangan={`Kelola Data Pengabdian Kepada Masyarakat`}
+                          halaman={"/PkM/daftarpkm"}
+                          icon={`bi bi-card-text`}
+                        />
+                      </Carddashboard>
+                    </div>
+                  </div>
 
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
+                  <div className="col-6 ">
+                    <div className="row d-flex justify-content-around">
+                      <Carddashboard judul={`Kriteria Kerjasama`}>
+                        <ListCardDash
+                          judul={"Data Kriteria Kerjasama"}
+                          keterangan={`Mengelola Data Kerjasama Pendidikan, Penelitian dan Pengabdian Masyarakat`}
+                          halaman={"/kerjasama/tabelkerjasama"}
+                          icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                          </Carddashboard>
+                      <Carddashboard
+                        judul={`Kriteria Mahasiswa`}
+                      >
+                        <ListCardDash
+                          judul={"Seleksi Mahasiswa Baru"}
+                          keterangan={`Mengelola Data Penerimaan Mahasiswa`}
+                          halaman={"/MahasiswaBaru_Asing/tabel_penerimaan"}
+                          icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                         <ListCardDash
+                          judul={"Mahasiswa Asing"}
+                          keterangan={`Mengelola Data Mahasiswa Asing`}
+                          halaman={"/MahasiswaBaru_Asing/tabel_mahasiswa_asing"}
+                          icon={`bi bi-file-spreadsheet`}
+                        />
+                      </Carddashboard>
 
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
+                      <Carddashboard
+                        judul={`Kriteria Keuangan, Sarana dan Prasarana`}
+                      >
+                        <ListCardDash
+                          judul={"Penggunaan Dana"}
+                          keterangan={`Mengelola Data Penggunaan Dana`}
+                          halaman={"/penggunaan_dana/tabel_penggunaan_dana"}
+                          icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                      
+                      </Carddashboard>
 
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={linkKelola.profilDsn}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
+                      <Carddashboard
+                        judul={` Mitra`}
+                      >
+                        <ListCardDash
+                          judul={"Data Mitra"}
+                          keterangan={`Mengelola Data Penggunaan Dana`}
+                          halaman={"/mitra/tabelmitra"}
+                          icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                      
+                      </Carddashboard>
 
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={`/TulisanMedia/`}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={`/TulisanMedia/`}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={`/TulisanMedia/`}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
+                    </div>
+                  </div>
 
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={`/TulisanMedia/`}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={`/TulisanMedia/`}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
-              <MenuCardUtama
-                judul={`Tulisan Media`}
-                jumlah={`5`}
-                halaman={`/TulisanMedia/`}
-                keterangan={"Data tulisan media yang dibuat oleh dosen"}
-              />
+
+                </div>
+              </div>
             </div>
             <FooterUtama />
           </div>

@@ -2,10 +2,11 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
+import FooterUtama from "../../components/Molecule/Footer/Footerdosen";
+import CardKelolaSimpletridarma from "../../components/Molecule/MenuCard/CardKelolaSimpletridarma";
 import MenuCardUtama from "../../components/Molecule/MenuCard/MenuCardUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutDashboard";
+import LayoutForm from "../../components/Organism/Layout/LayoutDashboardBluedosen";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 
 export default function dashboardadmin() {
@@ -81,30 +82,20 @@ export default function dashboardadmin() {
       {stadmin && (
         <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
-            <div className="row">
-              <div className="col-6">
-                <div className="card mb-4 px-3 pb-3 bg-light">
+            <div className="row min-vh-75">
+            <div className="col-4">
+                <div className="card mb-0 px-3 pb-3 bg-light">
                   <div className="row">
-                    <div className="col-12 mt-3">
-                      <div className="card">
-                        <div className="card-body">
-                          <h5 className="card-title">Data Penelitian</h5>
-                          <p className="card-text">
-                            With supporting text below as a natural lead-in to
-                            additional content.
-                          </p>
-                          <a
-                            href="/penelitian/daftarpenelitian"
-                            className="btn btn-primary"
-                          >
-                            Kelola Data
-                          </a>
-                        </div>
-                      </div>
-                    </div>
+                    <CardKelolaSimpletridarma
+                      judul={`Penelitian`}
+                      icon={`bi bi-pen`}
+                      halaman={`/penelitian/daftarpenelitian`}
+                      keterangan={"Data Penelitian yang dikelola oleh dosen"}
+                    />
                   </div>
                 </div>
               </div>
+
             </div>
 
             <FooterUtama />

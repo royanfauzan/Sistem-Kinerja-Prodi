@@ -1,0 +1,30 @@
+import React, { ReactNode } from "react";
+import FooterUtama from "../../Molecule/Footer/FooterUtama";
+import NavbarUtama from "../../Molecule/Navbar/NavbarUtama";
+import SidebarDosen from "../../Molecule/Sidebar/SidebarDosen";
+import SidebarUtama from "../../Molecule/Sidebar/SidebarUtama";
+import style from "./laydash.module.css";
+
+interface LayoutProps {
+  rlUser: String;
+  children: ReactNode;
+}
+
+export default function LayoutDashboardBlue(props: LayoutProps) {
+  const { children, rlUser } = props;
+  const role = rlUser;
+  return (
+    <>
+      <div className={`bg-primary position-absolute w-100 h-100`}>
+        <div className={`w-100 sticky-top bg-primary`}>
+          {role == "dosen" ? <SidebarUtama /> : <SidebarDosen />}
+          <main className="main-content border-radius-lg ">
+            <NavbarUtama />
+            {children}
+          </main>
+        </div>
+      </div>
+    </>
+    
+  );
+}

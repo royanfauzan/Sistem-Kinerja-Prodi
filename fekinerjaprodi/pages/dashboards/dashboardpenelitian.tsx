@@ -6,7 +6,7 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardPendidikanSimple from "../../components/Molecule/MenuCard/CardpendidikanSimple";
 import MenuCardUtama from "../../components/Molecule/MenuCard/MenuCardUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutDashboard";
+import LayoutForm from "../../components/Organism/Layout/LayoutDashboardBluedosen";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 
 export default function dashboardadmin() {
@@ -82,9 +82,9 @@ export default function dashboardadmin() {
       {stadmin && (
         <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
-            <div className="row">
-              <div className="col-6">
-                <div className="card mb-4 px-3 pb-3 bg-light">
+            <div className="row min-vh-75">
+            <div className="col-4">
+                <div className="card mb-0 px-3 pb-3 bg-light">
                   <div className="row">
                   <CardPendidikanSimple
                       judul={`Penelitian`}
@@ -95,6 +95,7 @@ export default function dashboardadmin() {
                   </div>
                 </div>
               </div>
+
             </div>
 
             <FooterUtama />

@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
+import CardPendidikanSimple from "../../components/Molecule/MenuCard/CardpendidikanSimple";
 import MenuCardUtama from "../../components/Molecule/MenuCard/MenuCardUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutDashboard";
@@ -85,23 +86,12 @@ export default function dashboardadmin() {
               <div className="col-6">
                 <div className="card mb-4 px-3 pb-3 bg-light">
                   <div className="row">
-                    <div className="col-12 mt-3">
-                      <div className="card">
-                        <div className="card-body">
-                          <h5 className="card-title">Data Penelitian</h5>
-                          <p className="card-text">
-                            With supporting text below as a natural lead-in to
-                            additional content.
-                          </p>
-                          <a
-                            href="/penelitian/daftarpenelitian"
-                            className="btn btn-primary"
-                          >
-                            Kelola Data
-                          </a>
-                        </div>
-                      </div>
-                    </div>
+                  <CardPendidikanSimple
+                      judul={`Penelitian`}
+                      icon={`bi bi-hourglass-split`}
+                      halaman={`/penelitian/daftarpenelitian`}
+                      keterangan={"Data Penelitian dikelola oleh Dosen"}
+                    />
                   </div>
                 </div>
               </div>

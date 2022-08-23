@@ -3,9 +3,10 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
+import CardPendidikanSimple from "../../components/Molecule/MenuCard/CardpendidikanSimple";
 import MenuCardUtama from "../../components/Molecule/MenuCard/MenuCardUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutDashboard";
+import LayoutForm from "../../components/Organism/Layout/LayoutDashboardBlue";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 
 export default function dashboardadmin() {
@@ -85,23 +86,12 @@ export default function dashboardadmin() {
               <div className="col-6">
                 <div className="card mb-4 px-3 pb-3 bg-light">
                   <div className="row">
-                    <div className="col-12 mt-3">
-                      <div className="card">
-                        <div className="card-body">
-                          <h5 className="card-title">Data Mata Kuliah</h5>
-                          <p className="card-text">
-                            With supporting text below as a natural lead-in to
-                            additional content.
-                          </p>
-                          <a
-                            href="/matkul/daftarmatkul"
-                            className="btn btn-primary"
-                          >
-                            Kelola Data
-                          </a>
-                        </div>
-                      </div>
-                    </div>
+                  <CardPendidikanSimple
+                      judul={`Mata Kuliah`}
+                      icon={`bi bi-journal-text`}
+                      halaman={`/matkul/daftarmatkul`}
+                      keterangan={"Data Mata Kuliah dikelola oleh Dosen"}
+                    />
                   </div>
                 </div>
               </div>
@@ -109,23 +99,12 @@ export default function dashboardadmin() {
               <div className="col-6">
                 <div className="card mb-4 px-3 pb-3 bg-light">
                   <div className="row">
-                    <div className="col-12 mt-3">
-                      <div className="card">
-                        <div className="card-body">
-                          <h5 className="card-title">Data Integrasi</h5>
-                          <p className="card-text">
-                            With supporting text below as a natural lead-in to
-                            additional content.
-                          </p>
-                          <a
-                            href="/integrasi/daftarintegrasi"
-                            className="btn btn-primary"
-                          >
-                            Kelola Data
-                          </a>
-                        </div>
-                      </div>
-                    </div>
+                  <CardPendidikanSimple
+                      judul={`Integrasi`}
+                      icon={`bi bi-infinity`}
+                      halaman={`/integrasi/daftarintegrasi`}
+                      keterangan={"Data Integrasi dikelola oleh Dosen"}
+                    />
                   </div>
                 </div>
               </div>

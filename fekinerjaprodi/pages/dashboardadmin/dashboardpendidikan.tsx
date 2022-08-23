@@ -3,9 +3,11 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
+import CardKelolaSimple from "../../components/Molecule/MenuCard/CardKelolaSimple";
+import CardPendidikanSimple from "../../components/Molecule/MenuCard/CardpendidikanSimple";
 import MenuCardUtama from "../../components/Molecule/MenuCard/MenuCardUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutDashboard";
+import LayoutForm from "../../components/Organism/Layout/LayoutDashboardBlue";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 
 export default function dashboardadmin() {
@@ -81,77 +83,55 @@ export default function dashboardadmin() {
       {stadmin && (
         <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
-            <div className="row">
-              <div className="col-4">
+            <div className="row justify-content-evenly">
+              <div className="col-5">
                 <div className="card mb-4 px-3 pb-3 bg-light">
                   <div className="row">
-                    <div className="col-12 mt-3">
-                      <div className="card">
-                        <div className="card-body">
-                          <h5 className="card-title">Data Capaian kurikulum</h5>
-                          <p className="card-text">
-                            With supporting text below as a natural lead-in to
-                            additional content.
-                          </p>
-                          <a
-                            href="/capkurikulum/daftarkurikulum"
-                            className="btn btn-primary"
-                          >
-                            Kelola Data
-                          </a>
-                        </div>
-                      </div>
-                    </div>
+                  <CardPendidikanSimple
+                      judul={`Capaian Kurikulum`}
+                      icon={`bi bi-book-half`}
+                      halaman={`/capkurikulum/daftarkurikulum`}
+                      keterangan={"Data Capaian Kurikulum dikelola oleh Admin"}
+                    />
                   </div>
                 </div>
               </div>
 
-              <div className="col-4">
+              <div className="col-5">
                 <div className="card mb-4 px-3 pb-3 bg-light">
                   <div className="row">
-                    <div className="col-12 mt-3">
-                      <div className="card">
-                        <div className="card-body">
-                          <h5 className="card-title">
-                            Data Kepuasan Mahasiswa
-                          </h5>
-                          <p className="card-text">
-                            With supporting text below as a natural lead-in to
-                            additional content.
-                          </p>
-                          <a
-                            href="/kepuasanmhs/daftarkepuasanmhs"
-                            className="btn btn-primary"
-                          >
-                            Kelola Data
-                          </a>
-                        </div>
-                      </div>
-                    </div>
+                  <CardPendidikanSimple
+                      judul={`Kepuasan Mahasiswa`}
+                      icon={`bi bi-clipboard-data`}
+                      halaman={`/kepuasanmhs/daftarkepuasanmhs`}
+                      keterangan={"Data Kepuasan Mahasiswa dikelola oleh Admin"}
+                    />
                   </div>
                 </div>
               </div>
 
-              <div className="col-4">
+              <div className="col-5">
                 <div className="card mb-4 px-3 pb-3 bg-light">
                   <div className="row">
-                    <div className="col-12 mt-3">
-                      <div className="card">
-                        <div className="card-body">
-                          <h5 className="card-title">Data Mahasiswa</h5>
-                          <p className="card-text">
-                            With supporting text below as a natural lead-in to
-                            additional content.
-                          </p>
-                          <a
-                            href="/mahasiswa/daftarmhs"
-                            className="btn btn-primary"
-                          >
-                            Kelola Data
-                          </a>
-                        </div>
-                      </div>
-                    </div>
+                  <CardPendidikanSimple
+                      judul={`Mahasiswa`}
+                      icon={`bi bi-people-fill`}
+                      halaman={`/mahasiswa/daftarmhs`}
+                      keterangan={"Data Mahasiswa dikelola oleh Admin"}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-5">
+                <div className="card mb-4 px-3 pb-3 bg-light">
+                  <div className="row">
+                  <CardPendidikanSimple
+                      judul={`Mata Kuliah`}
+                      icon={`bi bi-journal-text`}
+                      halaman={`/matkul/daftarmatkul`}
+                      keterangan={"Data Mata Kuliah dikelola oleh Dosen"}
+                    />
                   </div>
                 </div>
               </div>

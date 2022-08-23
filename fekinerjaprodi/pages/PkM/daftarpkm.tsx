@@ -328,7 +328,7 @@ export default function daftarpkm() {
                             Sumber Luar Negri
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Dana Dalam Negri
+                            Dana Luar Negri
                           </th>
                           <th className="text-secondary opacity-7"></th>
                         </tr>

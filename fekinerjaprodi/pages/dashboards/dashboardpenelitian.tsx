@@ -2,8 +2,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import FooterUtama from "../../components/Molecule/Footer/Footerdosen";
-import CardKelolaSimpletridarma from "../../components/Molecule/MenuCard/CardKelolaSimpletridarma";
+import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
+import CardPendidikanSimple from "../../components/Molecule/MenuCard/CardpendidikanSimple";
 import MenuCardUtama from "../../components/Molecule/MenuCard/MenuCardUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutDashboardBluedosen";
@@ -86,11 +86,11 @@ export default function dashboardadmin() {
             <div className="col-4">
                 <div className="card mb-0 px-3 pb-3 bg-light">
                   <div className="row">
-                    <CardKelolaSimpletridarma
+                  <CardPendidikanSimple
                       judul={`Penelitian`}
-                      icon={`bi bi-pen`}
+                      icon={`bi bi-hourglass-split`}
                       halaman={`/penelitian/daftarpenelitian`}
-                      keterangan={"Data Penelitian yang dikelola oleh dosen"}
+                      keterangan={"Data Penelitian dikelola oleh Dosen"}
                     />
                   </div>
                 </div>

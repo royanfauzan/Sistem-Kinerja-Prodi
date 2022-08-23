@@ -153,6 +153,12 @@ export default function dashboardadmin() {
                           halaman={"/kepuasanmhs/daftarkepuasanmhs"}
                           icon={`bi bi-calendar3-range`}
                         />
+                        <ListCardDash
+                          judul={"Mata Kuliah"}
+                          keterangan={`Kelola Data Mata Kuliah`}
+                          halaman={"/matkul/daftarmatkul"}
+                          icon={`bi bi-calendar3-range`}
+                        />
                       </Carddashboard>
                     </div>
                   </div>

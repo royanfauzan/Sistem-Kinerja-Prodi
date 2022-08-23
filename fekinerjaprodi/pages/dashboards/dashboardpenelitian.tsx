@@ -6,7 +6,7 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardPendidikanSimple from "../../components/Molecule/MenuCard/CardpendidikanSimple";
 import MenuCardUtama from "../../components/Molecule/MenuCard/MenuCardUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutDashboardBluedosen";
+import LayoutForm from "../../components/Organism/Layout/LayoutDashboardBlue";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 
 export default function dashboardadmin() {

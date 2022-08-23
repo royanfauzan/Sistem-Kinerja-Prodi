@@ -88,7 +88,7 @@ export default function index() {
         //handle error
         toast.dismiss();
         if(error.response.status==400){
-            toast.error('Login Gagal, periksa email dan password!!');
+            toast.error('Login Gagal, Silahkan Periksa Kembali NIDK dan Password!!');
         }else{
             toast.error('Login Gagal....');
         }

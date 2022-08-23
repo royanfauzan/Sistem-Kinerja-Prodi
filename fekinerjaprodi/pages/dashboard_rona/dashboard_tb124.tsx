@@ -7,6 +7,7 @@ import MenuCardUtama from "../../components/Molecule/MenuCard/MenuCardUtama"
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama"
 import LayoutForm from "../../components/Organism/Layout/LayoutDashboard"
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama"
+import CardSimple from "../../components/Molecule/MenuCard/CardSimple"
 
 export default function dashboardadmin() {
   const router = useRouter()
@@ -81,94 +82,44 @@ export default function dashboardadmin() {
         <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row justify-content-center">
-              <div className="col-4 mt-3">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">Data Mitra </h5>
-                    <p className="card-text">
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </p>
-                    <a href="/mitra/tabelmitra" className="btn btn-primary">
-                      Kelola Data
-                    </a>
-                  </div>
-                </div>
-              </div>
+              <CardSimple
+                judul={`Data Mahasiswa Asing`}
+                icon={`bi bi-person-check`}
+                halaman={`/MahasiswaBaru_Asing/tabel_mahasiswa_asing`}
+                keterangan={
+                  "Data Mahasiswa Asing Dapat Di Isi Oleh Panitia LKPS"
+                }
+              />
+              <CardSimple
+                judul={`Data Seleksi Mahasiswa`}
+                icon={`bi bi-person-check-fill`}
+                halaman={`/MahasiswaBaru_Asing/tabel_penerimaan`}
+                keterangan={
+                  "Data Seleksi Mahasiswa Dapat Di Isi Oleh Panitia LKPS"
+                }
+              />
+              <CardSimple
+                judul={`Data Penggunaan Dana`}
+                icon={`bi bi-bank`}
+                halaman={`/penggunaan_dana/tabel_penggunaan_dana`}
+                keterangan={
+                  "Data Penggunaan Dana Dapat Di Isi Oleh Panitia LKPS"
+                }
+              />
+              <CardSimple
+                judul={`Data Mitra`}
+                icon={`bi bi-building`}
+                halaman={`/mitra/tabelmitra`}
+                keterangan={"Data Mitra Dapat Di Isi Oleh Panitia LKPS"}
+              />
 
-              <div className="col-4 mt-3">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">Data Kerjasama</h5>
-                    <p className="card-text">
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </p>
-                    <a
-                      href="/kerjasama/tabelkerjasama"
-                      className="btn btn-primary"
-                    >
-                      Kelola Data
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-4 mt-3">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">Data Mahasiswa Asing</h5>
-                    <p className="card-text">
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </p>
-                    <a
-                      href="/MahasiswaBaru_Asing/tabel_mahasiswa_asing"
-                      className="btn btn-primary"
-                    >
-                      Kelola Data
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-4 mt-3">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">Data Seleksi Mahasiswa </h5>
-                    <p className="card-text">
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </p>
-                    <a
-                      href="/MahasiswaBaru_Asing/tabel_penerimaan"
-                      className="btn btn-primary"
-                    >
-                      Kelola Data
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-4 mt-3">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">Data Penggunaan Dana </h5>
-                    <p className="card-text">
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </p>
-                    <a
-                      href="/penggunaan_dana/tabel_penggunaan_dana"
-                      className="btn btn-primary"
-                    >
-                      Kelola Data
-                    </a>
-                  </div>
-                </div>
-              </div>
+              <CardSimple
+                judul={`Data Kerjasama`}
+                icon={`bi bi-person-workspace`}
+                halaman={`/kerjasama/tabelkerjasama`}
+                keterangan={"Data Kerjasama Dapat Di Isi Oleh Panitia LKPS"}
+              />
             </div>
-            <FooterUtama />
           </div>
         </LayoutForm>
       )}

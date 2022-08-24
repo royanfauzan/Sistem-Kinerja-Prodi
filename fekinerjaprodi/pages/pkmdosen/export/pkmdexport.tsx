@@ -14,7 +14,7 @@ export default function pkmdexport() {
 
   const [stadmin, setStadmin] = useState(false);
   const [isLoaded, setisLoaded] = useState(false);
-  const [dataSelectTahun, setSelectTahun] = useState(``);
+  
 
   // console.log(dataSelectTahun);
 
@@ -25,6 +25,40 @@ export default function pkmdexport() {
   const [dataJmlLuar, setJmlLuar] = useState();
   const [dataJmlTotal, setJmlTotal] = useState();
 
+  const [dataSelectTahun, setSelectTahun] = useState(`${new Date().getFullYear()}`);
+
+  console.log(dataSelectTahun);
+  console.log(`dataSelectTahun`);
+
+  const tanggalSekarang = new Date();
+  const tahunSekarang = tanggalSekarang.getFullYear();
+
+
+ function tahunGenerator(tahun:number,tipe:String,jumlah:number) {
+   let counter = -5;
+   const tahunPertama = tipe=='akademik'?(`${tahun+counter-2}/${tahun+counter-1}`):`${tahun+counter-1}`;
+   const arrTahun =[tahunPertama];
+   if(tipe=='akademik'){
+    for (let index = 0; index <= jumlah; index++) {
+      if(counter>0){
+        counter++;
+        arrTahun.push((`${tahun+counter-2}/${tahun+counter-1}`));
+      }
+      if(counter<=0){
+        arrTahun.push((`${tahun+counter-1}/${tahun+counter}`));
+        counter++;
+      }
+      
+    }
+   }else{
+    for (let index = 0; index <= jumlah; index++) {
+      arrTahun.push((`${tahun+counter}`));
+      counter++;
+    }
+   }
+   setListTahun(arrTahun);
+ }
+
   const handleChange = (e) => {
     const value = e.target.value;
     console.log(e.target.value);
@@ -34,22 +68,8 @@ export default function pkmdexport() {
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
 
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/pengabdianlisttahun",
-    })
-      .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { tahunpengabdians } = response.data;
-        setListTahun(tahunpengabdians);
-        setSelectTahun(tahunpengabdians[0]);
-        tampildata(tahunpengabdians[0]);
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+    tahunGenerator(new Date().getFullYear(),'biasa',10);
+    tampildata(`${new Date().getFullYear()}`);
   };
 
   useEffect(() => {

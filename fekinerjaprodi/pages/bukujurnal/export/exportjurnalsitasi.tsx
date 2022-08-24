@@ -9,24 +9,23 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 import Link from "next/link";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
-export default function exportbimbingan() {
+export default function exportjurnalsitasi() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
 
-  // console.log(dataSelectTahun);
-
-  const [dataBimbingans, setdataBimbingans] = useState([]);
+  const [dataJurnals, setdataJurnals] = useState([]);
   const [dataListTahun, setListTahun] = useState([]);
+  const [dataallSitasi, setallSitasi] = useState(0);
 
   const [tampilMhsAsing, settampilMhsAsing] = useState([]);
   const [dataProdis, setdataProdi] = useState([]);
-
   const [dataRole, setRole] = useState("");
 
   const [dataSelectTahun, setSelectTahun] = useState(
     `${new Date().getFullYear()}`
   );
+
 
   const tanggalSekarang = new Date();
   const tahunSekarang = tanggalSekarang.getFullYear();
@@ -67,7 +66,7 @@ export default function exportbimbingan() {
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
 
-    tahunGenerator(new Date().getFullYear(), "akademik", 10);
+    tahunGenerator(new Date().getFullYear(), "biasa", 10);
     tampildata(`${new Date().getFullYear()}`);
   };
 
@@ -90,7 +89,6 @@ export default function exportbimbingan() {
         const { level_akses } = response.data.user;
         const { role } = response.data.user;
         setRole(role);
-
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -109,12 +107,13 @@ export default function exportbimbingan() {
   const tampildata = (tahun) => {
     axios({
       method: "get",
-      url: `http://127.0.0.1:8000/api/laporanbimbingan/${tahun}`,
+      url: `http://127.0.0.1:8000/api/laporanjurnalsitasi/${tahun}`,
     })
       .then(function (response) {
-        const { list_bimbingan } = response.data;
-        setdataBimbingans(list_bimbingan);
-        console.log(list_bimbingan);
+        const { all_jurnal,all_sitasi } = response.data;
+        setallSitasi(all_sitasi);
+        setdataJurnals(all_jurnal);
+        console.log(all_jurnal);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -133,7 +132,7 @@ export default function exportbimbingan() {
                 <div className="card">
                   <div className="card-header pb-0">
                     <div className="d-flex align-items-center">
-                      <h4>EWMP</h4>
+                      <h4>Karya Ilmiah DTPS yang Disitasi</h4>
                     </div>
                   </div>
                   <div className="card-body">
@@ -148,14 +147,14 @@ export default function exportbimbingan() {
                               <select
                                 className="form-select"
                                 aria-label="Default select example"
-                                defaultValue={dataSelectTahun}
+                                value={dataSelectTahun}
                                 id="tahun"
                                 onChange={handleChange}
                               >
                                 {dataListTahun.map((dataTahun) => {
                                   return (
                                     <option
-                                      value={dataTahun.split("/")[1]}
+                                      value={dataTahun}
                                       key={dataTahun}
                                     >
                                       {dataTahun}
@@ -179,12 +178,12 @@ export default function exportbimbingan() {
                     </div>
                     <div className="row">
                       <div className="col-12 d-flex flex-row-reverse">
-                        {dataBimbingans && (
+                        {dataJurnals && (
                           <ReactHTMLTableToExcel
                             id="test-table-xls-button"
                             className="download-table-xls-button btn btn-success ms-3"
-                            table="tableBimbingan"
-                            filename={`tabelBimbingan_TH${dataSelectTahun}`}
+                            table="tableJurnalDisitasi"
+                            filename={`tabelJurnalDisitasi_TH${dataSelectTahun}`}
                             sheet="3a3"
                             buttonText="Export Excel"
                             border="1"
@@ -193,80 +192,51 @@ export default function exportbimbingan() {
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col-12">
-                        <style jsx>{`
-                          table,
-                          td,
-                          th {
-                            border: 1px solid;
-                            text-align: center;
-                          }
+                      <div className="card-body p-3">
+                        <div className="table-responsive p-0">
+                          <style jsx>{`
+                            table,
+                            td,
+                            th {
+                              border: 1px solid;
+                              text-align: center;
+                            }
 
-                          table {
-                            width: 100%;
-                            border-collapse: collapse;
-                          }
-                        `}</style>
-                        <table id="tableEWMP" border={1}>
-                          <thead>
-                            <tr>
-                              <td rowSpan={3}>No</td>
-                              <td rowSpan={3}>Nama Dosen</td>
-                              <td colSpan={8}>Jumlah Mahasiswa Dibimbing</td>
-                              <td rowSpan={3}>
-                                Rata-rata Jumlah Bimbingan di semua Program/
-                                Semester
-                              </td>
-                            </tr>
-                            <tr>
-                              <td colSpan={4}>Pada PS Diakreditasi</td>
-                              <td colSpan={4}>Pada PS Lain di PT</td>
-                            </tr>
-                            <tr>
-                              <td>TS-2</td>
-                              <td>TS-1</td>
-                              <td>TS</td>
-                              <td>Rata-Rata</td>
-                              <td>TS-2</td>
-                              <td>TS-1</td>
-                              <td>TS</td>
-                              <td>Rata-Rata</td>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {dataBimbingans.map((bimbing, index) => {
-                              return (
-                                <tr key={`tbimbing` + bimbing.id}>
-                                  {/* no */}
-                                  <td>{index + 1}</td>
-                                  {/* prodi */}
-                                  <td>{bimbing.NamaDosen}</td>
-                                  <td>
-                                    {bimbing.listBimbing[2].bimbingan_dalam}
-                                  </td>
-                                  <td>
-                                    {bimbing.listBimbing[1].bimbingan_dalam}
-                                  </td>
-                                  <td>
-                                    {bimbing.listBimbing[0].bimbingan_dalam}
-                                  </td>
-                                  <td>{bimbing.avgDalam}</td>
-                                  <td>
-                                    {bimbing.listBimbing[2].bimbingan_luar}
-                                  </td>
-                                  <td>
-                                    {bimbing.listBimbing[1].bimbingan_luar}
-                                  </td>
-                                  <td>
-                                    {bimbing.listBimbing[0].bimbingan_luar}
-                                  </td>
-                                  <td>{bimbing.avgLuar}</td>
-                                  <td>{bimbing.avgSemester}</td>
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </table>
+                            table {
+                              width: 100%;
+                              border-collapse: collapse;
+                            }
+                          `}</style>
+                          <table id="tableJurnalDisitasi" border={1}>
+                            <thead>
+                              <tr>
+                                <td rowSpan={1}>No</td>
+                                <td rowSpan={1}>Nama Dosen</td>
+                                <td rowSpan={1}>Judul Artikel yang Disitasi (Jurnal, Volume, Tahun, Nomor, Halaman) </td>
+                                <td rowSpan={1}>Jumlah Sitasi</td>
+                                
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {dataJurnals.length?(<>
+                                {dataJurnals.map((jurnal, index) => {
+                                  return (
+                                    <tr key={`tjurnal` + jurnal.id}>
+                                      {/* no */}
+                                      <td>{index + 1}</td>
+                                      {/* prodi */}
+                                      <td>{jurnal.ketua_jurnal[0].NamaDosen}</td>
+                                      <td>{`${jurnal.judul} ( ${jurnal.nm_jurnal}, vol.${jurnal.volume} , th.${jurnal.tahun} , no.${jurnal.nomor} , hal.${jurnal.halaman}  )`}</td>
+                                      <td>{jurnal.sitasi}</td>
+                                    </tr>
+                                  );
+                                })}
+                                <tr><td colSpan={3}>Jumlah</td><td>{dataallSitasi}</td></tr>
+                                </>
+                              ):(<tr><td colSpan={4}>Belum Ada Catatan Data</td></tr>)}
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     </div>
                   </div>

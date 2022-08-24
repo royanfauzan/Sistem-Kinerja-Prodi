@@ -9,19 +9,17 @@ import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 import Link from "next/link";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
-export default function exportbimbingan() {
+export default function exportluaranbukuisbn() {
   const router = useRouter();
+  const apiurl = "http://127.0.0.1:8000/";
 
   const [stadmin, setStadmin] = useState(false);
 
-  // console.log(dataSelectTahun);
-
-  const [dataBimbingans, setdataBimbingans] = useState([]);
+  const [dataLuarans, setdataLuarans] = useState([]);
   const [dataListTahun, setListTahun] = useState([]);
 
   const [tampilMhsAsing, settampilMhsAsing] = useState([]);
   const [dataProdis, setdataProdi] = useState([]);
-
   const [dataRole, setRole] = useState("");
 
   const [dataSelectTahun, setSelectTahun] = useState(
@@ -67,7 +65,7 @@ export default function exportbimbingan() {
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
 
-    tahunGenerator(new Date().getFullYear(), "akademik", 10);
+    tahunGenerator(new Date().getFullYear(), "biasa", 10);
     tampildata(`${new Date().getFullYear()}`);
   };
 
@@ -90,7 +88,6 @@ export default function exportbimbingan() {
         const { level_akses } = response.data.user;
         const { role } = response.data.user;
         setRole(role);
-
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -109,12 +106,13 @@ export default function exportbimbingan() {
   const tampildata = (tahun) => {
     axios({
       method: "get",
-      url: `http://127.0.0.1:8000/api/laporanbimbingan/${tahun}`,
+      url: `http://127.0.0.1:8000/api/laporanluaranlain/${tahun}`,
     })
       .then(function (response) {
-        const { list_bimbingan } = response.data;
-        setdataBimbingans(list_bimbingan);
-        console.log(list_bimbingan);
+        const { luaranempat } = response.data;
+
+        setdataLuarans(luaranempat);
+        console.log(luaranempat);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -133,7 +131,9 @@ export default function exportbimbingan() {
                 <div className="card">
                   <div className="card-header pb-0">
                     <div className="d-flex align-items-center">
-                      <h4>EWMP</h4>
+                      <h4>
+                        Luaran Penelitian/PkM Lainnya oleh DTPS (Bagian 4)
+                      </h4>
                     </div>
                   </div>
                   <div className="card-body">
@@ -148,16 +148,13 @@ export default function exportbimbingan() {
                               <select
                                 className="form-select"
                                 aria-label="Default select example"
-                                defaultValue={dataSelectTahun}
+                                value={dataSelectTahun}
                                 id="tahun"
                                 onChange={handleChange}
                               >
                                 {dataListTahun.map((dataTahun) => {
                                   return (
-                                    <option
-                                      value={dataTahun.split("/")[1]}
-                                      key={dataTahun}
-                                    >
+                                    <option value={dataTahun} key={dataTahun}>
                                       {dataTahun}
                                     </option>
                                   );
@@ -179,13 +176,13 @@ export default function exportbimbingan() {
                     </div>
                     <div className="row">
                       <div className="col-12 d-flex flex-row-reverse">
-                        {dataBimbingans && (
+                        {dataLuarans && (
                           <ReactHTMLTableToExcel
                             id="test-table-xls-button"
                             className="download-table-xls-button btn btn-success ms-3"
-                            table="tableBimbingan"
-                            filename={`tabelBimbingan_TH${dataSelectTahun}`}
-                            sheet="3a3"
+                            table="tableLuaranBukuIsbn"
+                            filename={`tabelLuaranBukuIsbn_TH${dataSelectTahun}`}
+                            sheet="3b7-4"
                             buttonText="Export Excel"
                             border="1"
                           />
@@ -193,80 +190,105 @@ export default function exportbimbingan() {
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col-12">
-                        <style jsx>{`
-                          table,
-                          td,
-                          th {
-                            border: 1px solid;
-                            text-align: center;
-                          }
+                      <div className="card-body p-3">
+                        <div className="table-responsive p-0">
+                          <style jsx>{`
+                            table,
+                            td,
+                            th {
+                              border: 1px solid;
+                              text-align: center;
+                            }
 
-                          table {
-                            width: 100%;
-                            border-collapse: collapse;
-                          }
-                        `}</style>
-                        <table id="tableEWMP" border={1}>
-                          <thead>
-                            <tr>
-                              <td rowSpan={3}>No</td>
-                              <td rowSpan={3}>Nama Dosen</td>
-                              <td colSpan={8}>Jumlah Mahasiswa Dibimbing</td>
-                              <td rowSpan={3}>
-                                Rata-rata Jumlah Bimbingan di semua Program/
-                                Semester
-                              </td>
-                            </tr>
-                            <tr>
-                              <td colSpan={4}>Pada PS Diakreditasi</td>
-                              <td colSpan={4}>Pada PS Lain di PT</td>
-                            </tr>
-                            <tr>
-                              <td>TS-2</td>
-                              <td>TS-1</td>
-                              <td>TS</td>
-                              <td>Rata-Rata</td>
-                              <td>TS-2</td>
-                              <td>TS-1</td>
-                              <td>TS</td>
-                              <td>Rata-Rata</td>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {dataBimbingans.map((bimbing, index) => {
-                              return (
-                                <tr key={`tbimbing` + bimbing.id}>
-                                  {/* no */}
-                                  <td>{index + 1}</td>
-                                  {/* prodi */}
-                                  <td>{bimbing.NamaDosen}</td>
-                                  <td>
-                                    {bimbing.listBimbing[2].bimbingan_dalam}
-                                  </td>
-                                  <td>
-                                    {bimbing.listBimbing[1].bimbingan_dalam}
-                                  </td>
-                                  <td>
-                                    {bimbing.listBimbing[0].bimbingan_dalam}
-                                  </td>
-                                  <td>{bimbing.avgDalam}</td>
-                                  <td>
-                                    {bimbing.listBimbing[2].bimbingan_luar}
-                                  </td>
-                                  <td>
-                                    {bimbing.listBimbing[1].bimbingan_luar}
-                                  </td>
-                                  <td>
-                                    {bimbing.listBimbing[0].bimbingan_luar}
-                                  </td>
-                                  <td>{bimbing.avgLuar}</td>
-                                  <td>{bimbing.avgSemester}</td>
+                            table {
+                              width: 100%;
+                              border-collapse: collapse;
+                            }
+                          `}</style>
+                          <table id="tableLuaranBukuIsbn" border={1}>
+                            <thead>
+                              <tr>
+                                <td rowSpan={1}>No</td>
+                                <td rowSpan={1}>Luaran Penelitian/Pkm</td>
+                                <td rowSpan={1}>Tahun </td>
+                                <td rowSpan={1} className={"vw-30"}>
+                                  Keterangan
+                                </td>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {dataLuarans.length ? (
+                                <>
+                                  {dataLuarans.map((luaran, index) => {
+                                    return (
+                                      <tr key={`tluaran` + luaran.id}>
+                                        {/* no */}
+                                        <td>{index + 1}</td>
+                                        {/* prodi */}
+                                        <td>{luaran.judul}</td>
+                                        <td>{`${luaran.tahun}`}</td>
+                                        <td>
+                                          <p className={"text-wrap"}>
+                                            {luaran.keterangan}
+                                          </p>
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </>
+                              ) : (
+                                <tr>
+                                  <td colSpan={4}>Belum Ada Catatan Data</td>
                                 </tr>
-                              );
-                            })}
-                          </tbody>
-                        </table>
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row mt-2">
+                      <div className="col-8 ms-3 mt-2" id={`keteranganJenis`}>
+                        <div className="card ">
+                          <div className="card-header p-3 pb-0">
+                            <div className="d-flex justify-content-between">
+                              <p className="mb-2 text-secondary text-xs fw-italic fw-bolder">
+                                Ket. Jenis Luaran
+                              </p>
+                            </div>
+                          </div>
+                          <div className="card-body p-0 ">
+                            <div className="row">
+                              <div className="col-10">
+                                <table className="table align-items-center mb-0 ms-4 me-4 pe-3 mw-80">
+                                  <thead>
+                                    <tr className={`text-start`}>
+                                      <th className="text-uppercase text-dark text-xs font-weight-bold opacity-8 ps-2">
+                                        Jenis
+                                      </th>
+                                      <th className="text-uppercase text-dark text-xs font-weight-bold opacity-8 ps-2">
+                                        Cakupan Luaran
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr className={`text-start`}>
+                                      <td className="align-middle text-sm">
+                                        <p className="text-xs font-weight-bold mb-0 pe-3 ms-2">
+                                          IV
+                                        </p>
+                                      </td>
+                                      <td className="align-middle text-sm">
+                                        <p className="text-xs font-weight-bold mb-0 pe-3 text-start text-wrap">
+                                          Buku ber-ISBN, Book Chapter
+                                        </p>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

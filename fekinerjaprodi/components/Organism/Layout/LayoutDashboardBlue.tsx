@@ -18,7 +18,7 @@ export default function LayoutDashboardBlue(props: LayoutProps) {
         <div className={`w-100 sticky-top bg-primary`}>
           {role == "admin" ? <SidebarUtama /> : <SidebarDosen />}
           <main className="main-content border-radius-lg ">
-            <NavbarUtama />
+            <NavbarUtama rlUser={rlUser}/>
             {children}
           </main>
         </div>

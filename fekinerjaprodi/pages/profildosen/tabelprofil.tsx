@@ -190,7 +190,7 @@ export default function tabelprofil() {
                               </button>
                             </Link>
                             <Link
-                              href={`/prestasi/exportprestasi/export_prestasi`}
+                              href={`/dtps/export`}
                             >
                               <button className=" btn btn-outline-success shadow-sm ps-3 ps-3 me-2 mt-3 mb-0">
                                 Cek Laporan

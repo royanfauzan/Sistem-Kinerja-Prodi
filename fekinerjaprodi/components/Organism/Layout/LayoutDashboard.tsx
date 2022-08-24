@@ -26,7 +26,7 @@ export default function LayoutForm(props: LayoutProps) {
       )
       }
       <main className="main-content border-radius-lg ">
-        <NavbarUtama />
+        <NavbarUtama rlUser={rlUser}/>
         {children}
       </main>
     </>

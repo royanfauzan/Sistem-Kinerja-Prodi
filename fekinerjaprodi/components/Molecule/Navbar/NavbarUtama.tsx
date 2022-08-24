@@ -1,7 +1,11 @@
 import { useRouter } from "next/router";
 import React from "react";
 
-export default function NavbarUtama() {
+interface NavProps {
+  rlUser: String;
+}
+export default function NavbarUtama(props:NavProps) {
+  const {rlUser} = props;
   const router = useRouter();
   const pathHalaman = router.asPath;
   const arrHalaman = pathHalaman.split("/");
@@ -52,21 +56,15 @@ export default function NavbarUtama() {
         >
           <div className="ms-md-auto pe-md-3 d-flex align-items-center">
             <div className="input-group">
-              <span className="input-group-text text-body">
-                <i className="fas fa-search" aria-hidden="true"></i>
-              </span>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Type here..."
-              />
+              
+              <h4 className='text-white'>Sistem Informasi Kinerja Program Studi</h4>
             </div>
           </div>
           <ul className="navbar-nav  justify-content-end">
             <li className="nav-item d-flex align-items-center">
               <a href="#" className="nav-link text-white font-weight-bold px-0">
                 <i className="fa fa-user me-sm-1"></i>
-                <span className="d-sm-inline d-none">Sign In</span>
+                <span className="d-sm-inline d-none">{`lv : ${rlUser}`}</span>
               </a>
             </li>
             <li className="nav-item d-xl-none ps-3 d-flex align-items-center">

@@ -185,7 +185,7 @@ export default function exportbimbingan() {
                             className="download-table-xls-button btn btn-success ms-3"
                             table="tableBimbingan"
                             filename={`tabelBimbingan_TH${dataSelectTahun}`}
-                            sheet="3a3"
+                            sheet="3a2"
                             buttonText="Export Excel"
                             border="1"
                           />

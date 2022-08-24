@@ -184,7 +184,7 @@ export default function exporttidaktetap() {
                             className="download-table-xls-button btn btn-success ms-3"
                             table="tableDosenTidakTetap"
                             filename={`tabelDosenTidakTetap_TH${dataSelectTahun}`}
-                            sheet="3a3"
+                            sheet="3a4"
                             buttonText="Export Excel"
                             border="1"
                           />

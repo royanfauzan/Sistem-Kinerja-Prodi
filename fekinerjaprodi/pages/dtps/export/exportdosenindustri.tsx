@@ -182,7 +182,7 @@ export default function exportdosenindustri() {
                             className="download-table-xls-button btn btn-success ms-3"
                             table="tableDosenIndustri"
                             filename={`tabelDosenIndustri_TH${dataSelectTahun}`}
-                            sheet="3a3"
+                            sheet="3a5"
                             buttonText="Export Excel"
                             border="1"
                           />

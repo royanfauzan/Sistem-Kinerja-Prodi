@@ -184,7 +184,7 @@ export default function exportjurnalsitasi() {
                             className="download-table-xls-button btn btn-success ms-3"
                             table="tableJurnalDisitasi"
                             filename={`tabelJurnalDisitasi_TH${dataSelectTahun}`}
-                            sheet="3a3"
+                            sheet="3b5"
                             buttonText="Export Excel"
                             border="1"
                           />

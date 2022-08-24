@@ -180,7 +180,7 @@ export default function exportproduk() {
                             className="download-table-xls-button btn btn-success ms-3"
                             table="tableProdukDiadopsi"
                             filename={`tabelProdukDiadopsi_TH${dataSelectTahun}`}
-                            sheet="3a3"
+                            sheet="3b6"
                             buttonText="Export Excel"
                             border="1"
                           />

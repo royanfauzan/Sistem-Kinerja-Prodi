@@ -198,7 +198,7 @@ export default function exportdtps() {
                             className="download-table-xls-button btn btn-success ms-3"
                             table="tableDTPS"
                             filename={`tabelDTPS_TH${dataSelectTahun}`}
-                            sheet="3a3"
+                            sheet="3a1"
                             buttonText="Export Excel"
                             border="1"
                           />

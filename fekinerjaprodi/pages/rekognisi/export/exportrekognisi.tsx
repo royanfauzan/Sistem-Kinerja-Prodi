@@ -179,7 +179,7 @@ export default function exportrekognisis() {
                             className="download-table-xls-button btn btn-success ms-3"
                             table="tableRekognisiDTPS"
                             filename={`tabelRekognisiDTPS_TH${dataSelectTahun}`}
-                            sheet="3a3"
+                            sheet="3b1"
                             buttonText="Export Excel"
                             border="1"
                           />

@@ -16,9 +16,18 @@ export default function SidebarUtama() {
   const listFolderSdm = [
     "sdm",
     "rekognisi",
+    "publikasidos",
     "penelitiandosen",
+    "pkmdosen",
     "profildosen",
+    "profildetail",
     "dtps",
+    "ewmp",
+    "produk",
+    "luaranlaindos",
+    "mengajar",
+    "bukujurnal",
+    "bimbingan",
   ]
   const isMenuSdm = listFolderSdm.includes(arrHalaman[1])
 
@@ -171,9 +180,9 @@ export default function SidebarUtama() {
           <li className={`nav-item `}>
             <a
               className={`nav-link ${
-                isMenuSdm ? "active bg-primary text-white" : ""
+                isMenuSdm ? "active bg-light text-dark" : ""
               }`}
-              href="/sdm/dashboardSdmAdmin"
+              href="/sdm/dashboardsdmadm"
             >
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
@@ -184,30 +193,7 @@ export default function SidebarUtama() {
               </span>
             </a>
           </li>
-          <li className={`nav-item `}>
-            <a className="nav-link active" href="./dashboard_tabel.php">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Tables</span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="./dashboard_form.php">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-credit-card text-success text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Form</span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="./login.php">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-app text-info text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Login</span>
-            </a>
-          </li>
+          
         </ul>
       </div>
       <div className="mx-3 ">

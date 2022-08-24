@@ -20,7 +20,7 @@ export default function LayoutForm(props: LayoutProps) {
       </div>
       {role == "admin" ? <SidebarUtama /> : <SidebarDosen />}
       <main className="main-content border-radius-lg ">
-        <NavbarUtama />
+        <NavbarUtama rlUser={rlUser}/>
         {children}
       </main>
     </>

@@ -70,7 +70,7 @@ class ProfildosenController extends Controller
         }
 
         $userBaru = User::create([
-            'NIDK' => $request->NIDK,
+            'NIDK' => ''.$request->NIDK,
             'role' => 'dosen',
             'level_akses' => 2,
             'password' => bcrypt('dosen123'),

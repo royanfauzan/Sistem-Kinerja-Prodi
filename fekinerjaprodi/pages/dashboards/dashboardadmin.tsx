@@ -255,7 +255,7 @@ export default function dashboardadmin() {
                           }
                         />
                         <div className="row">
-                          <Link href={`/dashboards/dashboardsdmadmin`}>
+                          <Link href={`/sdm/dashboardsdmadm`}>
                             <button className="btn btn-sm btn-outline-dark border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                               Selengkapnya...
                             </button>

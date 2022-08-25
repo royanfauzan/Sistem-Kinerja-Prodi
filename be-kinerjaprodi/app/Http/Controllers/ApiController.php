@@ -146,7 +146,7 @@ class ApiController extends Controller
 
         $user = JWTAuth::authenticate($request->bearerToken());
 
-        return response()->json(['user' => $user]);
+        return response()->json(['user' => $user,'nidk'=>''.$user->NIDK]);
     }
 
     public function get_alluser()

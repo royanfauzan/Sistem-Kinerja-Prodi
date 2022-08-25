@@ -124,7 +124,7 @@ export default function dashboardadmin() {
                           judul={"Data Kriteria Kerjasama"}
                           keterangan={`Mengelola Data Kerjasama Pendidikan, Penelitian dan Pengabdian Masyarakat`}
                           halaman={"/kerjasama/tabelkerjasama"}
-                          icon={`bi bi-file-spreadsheet-fill`}
+                          icon={`bi bi-person-workspace`}
                         />
                       </Carddashboard>
                       <Carddashboard judul={`Kriteria Mahasiswa`}>
@@ -132,13 +132,13 @@ export default function dashboardadmin() {
                           judul={"Seleksi Mahasiswa Baru"}
                           keterangan={`Mengelola Data Penerimaan Mahasiswa`}
                           halaman={"/MahasiswaBaru_Asing/tabel_penerimaan"}
-                          icon={`bi bi-file-spreadsheet-fill`}
+                          icon={`bi bi-person-check-fill`}
                         />
                         <ListCardDash
                           judul={"Mahasiswa Asing"}
                           keterangan={`Mengelola Data Mahasiswa Asing`}
                           halaman={"/MahasiswaBaru_Asing/tabel_mahasiswa_asing"}
-                          icon={`bi bi-file-spreadsheet`}
+                          icon={`bi bi-person-check`}
                         />
                       </Carddashboard>
 
@@ -149,7 +149,7 @@ export default function dashboardadmin() {
                           judul={"Penggunaan Dana"}
                           keterangan={`Mengelola Data Penggunaan Dana`}
                           halaman={"/penggunaan_dana/tabel_penggunaan_dana"}
-                          icon={`bi bi-file-spreadsheet-fill`}
+                          icon={`bi bi-bank`}
                         />
                       </Carddashboard>
 
@@ -158,7 +158,7 @@ export default function dashboardadmin() {
                           judul={"Data Mitra"}
                           keterangan={`Mengelola Data Penggunaan Dana`}
                           halaman={"/mitra/tabelmitra"}
-                          icon={`bi bi-file-spreadsheet-fill`}
+                          icon={`bi bi-building`}
                         />
                       </Carddashboard>
                       <Carddashboard judul={`Kriteria Pendidikan`}>

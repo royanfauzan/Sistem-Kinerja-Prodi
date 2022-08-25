@@ -191,36 +191,6 @@ export default function dashboardadmin() {
                   </div>
                   <div className="col-6 ">
                     <div className="row d-flex justify-content-around">
-                      <Carddashboard judul={`Kriteria Penelitian`}>
-                        <ListCardDash
-                          judul={"Capaian Kurikulum"}
-                          keterangan={`input`}
-                          halaman={"/publikasidos/export/export_publikasidos"}
-                          icon={`bi bi-card-text`}
-                        />
-                        <ListCardDash
-                          judul={"Data Integrasi"}
-                          keterangan={`kelola data Luaran Dosen`}
-                          halaman={"#"}
-                          icon={`bi bi-calendar3-range`}
-                        />
-                        <ListCardDash
-                          judul={"Kepuasan Mahasiswa"}
-                          keterangan={`kelola data Luaran Dosen`}
-                          halaman={"#"}
-                          icon={`bi bi-calendar3-range`}
-                        />
-                      </Carddashboard>
-                      <Carddashboard
-                        judul={`Kriteria Pengabdian Kepada Masyarakat`}
-                      >
-                        <ListCardDash
-                          judul={"Profil Dosen"}
-                          keterangan={`mengelola data profil dosen`}
-                          halaman={"/publikasidos/export/export_publikasidos"}
-                          icon={`bi bi-card-text`}
-                        />
-                      </Carddashboard>
                       <Carddashboard judul={`Kriteria Sumber Daya Manusia`}>
                         <ListCardDash
                           judul={`Profil Dosen`}

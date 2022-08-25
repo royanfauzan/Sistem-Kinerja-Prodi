@@ -169,7 +169,7 @@ export default function daftarprestasi() {
                                     <th></th> <th> </th>{" "}
                                     <th>
                                       {" "}
-                                      <p className="mb-0 text-sm">Lokal </p>
+                                      <p className="mb-0 text-sm">V </p>
                                     </th>
                                   </>
                                 ) : (
@@ -183,7 +183,7 @@ export default function daftarprestasi() {
                                     <th>
                                       {" "}
                                       <p className="mb-0 text-sm">
-                                        Nasional{" "}
+                                        V{" "}
                                       </p>
                                     </th>{" "}
                                     <th> </th>{" "}
@@ -198,7 +198,7 @@ export default function daftarprestasi() {
                                     <th>
                                       {" "}
                                       <p className="mb-0 text-sm">
-                                        internasional{" "}
+                                        V{" "}
                                       </p>
                                     </th>{" "}
                                     <th></th> <th> </th>{" "}

@@ -37,6 +37,8 @@ export default function myprofil() {
       url: `http://127.0.0.1:8000/api/profillengkap/${nidk}`,
     })
       .then(function (response) {
+        console.log(nidk)
+        console.log('NIDK')
         console.log(response);
         console.log("Sukses");
 
@@ -71,6 +73,8 @@ export default function myprofil() {
         console.log("Sukses");
         const { level_akses } = response.data.user;
         const { NIDK } = response.data.user;
+        console.log(NIDK)
+        console.log('NIDKKK')
         const userSekarang = response.data.user;
         const { role } = response.data.user;
         setRole(role);

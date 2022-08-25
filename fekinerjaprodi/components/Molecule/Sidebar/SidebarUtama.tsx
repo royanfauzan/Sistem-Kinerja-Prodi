@@ -44,8 +44,17 @@ export default function SidebarUtama() {
   const listFolderCapaian = ["dashboards_capaian_tridarma", "prestasi", "ipk"]
   const isMenuCapaian = listFolderCapaian.includes(arrHalaman[1])
 
-  const listFolderKjsMhsKeuangan = ["dashboard_rona"]
-  const isMenuKjsMhsKeuangan = listFolderKjsMhsKeuangan.includes(arrHalaman[1])
+  const listFolderMitra = ["mitra"]
+  const isMenuMitra = listFolderMitra.includes(arrHalaman[1])
+
+  const listFolderKjs = ["kerjasama"]
+  const isMenuKjs = listFolderKjs.includes(arrHalaman[1])
+
+  const listFolderMhs = ["MahasiswaBaru_Asing"]
+  const isMenuMhs = listFolderMhs.includes(arrHalaman[1])
+
+  const listFolderKeuangan = ["penggunaan_dana"]
+  const isMenuKeuangan = listFolderKeuangan.includes(arrHalaman[1])
 
   const listFolderUser = ["User"]
   const isMenuUser = listFolderUser.includes(arrHalaman[1])
@@ -131,24 +140,82 @@ export default function SidebarUtama() {
               <span className="nav-link-text ms-1">User</span>
             </a>
           </li>
+
           <li className={`nav-item `}>
             <a
               className={`nav-link ${
-                isMenuKjsMhsKeuangan
+                isMenuMitra
                   ? "active bg-light text-dark opacity-10"
                   : ""
               }`}
-              href="/dashboard_rona/dashboard_tb124"
+              href="/mitra/tabelmitra"
             >
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
               <span className="nav-link-text ms-1">
-                Kriteria Kerjasama, <br /> Mahasiswa, Keuangan, <br />
-                Sarana dan Prasarana
+                Data Mitra
               </span>
             </a>
           </li>
+
+          <li className={`nav-item `}>
+            <a
+              className={`nav-link ${
+                isMenuKjs
+                  ? "active bg-light text-dark opacity-10"
+                  : ""
+              }`}
+              href="/kerjasama/tabelkerjasama"
+            >
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">
+                Kriteria Kerjasama
+              </span>
+            </a>
+          </li>
+
+          <li className={`nav-item `}>
+            <a
+              className={`nav-link ${
+                isMenuMhs
+                  ? "active bg-light text-dark opacity-10"
+                  : ""
+              }`}
+              href="/dashboard_rona/dashboard_mahasiswa"
+            >
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">
+                Kriteria Mahasiswa
+              </span>
+            </a>
+          </li>
+
+          <li className={`nav-item `}>
+            <a
+              className={`nav-link ${
+                isMenuKeuangan
+                  ? "active bg-light text-dark opacity-10"
+                  : ""
+              }`}
+              href="/penggunaan_dana/tabel_penggunaan_dana"
+            >
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">
+                
+                Kriteria Keuangan, <br /> Sarana dan Prasarana
+               
+              </span>
+            </a>
+          </li>
+
+
           <li className={`nav-item `}>
             <a
               className={`nav-link ${

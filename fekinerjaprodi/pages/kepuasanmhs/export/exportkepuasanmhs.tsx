@@ -207,7 +207,6 @@ export default function kepuasanmahasiswa() {
                           <th width="100px">Kurang</th>
                         </tr>
                       </thead>
-
                       <tr>
                         <th>
                           <h6 className="mb-0 text-sm">1</h6>
@@ -248,6 +247,22 @@ export default function kepuasanmahasiswa() {
                             pengelolaan dalam memberikan pelayanan.
                           </p>
                         </td>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_4}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_3}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_2}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_1}</p>
+                        </th>
+                        <th>
+                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_keandalan}</p>
+                        </th>
+                      </tr>
 
                         {tampilKepuasanmhs ? (
                           <>

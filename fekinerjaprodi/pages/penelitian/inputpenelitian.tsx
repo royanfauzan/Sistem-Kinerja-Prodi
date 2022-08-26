@@ -168,7 +168,7 @@ export default function inputpenelitian() {
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="Nama Mahasiswa"
+                              placeholder="Tema Sesuai Roadmap"
                               id="tema_sesuai_roadmap"
                             />
                             {dataError.tema_sesuai_roadmap ? (

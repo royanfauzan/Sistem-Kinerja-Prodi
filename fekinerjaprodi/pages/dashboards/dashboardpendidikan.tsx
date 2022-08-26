@@ -82,8 +82,8 @@ export default function dashboardadmin() {
       {stadmin && (
         <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
-            <div className="row">
-              <div className="col-6">
+            <div className="row min-vh-75">
+              <div className="col-4">
                 <div className="card mb-4 px-3 pb-3 bg-light">
                   <div className="row">
                   <CardPendidikanSimple
@@ -96,7 +96,7 @@ export default function dashboardadmin() {
                 </div>
               </div>
 
-              <div className="col-6">
+              <div className="col-4">
                 <div className="card mb-4 px-3 pb-3 bg-light">
                   <div className="row">
                   <CardPendidikanSimple

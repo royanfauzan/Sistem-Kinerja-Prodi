@@ -119,21 +119,48 @@ export default function dashboardadmin() {
                 <div className="row mt-4 ">
                   <div className="col-6">
                     <div className="row d-flex justify-content-around">
-                      <Carddashboard judul={`Kriteria Sumber Daya Manusia`}>
+                      <Carddashboard judul={`Kriteria Kerjasama`}>
                         <ListCardDash
-                          judul={"Profil Dosen"}
-                          keterangan={`mengelola data profil dosen`}
-                          halaman={"/profildosen/tabelprofil"}
-                          icon={`bi bi-card-text`}
+                          judul={"Data Kriteria Kerjasama"}
+                          keterangan={`Mengelola Data Kerjasama Pendidikan, Penelitian dan Pengabdian Masyarakat`}
+                          halaman={"/kerjasama/tabelkerjasama"}
+                          icon={`bi bi-person-workspace`}
+                        />
+                      </Carddashboard>
+                      <Carddashboard judul={`Kriteria Mahasiswa`}>
+                        <ListCardDash
+                          judul={"Seleksi Mahasiswa Baru"}
+                          keterangan={`Mengelola Data Penerimaan Mahasiswa`}
+                          halaman={"/MahasiswaBaru_Asing/tabel_penerimaan"}
+                          icon={`bi bi-person-check-fill`}
                         />
                         <ListCardDash
-                          judul={"Luaran Lainnya"}
-                          keterangan={`kelola data Luaran Dosen`}
-                          halaman={"#"}
-                          icon={`bi bi-calendar3-range`}
+                          judul={"Mahasiswa Asing"}
+                          keterangan={`Mengelola Data Mahasiswa Asing`}
+                          halaman={"/MahasiswaBaru_Asing/tabel_mahasiswa_asing"}
+                          icon={`bi bi-person-check`}
                         />
                       </Carddashboard>
 
+                      <Carddashboard
+                        judul={`Kriteria Keuangan, Sarana dan Prasarana`}
+                      >
+                        <ListCardDash
+                          judul={"Penggunaan Dana"}
+                          keterangan={`Mengelola Data Penggunaan Dana`}
+                          halaman={"/penggunaan_dana/tabel_penggunaan_dana"}
+                          icon={`bi bi-bank`}
+                        />
+                      </Carddashboard>
+
+                      <Carddashboard judul={` Mitra`}>
+                        <ListCardDash
+                          judul={"Data Mitra"}
+                          keterangan={`Mengelola Data Penggunaan Dana`}
+                          halaman={"/mitra/tabelmitra"}
+                          icon={`bi bi-building`}
+                        />
+                      </Carddashboard>
                       <Carddashboard judul={`Kriteria Pendidikan`}>
                         <ListCardDash
                           judul={"Capaian Kurikulum"}
@@ -156,20 +183,20 @@ export default function dashboardadmin() {
                       </Carddashboard>
                     </div>
                     <div className="row d-flex justify-content-around">
-                      <Carddashboard judul={`Kriteria Kerjasama`}>
+                      <Carddashboard judul={`Kriteria Sumber Daya Manusia`}>
                         <ListCardDash
-                          judul={"Data Kriteria Kerjasama"}
-                          keterangan={`Mengelola Data Kerjasama Pendidikan, Penelitian dan Pengabdian Masyarakat`}
-                          halaman={"/kerjasama/tabelkerjasama"}
-                          icon={`bi bi-file-spreadsheet-fill`}
+                          judul={`Profil Dosen`}
+                          icon={`bi bi-person-bounding-box`}
+                          halaman={`/profildosen/tabelprofil`}
+                          keterangan={"Mengelola Data Profil Dosen"}
                         />
                       </Carddashboard>
                       <Carddashboard judul={`Kriteria Mahasiswa`}>
                         <ListCardDash
-                          judul={"Seleksi Mahasiswa Baru"}
-                          keterangan={`Mengelola Data Penerimaan Mahasiswa`}
-                          halaman={"/MahasiswaBaru_Asing/tabel_penerimaan"}
-                          icon={`bi bi-file-spreadsheet-fill`}
+                          judul={`EWMP`}
+                          icon={`bi bi-input-cursor`}
+                          halaman={`/ewmp/tabelewmp`}
+                          keterangan={"Equivalen Waktu Mengajar Penuh Dosen"}
                         />
                         <ListCardDash
                           judul={"Mahasiswa Asing"}
@@ -177,25 +204,22 @@ export default function dashboardadmin() {
                           halaman={"/MahasiswaBaru_Asing/tabel_mahasiswa_asing"}
                           icon={`bi bi-file-spreadsheet`}
                         />
-                      </Carddashboard>
-
-                      <Carddashboard
-                        judul={`Kriteria Keuangan, Sarana dan Prasarana`}
-                      >
                         <ListCardDash
-                          judul={"Penggunaan Dana"}
-                          keterangan={`Mengelola Data Penggunaan Dana`}
-                          halaman={"/penggunaan_dana/tabel_penggunaan_dana"}
-                          icon={`bi bi-file-spreadsheet-fill`}
+                          judul={`Pembimbing Utama TA`}
+                          icon={`bi bi-bounding-box`}
+                          halaman={`/bimbingan/export/exportbimbingan`}
+                          keterangan={"Export Data Pembimbing Utama Tugas akhir"}
                         />
                       </Carddashboard>
 
                       <Carddashboard judul={` Mitra`}>
                         <ListCardDash
-                          judul={"Data Mitra"}
-                          keterangan={`Mengelola Data Penggunaan Dana`}
-                          halaman={"/mitra/tabelmitra"}
-                          icon={`bi bi-file-spreadsheet-fill`}
+                          judul={`Publikasi Dosen`}
+                          icon={`bi bi-pip`}
+                          halaman={`/publikasidos/export/export_publikasidos`}
+                          keterangan={
+                            "Export data Publikasi yang diikuti dosen"
+                          }
                         />
                       </Carddashboard>
                     </div>

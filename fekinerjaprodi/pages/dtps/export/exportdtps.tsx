@@ -13,10 +13,7 @@ export default function exportdtps() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
-  const [dataSelectTahun, setSelectTahun] = useState(`${new Date().getFullYear()}`);
-
-  console.log(dataSelectTahun);
-  console.log(`dataSelectTahun`);
+ 
 
   const [dataDTPS, setdataDTPS] = useState([]);
   const [dataListTahun, setListTahun] = useState([]);
@@ -25,8 +22,11 @@ export default function exportdtps() {
   const [dataProdis, setdataProdi] = useState([]);
   const [dataRole, setRole] = useState('');
 
+  const [dataSelectTahun, setSelectTahun] = useState(`${new Date().getFullYear()}`);
+
   const tanggalSekarang = new Date();
   const tahunSekarang = tanggalSekarang.getFullYear();
+
 
  function tahunGenerator(tahun:number,tipe:String,jumlah:number) {
    let counter = -5;
@@ -52,6 +52,7 @@ export default function exportdtps() {
    }
    setListTahun(arrTahun);
  }
+
   
 
   const handleChange = (e) => {
@@ -197,7 +198,7 @@ export default function exportdtps() {
                             className="download-table-xls-button btn btn-success ms-3"
                             table="tableDTPS"
                             filename={`tabelDTPS_TH${dataSelectTahun}`}
-                            sheet="3a3"
+                            sheet="3a1"
                             buttonText="Export Excel"
                             border="1"
                           />
@@ -256,81 +257,89 @@ export default function exportdtps() {
                             </tr>
                           </thead>
                           <tbody>
-                            {dataDTPS.map((dtps, index) => {
-                              const stats = dtps.mengajarUns[0]
-                                ?dtps.mengajarUns[0].kesesuaian? "V":''
-                                : "";
-                              return (
-                                <tr key={`tdtps` + dtps.id}>
-                                  {/* no */}
-                                  <td>{index + 1}</td>
-                                  {/* prodi */}
-                                  <td>{dtps.NamaDosen}</td>
-                                  <td>{dtps.NIDK}</td>
-                                  <td>{dtps.pascasarjana.magister}</td>
-                                  <td>{dtps.pascasarjana.doktor}</td>
-                                  {dtps.detaildosen?(
-                                    <>
-                                    <td>{dtps.detaildosen.bidangKeahlian}</td>
-                                    <td>{dtps.detaildosen.kesesuaian}</td>
-                                    </>
-                                  ):(
-                                    <>
-                                    <td></td>
-                                    <td></td>
-                                    </>
-                                  )}
-                                  <td>{dtps.JabatanAkademik}</td>
-                                  {dtps.detaildosen?(
+                            {dataDTPS.length?(
+                              <>
+                              {dataDTPS.map((dtps, index) => {
+                                const stats = dtps.mengajarUns[0]
+                                  ?dtps.mengajarUns[0].kesesuaian? "V":''
+                                  : "";
+                                return (
+                                  <tr key={`tdtps` + dtps.id}>
+                                    {/* no */}
+                                    <td>{index + 1}</td>
+                                    {/* prodi */}
+                                    <td>{dtps.NamaDosen}</td>
+                                    <td>{dtps.NIDK}</td>
+                                    <td>{dtps.pascasarjana.magister}</td>
+                                    <td>{dtps.pascasarjana.doktor}</td>
+                                    {dtps.detaildosen?(
+                                      <>
+                                      <td>{dtps.detaildosen.bidangKeahlian}</td>
+                                      <td>{dtps.detaildosen.kesesuaian}</td>
+                                      </>
+                                    ):(
+                                      <>
+                                      <td></td>
+                                      <td></td>
+                                      </>
+                                    )}
+                                    <td>{dtps.JabatanAkademik}</td>
+                                    {dtps.detaildosen ? (
+                                        dtps.detaildosen.fileBukti ? (
+                                          <td>
+                                            <a
+                                              href={
+                                                `http://127.0.0.1:8000/` +
+                                                dtps.detaildosen.fileBukti
+                                              }
+                                            >
+                                              {dtps.detaildosen.noSertifPendidik}
+                                            </a>
+                                          </td>
+                                        ) : (
+                                          <td></td>
+                                        )
+                                      ) : (
+                                        <td></td>
+                                      )}
                                     <td>
-                                    <a
-                                      href={
-                                        `http://127.0.0.1:8000/` +
-                                        dtps.detaildosen.fileBukti
-                                      }
-                                    >
-                                      {dtps.detaildosen.noSertifPendidik}
-                                    </a>
-                                  </td>
-                                  ):(
-                                    <td></td>
-                                  )}
-                                  <td>
-                                    {dtps.serkoms.map((serkom, indx) => {
-                                      return (
-                                        <>
-                                          {`${indx+1}.${serkom.nama_skema}/${serkom.nomor_sertifikat}`}
-                                          <br />
-                                        </>
-                                      );
-                                    })}
-                                  </td>
-                                  <td>
-                                    {dtps.mengajarUns.map((mengajars, indx) => {
-                                      return (
-                                        <>
-                                          {mengajars.matkul.nama_matkul}
-                                          <br />
-                                        </>
-                                      );
-                                    })}
-                                  </td>
-                                  <td>{stats}</td>
-                                  <td>
-                                    {dtps.mengajarLuar.map(
-                                      (mengajarlr, indx) => {
+                                      {dtps.serkoms.map((serkom, indx) => {
                                         return (
                                           <>
-                                            {mengajarlr.matkul.nama_matkul}
+                                            {`${indx+1}.${serkom.nama_skema}/${serkom.nomor_sertifikat}`}
                                             <br />
                                           </>
                                         );
-                                      }
-                                    )}
-                                  </td>
-                                </tr>
-                              );
-                            })}
+                                      })}
+                                    </td>
+                                    <td>
+                                      {dtps.mengajarUns.map((mengajars, indx) => {
+                                        return (
+                                          <>
+                                            {mengajars.matkul.nama_matkul}
+                                            <br />
+                                          </>
+                                        );
+                                      })}
+                                    </td>
+                                    <td>{stats}</td>
+                                    <td>
+                                      {dtps.mengajarLuar.map(
+                                        (mengajarlr, indx) => {
+                                          return (
+                                            <>
+                                              {mengajarlr.matkul.nama_matkul}
+                                              <br />
+                                            </>
+                                          );
+                                        }
+                                      )}
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                              </>
+                            ):(<tr><td colSpan={12}>Data Belum tersimpan dalam sistem</td></tr>)}
                           </tbody>
                         </table>
                         </div>

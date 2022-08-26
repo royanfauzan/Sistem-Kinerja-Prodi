@@ -168,7 +168,7 @@ export default function editwaktu(props) {
                         Prestasi Mahasiswa
                       </p>
                       <div className="row">
-                        <div className="col-md-6">
+                        <div className="col-md-10">
                           <div className="form-group">
                             <label
                               htmlFor="kepuasan"
@@ -200,7 +200,13 @@ export default function editwaktu(props) {
                             </select>
                           </div>
                         </div>
-                        <div className="col-md-6">
+                         {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jumlah Lulusan Dipesan
+                        </p>
+                        <div className="col-md-10">
                           <div className="form-group">
                             <label
                               htmlFor="dipesan"
@@ -210,7 +216,7 @@ export default function editwaktu(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah Lulusan Dipesan"
                               id="dipesan"
                               defaultValue={dataWaktu.jmlh_lls_dipesan}
@@ -218,6 +224,13 @@ export default function editwaktu(props) {
                             />
                           </div>
                         </div>
+
+                         {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jumlah Lulusan Sesuai Waktu Tunggu
+                        </p>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
@@ -228,7 +241,7 @@ export default function editwaktu(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah tunggu lulusan 3 bulan"
                               id="tiga"
                               defaultValue={dataWaktu.jmlh_tunggu_lls_3bln}
@@ -246,7 +259,7 @@ export default function editwaktu(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah tunggu lulusan 6 bulan"
                               id="enam"
                               defaultValue={dataWaktu.jmlh_tunggu_lls_6bln}
@@ -265,7 +278,7 @@ export default function editwaktu(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah tunggu lulusan lebih 6 bulan"
                               id="enamlebih"
                               defaultValue={dataWaktu.jmlh_tunggu_lls_lebih_6bln}

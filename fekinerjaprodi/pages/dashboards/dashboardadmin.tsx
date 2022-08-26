@@ -124,7 +124,7 @@ export default function dashboardadmin() {
                           judul={"Data Kriteria Kerjasama"}
                           keterangan={`Mengelola Data Kerjasama Pendidikan, Penelitian dan Pengabdian Masyarakat`}
                           halaman={"/kerjasama/tabelkerjasama"}
-                          icon={`bi bi-file-spreadsheet-fill`}
+                          icon={`bi bi-person-workspace`}
                         />
                       </Carddashboard>
                       <Carddashboard judul={`Kriteria Mahasiswa`}>
@@ -132,13 +132,13 @@ export default function dashboardadmin() {
                           judul={"Seleksi Mahasiswa Baru"}
                           keterangan={`Mengelola Data Penerimaan Mahasiswa`}
                           halaman={"/MahasiswaBaru_Asing/tabel_penerimaan"}
-                          icon={`bi bi-file-spreadsheet-fill`}
+                          icon={`bi bi-person-check-fill`}
                         />
                         <ListCardDash
                           judul={"Mahasiswa Asing"}
                           keterangan={`Mengelola Data Mahasiswa Asing`}
                           halaman={"/MahasiswaBaru_Asing/tabel_mahasiswa_asing"}
-                          icon={`bi bi-file-spreadsheet`}
+                          icon={`bi bi-person-check`}
                         />
                       </Carddashboard>
 
@@ -149,7 +149,7 @@ export default function dashboardadmin() {
                           judul={"Penggunaan Dana"}
                           keterangan={`Mengelola Data Penggunaan Dana`}
                           halaman={"/penggunaan_dana/tabel_penggunaan_dana"}
-                          icon={`bi bi-file-spreadsheet-fill`}
+                          icon={`bi bi-bank`}
                         />
                       </Carddashboard>
 
@@ -158,7 +158,7 @@ export default function dashboardadmin() {
                           judul={"Data Mitra"}
                           keterangan={`Mengelola Data Penggunaan Dana`}
                           halaman={"/mitra/tabelmitra"}
-                          icon={`bi bi-file-spreadsheet-fill`}
+                          icon={`bi bi-building`}
                         />
                       </Carddashboard>
                       <Carddashboard judul={`Kriteria Pendidikan`}>
@@ -178,18 +178,10 @@ export default function dashboardadmin() {
                           judul={"Kepuasan Mahasiswa"}
                           keterangan={`Kelola Data Kepuasan Mahasiswa`}
                           halaman={"/kepuasanmhs/daftarkepuasanmhs"}
-                          icon={`bi bi-calendar3-range`}
-                        />
-                        <ListCardDash
-                          judul={"Mata Kuliah"}
-                          keterangan={`Kelola Data Mata Kuliah`}
-                          halaman={"/matkul/daftarmatkul"}
-                          icon={`bi bi-calendar3-range`}
+                          icon={`bi bi-card-text`}
                         />
                       </Carddashboard>
                     </div>
-                  </div>
-                  <div className="col-6 ">
                     <div className="row d-flex justify-content-around">
                       <Carddashboard judul={`Kriteria Sumber Daya Manusia`}>
                         <ListCardDash
@@ -198,6 +190,8 @@ export default function dashboardadmin() {
                           halaman={`/profildosen/tabelprofil`}
                           keterangan={"Mengelola Data Profil Dosen"}
                         />
+                      </Carddashboard>
+                      <Carddashboard judul={`Kriteria Mahasiswa`}>
                         <ListCardDash
                           judul={`EWMP`}
                           icon={`bi bi-input-cursor`}
@@ -205,10 +199,10 @@ export default function dashboardadmin() {
                           keterangan={"Equivalen Waktu Mengajar Penuh Dosen"}
                         />
                         <ListCardDash
-                          judul={`Pengalaman Mengajar`}
-                          icon={`bi bi-collection`}
-                          halaman={`/mengajar/tabelmengajar`}
-                          keterangan={"Data Pengalaman mengajar Dosen"}
+                          judul={"Mahasiswa Asing"}
+                          keterangan={`Mengelola Data Mahasiswa Asing`}
+                          halaman={"/MahasiswaBaru_Asing/tabel_mahasiswa_asing"}
+                          icon={`bi bi-file-spreadsheet`}
                         />
                         <ListCardDash
                           judul={`Pembimbing Utama TA`}
@@ -216,6 +210,9 @@ export default function dashboardadmin() {
                           halaman={`/bimbingan/export/exportbimbingan`}
                           keterangan={"Export Data Pembimbing Utama Tugas akhir"}
                         />
+                      </Carddashboard>
+
+                      <Carddashboard judul={` Mitra`}>
                         <ListCardDash
                           judul={`Publikasi Dosen`}
                           icon={`bi bi-pip`}
@@ -224,14 +221,140 @@ export default function dashboardadmin() {
                             "Export data Publikasi yang diikuti dosen"
                           }
                         />
-                        <div className="row">
-                          <Link href={`/dashboards/dashboardsdmadmin`}>
-                            <button className="btn btn-sm btn-outline-dark border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                              Selengkapnya...
-                            </button>
-                          </Link>
-                        </div>
                       </Carddashboard>
+                    </div>
+                  </div>
+
+                  {/* DASHBORAD TRIDARMA */}
+                  <div className="col-6 ">
+                    <div className="row d-flex justify-content-around">
+                      <Carddashboard
+                        judul={`Kriteria Luaran dan Capaian Tridarma`}
+                      >
+                        <ListCardDash
+                          judul={`Data Mahasiswa`}
+                          halaman={`/mahasiswa/daftarmhs`}
+                          keterangan={"Data Mahasiswa yang dikelola oleh admin"}
+                          icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                          judul={`Data IPK Mahasiswa`}
+                          icon={`bi bi-file-spreadsheet-fill`}
+                          halaman={`/ipk/daftaripk`}
+                          keterangan={"Data IPK Mahasiswa yang dikelola oleh admin"}
+                        />
+                        <ListCardDash
+                         judul={`Data Program Studi`}
+                         halaman={`/prodi/inputprodi`}
+                         keterangan={"Data Program Studi yang dikelola oleh admin"}
+                         icon={`bi bi-calendar3-range`}
+                        />
+                        <ListCardDash
+                        judul={`Data Prestasi`}
+                        halaman={`/prestasi/daftarprestasi`}
+                        keterangan={
+                          "Data Prestasi Akademik dan Non akademik yang dikelola oleh admin"
+                        }
+                         icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                        judul={`Masa Studi Lulusan`}
+                        halaman={`/masastudi/daftarmasastudi`}
+                        keterangan={
+                          "Data Masa Studi Lulusan yang dikelola oleh admin"
+                        }
+                         icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                        <ListCardDash
+                        judul={`Waktu Tunggu Lulusan`}
+                        halaman={`/waktutunggu/daftarwaktu`}
+                        keterangan={
+                          "Data Waktu Tunggu Lulusan dan Non akademik yang dikelola oleh admin"
+                        }
+                         icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                         judul={`Kesesuaian Bidang Kerja`}
+                         halaman={`/bidang/daftarbidang`}
+                         keterangan={
+                           "Data Kesesuaian Bidang Kerja yang dikelola oleh admin"
+                         }
+                         icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                        <ListCardDash
+                        judul={`Tempat Kerja lulusan`}
+                        halaman={`/tempat/daftartempat`}
+                        keterangan={
+                          "Data Tempat Kerja Lulusan yang dikelola oleh admin"
+                        }
+                         icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                        judul={`Kepuasan Lulusan`}
+                        halaman={`/kepuasan_LLS/daftar_kepuasan_lls`}
+                        keterangan={
+                          "Data Kepuasan Lulusan yang dikelola oleh admin"
+                        }
+                         icon={`bi bi-calendar3-range`}
+                        />
+                        <ListCardDash
+                          judul={`Presentase Kepuasan`}
+                          halaman={`/presentase/daftarpresentase`}
+                          keterangan={
+                            "Data Presentase Kepuasan yang dikelola oleh admin"
+                          }
+                         icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                        <ListCardDash
+                          judul={`Data Luaran Lainnya`}
+                          halaman={`/luaran/daftarluaran`}
+                          keterangan={
+                            "Data Luaran Lainnya yang dikelola oleh admin"
+                          }
+                         icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                         judul={`Tulisan Mahasiswa`}
+                         halaman={`/tulisan/daftartulisan`}
+                         keterangan={
+                           "Data Tulisan Mahasiswa yang dikelola oleh admin"
+                         }
+                         icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                        <ListCardDash
+                         judul={`Jurnal Mahasiswa`}
+                         halaman={`/buku/daftarbuku`}
+                         keterangan={
+                           "Data Jurnal Mahasiswa yang dikelola oleh admin"
+                         }
+                         icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                         judul={`Pagelaran Mahasiswa`}
+                         halaman={`/pagelaran/daftarpagelaran`}
+                         keterangan={
+                           "Data Pagelaran Mahasiswa yang dikelola oleh admin"
+                         }
+                         icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                        <ListCardDash
+                         judul={`Seminar Mahasiswa`}
+                         halaman={`/seminar/daftarseminar`}
+                         keterangan={
+                           "Data Seminar Mahasiswa yang dikelola oleh admin"
+                         }
+                         icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                         judul={`Produk Mahasiswa`}
+                         halaman={`/produkMHS/daftarprodukmhs`}
+                         keterangan={
+                           "Data Produk Mahasiswa yang dikelola oleh admin"
+                         }
+                         icon={`bi bi-calendar3-range`}
+                        />
+                      </Carddashboard>
+                      
                     </div>
                   </div>
                 </div>

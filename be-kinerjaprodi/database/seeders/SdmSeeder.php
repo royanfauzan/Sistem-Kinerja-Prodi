@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Bbjurnaldos;
 use App\Models\Bimbingan;
 use App\Models\Detaildosen;
+use App\Models\Kepuasan_MHS;
 use App\Models\Luaranlaindosen;
 use App\Models\Mahasiswa;
 use App\Models\Matkul;
@@ -37,13 +38,13 @@ class SdmSeeder extends Seeder
         // Sumber dalam negri
         Penelitian::create( 
             [
-                'tema_sesuai_roadmap'=> 'keuangan',
-                'judul' => 'Membuat sistem bank', 
-                'tahun' => '2021', 
+                'tema_sesuai_roadmap'=> 'Instalasi, distribusi, pemanfaatan dan teknik kontrol energi baru dan terbarukan',
+                'judul' => 'Model Plts On Grid Menggunakan Micro Inverter untuk Rumah Tinggal di Perkotaan', 
+                'tahun' => '2018', 
                 'sumber_dana_PT_mandiri' => '', 
                 'dana_PT_Mandiri' => 0, 
-                'sumber_dalam_negri' => 'Bank Bri', 
-                'dana_dalam_negri' => 10000000, 
+                'sumber_dalam_negri' => '', 
+                'dana_dalam_negri' => 0, 
                 'sumber_luar_negri' => '', 
                 'dana_luar_negri' => 0,
             ]
@@ -51,58 +52,46 @@ class SdmSeeder extends Seeder
 
         Penelitian::create( 
             [
-                'tema_sesuai_roadmap'=> 'keuangan 2',
-                'judul' => 'Membuat sistem bank 2', 
-                'tahun' => '2019', 
+                'tema_sesuai_roadmap'=> 'Smart building',
+                'judul' => 'Perancangan dan Implementasi Computer Vision Sebagai Kendali Lampu Pada Smart Home', 
+                'tahun' => '2018', 
                 'sumber_dana_PT_mandiri' => '', 
                 'dana_PT_Mandiri' => 0, 
-                'sumber_dalam_negri' => 'Bank Bri', 
-                'dana_dalam_negri' => 10000000, 
+                'sumber_dalam_negri' => '', 
+                'dana_dalam_negri' => 0, 
                 'sumber_luar_negri' => '', 
                 'dana_luar_negri' => 0,
             ]
         );
 
         // Sumber Luar negri
-        Penelitian::create( 
+        Pkm::create( 
             [
-                'tema_sesuai_roadmap'=> 'teknologi',
-                'judul' => 'Membuat sistem bank Dunia', 
+                'tema_sesuai_roadmap'=> 'Green Technology Digital Business and Management',
+                'judul_kegiatan' => 'Pelatihan Digital Marketing bagi UMKM di Desa Serangan Denpasar Bali', 
+                'lokasi' => '', 
                 'tahun' => '2021', 
                 'sumber_dana_PT_mandiri' => '', 
                 'dana_PT_Mandiri' => 0, 
                 'sumber_dalam_negri' => '', 
                 'dana_dalam_negri' => 0, 
-                'sumber_luar_negri' => 'Bank Dunia', 
-                'dana_luar_negri' => 10000000,
+                'sumber_luar_negri' => '', 
+                'dana_luar_negri' => 0,
             ]
         );
 
-        Penelitian::create( 
+        Pkm::create( 
             [
-                'tema_sesuai_roadmap'=> 'teknologi 2',
-                'judul' => 'Membuat sistem bank Dunia 2', 
-                'tahun' => '2020', 
+                'tema_sesuai_roadmap'=> 'Application of Information Technology and Internet of Think In Tourism',
+                'judul_kegiatan' => 'Instalasi Jaringan Komputer dan Sosialisasi Sistem Informasi pada Desa Wisata Pinge, Kecamatan Marga, Kabupaten Tabanan, Bali', 
+                'lokasi' => '', 
+                'tahun' => '2021', 
                 'sumber_dana_PT_mandiri' => '', 
                 'dana_PT_Mandiri' => 0, 
                 'sumber_dalam_negri' => '', 
                 'dana_dalam_negri' => 0, 
-                'sumber_luar_negri' => 'Bank Dunia', 
-                'dana_luar_negri' => 10000000,
-            ]
-        );
-
-        Penelitian::create( 
-            [
-                'tema_sesuai_roadmap'=> 'teknologi 3',
-                'judul' => 'Membuat sistem bank Dunia 3', 
-                'tahun' => '2019', 
-                'sumber_dana_PT_mandiri' => '', 
-                'dana_PT_Mandiri' => 0, 
-                'sumber_dalam_negri' => '', 
-                'dana_dalam_negri' => 0, 
-                'sumber_luar_negri' => 'Bank Dunia', 
-                'dana_luar_negri' => 10000000,
+                'sumber_luar_negri' => '', 
+                'dana_luar_negri' => 0,
             ]
         );
 
@@ -926,35 +915,35 @@ class SdmSeeder extends Seeder
         // Data Matkul
         Matkul::create(
             [
-                'nama_matkul' => 'Bahasa Pemrograman',
-                'kode_matkul' => 'MK09888',
-                'sks' => 4,
+                'nama_matkul' => 'Pendidikan Pancasila*',
+                'kode_matkul' => 'MPK-132201',
+                'sks' => 2,
                 'prodi_id' => 1,
             ]
         );
 
         Matkul::create( 
             [
-                'nama_matkul' => 'Pemrograman Berbasis Objek',
-                'kode_matkul' => 'MK09777',
-                'sks' => 4,
+                'nama_matkul' => 'Bahasa Inggris I',
+                'kode_matkul' => 'MPK-132202',
+                'sks' => 2,
                 'prodi_id' => 1,
             ]
         );
 
         Matkul::create(
             [
-                'nama_matkul' => 'Pemrograman Dasar',
-                'kode_matkul' => 'MK09666',
-                'sks' => 4,
+                'nama_matkul' => 'Interaksi Manusia Komputer',
+                'kode_matkul' => 'MKK-132203',
+                'sks' => 2,
                 'prodi_id' => 1,
             ]
         );
 
         Matkul::create(
             [
-                'nama_matkul' => 'Pemrograman Visual',
-                'kode_matkul' => 'MK09555',
+                'nama_matkul' => 'Perancangan Basis Data*',
+                'kode_matkul' => 'MKB-132204',
                 'sks' => 4,
                 'prodi_id' => 1,
             ]
@@ -963,8 +952,255 @@ class SdmSeeder extends Seeder
         #id 5
         Matkul::create(
             [
-                'nama_matkul' => 'Manajemen Bisnis',
-                'kode_matkul' => 'MK09444',
+                'nama_matkul' => 'Algoritma dan Pemrograman Dasar*',
+                'kode_matkul' => 'MKK-132205',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Desain Grafis',
+                'kode_matkul' => 'MKB-132206',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        #id 7
+        Matkul::create(
+            [
+                'nama_matkul' => 'Pengantar Teknologi  Informasi',
+                'kode_matkul' => 'MKK-132207',
+                'sks' => 2,
+                'prodi_id' => 1,
+            ]
+        );
+
+        #id 8
+        Matkul::create(
+            [
+                'nama_matkul' => 'Statistika',
+                'kode_matkul' => 'MKK-232201',
+                'sks' => 2,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Bahasa Inggris II',
+                'kode_matkul' => 'MPK-232202',
+                'sks' => 2,
+                'prodi_id' => 1,
+            ]
+        );
+
+        #id 10
+        Matkul::create(
+            [
+                'nama_matkul' => 'Jaringan Komputer I*',
+                'kode_matkul' => 'MKB-232203',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        #id 11
+        Matkul::create(
+            [
+                'nama_matkul' => 'Analisa dan Perancangan Sistem*',
+                'kode_matkul' => 'MKB-232204',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Disain Web*',
+                'kode_matkul' => 'MKB-232205',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Basis Data Terapan*',
+                'kode_matkul' => 'MKB-232206',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Kewarganegaraan*',
+                'kode_matkul' => 'MPK-332201',
+                'sks' => 2,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'K3',
+                'kode_matkul' => 'MPB-332202',
+                'sks' => 2,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Pemrograman Berorientasi Objek*',
+                'kode_matkul' => 'MKB-332203',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Sistem Informasi Manajemen',
+                'kode_matkul' => 'MKK-332204',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Pemrograman Web 1*',
+                'kode_matkul' => 'MKB-332205',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Jaringan Komputer II*',
+                'kode_matkul' => 'MKB-332206',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Multimedia',
+                'kode_matkul' => 'MKB-432201',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Mobile Programming*',
+                'kode_matkul' => 'MKB-432202',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Teknologi Cloud',
+                'kode_matkul' => 'MKB-432203',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Pemrograman Web 2*',
+                'kode_matkul' => 'MKB-432204',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Bahasa Indonesia*',
+                'kode_matkul' => 'MPK-432205',
+                'sks' => 2,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Agama*',
+                'kode_matkul' => 'MPK-432206',
+                'sks' => 2,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Praktek Kerja Lapangan*',
+                'kode_matkul' => 'MBB-532201',
+                'sks' => 8,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Proyek*',
+                'kode_matkul' => 'MPB-532202',
+                'sks' => 4,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Kecakapan Personal*',
+                'kode_matkul' => 'MPK-532203',
+                'sks' => 2,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Dasar Manajemen Bisnis*',
+                'kode_matkul' => 'MPB-532204',
+                'sks' => 3,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Etika Profesi*',
+                'kode_matkul' => 'MBB-532205',
+                'sks' => 3,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Tugas Akhir*',
+                'kode_matkul' => 'MPB-632201',
+                'sks' => 6,
+                'prodi_id' => 1,
+            ]
+        );
+
+        Matkul::create(
+            [
+                'nama_matkul' => 'Metodelogi Penelitian',
+                'kode_matkul' => 'MPB-632203',
                 'sks' => 2,
                 'prodi_id' => 1,
             ]
@@ -973,67 +1209,18 @@ class SdmSeeder extends Seeder
         Matkul::create(
             [
                 'nama_matkul' => 'Kewirausahaan',
-                'kode_matkul' => 'MK09444',
+                'kode_matkul' => 'MPB-632203',
                 'sks' => 2,
                 'prodi_id' => 1,
             ]
         );
 
-        #id 7
         Matkul::create(
             [
-                'nama_matkul' => 'Matematika Dasar',
-                'kode_matkul' => 'MK09333',
-                'sks' => 4,
+                'nama_matkul' => 'Digital marketing',
+                'kode_matkul' => 'MKB-632204',
+                'sks' => 2,
                 'prodi_id' => 1,
-            ]
-        );
-
-        #id 8
-        Matkul::create(
-            [
-                'nama_matkul' => 'Arsitektur Komputer',
-                'kode_matkul' => 'MK08777',
-                'sks' => 4,
-                'prodi_id' => 3,
-            ]
-        );
-
-        Matkul::create(
-            [
-                'nama_matkul' => 'Elektronika',
-                'kode_matkul' => 'MK08666',
-                'sks' => 4,
-                'prodi_id' => 3,
-            ]
-        );
-
-        #id 10
-        Matkul::create(
-            [
-                'nama_matkul' => 'Elektronika Daya',
-                'kode_matkul' => 'MK08555',
-                'sks' => 4,
-                'prodi_id' => 3,
-            ]
-        );
-
-        #id 11
-        Matkul::create(
-            [
-                'nama_matkul' => 'Matematika Terapan 1',
-                'kode_matkul' => 'MK08444',
-                'sks' => 4,
-                'prodi_id' => 3,
-            ]
-        );
-
-        Matkul::create(
-            [
-                'nama_matkul' => 'Matematika Terapan 2',
-                'kode_matkul' => 'MK08333',
-                'sks' => 4,
-                'prodi_id' => 3,
             ]
         );
 
@@ -1291,6 +1478,126 @@ class SdmSeeder extends Seeder
             'mahasiswa_id'=>20,
             'profil_dosen_id'=>4,
         ]);
+
+        
+        Mahasiswa::create(
+            [
+                'nim' => '1615323039',
+                'nama' => 'KOMANG ANOM SUANDI',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1715323002',
+                'nama' => 'NI PANDE PUTU YUNI ANTARI',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1715323006',
+                'nama' => 'I PUTU AGUS GUNAWAN',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323054',
+                'nama' => 'NARENDRA BRILLIAN AL-GHIFARI',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323057',
+                'nama' => 'GUSTI AYU NYOMAN SITA WAHANA MURTI',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323065',
+                'nama' => 'NI NYOMAN LENI  ARIDANI',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323072',
+                'nama' => 'MADE GEDE ARYA ANDIKA DHARMA KRISNA',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323074',
+                'nama' => 'PUTU KHRISVANA VHARIYANA',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323084',
+                'nama' => 'I PUTU YUDHA PRATAMA',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1915323069',
+                'nama' => 'MUHAMMAD ALIEVYO RAMADHANI',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '2015323056',
+                'nama' => 'ALE AKBAR RIZKY',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '2015323052',
+                'nama' => 'JAKA WAHYU RAMADHAN',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '2015323008',
+                'nama' => 'I NYOMAN WAHYU ADITYA',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '2015323064',
+                'nama' => 'HABIL HUSNA ADITYA HADI',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '2015323104',
+                'nama' => 'PANDE KOMANG THEO ASTA',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1915323049',
+                'nama' => 'I KOMANG GEDE MAHA WIJASA',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1915323013',
+                'nama' => 'DEWA GEDE ADITYA PUTRA',
+            ]
+        );
 
     }
 }

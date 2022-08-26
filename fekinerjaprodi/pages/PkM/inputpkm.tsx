@@ -168,7 +168,7 @@ export default function inputpkm() {
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="Nama Mahasiswa"
+                              placeholder="Tema Sesuai Roadmap"
                               id="tema_sesuai_roadmap"
                             />
                             {dataError.tema_sesuai_roadmap ? (
@@ -189,7 +189,7 @@ export default function inputpkm() {
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="Judul kegiatan"
+                              placeholder="Judul Kegiatan"
                               id="judul_kegiatan"
                             />
                             {dataError.judul_kegiatan ? (

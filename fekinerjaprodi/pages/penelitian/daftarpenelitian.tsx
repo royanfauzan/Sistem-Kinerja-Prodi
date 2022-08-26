@@ -125,7 +125,7 @@ export default function daftarpenelitian() {
     });
   };
 
-  const hapusmhs = () => {
+  const hapusmhs = (id) => {
     MySwal.fire({
       title: "Hapus Mahasiswa",
       text: "Apakah anda yakin? ",

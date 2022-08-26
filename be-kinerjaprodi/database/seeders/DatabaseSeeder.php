@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Bbjurnaldos;
 use App\Models\CapKurikulum;
 use App\Models\Ewmp;
+use App\Models\Kepuasan_MHS;
 use App\Models\Mahasiswa;
 use App\Models\Matkul;
 use App\Models\Mitra;
@@ -571,38 +572,6 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // CapKurikulum::create(
-        //     [
-        //         'prodi_ID' => 1,
-        //         'matkul_ID' => 1,
-        //         'semester' => 'VI',
-        //         'tahun' => '2022',
-        //         'mata_kuliah_kompetensi' => 'Algoritma',
-        //         'kuliah_responsi_tutorial' => 8,
-        //         'seminar' => 7,
-        //         'praktikum' => 6,
-        //         'konversi_kredit_jam' => 5,
-        //         'sikap' => 'baik',
-        //         'pengetahuan' => 'luar biasa',
-        //         'ketrampilan_umum' => 'umum',
-        //         'ketrampilan_khusus' => 'khusus',
-        //         'dok_ren_pembelajaran' => 'rencana',
-        //         'unit_penyelenggara' => 'unit',
-                
-        //     ]
-        // );
-
-        // Matkul::create(
-        //     [
-        //         'prodi_id' => 1,
-        //         'kode_matkul' => 'KD-01',
-        //         'nama_matkul' => 'Web',
-        //         'sks' => '4',
-                
-                
-        //     ]
-        // );
-
         RelasiCapMatkul::create(
             [
                 'matkul_id' => 1,
@@ -640,6 +609,38 @@ class DatabaseSeeder extends Seeder
                 'penelitian_id' => 1,
                 'keanggotaan' => 'devano',
             ]
+        );
+
+        Kepuasan_MHS::create(
+            [
+                'tahun' => '2021',
+                'keandalan_4' => '21.99',
+                'keandalan_3' => '75.42',
+                'keandalan_2' => '1.99',
+                'keandalan_1' => '0.6',
+                'tl_keandalan' => 'Kehandalan peralatan praktikum sudah baik, namun dengan meningkatkannya proses pembelajaran akan menjadi semakin optimal',
+                'dayatanggap_4' => '20.23',
+                'dayatanggap_3' => '76.94',
+                'dayatanggap_2' => '2.27',
+                'dayatanggap_1' =>'0.57',
+                'tl_dayatanggap' => 'Daya tanggap (responsible) dosen sudah sangat baik, untuk menjamin mutu tersebut penting untuk di ditingkatkan perhatian pada aspek daya serap mahasiswa',
+                'kepastian_4' => '28.75',
+                'kepastian_3' => '65.43',
+                'kepastian_2' => '4.59',
+                'kepastian_1' => '1.23',
+                'tl_kepastian' => 'Optimalitas pembelajaran sudah baik dengan menjaga keterjaminan mutu penyelenggaraan sampai dengan pengumuman hasil proses pembelajaran kepada mahasiswa ',
+                'empati_4' => '27.91',
+                'empati_3' => '67.27',
+                'empati_2' => '0.6',
+                'empati_1' => '4.22',
+                'tl_empati' => 'Optimalitas proses belajar mengajar akan menjadi lebih efektif dengan memberikan perhatian lebih kepada mahasiswa yang di anggap kurang mampu mengikuti proses belajar mengajar',
+                'tangible_4' => '21.99',
+                'tangible_3' => '75.42',
+                'tangible_2' => '1.99',
+                'tangible_1' => '0.6',
+                'tl_tangible' => 'Upaya untuk mengingkatkan fasilitas pembelajaran merupakan salah satu bentuk optimalitas pembelajaran',      
+                'prodi_id' => 1,
+                ]
         );
 
     }

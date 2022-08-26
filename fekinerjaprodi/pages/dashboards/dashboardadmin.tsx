@@ -166,7 +166,7 @@ export default function dashboardadmin() {
                           judul={"Capaian Kurikulum"}
                           keterangan={`Kelola Data Capaian Kurikulum`}
                           halaman={"/capkurikulum/daftarkurikulum"}
-                          icon={`bi bi-card-text`}
+                          icon={`bi bi-book-half`}
                         />
                         <ListCardDash
                           judul={"Data Mahasiswa"}
@@ -178,7 +178,13 @@ export default function dashboardadmin() {
                           judul={"Kepuasan Mahasiswa"}
                           keterangan={`Kelola Data Kepuasan Mahasiswa`}
                           halaman={"/kepuasanmhs/daftarkepuasanmhs"}
-                          icon={`bi bi-card-text`}
+                          icon={`bi bi-people-fill`}
+                        />
+                        <ListCardDash
+                          judul={"Mata Kuliah"}
+                          keterangan={`Kelola Data Mata Kuliah`}
+                          halaman={"/matkul/daftarmatkul"}
+                          icon={`bi bi-journal-text`}
                         />
                       </Carddashboard>
                     </div>

@@ -90,8 +90,8 @@ export default function LayoutDashboardBlue(props: LayoutProps) {
   }
   return (
     <>
-      <div className={`bg-primary position-absolute w-100 `}>
-        <div className={`w-100 sticky-top bg-primary`}>
+      <div className={`bg-primary position-absolute w-100 h-100 `}>
+        <div className={`w-100 h-100 sticky-top bg-primary`}>
           {role == "admin" ? <SidebarUtama /> : <SidebarDosen />}
           <main className="main-content border-radius-lg ">
             <NavbarUtama rlUser={rlUser} kriteria={namaKriteria} halaman={linkKriteria}/>

@@ -38,14 +38,14 @@ class SdmSeeder extends Seeder
         // Sumber dalam negri
         Penelitian::create( 
             [
-                'tema_sesuai_roadmap'=> 'Instalasi, distribusi, pemanfaatan dan teknik kontrol energi baru dan terbarukan',
-                'judul' => 'Model Plts On Grid Menggunakan Micro Inverter untuk Rumah Tinggal di Perkotaan', 
-                'tahun' => '2018', 
-                'sumber_dana_PT_mandiri' => '', 
-                'dana_PT_Mandiri' => 0, 
-                'sumber_dalam_negri' => '', 
+                'tema_sesuai_roadmap'=> 'Teknologi Informasi dan Komunikasi',
+                'judul' => 'Analisis Sentimen Twitter terhadap Pelaksanaan Belajar Daring Selama Masa Pandemi', 
+                'tahun' => '2021', 
+                'sumber_dana_PT_mandiri' => 'Dipa PNB', 
+                'dana_PT_Mandiri' => 14000000, 
+                'sumber_dalam_negri' => '-', 
                 'dana_dalam_negri' => 0, 
-                'sumber_luar_negri' => '', 
+                'sumber_luar_negri' => '-', 
                 'dana_luar_negri' => 0,
             ]
         );
@@ -55,11 +55,11 @@ class SdmSeeder extends Seeder
                 'tema_sesuai_roadmap'=> 'Smart building',
                 'judul' => 'Perancangan dan Implementasi Computer Vision Sebagai Kendali Lampu Pada Smart Home', 
                 'tahun' => '2018', 
-                'sumber_dana_PT_mandiri' => '', 
+                'sumber_dana_PT_mandiri' => '-', 
                 'dana_PT_Mandiri' => 0, 
-                'sumber_dalam_negri' => '', 
+                'sumber_dalam_negri' => '-', 
                 'dana_dalam_negri' => 0, 
-                'sumber_luar_negri' => '', 
+                'sumber_luar_negri' => '-', 
                 'dana_luar_negri' => 0,
             ]
         );
@@ -67,15 +67,15 @@ class SdmSeeder extends Seeder
         // Sumber Luar negri
         Pkm::create( 
             [
-                'tema_sesuai_roadmap'=> 'Green Technology Digital Business and Management',
+                'tema_sesuai_roadmap'=> 'Mengabdi Desa',
                 'judul_kegiatan' => 'Pelatihan Digital Marketing bagi UMKM di Desa Serangan Denpasar Bali', 
-                'lokasi' => '', 
+                'lokasi' => 'Desa Serangan, Denpasar', 
                 'tahun' => '2021', 
-                'sumber_dana_PT_mandiri' => '', 
-                'dana_PT_Mandiri' => 0, 
-                'sumber_dalam_negri' => '', 
+                'sumber_dana_PT_mandiri' => 'Dana Mandiri', 
+                'dana_PT_Mandiri' => 10000000, 
+                'sumber_dalam_negri' => '-', 
                 'dana_dalam_negri' => 0, 
-                'sumber_luar_negri' => '', 
+                'sumber_luar_negri' => '=', 
                 'dana_luar_negri' => 0,
             ]
         );
@@ -84,13 +84,28 @@ class SdmSeeder extends Seeder
             [
                 'tema_sesuai_roadmap'=> 'Application of Information Technology and Internet of Think In Tourism',
                 'judul_kegiatan' => 'Instalasi Jaringan Komputer dan Sosialisasi Sistem Informasi pada Desa Wisata Pinge, Kecamatan Marga, Kabupaten Tabanan, Bali', 
-                'lokasi' => '', 
-                'tahun' => '2021', 
-                'sumber_dana_PT_mandiri' => '', 
+                'lokasi' => 'Desa Wisata Pinge, Kecamatan Marga, Kabupaten Tabanan, Bali', 
+                'tahun' => '2019', 
+                'sumber_dana_PT_mandiri' => '-', 
                 'dana_PT_Mandiri' => 0, 
-                'sumber_dalam_negri' => '', 
+                'sumber_dalam_negri' => '-', 
                 'dana_dalam_negri' => 0, 
-                'sumber_luar_negri' => '', 
+                'sumber_luar_negri' => '-', 
+                'dana_luar_negri' => 0,
+            ]
+        );
+
+        Pkm::create( 
+            [
+                'tema_sesuai_roadmap'=> 'Sistem Informasi',
+                'judul_kegiatan' => 'PKM Pengelolaan Keuangan Banjar Adat', 
+                'lokasi' => 'Banjar Sibang, Desa Sangeh', 
+                'tahun' => '2018', 
+                'sumber_dana_PT_mandiri' => '-', 
+                'dana_PT_Mandiri' => 0, 
+                'sumber_dalam_negri' => 'DRPM', 
+                'dana_dalam_negri' => 41000000, 
+                'sumber_luar_negri' => '-', 
                 'dana_luar_negri' => 0,
             ]
         );
@@ -1479,6 +1494,20 @@ class SdmSeeder extends Seeder
             'profil_dosen_id'=>4,
         ]);
 
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323031',
+                'nama' => 'Nurhakiki Putri Irawan',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323003',
+                'nama' => 'Made Dwiki Satria Wibawa',
+            ]
+        );
         
         Mahasiswa::create(
             [
@@ -1596,6 +1625,13 @@ class SdmSeeder extends Seeder
             [
                 'nim' => '1915323013',
                 'nama' => 'DEWA GEDE ADITYA PUTRA',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1915323045',
+                'nama' => 'I PUTU AGUS EKA CAHYADI',
             ]
         );
 

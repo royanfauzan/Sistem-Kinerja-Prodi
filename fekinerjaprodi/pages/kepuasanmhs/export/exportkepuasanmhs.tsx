@@ -32,8 +32,6 @@ export default function kepuasanmahasiswa() {
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
 
-
-
     axios({
       method: "get",
       url: "http://127.0.0.1:8000/api/KepuasanMHS_Tahun",
@@ -54,9 +52,8 @@ export default function kepuasanmahasiswa() {
       });
   };
 
-
   const handleChangeExportData = (e) => {
-    const value = e.target.value
+    const value = e.target.value;
     tampildata(value);
   };
 
@@ -110,7 +107,6 @@ export default function kepuasanmahasiswa() {
       });
   };
 
-
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -124,9 +120,7 @@ export default function kepuasanmahasiswa() {
                     <div className="col-4">
                       <h6>Export Kepuasan Mahasiswa</h6>
                     </div>
-                    <div className="row">
-
-                    </div>
+                    <div className="row"></div>
                     <div className="row justify-content-between mb-4">
                       <div className="col-4">
                         <div className="align-middle">
@@ -150,14 +144,14 @@ export default function kepuasanmahasiswa() {
                     </div>
                     <div className="col-md-5 pe-0">
                       <div className="row">
-                        <div className="col-6"><h6>Pilih Tahun</h6>
+                        <div className="col-6">
+                          <h6>Pilih Tahun</h6>
                         </div>
                       </div>
 
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">
-
                             <select
                               className="form-select"
                               aria-label="Default select example"
@@ -167,10 +161,7 @@ export default function kepuasanmahasiswa() {
                             >
                               {Listtahun.map((dataTahun) => {
                                 return (
-                                  <option
-                                    value={dataTahun}
-                                    key={dataTahun}
-                                  >
+                                  <option value={dataTahun} key={dataTahun}>
                                     {dataTahun}
                                   </option>
                                 );
@@ -179,9 +170,7 @@ export default function kepuasanmahasiswa() {
                           </div>
                         </div>
                       </div>
-
                     </div>
-
                   </div>
                 </div>
                 <style jsx>{`
@@ -219,10 +208,6 @@ export default function kepuasanmahasiswa() {
                         </tr>
                       </thead>
 
-
-
-
-
                       <tr>
                         <th>
                           <h6 className="mb-0 text-sm">1</h6>
@@ -248,55 +233,116 @@ export default function kepuasanmahasiswa() {
                       </tr>
                       <tr>
                         <th>
-                          <p className="mb-0 text-sm" >1</p>
+                          <p className="mb-0 text-sm">1</p>
                         </th>
                         <td>
-                          <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
-                            Keandalan (<i data-f-italic="true">reliability</i>): kemampuan dosen, tenaga kependidikan, dan pengelolaan dalam memberikan pelayanan.
+                          <p
+                            className="text-start"
+                            data-a-wrap="true"
+                            data-b-a-s="thin"
+                            data-f-sz="10"
+                            data-t=""
+                          >
+                            Keandalan (<i data-f-italic="true">reliability</i>):
+                            kemampuan dosen, tenaga kependidikan, dan
+                            pengelolaan dalam memberikan pelayanan.
                           </p>
                         </td>
-                        <th>
-                          <p className="mb-0 text-sm ">{tampilKepuasanmhs.keandalan_4}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_3}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_2}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_1}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_keandalan}</p>
-                        </th>
-                      </tr>
 
+                        {tampilKepuasanmhs ? (
+                          <>
+                            <th>
+                              <p className="mb-0 text-sm ">
+                                {tampilKepuasanmhs.keandalan_4}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.keandalan_3}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.keandalan_2}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.keandalan_1}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.tl_keandalan}
+                              </p>
+                            </th>
+                          </>
+                        ) : (
+                          <>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                          </>
+                        )}
+                      </tr>
 
                       <tr>
                         <th>
                           <p className="mb-0 text-sm">2</p>
                         </th>
                         <td>
-                          <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
-                            Daya tanggap  (<i data-f-italic="true">responsiveness</i>): kemauan dari dosen, tenaga kependidikan, dan pengelola dalam membantu mahasiswa dan memberikan jasa dengan cepat.
+                          <p
+                            className="text-start"
+                            data-a-wrap="true"
+                            data-b-a-s="thin"
+                            data-f-sz="10"
+                            data-t=""
+                          >
+                            Daya tanggap (
+                            <i data-f-italic="true">responsiveness</i>): kemauan
+                            dari dosen, tenaga kependidikan, dan pengelola dalam
+                            membantu mahasiswa dan memberikan jasa dengan cepat.
                           </p>
                         </td>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_4}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_3}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_2}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.dayatanggap_1}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_dayatanggap}</p>
-                        </th>
+                        {tampilKepuasanmhs ? (
+                          <>
+                            <th>
+                              <p className="mb-0 text-sm ">
+                                {tampilKepuasanmhs.dayatanggap_4}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.dayatanggap_3}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.dayatanggap_2}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.dayatanggap_1}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.tl_dayatanggap}
+                              </p>
+                            </th>
+                          </>
+                        ) : (
+                          <>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                          </>
+                        )}
                       </tr>
 
                       <tr>
@@ -304,25 +350,57 @@ export default function kepuasanmahasiswa() {
                           <p className="mb-0 text-sm">3</p>
                         </th>
                         <td>
-                          <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
-                            Kepastian  (<i data-f-italic="true">assurance</i>): kemampuan dosen, tenaga kependidikan, dan pengelola untuk memberi keyakinan kepada mahasiswa bahwa pelayanan yang diberikan telah sesuai dengan ketentuan.
+                          <p
+                            className="text-start"
+                            data-a-wrap="true"
+                            data-b-a-s="thin"
+                            data-f-sz="10"
+                            data-t=""
+                          >
+                            Kepastian (<i data-f-italic="true">assurance</i>):
+                            kemampuan dosen, tenaga kependidikan, dan pengelola
+                            untuk memberi keyakinan kepada mahasiswa bahwa
+                            pelayanan yang diberikan telah sesuai dengan
+                            ketentuan.
                           </p>
                         </td>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_4}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_3}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_2}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.kepastian_1}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_kepastian}</p>
-                        </th>
+                        {tampilKepuasanmhs ? (
+                          <>
+                            <th>
+                              <p className="mb-0 text-sm ">
+                                {tampilKepuasanmhs.kepastian_4}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.kepastian_3}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.kepastian_2}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.kepastian_1}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.tl_kepastian}
+                              </p>
+                            </th>
+                          </>
+                        ) : (
+                          <>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                          </>
+                        )}
                       </tr>
 
                       <tr>
@@ -330,25 +408,55 @@ export default function kepuasanmahasiswa() {
                           <p className="mb-0 text-sm">4</p>
                         </th>
                         <td>
-                          <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
-                            Empati  (<i data-f-italic="true">empathy</i>): kesediaan/kepedulian dosen, tenaga kependidikan, dan pengelola untuk memberi perhatian kepada mahasiswa.
+                          <p
+                            className="text-start"
+                            data-a-wrap="true"
+                            data-b-a-s="thin"
+                            data-f-sz="10"
+                            data-t=""
+                          >
+                            Empati (<i data-f-italic="true">empathy</i>):
+                            kesediaan/kepedulian dosen, tenaga kependidikan, dan
+                            pengelola untuk memberi perhatian kepada mahasiswa.
                           </p>
                         </td>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_4}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_3}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_2}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.empati_1}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_empati}</p>
-                        </th>
+                        {tampilKepuasanmhs ? (
+                          <>
+                            <th>
+                              <p className="mb-0 text-sm ">
+                                {tampilKepuasanmhs.empati_4}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.empati_3}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.empati_2}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.empati_1}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.tl_empati}
+                              </p>
+                            </th>
+                          </>
+                        ) : (
+                          <>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                          </>
+                        )}
                       </tr>
 
                       <tr>
@@ -356,44 +464,145 @@ export default function kepuasanmahasiswa() {
                           <p className="mb-0 text-sm">5</p>
                         </th>
                         <td>
-                          <p className="text-start" data-a-wrap="true" data-b-a-s="thin" data-f-sz="10" data-t="">
-                            (<i data-f-italic="true">Tangible</i>): penilaian mahasiswa terhadap kecukupan, aksesibitas, kualitas sarana dan prasarana.
+                          <p
+                            className="text-start"
+                            data-a-wrap="true"
+                            data-b-a-s="thin"
+                            data-f-sz="10"
+                            data-t=""
+                          >
+                            (<i data-f-italic="true">Tangible</i>): penilaian
+                            mahasiswa terhadap kecukupan, aksesibitas, kualitas
+                            sarana dan prasarana.
                           </p>
                         </td>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_4}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_3}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_2}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tangible_1}</p>
-                        </th>
-                        <th>
-                          <p className="mb-0 text-sm">{tampilKepuasanmhs.tl_tangible}</p>
-                        </th>
+                        {tampilKepuasanmhs ? (
+                          <>
+                            <th>
+                              <p className="mb-0 text-sm ">
+                                {tampilKepuasanmhs.tangible_4}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.tangible_3}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.tangible_2}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.tangible_1}
+                              </p>
+                            </th>
+                            <th>
+                              <p className="mb-0 text-sm">
+                                {tampilKepuasanmhs.tl_tangible}
+                              </p>
+                            </th>
+                          </>
+                        ) : (
+                          <>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                            <td>{0}</td>
+                          </>
+                        )}
                       </tr>
                       <tr>
                         <th colspan="2">
                           <h6 className="mb-0 text-sm">Jumlah</h6>
                         </th>
 
-                        <th>
-                          <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_4 + tampilKepuasanmhs.dayatanggap_4 + tampilKepuasanmhs.kepastian_4 + tampilKepuasanmhs.empati_4 + tampilKepuasanmhs.tangible_4}</h6>
-                        </th>
-                        <th>
-                          <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_3 + tampilKepuasanmhs.dayatanggap_3 + tampilKepuasanmhs.kepastian_3 + tampilKepuasanmhs.empati_3 + tampilKepuasanmhs.tangible_3}</h6>
-                        </th>
-                        <th>
-                          <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_2 + tampilKepuasanmhs.dayatanggap_2 + tampilKepuasanmhs.kepastian_2 + tampilKepuasanmhs.empati_2 + tampilKepuasanmhs.tangible_2}</h6>
-                        </th>
-                        <th>
-                          <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_1 + tampilKepuasanmhs.dayatanggap_1 + tampilKepuasanmhs.kepastian_1 + tampilKepuasanmhs.empati_1 + tampilKepuasanmhs.tangible_1}</h6>
-                        </th>
+                        {tampilKepuasanmhs ? (
+                          <>
+                            <th>
+                              <h6 className="mb-0 text-sm"></h6>
+                              {tampilKepuasanmhs.keandalan_4 +
+                                tampilKepuasanmhs.dayatanggap_4 +
+                                tampilKepuasanmhs.kepastian_4 +
+                                tampilKepuasanmhs.empati_4 +
+                                tampilKepuasanmhs.tangible_4}
+                            </th>
+                          </>
+                        ) : (
+                          <>
+                            <td>{0}</td>
+                          </>
+                        )}
 
+                        {tampilKepuasanmhs ? (
+                          <>
+                            <th>
+                              <h6 className="mb-0 text-sm"></h6>
+                              {tampilKepuasanmhs.keandalan_3 +
+                                tampilKepuasanmhs.dayatanggap_3 +
+                                tampilKepuasanmhs.kepastian_3 +
+                                tampilKepuasanmhs.empati_3 +
+                                tampilKepuasanmhs.tangible_3}
+                            </th>
+                          </>
+                        ) : (
+                          <>
+                            <td>{0}</td>
+                          </>
+                        )}
+
+                        {tampilKepuasanmhs ? (
+                          <>
+                            <th>
+                              <h6 className="mb-0 text-sm"></h6>
+                              {tampilKepuasanmhs.keandalan_2 +
+                                tampilKepuasanmhs.dayatanggap_2 +
+                                tampilKepuasanmhs.kepastian_2 +
+                                tampilKepuasanmhs.empati_2 +
+                                tampilKepuasanmhs.tangible_2}
+                            </th>
+                          </>
+                        ) : (
+                          <>
+                            <td>{0}</td>
+                          </>
+                        )}
+
+                        {tampilKepuasanmhs ? (
+                          <>
+                            <th>
+                              <h6 className="mb-0 text-sm"></h6>
+                              {tampilKepuasanmhs.keandalan_1 +
+                                tampilKepuasanmhs.dayatanggap_1 +
+                                tampilKepuasanmhs.kepastian_1 +
+                                tampilKepuasanmhs.empati_1 +
+                                tampilKepuasanmhs.tangible_1}
+                            </th>
+                          </>
+                        ) : (
+                          <>
+                            <td>{0}</td>
+                          </>
+                        )}
+
+                        {/* {tampilKepuasanmhs ? (
+                          <>
+                            <th>
+                              <h6 className="mb-0 text-sm"></h6>
+                              {tampilKepuasanmhs.tl_keandalan +
+                                tampilKepuasanmhs.tl_dayatanggap +
+                                tampilKepuasanmhs.tl_kepastian +
+                                tampilKepuasanmhs.tl_empati +
+                                tampilKepuasanmhs.tl_tangible}
+                            </th>
+                          </>
+                        ) : (
+                          <>
+                            <td>{0}</td>
+                          </>
+                        )} */}
                       </tr>
                     </table>
                   </div>

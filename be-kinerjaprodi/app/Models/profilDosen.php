@@ -10,6 +10,10 @@ class profilDosen extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'NIDK' => 'string',
+    ];
+
     public function produks()
     {
         return $this->belongsToMany(Produk::class,'relasi_dos_prods','profil_dosen_id','produk_id')->withPivot('keanggotaan');

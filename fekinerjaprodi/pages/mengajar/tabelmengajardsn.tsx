@@ -177,7 +177,7 @@ export default function tabelmengajar() {
                           </div>
 
                           <div className="col-8 d-flex justify-content-end">
-                          <Link href={`/mengajar/inputmengajar/`}>
+                          <Link href={`/mengajar/inputmengajardsn/`}>
                               <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                                 Tambah Data
                               </button>

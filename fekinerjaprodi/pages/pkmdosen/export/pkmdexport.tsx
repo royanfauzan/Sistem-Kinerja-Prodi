@@ -24,6 +24,7 @@ export default function pkmdexport() {
   const [dataJmlDalam, setJmlDalam] = useState();
   const [dataJmlLuar, setJmlLuar] = useState();
   const [dataJmlTotal, setJmlTotal] = useState();
+  const [dataRole, setRole] = useState("");
 
   const [dataSelectTahun, setSelectTahun] = useState(`${new Date().getFullYear()}`);
 
@@ -89,6 +90,8 @@ export default function pkmdexport() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -135,7 +138,7 @@ export default function pkmdexport() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-12">

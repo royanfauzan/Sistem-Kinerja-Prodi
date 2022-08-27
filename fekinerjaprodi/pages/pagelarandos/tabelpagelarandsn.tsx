@@ -95,7 +95,7 @@ export default function tabelpagelaran() {
         // <-- if confirmed
         axios({
           method: "post",
-          url: `http://127.0.0.1:8000/api/delete_pagelaran/${id}`,
+          url: `http://127.0.0.1:8000/api/delete_pagelarandos/${id}`,
         })
           .then(function (response) {
             const { datapagelarans } = response.data;

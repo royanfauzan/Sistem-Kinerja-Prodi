@@ -245,6 +245,24 @@ export default function SidebarUtama() {
             </a>
           </li>
           <li className={`nav-item `}>
+            <a className="nav-link " href="/penelitian/daftarpenelitian">
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">Kriteria Penelitian</span>
+            </a>
+          </li>
+          <li className={`nav-item `}>
+            <a className="nav-link " href="/PkM/daftarpkm">
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">
+                Kriteria Pengabdian <br /> Kepada Masyarakat
+              </span>
+            </a>
+          </li>
+          <li className={`nav-item `}>
             <a
               className={`nav-link ${
                 isMenuSdm ? "active bg-light text-dark" : ""
@@ -260,6 +278,7 @@ export default function SidebarUtama() {
               </span>
             </a>
           </li>
+          
           
         </ul>
       </div>

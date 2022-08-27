@@ -68,7 +68,7 @@ export default function index() {
         const {token} = response.data;
         //handle success
         toast.dismiss();
-        toast.success('Login Sugses!!');
+        toast.success('Login Sukses!!');
         // console.log(token);
         localStorage.setItem('token',token);
         console.log(localStorage.getItem('token'));

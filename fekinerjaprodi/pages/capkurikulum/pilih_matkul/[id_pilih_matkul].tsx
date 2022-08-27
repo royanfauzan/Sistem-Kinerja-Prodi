@@ -124,7 +124,7 @@ export default function editPenelitian(props) {
         const { all_capkurikulum } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Login Sugses!!");
+        toast.success("Login Sukses!!");
         // console.log(token);
         console.log(all_capkurikulum);
         router.push("../../capkurikulum/daftarkurikulum");

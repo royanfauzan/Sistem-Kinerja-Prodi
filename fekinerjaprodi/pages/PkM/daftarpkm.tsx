@@ -61,7 +61,7 @@ export default function daftarpkm() {
         const { role } = response.data.user;
         setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 2) {
+        if (level_akses < 2) {
           return router.push("/");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -172,7 +172,12 @@ export default function daftarpkm() {
       // <--
       if (result.value) {
         // <-- if confirmed
-        router.push(`/PkM/export/exportpkm`);
+        if (dataRole=='admin') {
+          router.push(`/pkmdosen/export/pkmdexport`);
+        }else{
+          router.push(`/PkM/export/exportpkm`);
+        }
+        
       }
     });
   };

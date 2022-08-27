@@ -121,7 +121,7 @@ export default function editproduk(props) {
         const { all_produk } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Login Sugses!!");
+        toast.success("Login Sukses!!");
         // console.log(token);
         console.log(all_produk);
         router.push("../../produkMHS/daftarprodukmhs");

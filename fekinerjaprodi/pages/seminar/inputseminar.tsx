@@ -101,7 +101,7 @@ export default function inputseminar() {
         const { all_seminar } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Login Sugses!!");
+        toast.success("Login Sukses!!");
         // console.log(token);
         console.log(all_seminar);
         router.push("../seminar/daftarseminar");

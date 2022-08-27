@@ -119,7 +119,7 @@ export default function inputserkomdsn() {
         const { detailDosen } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Simpan Sukses Sugses!!");
+        toast.success("Simpan Sukses!!");
         // console.log(token);
         console.log(detailDosen);
         router.push("/profildosen/myprofil");

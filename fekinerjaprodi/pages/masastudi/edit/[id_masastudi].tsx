@@ -6,6 +6,8 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 // Untuk Ngambil Data Berdasarkan ID
 export async function getServerSideProps(context) {
@@ -26,6 +28,7 @@ export default function editmasastudi(props) {
   const router = useRouter();
   const { masastudi } = props;
   const [dataMasastudi, setMasastudi] = useState(masastudi);
+  const [dataRole, setRole] = useState("");
 
   console.log(masastudi);
 
@@ -72,6 +75,8 @@ export default function editmasastudi(props) {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -145,7 +150,7 @@ export default function editmasastudi(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -201,6 +206,11 @@ export default function editmasastudi(props) {
                             </select>
                           </div>
                         </div>
+
+                        {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
@@ -229,7 +239,7 @@ export default function editmasastudi(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah Mahasiswa"
                               id="jumlah_mhs"
                               defaultValue={dataMasastudi.jmlh_mhs}
@@ -238,6 +248,12 @@ export default function editmasastudi(props) {
                           </div>
                         </div>
 
+                        {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jumlah Lulusan
+                        </p>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
@@ -248,7 +264,7 @@ export default function editmasastudi(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah Lulus Tahun 1"
                               id="satu"
                               defaultValue={dataMasastudi.lulus_thn_1}
@@ -264,7 +280,7 @@ export default function editmasastudi(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah Lulus Tahun 2"
                               id="dua"
                               defaultValue={dataMasastudi.lulus_thn_2}
@@ -283,7 +299,7 @@ export default function editmasastudi(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah Lulus Tahun 3"
                               id="tiga"
                               defaultValue={dataMasastudi.lulus_thn_3}
@@ -302,7 +318,7 @@ export default function editmasastudi(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah Lulus Tahun 4"
                               id="empat"
                               defaultValue={dataMasastudi.lulus_thn_4}

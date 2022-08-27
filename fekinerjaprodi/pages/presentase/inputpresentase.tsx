@@ -120,11 +120,26 @@ export default function inputpresentase() {
     formData.append("kerjasama_1", event.target.kerjasama_1.value);
     formData.append("tindak_kerjasama", event.target.tindak_kerjasama.value);
 
-    formData.append("pengembangan_diri_4", event.target.pengembangan_diri_4.value);
-    formData.append("pengembangan_diri_3", event.target.pengembangan_diri_3.value);
-    formData.append("pengembangan_diri_2", event.target.pengembangan_diri_2.value);
-    formData.append("pengembangan_diri_1", event.target.pengembangan_diri_1.value);
-    formData.append("tindak_pengembangan", event.target.tindak_pengembangan.value);
+    formData.append(
+      "pengembangan_diri_4",
+      event.target.pengembangan_diri_4.value
+    );
+    formData.append(
+      "pengembangan_diri_3",
+      event.target.pengembangan_diri_3.value
+    );
+    formData.append(
+      "pengembangan_diri_2",
+      event.target.pengembangan_diri_2.value
+    );
+    formData.append(
+      "pengembangan_diri_1",
+      event.target.pengembangan_diri_1.value
+    );
+    formData.append(
+      "tindak_pengembangan",
+      event.target.tindak_pengembangan.value
+    );
 
     console.log(formData);
 
@@ -183,7 +198,7 @@ export default function inputpresentase() {
                     </div>
                     <div className="card-body">
                       <p className="text-uppercase text-sm">
-                        Prestasi Mahasiswa
+                        Presentase Kepuasan
                       </p>
                       <div className="row">
                         <div className="col-md-6">
@@ -223,20 +238,26 @@ export default function inputpresentase() {
                             )}
                           </div>
                         </div>
+
+                        {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jenis Kemampuan : Etika
+                        </p>
+
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="etika_4"
-                              className={
-                                dataError.etika_4 ? "is-invalid" : ""
-                              }
+                              className={dataError.etika_4 ? "is-invalid" : ""}
                             >
-                              Etika_4
+                              Etika 4
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="Jumlah kerja etika_4"
+                              type="number"
+                              placeholder="Etika 4"
                               id="etika_4"
                             />
                             {dataError.etika_4 ? (
@@ -252,16 +273,14 @@ export default function inputpresentase() {
                           <div className="form-group">
                             <label
                               htmlFor="etika_3"
-                              className={
-                                dataError.etika_3 ? "is-invalid" : ""
-                              }
+                              className={dataError.etika_3 ? "is-invalid" : ""}
                             >
-                              Etika_3
+                              Etika 3
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="etika_3"
+                              type="number"
+                              placeholder="Etika 3"
                               id="etika_3"
                             />
                             {dataError.etika_3 ? (
@@ -277,16 +296,14 @@ export default function inputpresentase() {
                           <div className="form-group">
                             <label
                               htmlFor="etika_2"
-                              className={
-                                dataError.etika_2 ? "is-invalid" : ""
-                              }
+                              className={dataError.etika_2 ? "is-invalid" : ""}
                             >
-                              Etika_2
+                              Etika 2
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="etika_2"
+                              type="number"
+                              placeholder="Etika 2"
                               id="etika_2"
                             />
                             {dataError.etika_2 ? (
@@ -302,16 +319,14 @@ export default function inputpresentase() {
                           <div className="form-group">
                             <label
                               htmlFor="etika_1"
-                              className={
-                                dataError.etika_1 ? "is-invalid" : ""
-                              }
+                              className={dataError.etika_1 ? "is-invalid" : ""}
                             >
-                              Etika_1
+                              Etika 1
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="etika_1"
+                              type="number"
+                              placeholder="Etika 1"
                               id="etika_1"
                             />
                             {dataError.etika_1 ? (
@@ -323,7 +338,7 @@ export default function inputpresentase() {
                             )}
                           </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-10">
                           <div className="form-group">
                             <label
                               htmlFor="tindak_etika"
@@ -331,12 +346,12 @@ export default function inputpresentase() {
                                 dataError.tindak_etika ? "is-invalid" : ""
                               }
                             >
-                              tindak_etika
+                              Tindak Etika
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="tindak_etika"
+                              placeholder="Tindak Etika"
                               id="tindak_etika"
                             />
                             {dataError.tindak_etika ? (
@@ -349,6 +364,12 @@ export default function inputpresentase() {
                           </div>
                         </div>
 
+                        {/* BIDANG */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jenis Kemampuan : Keahlian pada bidang ilmu (kompetensi utama)
+                        </p>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
@@ -357,12 +378,12 @@ export default function inputpresentase() {
                                 dataError.keahlian_bidang_4 ? "is-invalid" : ""
                               }
                             >
-                              keahlian_bidang_4
+                              Keahlian Bidang 4
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="Jumlah kerja keahlian_bidang_4"
+                              type="number"
+                              placeholder="Keahlian Bidang 4"
                               id="keahlian_bidang_4"
                             />
                             {dataError.keahlian_bidang_4 ? (
@@ -382,12 +403,12 @@ export default function inputpresentase() {
                                 dataError.keahlian_bidang_3 ? "is-invalid" : ""
                               }
                             >
-                              keahlian_bidang_3
+                              Keahlian Bidang 3
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="keahlian_bidang_3"
+                              type="number"
+                              placeholder="Keahlian Bidang 3"
                               id="keahlian_bidang_3"
                             />
                             {dataError.keahlian_bidang_3 ? (
@@ -407,12 +428,12 @@ export default function inputpresentase() {
                                 dataError.keahlian_bidang_2 ? "is-invalid" : ""
                               }
                             >
-                              keahlian_bidang_2
+                              Keahlian Bidang 2
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="keahlian_bidang_2"
+                              type="number"
+                              placeholder="Keahlian Bidang 2"
                               id="keahlian_bidang_2"
                             />
                             {dataError.keahlian_bidang_2 ? (
@@ -432,12 +453,12 @@ export default function inputpresentase() {
                                 dataError.keahlian_bidang_1 ? "is-invalid" : ""
                               }
                             >
-                              keahlian_bidang_1
+                              Keahlian Bidang 1
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="keahlian_bidang_1"
+                              type="number"
+                              placeholder="Keahlian Bidang 1"
                               id="keahlian_bidang_1"
                             />
                             {dataError.keahlian_bidang_1 ? (
@@ -449,7 +470,7 @@ export default function inputpresentase() {
                             )}
                           </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-10">
                           <div className="form-group">
                             <label
                               htmlFor="tindak_bidang"
@@ -457,12 +478,12 @@ export default function inputpresentase() {
                                 dataError.tindak_bidang ? "is-invalid" : ""
                               }
                             >
-                              tindak_bidang
+                              Tindak Keahlian Bidang
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="tindak_bidang"
+                              placeholder="Tindak Keahlian Bidang"
                               id="tindak_bidang"
                             />
                             {dataError.tindak_bidang ? (
@@ -475,6 +496,12 @@ export default function inputpresentase() {
                           </div>
                         </div>
 
+                        {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jenis Kemampuan : Berbahasa asing
+                        </p>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
@@ -483,12 +510,12 @@ export default function inputpresentase() {
                                 dataError.bhs_asing_4 ? "is-invalid" : ""
                               }
                             >
-                              bhs_asing_4
+                              Bahasa Asing 4
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="Jumlah kerja bhs_asing_4"
+                              type="number"
+                              placeholder="Bahasa Asing 4"
                               id="bhs_asing_4"
                             />
                             {dataError.bhs_asing_4 ? (
@@ -508,12 +535,12 @@ export default function inputpresentase() {
                                 dataError.bhs_asing_3 ? "is-invalid" : ""
                               }
                             >
-                              bhs_asing_3
+                              Bahasa Asing 3
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="bhs_asing_3"
+                              type="number"
+                              placeholder="Bahasa Asing 3"
                               id="bhs_asing_3"
                             />
                             {dataError.bhs_asing_3 ? (
@@ -533,12 +560,12 @@ export default function inputpresentase() {
                                 dataError.bhs_asing_2 ? "is-invalid" : ""
                               }
                             >
-                              bhs_asing_2
+                              Bahasa Asing 2
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="bhs_asing_2"
+                              type="number"
+                              placeholder="Bahasa Asing 2"
                               id="bhs_asing_2"
                             />
                             {dataError.bhs_asing_2 ? (
@@ -558,12 +585,12 @@ export default function inputpresentase() {
                                 dataError.bhs_asing_1 ? "is-invalid" : ""
                               }
                             >
-                              bhs_asing_1
+                              Bahasa Asing 1
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="bhs_asing_1"
+                              type="number"
+                              placeholder="Bahasa Asing 1"
                               id="bhs_asing_1"
                             />
                             {dataError.bhs_asing_1 ? (
@@ -575,7 +602,7 @@ export default function inputpresentase() {
                             )}
                           </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-10">
                           <div className="form-group">
                             <label
                               htmlFor="tindak_bhs"
@@ -583,12 +610,12 @@ export default function inputpresentase() {
                                 dataError.tindak_bhs ? "is-invalid" : ""
                               }
                             >
-                              tindak_bhs
+                              Tindak Bahasa Asing
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="tindak_bhs"
+                              placeholder="Tindak Bahasa Asing"
                               id="tindak_bhs"
                             />
                             {dataError.tindak_bhs ? (
@@ -601,6 +628,12 @@ export default function inputpresentase() {
                           </div>
                         </div>
 
+                        {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jenis Kemampuan : Penggunaan teknologi informasi
+                        </p>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
@@ -609,12 +642,12 @@ export default function inputpresentase() {
                                 dataError.penggunaan_ti_4 ? "is-invalid" : ""
                               }
                             >
-                              penggunaan_ti_4
+                              Penggunaan teknologi informasi 4
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="Jumlah kerja penggunaan_ti_4"
+                              type="number"
+                              placeholder="Penggunaan teknologi informasi 4"
                               id="penggunaan_ti_4"
                             />
                             {dataError.penggunaan_ti_4 ? (
@@ -634,12 +667,12 @@ export default function inputpresentase() {
                                 dataError.penggunaan_ti_3 ? "is-invalid" : ""
                               }
                             >
-                              penggunaan_ti_3
+                              Penggunaan teknologi informasi 3
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="penggunaan_ti_3"
+                              type="number"
+                              placeholder="Penggunaan teknologi informasi 3"
                               id="penggunaan_ti_3"
                             />
                             {dataError.penggunaan_ti_3 ? (
@@ -659,12 +692,12 @@ export default function inputpresentase() {
                                 dataError.penggunaan_ti_2 ? "is-invalid" : ""
                               }
                             >
-                              penggunaan_ti_2
+                              Penggunaan teknologi informasi 2
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="penggunaan_ti_2"
+                              type="number"
+                              placeholder="Penggunaan teknologi informasi 2"
                               id="penggunaan_ti_2"
                             />
                             {dataError.penggunaan_ti_2 ? (
@@ -684,12 +717,12 @@ export default function inputpresentase() {
                                 dataError.penggunaan_ti_1 ? "is-invalid" : ""
                               }
                             >
-                              penggunaan_ti_1
+                              Penggunaan teknologi informasi 1
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="penggunaan_ti_1"
+                              placeholder="Penggunaan teknologi informasi 1"
                               id="penggunaan_ti_1"
                             />
                             {dataError.penggunaan_ti_1 ? (
@@ -701,7 +734,7 @@ export default function inputpresentase() {
                             )}
                           </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-10">
                           <div className="form-group">
                             <label
                               htmlFor="tindak_ti"
@@ -709,12 +742,12 @@ export default function inputpresentase() {
                                 dataError.tindak_ti ? "is-invalid" : ""
                               }
                             >
-                              tindak_bahasa
+                              Tindak Penggunaan Teknologi Informasi
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="tindak_ti"
+                              placeholder="Tindak Penggunaan Teknologi Informasi"
                               id="tindak_ti"
                             />
                             {dataError.tindak_ti ? (
@@ -727,6 +760,12 @@ export default function inputpresentase() {
                           </div>
                         </div>
 
+                        {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jenis Kemampuan : Berkomunikasi
+                        </p>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
@@ -735,12 +774,12 @@ export default function inputpresentase() {
                                 dataError.komunikasi_4 ? "is-invalid" : ""
                               }
                             >
-                              komunikasi_4
+                              Berkomunikasi 4
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="Jumlah kerja komunikasi_4"
+                              type="number"
+                              placeholder="Berkomunikasi 4"
                               id="komunikasi_4"
                             />
                             {dataError.komunikasi_4 ? (
@@ -760,12 +799,12 @@ export default function inputpresentase() {
                                 dataError.komunikasi_3 ? "is-invalid" : ""
                               }
                             >
-                              komunikasi_3
+                              Berkomunikasi 3
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="komunikasi_3"
+                              type="number"
+                              placeholder="Berkomunikasi 3"
                               id="komunikasi_3"
                             />
                             {dataError.komunikasi_3 ? (
@@ -785,12 +824,12 @@ export default function inputpresentase() {
                                 dataError.komunikasi_2 ? "is-invalid" : ""
                               }
                             >
-                              komunikasi_2
+                              Berkomunikasi 2
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="komunikasi_2"
+                              type="number"
+                              placeholder="Berkomunikasi 2"
                               id="komunikasi_2"
                             />
                             {dataError.komunikasi_2 ? (
@@ -810,12 +849,12 @@ export default function inputpresentase() {
                                 dataError.komunikasi_1 ? "is-invalid" : ""
                               }
                             >
-                              komunikasi_1
+                              Berkomunikasi 1
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="komunikasi_1"
+                              type="number"
+                              placeholder="Berkomunikasi 1"
                               id="komunikasi_1"
                             />
                             {dataError.komunikasi_1 ? (
@@ -827,7 +866,7 @@ export default function inputpresentase() {
                             )}
                           </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-10">
                           <div className="form-group">
                             <label
                               htmlFor="tindak_komunikasi"
@@ -835,12 +874,12 @@ export default function inputpresentase() {
                                 dataError.tindak_komunikasi ? "is-invalid" : ""
                               }
                             >
-                              tindak_komunikasi
+                              Tindak Komunikasi
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="tindak_komunikasi"
+                              placeholder=" Tindak Komunikasi"
                               id="tindak_komunikasi"
                             />
                             {dataError.tindak_komunikasi ? (
@@ -853,6 +892,12 @@ export default function inputpresentase() {
                           </div>
                         </div>
 
+                        {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jenis Kemampuan : Kerjasama
+                        </p>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
@@ -861,12 +906,12 @@ export default function inputpresentase() {
                                 dataError.kerjasama_4 ? "is-invalid" : ""
                               }
                             >
-                              kerjasama_4
+                              Kerjasama 4
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="Jumlah kerja kerjasama_4"
+                              type="number"
+                              placeholder="Kerjasama 4"
                               id="kerjasama_4"
                             />
                             {dataError.kerjasama_4 ? (
@@ -886,12 +931,12 @@ export default function inputpresentase() {
                                 dataError.kerjasama_3 ? "is-invalid" : ""
                               }
                             >
-                              kerjasama_3
+                              Kerjasama 3
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="kerjasama_3"
+                              type="number"
+                              placeholder="Kerjasama 3"
                               id="kerjasama_3"
                             />
                             {dataError.kerjasama_3 ? (
@@ -911,12 +956,12 @@ export default function inputpresentase() {
                                 dataError.kerjasama_2 ? "is-invalid" : ""
                               }
                             >
-                              kerjasama_2
+                              Kerjasama 2
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="kerjasama_2"
+                              type="number"
+                              placeholder="Kerjasama 2"
                               id="kerjasama_2"
                             />
                             {dataError.kerjasama_2 ? (
@@ -936,12 +981,12 @@ export default function inputpresentase() {
                                 dataError.kerjasama_1 ? "is-invalid" : ""
                               }
                             >
-                              kerjasama_1
+                              Kerjasama 1
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="kerjasama_1"
+                              type="number"
+                              placeholder="Kerjasama 1"
                               id="kerjasama_1"
                             />
                             {dataError.kerjasama_1 ? (
@@ -953,7 +998,7 @@ export default function inputpresentase() {
                             )}
                           </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-10">
                           <div className="form-group">
                             <label
                               htmlFor="tindak_kerjasama"
@@ -961,12 +1006,12 @@ export default function inputpresentase() {
                                 dataError.tindak_kerjasama ? "is-invalid" : ""
                               }
                             >
-                              tindak_kerjasama
+                              Tindak Kerjasama
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="tindak_kerjasama"
+                              placeholder="Tindak Kerjasama"
                               id="tindak_kerjasama"
                             />
                             {dataError.tindak_kerjasama ? (
@@ -979,20 +1024,28 @@ export default function inputpresentase() {
                           </div>
                         </div>
 
+                        {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jenis Kemampuan : Pengembangan Diri
+                        </p>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
                               htmlFor="pengembangan_diri_4"
                               className={
-                                dataError.pengembangan_diri_4 ? "is-invalid" : ""
+                                dataError.pengembangan_diri_4
+                                  ? "is-invalid"
+                                  : ""
                               }
                             >
-                              pengembangan_diri_4
+                              Pengembangan Diri 4
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="Jumlah kerja pengembangan_diri_4"
+                              type="number"
+                              placeholder="Pengembangan Diri 4"
                               id="pengembangan_diri_4"
                             />
                             {dataError.pengembangan_diri_4 ? (
@@ -1009,15 +1062,17 @@ export default function inputpresentase() {
                             <label
                               htmlFor="pengembangan_diri_3"
                               className={
-                                dataError.pengembangan_diri_3 ? "is-invalid" : ""
+                                dataError.pengembangan_diri_3
+                                  ? "is-invalid"
+                                  : ""
                               }
                             >
-                              pengembangan_diri_3
+                              Pengembangan Diri 3
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="pengembangan_diri_3"
+                              type="number"
+                              placeholder="Pengembangan Diri 3"
                               id="pengembangan_diri_3"
                             />
                             {dataError.pengembangan_diri_3 ? (
@@ -1034,15 +1089,17 @@ export default function inputpresentase() {
                             <label
                               htmlFor="pengembangan_diri_2"
                               className={
-                                dataError.pengembangan_diri_2 ? "is-invalid" : ""
+                                dataError.pengembangan_diri_2
+                                  ? "is-invalid"
+                                  : ""
                               }
                             >
-                              pengembangan_diri_2
+                              Pengembangan Diri 2
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="pengembangan_diri_2"
+                              type="number"
+                              placeholder="Pengembangan Diri 2"
                               id="pengembangan_diri_2"
                             />
                             {dataError.pengembangan_diri_2 ? (
@@ -1059,15 +1116,17 @@ export default function inputpresentase() {
                             <label
                               htmlFor="pengembangan_diri_1"
                               className={
-                                dataError.pengembangan_diri_1 ? "is-invalid" : ""
+                                dataError.pengembangan_diri_1
+                                  ? "is-invalid"
+                                  : ""
                               }
                             >
-                              pengembangan_diri_1
+                              Pengembangan Diri 1
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="pengembangan_diri_1"
+                              type="number"
+                              placeholder="Pengembangan Diri 1"
                               id="pengembangan_diri_1"
                             />
                             {dataError.pengembangan_diri_1 ? (
@@ -1079,20 +1138,22 @@ export default function inputpresentase() {
                             )}
                           </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-10">
                           <div className="form-group">
                             <label
                               htmlFor="tindak_pengembangan"
                               className={
-                                dataError.tindak_pengembangan ? "is-invalid" : ""
+                                dataError.tindak_pengembangan
+                                  ? "is-invalid"
+                                  : ""
                               }
                             >
-                              tindak_pengembangan
+                              Tindak Pengembangan Diri
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="tindak_pengembangan"
+                              placeholder="Tindak Pengembangan Diri"
                               id="tindak_pengembangan"
                             />
                             {dataError.tindak_pengembangan ? (
@@ -1104,7 +1165,6 @@ export default function inputpresentase() {
                             )}
                           </div>
                         </div>
-
                       </div>
                     </div>
                   </div>

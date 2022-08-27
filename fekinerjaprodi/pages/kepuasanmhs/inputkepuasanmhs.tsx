@@ -242,7 +242,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="keandalan_4"
                             />
@@ -264,7 +264,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="keandalan_3"
                             />
@@ -286,7 +286,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="keandalan_2"
                             />
@@ -308,7 +308,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="keandalan_1"
                             />
@@ -352,7 +352,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="dayatanggap_4"
                             />
@@ -374,7 +374,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="dayatanggap_3"
                             />
@@ -396,7 +396,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="dayatanggap_2"
                             />
@@ -418,7 +418,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="dayatanggap_1"
                             />
@@ -462,7 +462,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="kepastian_4"
                             />
@@ -484,7 +484,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="kepastian_3"
                             />
@@ -506,7 +506,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="kepastian_2"
                             />
@@ -528,7 +528,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="kepastian_1"
                             />
@@ -572,7 +572,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="empati_4"
                             />
@@ -594,7 +594,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="empati_3"
                             />
@@ -616,7 +616,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="empati_2"
                             />
@@ -638,7 +638,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="empati_1"
                             />
@@ -682,7 +682,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="tangible_4"
                             />
@@ -704,7 +704,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="tangible_3"
                             />
@@ -726,7 +726,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="tangible_2"
                             />
@@ -748,7 +748,7 @@ export default function inputkepuasanmhs() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="Nilai"
                               id="tangible_1"
                             />

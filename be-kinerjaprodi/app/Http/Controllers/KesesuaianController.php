@@ -114,7 +114,7 @@ class KesesuaianController extends Controller
     {
         return response()->json([
             'success' => true,
-            'all_kesesuaian' => KP_lulus::find($id),
+            'all_kesesuaian' => Kasesuaian::find($id),
             'id' => $id
         ]);
     }

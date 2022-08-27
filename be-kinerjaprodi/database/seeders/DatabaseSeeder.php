@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Bbjurnaldos;
 use App\Models\CapKurikulum;
 use App\Models\Ewmp;
-use App\Models\KP_lulus;
+use App\Models\Kepuasan_MHS;
 use App\Models\Mahasiswa;
 use App\Models\Matkul;
 use App\Models\Mitra;
@@ -263,49 +263,266 @@ class DatabaseSeeder extends Seeder
             'bidang' => 'Teknologi',
         ]);
 
+        //capaian kurikulum
+        CapKurikulum::create([
+            'semester' => 'I',
+            'tahun' => '2021',
+            'mata_kuliah_kompetensi' => 'V',
+            'kuliah_responsi_tutorial' => 1,
+            'seminar' => 0,
+            'praktikum' => 3,
+            'konversi_kredit_jam' => 7,
+            'sikap' => 'V',
+            'pengetahuan' => 'V',
+            'ketrampilan_umum' => 'V',
+            'ketrampilan_khusus' => 'V',
+            'dok_ren_pembelajaran' => 'V',
+            'unit_penyelenggara' => 'JTE MI',
+            'prodi_ID' => 1,
+            'matkul_ID' => 4,
+        ]);
+
+        CapKurikulum::create([
+            'semester' => 'I',
+            'tahun' => '2021',
+            'mata_kuliah_kompetensi' => 'V',
+            'kuliah_responsi_tutorial' => 1,
+            'seminar' => 0,
+            'praktikum' => 3,
+            'konversi_kredit_jam' => 7,
+            'sikap' => 'V',
+            'pengetahuan' => 'V',
+            'ketrampilan_umum' => 'V',
+            'ketrampilan_khusus' => 'V',
+            'dok_ren_pembelajaran' => 'V',
+            'unit_penyelenggara' => 'JTE MI',
+            'prodi_ID' => 1,
+            'matkul_ID' => 5,
+        ]);
+
+        CapKurikulum::create([
+            'semester' => 'II',
+            'tahun' => '2021',
+            'mata_kuliah_kompetensi' => 'V',
+            'kuliah_responsi_tutorial' => 1,
+            'seminar' => 0,
+            'praktikum' => 3,
+            'konversi_kredit_jam' => 7,
+            'sikap' => 'V',
+            'pengetahuan' => 'V',
+            'ketrampilan_umum' => 'V',
+            'ketrampilan_khusus' => 'V',
+            'dok_ren_pembelajaran' => 'V',
+            'unit_penyelenggara' => 'JTE MI',
+            'prodi_ID' => 1,
+            'matkul_ID' => 11,
+        ]);
+
+        CapKurikulum::create([
+            'semester' => 'II',
+            'tahun' => '2021',
+            'mata_kuliah_kompetensi' => 'V',
+            'kuliah_responsi_tutorial' => 1,
+            'seminar' => 0,
+            'praktikum' => 3,
+            'konversi_kredit_jam' => 7,
+            'sikap' => 'V',
+            'pengetahuan' => 'V',
+            'ketrampilan_umum' => 'V',
+            'ketrampilan_khusus' => 'V',
+            'dok_ren_pembelajaran' => 'V',
+            'unit_penyelenggara' => 'JTE MI',
+            'prodi_ID' => 1,
+            'matkul_ID' => 12,
+        ]);
+
+        CapKurikulum::create([
+            'semester' => 'III',
+            'tahun' => '2021',
+            'mata_kuliah_kompetensi' => 'V',
+            'kuliah_responsi_tutorial' => 1,
+            'seminar' => 0,
+            'praktikum' => 3,
+            'konversi_kredit_jam' => 7,
+            'sikap' => 'V',
+            'pengetahuan' => 'V',
+            'ketrampilan_umum' => 'V',
+            'ketrampilan_khusus' => 'V',
+            'dok_ren_pembelajaran' => 'V',
+            'unit_penyelenggara' => 'JTE MI',
+            'prodi_ID' => 1,
+            'matkul_ID' => 16,
+        ]);
+
+        CapKurikulum::create([
+            'semester' => 'III',
+            'tahun' => '2021',
+            'mata_kuliah_kompetensi' => 'V',
+            'kuliah_responsi_tutorial' => 1,
+            'seminar' => 0,
+            'praktikum' => 3,
+            'konversi_kredit_jam' => 7,
+            'sikap' => 'V',
+            'pengetahuan' => 'V',
+            'ketrampilan_umum' => 'V',
+            'ketrampilan_khusus' => 'V',
+            'dok_ren_pembelajaran' => 'V',
+            'unit_penyelenggara' => 'JTE MI',
+            'prodi_ID' => 1,
+            'matkul_ID' => 17,
+        ]);
+
+        CapKurikulum::create([
+            'semester' => 'IV',
+            'tahun' => '2021',
+            'mata_kuliah_kompetensi' => 'V',
+            'kuliah_responsi_tutorial' => 1,
+            'seminar' => 0,
+            'praktikum' => 3,
+            'konversi_kredit_jam' => 7,
+            'sikap' => 'V',
+            'pengetahuan' => 'V',
+            'ketrampilan_umum' => 'V',
+            'ketrampilan_khusus' => 'V',
+            'dok_ren_pembelajaran' => 'V',
+            'unit_penyelenggara' => 'JTE MI',
+            'prodi_ID' => 1,
+            'matkul_ID' => 21,
+        ]);
+
+        CapKurikulum::create([
+            'semester' => 'IV',
+            'tahun' => '2021',
+            'mata_kuliah_kompetensi' => 'V',
+            'kuliah_responsi_tutorial' => 1,
+            'seminar' => 0,
+            'praktikum' => 3,
+            'konversi_kredit_jam' => 7,
+            'sikap' => 'V',
+            'pengetahuan' => 'V',
+            'ketrampilan_umum' => 'V',
+            'ketrampilan_khusus' => 'V',
+            'dok_ren_pembelajaran' => 'V',
+            'unit_penyelenggara' => 'JTE MI',
+            'prodi_ID' => 1,
+            'matkul_ID' => 22,
+        ]);
+
+        CapKurikulum::create([
+            'semester' => 'V',
+            'tahun' => '2021',
+            'mata_kuliah_kompetensi' => '',
+            'kuliah_responsi_tutorial' => 0,
+            'seminar' => 0,
+            'praktikum' => 6,
+            'konversi_kredit_jam' => 4,
+            'sikap' => 'V',
+            'pengetahuan' => 'V',
+            'ketrampilan_umum' => 'V',
+            'ketrampilan_khusus' => 'V',
+            'dok_ren_pembelajaran' => 'V',
+            'unit_penyelenggara' => 'JTE MI',
+            'prodi_ID' => 1,
+            'matkul_ID' => 28,
+        ]);
+
+        CapKurikulum::create([
+            'semester' => 'V',
+            'tahun' => '2021',
+            'mata_kuliah_kompetensi' => '',
+            'kuliah_responsi_tutorial' => 0,
+            'seminar' => 0,
+            'praktikum' => 6,
+            'konversi_kredit_jam' => 6,
+            'sikap' => 'V',
+            'pengetahuan' => 'V',
+            'ketrampilan_umum' => 'V',
+            'ketrampilan_khusus' => 'V',
+            'dok_ren_pembelajaran' => 'V',
+            'unit_penyelenggara' => 'JTE MI',
+            'prodi_ID' => 1,
+            'matkul_ID' => 29,
+        ]);
+
+        CapKurikulum::create([
+            'semester' => 'VI',
+            'tahun' => '2021',
+            'mata_kuliah_kompetensi' => '',
+            'kuliah_responsi_tutorial' => 2,
+            'seminar' => 0,
+            'praktikum' => 0,
+            'konversi_kredit_jam' => 2,
+            'sikap' => 'V',
+            'pengetahuan' => 'V',
+            'ketrampilan_umum' => 'V',
+            'ketrampilan_khusus' => 'V',
+            'dok_ren_pembelajaran' => 'V',
+            'unit_penyelenggara' => 'JTE MI',
+            'prodi_ID' => 1,
+            'matkul_ID' => 32,
+        ]);
+
+        CapKurikulum::create([
+            'semester' => 'VI',
+            'tahun' => '2021',
+            'mata_kuliah_kompetensi' => '',
+            'kuliah_responsi_tutorial' => 1,
+            'seminar' => 1,
+            'praktikum' => 0,
+            'konversi_kredit_jam' => 3,
+            'sikap' => 'V',
+            'pengetahuan' => 'V',
+            'ketrampilan_umum' => 'V',
+            'ketrampilan_khusus' => 'V',
+            'dok_ren_pembelajaran' => 'V',
+            'unit_penyelenggara' => 'JTE MI',
+            'prodi_ID' => 1,
+            'matkul_ID' => 33,
+        ]);
+
         // Sumber mandiri/pt
         
-        Penelitian::create(
-            [
-                'tema_sesuai_roadmap' => 'kelistrikan',
-                'judul' => 'Membuat pembangkit listrik',
-                'tahun' => '2021',
-                'sumber_dana_PT_mandiri' => 'mandiri',
-                'dana_PT_Mandiri' => 500000,
-                'sumber_dalam_negri' => '',
-                'dana_dalam_negri' => 0,
-                'sumber_luar_negri' => '',
-                'dana_luar_negri' => 0,
-            ]
-        );
+        // Penelitian::create(
+        //     [
+        //         'tema_sesuai_roadmap' => 'kelistrikan',
+        //         'judul' => 'Membuat pembangkit listrik',
+        //         'tahun' => '2021',
+        //         'sumber_dana_PT_mandiri' => 'mandiri',
+        //         'dana_PT_Mandiri' => 500000,
+        //         'sumber_dalam_negri' => '',
+        //         'dana_dalam_negri' => 0,
+        //         'sumber_luar_negri' => '',
+        //         'dana_luar_negri' => 0,
+        //     ]
+        // );
 
-        Penelitian::create( 
-            [
-                'tema_sesuai_roadmap'=> 'kelistrikan 2',
-                'judul' => 'Membuat pembangkit listrik 2', 
-                'tahun' => '2020', 
-                'sumber_dana_PT_mandiri' => 'mandiri', 
-                'dana_PT_Mandiri' => 500000, 
-                'sumber_dalam_negri' => '', 
-                'dana_dalam_negri' => 0, 
-                'sumber_luar_negri' => '', 
-                'dana_luar_negri' => 0,
-            ]
-        );
+        // Penelitian::create( 
+        //     [
+        //         'tema_sesuai_roadmap'=> 'kelistrikan 2',
+        //         'judul' => 'Membuat pembangkit listrik 2', 
+        //         'tahun' => '2020', 
+        //         'sumber_dana_PT_mandiri' => 'mandiri', 
+        //         'dana_PT_Mandiri' => 500000, 
+        //         'sumber_dalam_negri' => '', 
+        //         'dana_dalam_negri' => 0, 
+        //         'sumber_luar_negri' => '', 
+        //         'dana_luar_negri' => 0,
+        //     ]
+        // );
 
-        Penelitian::create( 
-            [
-                'tema_sesuai_roadmap'=> 'kelistrikan 3',
-                'judul' => 'Membuat pembangkit listrik 3', 
-                'tahun' => '2019', 
-                'sumber_dana_PT_mandiri' => 'mandiri', 
-                'dana_PT_Mandiri' => 500000, 
-                'sumber_dalam_negri' => '', 
-                'dana_dalam_negri' => 0, 
-                'sumber_luar_negri' => '', 
-                'dana_luar_negri' => 0,
-            ]
-        );
+        // Penelitian::create( 
+        //     [
+        //         'tema_sesuai_roadmap'=> 'kelistrikan 3',
+        //         'judul' => 'Membuat pembangkit listrik 3', 
+        //         'tahun' => '2019', 
+        //         'sumber_dana_PT_mandiri' => 'mandiri', 
+        //         'dana_PT_Mandiri' => 500000, 
+        //         'sumber_dalam_negri' => '', 
+        //         'dana_dalam_negri' => 0, 
+        //         'sumber_luar_negri' => '', 
+        //         'dana_luar_negri' => 0,
+        //     ]
+        // );
 
 
         // Seeder SDM
@@ -324,27 +541,20 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        Mahasiswa::create(
-            [
-                'nim' => '1915323112',
-                'nama' => 'eva pramesti',
-            ]
-        );
-        
-        Pkm::create(
-            [
-                'tema_sesuai_roadmap' => 'webinar',
-                'judul_kegiatan' => 'kegiatan webinar',
-                'lokasi' => 'singapadu',
-                'tahun' => '2022',
-                'sumber_dana_PT_mandiri' => 'mandiri',
-                'dana_PT_Mandiri' => 500000,
-                'sumber_dalam_negri' => 'dalam',
-                'dana_dalam_negri' => 70000,
-                'sumber_luar_negri' => 'luar',
-                'dana_luar_negri' => 9000000,
-            ]
-        );
+        // Pkm::create(
+        //     [
+        //         'tema_sesuai_roadmap' => 'webinar',
+        //         'judul_kegiatan' => 'kegiatan webinar',
+        //         'lokasi' => 'singapadu',
+        //         'tahun' => '2022',
+        //         'sumber_dana_PT_mandiri' => 'mandiri',
+        //         'dana_PT_Mandiri' => 500000,
+        //         'sumber_dalam_negri' => 'dalam',
+        //         'dana_dalam_negri' => 70000,
+        //         'sumber_luar_negri' => 'luar',
+        //         'dana_luar_negri' => 9000000,
+        //     ]
+        // );
 
         RelasiPkmDos::create(
             [
@@ -359,38 +569,6 @@ class DatabaseSeeder extends Seeder
                 'mahasiswa_id' => 1,
                 'pkm_id' => 1,
                 'keanggotaan' => 'Eva',
-            ]
-        );
-
-        CapKurikulum::create(
-            [
-                'prodi_ID' => 1,
-                'matkul_ID' => 1,
-                'semester' => 'VI',
-                'tahun' => '2022',
-                'mata_kuliah_kompetensi' => 'Algoritma',
-                'kuliah_responsi_tutorial' => 8,
-                'seminar' => 7,
-                'praktikum' => 6,
-                'konversi_kredit_jam' => 5,
-                'sikap' => 'baik',
-                'pengetahuan' => 'luar biasa',
-                'ketrampilan_umum' => 'umum',
-                'ketrampilan_khusus' => 'khusus',
-                'dok_ren_pembelajaran' => 'rencana',
-                'unit_penyelenggara' => 'unit',
-                
-            ]
-        );
-
-        Matkul::create(
-            [
-                'prodi_id' => 1,
-                'kode_matkul' => 'KD-01',
-                'nama_matkul' => 'Web',
-                'sks' => '4',
-                
-                
             ]
         );
 
@@ -433,12 +611,37 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        KP_lulus::create([
-            'tahun' => '2021',
-            'jmlh_lulusan' => '145',
-            'jmlh_terlacak' => '134',
-            'prodi_id' => 1,
-        ]);
+        Kepuasan_MHS::create(
+            [
+                'tahun' => '2021',
+                'keandalan_4' => '21.99',
+                'keandalan_3' => '75.42',
+                'keandalan_2' => '1.99',
+                'keandalan_1' => '0.6',
+                'tl_keandalan' => 'Kehandalan peralatan praktikum sudah baik, namun dengan meningkatkannya proses pembelajaran akan menjadi semakin optimal',
+                'dayatanggap_4' => '20.23',
+                'dayatanggap_3' => '76.94',
+                'dayatanggap_2' => '2.27',
+                'dayatanggap_1' =>'0.57',
+                'tl_dayatanggap' => 'Daya tanggap (responsible) dosen sudah sangat baik, untuk menjamin mutu tersebut penting untuk di ditingkatkan perhatian pada aspek daya serap mahasiswa',
+                'kepastian_4' => '28.75',
+                'kepastian_3' => '65.43',
+                'kepastian_2' => '4.59',
+                'kepastian_1' => '1.23',
+                'tl_kepastian' => 'Optimalitas pembelajaran sudah baik dengan menjaga keterjaminan mutu penyelenggaraan sampai dengan pengumuman hasil proses pembelajaran kepada mahasiswa ',
+                'empati_4' => '27.91',
+                'empati_3' => '67.27',
+                'empati_2' => '0.6',
+                'empati_1' => '4.22',
+                'tl_empati' => 'Optimalitas proses belajar mengajar akan menjadi lebih efektif dengan memberikan perhatian lebih kepada mahasiswa yang di anggap kurang mampu mengikuti proses belajar mengajar',
+                'tangible_4' => '21.99',
+                'tangible_3' => '75.42',
+                'tangible_2' => '1.99',
+                'tangible_1' => '0.6',
+                'tl_tangible' => 'Upaya untuk mengingkatkan fasilitas pembelajaran merupakan salah satu bentuk optimalitas pembelajaran',      
+                'prodi_id' => 1,
+                ]
+        );
 
     }
 }

@@ -126,8 +126,8 @@ export default function pkm() {
                 </div>
                 
                 <div className="card-body p-3">
-                  <div className="table-responsive p-0"></div>
-                  <table id="tabelpkm" border="1">
+                  <div className="table-responsive p-0">
+                  <table id="tabelpkm" className="table align-items-center mb-0 table-hover" border="1">
                     <thead>
                       <tr>
                         <th>No</th>
@@ -158,8 +158,8 @@ export default function pkm() {
                               })}
                             </th>
 
-                            <th className="align-middle ">
-                              <p className="mb-0 text-sm text-center">
+                            <th className="align-middle text-start">
+                              <p className="mb-0 text-sm ">
                                 {tPKM.tema_sesuai_roadmap}
                               </p>
                             </th>
@@ -167,7 +167,7 @@ export default function pkm() {
                             <th>
                               {tPKM.anggota_mahasiswas.map((anggota_mahasiswas) => {
                                 return (
-                                  <p className="mb-0 text-sm text-center" key='anggota.id'>
+                                  <p className="mb-0 text-sm text-start" key='anggota.id'>
                                     {anggota_mahasiswas.nama}
                                   </p>
                                 );
@@ -175,7 +175,7 @@ export default function pkm() {
                             </th>
 
                             <th>
-                              <p className="mb-0 text-sm text-center">
+                              <p className="mb-0 text-sm text-start">
                                 {tPKM.judul_kegiatan}
                               </p>
                             </th>
@@ -192,6 +192,7 @@ export default function pkm() {
                       })}
                     </tbody>
                   </table>
+                  </div>
                 </div>
               </div>
             </div>

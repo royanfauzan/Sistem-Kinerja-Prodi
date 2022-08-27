@@ -166,7 +166,7 @@ export default function dashboardadmin() {
                           judul={"Capaian Kurikulum"}
                           keterangan={`Kelola Data Capaian Kurikulum`}
                           halaman={"/capkurikulum/daftarkurikulum"}
-                          icon={`bi bi-card-text`}
+                          icon={`bi bi-book-half`}
                         />
                         <ListCardDash
                           judul={"Data Mahasiswa"}
@@ -178,18 +178,16 @@ export default function dashboardadmin() {
                           judul={"Kepuasan Mahasiswa"}
                           keterangan={`Kelola Data Kepuasan Mahasiswa`}
                           halaman={"/kepuasanmhs/daftarkepuasanmhs"}
-                          icon={`bi bi-calendar3-range`}
+                          icon={`bi bi-people-fill`}
                         />
                         <ListCardDash
                           judul={"Mata Kuliah"}
                           keterangan={`Kelola Data Mata Kuliah`}
                           halaman={"/matkul/daftarmatkul"}
-                          icon={`bi bi-calendar3-range`}
+                          icon={`bi bi-journal-text`}
                         />
                       </Carddashboard>
                     </div>
-                  </div>
-                  <div className="col-6 ">
                     <div className="row d-flex justify-content-around">
                       <Carddashboard judul={`Kriteria Sumber Daya Manusia`}>
                         <ListCardDash
@@ -198,6 +196,8 @@ export default function dashboardadmin() {
                           halaman={`/profildosen/tabelprofil`}
                           keterangan={"Mengelola Data Profil Dosen"}
                         />
+                      </Carddashboard>
+                      <Carddashboard judul={`Kriteria Mahasiswa`}>
                         <ListCardDash
                           judul={`EWMP`}
                           icon={`bi bi-input-cursor`}
@@ -205,10 +205,10 @@ export default function dashboardadmin() {
                           keterangan={"Equivalen Waktu Mengajar Penuh Dosen"}
                         />
                         <ListCardDash
-                          judul={`Pengalaman Mengajar`}
-                          icon={`bi bi-collection`}
-                          halaman={`/mengajar/tabelmengajar`}
-                          keterangan={"Data Pengalaman mengajar Dosen"}
+                          judul={"Mahasiswa Asing"}
+                          keterangan={`Mengelola Data Mahasiswa Asing`}
+                          halaman={"/MahasiswaBaru_Asing/tabel_mahasiswa_asing"}
+                          icon={`bi bi-file-spreadsheet`}
                         />
                         <ListCardDash
                           judul={`Pembimbing Utama TA`}
@@ -216,6 +216,9 @@ export default function dashboardadmin() {
                           halaman={`/bimbingan/export/exportbimbingan`}
                           keterangan={"Export Data Pembimbing Utama Tugas akhir"}
                         />
+                      </Carddashboard>
+
+                      <Carddashboard judul={` Mitra`}>
                         <ListCardDash
                           judul={`Publikasi Dosen`}
                           icon={`bi bi-pip`}
@@ -224,14 +227,9 @@ export default function dashboardadmin() {
                             "Export data Publikasi yang diikuti dosen"
                           }
                         />
-                        <div className="row">
-                          <Link href={`/sdm/dashboardsdmadm`}>
-                            <button className="btn btn-sm btn-outline-dark border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                              Selengkapnya...
-                            </button>
-                          </Link>
-                        </div>
                       </Carddashboard>
+                    </div>
+                  </div>
 
                       <div className="row d-flex justify-content-around">
                       <Carddashboard

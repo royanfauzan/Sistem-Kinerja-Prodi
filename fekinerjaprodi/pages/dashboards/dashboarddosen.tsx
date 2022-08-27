@@ -124,13 +124,13 @@ export default function dashboardadmin() {
                           judul={"Mata Kuliah"}
                           keterangan={`Kelola Data Mata Kuliah`}
                           halaman={"/matkul/daftarmatkul"}
-                          icon={`bi bi-card-text`}
+                          icon={`bi bi-journal-text`}
                         />
                         <ListCardDash
                           judul={"Data Integrasi"}
                           keterangan={`Kelola Data Integrasi`}
                           halaman={"/integrasi/daftarintegrasi"}
-                          icon={`bi bi-calendar3-range`}
+                          icon={`bi bi-infinity`}
                         />
                       </Carddashboard>
                       <Carddashboard judul={`Kriteria Kerjasama`}>
@@ -184,7 +184,7 @@ export default function dashboardadmin() {
                           judul={"Data Penelitian Dosen"}
                           keterangan={`Kelola Data Penelitian Dosen`}
                           halaman={"/penelitian/daftarpenelitian"}
-                          icon={`bi bi-card-text`}
+                          icon={`bi bi-hourglass-split`}
                         />
                       </Carddashboard>
                       <Carddashboard
@@ -194,7 +194,7 @@ export default function dashboardadmin() {
                           judul={"Data Pengabdian Kepada Masysrakat"}
                           keterangan={`Kelola Data Pengabdian Kepada Masyarakat`}
                           halaman={"/PkM/daftarpkm"}
-                          icon={`bi bi-card-text`}
+                          icon={`bi bi-stack`}
                         />
                       </Carddashboard>
                       <Carddashboard judul={`Kriteria Sumber Daya Manusia`}>

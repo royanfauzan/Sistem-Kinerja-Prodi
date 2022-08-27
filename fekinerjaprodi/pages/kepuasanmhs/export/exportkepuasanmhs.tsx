@@ -523,11 +523,11 @@ export default function kepuasanmahasiswa() {
                           <>
                             <th>
                               <h6 className="mb-0 text-sm"></h6>
-                              {tampilKepuasanmhs.keandalan_4 +
-                                tampilKepuasanmhs.dayatanggap_4 +
-                                tampilKepuasanmhs.kepastian_4 +
-                                tampilKepuasanmhs.empati_4 +
-                                tampilKepuasanmhs.tangible_4}
+                              {(parseFloat(tampilKepuasanmhs.keandalan_4) +
+                                parseFloat(tampilKepuasanmhs.dayatanggap_4) +
+                                parseFloat(tampilKepuasanmhs.kepastian_4 )+
+                                parseFloat(tampilKepuasanmhs.empati_4 )+
+                                parseFloat(tampilKepuasanmhs.tangible_4)).toFixed(2)}
                             </th>
                           </>
                         ) : (
@@ -540,11 +540,11 @@ export default function kepuasanmahasiswa() {
                           <>
                             <th>
                               <h6 className="mb-0 text-sm"></h6>
-                              {tampilKepuasanmhs.keandalan_3 +
-                                tampilKepuasanmhs.dayatanggap_3 +
-                                tampilKepuasanmhs.kepastian_3 +
-                                tampilKepuasanmhs.empati_3 +
-                                tampilKepuasanmhs.tangible_3}
+                              {(parseFloat(tampilKepuasanmhs.keandalan_3) +
+                                parseFloat(tampilKepuasanmhs.dayatanggap_3) +
+                                parseFloat(tampilKepuasanmhs.kepastian_3 )+
+                                parseFloat(tampilKepuasanmhs.empati_3 )+
+                                parseFloat(tampilKepuasanmhs.tangible_3)).toFixed(2)}
                             </th>
                           </>
                         ) : (
@@ -557,11 +557,11 @@ export default function kepuasanmahasiswa() {
                           <>
                             <th>
                               <h6 className="mb-0 text-sm"></h6>
-                              {tampilKepuasanmhs.keandalan_2 +
-                                tampilKepuasanmhs.dayatanggap_2 +
-                                tampilKepuasanmhs.kepastian_2 +
-                                tampilKepuasanmhs.empati_2 +
-                                tampilKepuasanmhs.tangible_2}
+                              {(parseFloat(tampilKepuasanmhs.keandalan_2) +
+                                parseFloat(tampilKepuasanmhs.dayatanggap_2) +
+                                parseFloat(tampilKepuasanmhs.kepastian_2 )+
+                                parseFloat(tampilKepuasanmhs.empati_2 )+
+                                parseFloat(tampilKepuasanmhs.tangible_2)).toFixed(2)}
                             </th>
                           </>
                         ) : (
@@ -574,11 +574,11 @@ export default function kepuasanmahasiswa() {
                           <>
                             <th>
                               <h6 className="mb-0 text-sm"></h6>
-                              {tampilKepuasanmhs.keandalan_1 +
-                                tampilKepuasanmhs.dayatanggap_1 +
-                                tampilKepuasanmhs.kepastian_1 +
-                                tampilKepuasanmhs.empati_1 +
-                                tampilKepuasanmhs.tangible_1}
+                              {(parseFloat(tampilKepuasanmhs.keandalan_1) +
+                                parseFloat(tampilKepuasanmhs.dayatanggap_1) +
+                                parseFloat(tampilKepuasanmhs.kepastian_1 )+
+                                parseFloat(tampilKepuasanmhs.empati_1 )+
+                                parseFloat(tampilKepuasanmhs.tangible_1)).toFixed(2)}
                             </th>
                           </>
                         ) : (
@@ -586,23 +586,6 @@ export default function kepuasanmahasiswa() {
                             <td>{0}</td>
                           </>
                         )}
-
-                        {/* {tampilKepuasanmhs ? (
-                          <>
-                            <th>
-                              <h6 className="mb-0 text-sm"></h6>
-                              {tampilKepuasanmhs.tl_keandalan +
-                                tampilKepuasanmhs.tl_dayatanggap +
-                                tampilKepuasanmhs.tl_kepastian +
-                                tampilKepuasanmhs.tl_empati +
-                                tampilKepuasanmhs.tl_tangible}
-                            </th>
-                          </>
-                        ) : (
-                          <>
-                            <td>{0}</td>
-                          </>
-                        )} */}
                       </tr>
                     </table>
                   </div>

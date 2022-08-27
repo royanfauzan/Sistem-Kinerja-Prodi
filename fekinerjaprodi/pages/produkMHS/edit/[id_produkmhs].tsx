@@ -194,10 +194,9 @@ export default function update_dataprodukmhs(props) {
                             <label htmlFor="deskripsi" className="form-control-label">
                               Deskripsi
                             </label>
-                            <input
+                            <textarea
                               defaultValue={dataprodukmhs.deskripsi}
                               className="form-control"
-                              type="text"
                               placeholder="Deskripsi"
                               id="deskripsi"
                               required

@@ -180,9 +180,8 @@ export default function inputmhs() {
                               className={dataError.deskripsi ? "is-invalid" : ""}>
                               Deskripsi
                             </label>
-                            <input
+                            <textarea
                               className="form-control"
-                              type="text"
                               placeholder="Deskripsi"
                               id="deskripsi"
                             />

@@ -7,8 +7,8 @@ import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
+import Style from "../crazer.module.css";
 import Link from "next/link";
-
 
 export default function daftarprestasi() {
   const router = useRouter();
@@ -132,13 +132,15 @@ export default function daftarprestasi() {
                         <thead>
                           <tr>
                             <th rowspan="2">No</th>
-                            <th  rowspan="2">Nama Kegiatan</th>
+                            <th rowspan="2">Nama Kegiatan</th>
                             <th rowspan="2">Waktu Pengelolaan</th>
                             <th colspan="3">Tingkat</th>
                             <th rowspan="2">Prestasi yang Dicapai</th>
                           </tr>
                           <tr>
-                            <th>Lokal / <br /> Wilayah</th>
+                            <th>
+                              Lokal / <br /> Wilayah
+                            </th>
                             <th>Nasional</th>
                             <th>Internasional</th>
                           </tr>
@@ -148,7 +150,9 @@ export default function daftarprestasi() {
                             return (
                               <tr key={`kpsn` + kpsn.id}>
                                 <th>
-                                  <p className="mb-0 text-sm font-weight-bold">{number + 1}</p>
+                                  <p className="mb-0 text-sm font-weight-bold">
+                                    {number + 1}
+                                  </p>
                                 </th>
 
                                 <th className="align-middle  text-sm">
@@ -162,8 +166,34 @@ export default function daftarprestasi() {
                                     {kpsn.tahun}
                                   </p>
                                 </th>
-
                                 {kpsn.tingkat == "Lokal" ? (
+                                  <>
+                                    {" "}
+                                    <th>
+                                      {" "}
+                                      <p className="mb-0 text-sm">V </p>
+                                    </th>{" "}
+                                    <th></th> <th> </th>{" "}
+                                  </>
+                                ) : (
+                                  ""
+                                )}
+
+                                {kpsn.tingkat == "Nasional" ? (
+                                  <>
+                                    {" "}
+                                    <th></th>{" "}
+                                    <th>
+                                      {" "}
+                                      <p className="mb-0 text-sm">V </p>
+                                    </th>{" "}
+                                    <th> </th>{" "}
+                                  </>
+                                ) : (
+                                  ""
+                                )}
+
+                                {kpsn.tingkat == "Internasional" ? (
                                   <>
                                     {" "}
                                     <th></th> <th> </th>{" "}
@@ -176,44 +206,12 @@ export default function daftarprestasi() {
                                   ""
                                 )}
 
-                                {kpsn.tingkat == "Nasional" ? (
-                                  <>
-                                    {" "}
-                                    <th></th>{" "}
-                                    <th>
-                                      {" "}
-                                      <p className="mb-0 text-sm">
-                                        V{" "}
-                                      </p>
-                                    </th>{" "}
-                                    <th> </th>{" "}
-                                  </>
-                                ) : (
-                                  ""
-                                )}
-
-                                {kpsn.tingkat == "Internasional" ? (
-                                  <>
-                                    {" "}
-                                    <th>
-                                      {" "}
-                                      <p className="mb-0 text-sm">
-                                        V{" "}
-                                      </p>
-                                    </th>{" "}
-                                    <th></th> <th> </th>{" "}
-                                  </>
-                                ) : (
-                                  ""
-                                )}
-
                                 <th className="align-middle ">
                                   <p className="text-xs font-weight-bold mb-0">
                                     {kpsn.prestasi_dicapai}
                                   </p>
                                 </th>
                               </tr>
-                              
                             );
                           })}
                         </tbody>

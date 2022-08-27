@@ -157,7 +157,7 @@ export default function inputwaktu() {
                                 dataError.kepuasan_id ? "is-invalid" : ""
                               }
                             >
-                              Tahun Kepuasan
+                              Tahun Lulusan
                             </label>
                             <select
                               className="form-select"

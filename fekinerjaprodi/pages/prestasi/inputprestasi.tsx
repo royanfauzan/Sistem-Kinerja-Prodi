@@ -263,11 +263,11 @@ export default function inputprestasi() {
                               id="tingkat"
                             >
                               <option value="">Pilih Tingkatan</option>
+                              <option value="Lokal">Lokal</option>
+                              <option value="Nasional">Nasional</option>
                               <option value="Internasional">
                                 Internasional
                               </option>
-                              <option value="Nasional">Nasional</option>
-                              <option value="Lokal">Lokal</option>
                             </select>
                             {dataError.tingkat ? (
                               <div className="invalid-feedback">
@@ -320,8 +320,8 @@ export default function inputprestasi() {
                               id="kategori"
                             >
                               <option value="">Pilih kategori</option>
-                              <option value="Nasional">Akademik</option>
-                              <option value="Lokal">Non Akademik</option>
+                              <option value="Akademik">Akademik</option>
+                              <option value="Non Akademik">Non Akademik</option>
                             </select>
                             {dataError.kategori ? (
                               <div className="invalid-feedback">

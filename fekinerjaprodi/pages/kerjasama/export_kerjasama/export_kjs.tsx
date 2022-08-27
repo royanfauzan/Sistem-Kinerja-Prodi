@@ -224,7 +224,7 @@ export default function exportKerjasama() {
                               {tKjs.tingkat == "Internasional" ? (
                                 <>
                                   <th>
-                                    <h4 className="mb-0 text-sm">Internasional</h4>
+                                    &#10004;
                                   </th>
                                   <th></th> <th> </th>
                                 </>
@@ -235,7 +235,7 @@ export default function exportKerjasama() {
                                 <>
                                   <th></th>
                                   <th>
-                                    <h4 className="mb-0 text-sm">Nasional </h4>
+                                  &#10004;
                                   </th>
                                   <th> </th>
                                 </>
@@ -246,7 +246,7 @@ export default function exportKerjasama() {
                                 <>
                                   <th></th> <th> </th>
                                   <th>
-                                    <h4 className="mb-0 text-sm">Lokal </h4>
+                                  &#10004;
                                   </th>
                                 </>
                               ) : (

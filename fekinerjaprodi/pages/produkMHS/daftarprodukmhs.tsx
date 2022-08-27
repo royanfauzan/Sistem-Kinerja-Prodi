@@ -6,6 +6,7 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Style from "../crazer.module.css";
 import Link from "next/link";
 import Swal from "sweetalert2"
 import withReactContent from "sweetalert2-react-content"

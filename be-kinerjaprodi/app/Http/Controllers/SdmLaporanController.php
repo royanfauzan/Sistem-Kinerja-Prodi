@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Bbjurnaldos;
 use App\Models\Ewmp;
 use App\Models\Integrasi;
+use App\Models\Luaranlaindosen;
 use App\Models\Mengajar;
 use App\Models\Pagelarandos;
 use App\Models\Penelitian;
 use App\Models\Pkm;
 use App\Models\Produk;
 use App\Models\profilDosen;
+use App\Models\Rekognisi;
 use App\Models\Seminardos;
 use Illuminate\Http\Request;
 
@@ -284,7 +286,7 @@ class SdmLaporanController extends Controller
             $arrPagelaraninter[] = $PagelaranInternasional;
             $jumlahPagelarants = $PagelaranWilayah + $PagelaranNasional + $PagelaranInternasional;
 
-            $jumlah_ts = $jumlahPublikasits+$jumlahPagelarants+$jumlahSeminarts;
+            $jumlah_ts = $jumlahPublikasits + $jumlahPagelarants + $jumlahSeminarts;
 
             $sementara = collect(
                 [
@@ -363,7 +365,151 @@ class SdmLaporanController extends Controller
 
         return response()->json([
             'success' => true,
-            'all_penelitian' => $produks,
+            'all_produk' => $produks,
+        ]);
+    }
+
+    public function exportjurnalsitasi(Request $request, $tahun)
+    {
+        $tahunlist = $this->tahuntsgenerator($tahun);
+
+
+        $listJurnalSitasi = Bbjurnaldos::where([['sitasi', '>', 0]])->with('anggotaDosens', 'ketuaJurnal')->orderBy('tahun')
+            ->get();
+
+        $urutanJurnal = $listJurnalSitasi->sortBy(function ($jrnl, $key) {
+            return $jrnl->ketuaJurnal[0]->id;
+        });
+
+        $arrDataJurnal = array();
+        $arrTahun = [$tahunlist->ts, $tahunlist->ts1, $tahunlist->ts2];
+        $all_sitasi = 0;
+
+        foreach ($urutanJurnal as $key => $jurnal) {
+            if (in_array($jurnal->tahun, $arrTahun)) {
+                $arrDataJurnal[] = $jurnal;
+                $all_sitasi += $jurnal->sitasi;
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'all_jurnal' => $arrDataJurnal,
+            'all_sitasi' => $all_sitasi
+        ]);
+    }
+
+    public function exportprodukadopsith(Request $request, $tahun)
+    {
+        $tahunlist = $this->tahuntsgenerator($tahun);
+
+        $listProduk = Produk::with('anggotaDosens')
+            ->where('tahun', $tahunlist->ts)
+            ->orWhere('tahun', $tahunlist->ts1)
+            ->orWhere('tahun', $tahunlist->ts2)
+            ->orderBy('tahun', 'DESC')
+            ->get();
+
+        $arrTahun = [$tahunlist->ts, $tahunlist->ts1, $tahunlist->ts2];
+        $all_sitasi = 0;
+
+        return response()->json([
+            'success' => true,
+            'all_produk' => $listProduk,
+        ]);
+    }
+
+    public function exportprodukadopsi(Request $request)
+    {
+        // $tahunlist = $this->tahuntsgenerator($tahun);
+
+        $listProduk = Produk::with('anggotaDosens')
+            ->orderBy('tahun', 'DESC')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'all_produk' => $listProduk,
+        ]);
+    }
+
+    public function exportLuaranLainth(Request $request, $tahun)
+    {
+        $tahunlist = $this->tahuntsgenerator($tahun);
+
+        $listProduk = Luaranlaindosen::with('anggotaDosens')
+            ->where('tahun', $tahunlist->ts)
+            ->orWhere('tahun', $tahunlist->ts1)
+            ->orWhere('tahun', $tahunlist->ts2)
+            ->orderBy('tahun', 'DESC')
+            ->get();
+
+        $listLuaran1 = $listProduk->where('jenis_luaran','I');
+        $listLuaran2 = $listProduk->where('jenis_luaran','II');
+        $listLuaran3 = $listProduk->where('jenis_luaran','III');
+        $listLuaran4 = $listProduk->where('jenis_luaran','IV');
+
+        $arrLuaran1 = array();
+        $arrLuaran2 = array();
+        $arrLuaran3 = array();
+        $arrLuaran4 = array();
+
+        foreach ($listLuaran1 as $key => $luar1) {
+            $arrLuaran1[]=$luar1;
+        }
+        foreach ($listLuaran2 as $key => $luar2) {
+            $arrLuaran2[]=$luar2;
+        }
+        foreach ($listLuaran3 as $key => $luar3) {
+            $arrLuaran3[]=$luar3;
+        }
+        foreach ($listLuaran4 as $key => $luar4) {
+            $arrLuaran4[]=$luar4;
+        }
+
+        $arrTahun = [$tahunlist->ts, $tahunlist->ts1, $tahunlist->ts2];
+        $all_sitasi = 0;
+
+        return response()->json([
+            'success' => true,
+            'all_Luaran' => $listProduk,
+            'luaransatu'=>$arrLuaran1,
+            'luarandua'=>$arrLuaran2,
+            'luarantiga'=>$arrLuaran3,
+            'luaranempat'=>$arrLuaran4,
+        ]);
+    }
+
+    public function exportrekognisith(Request $request, $tahun)
+    {
+        $tahunlist = $this->tahuntsgenerator($tahun);
+        $listRekognisi=array();
+
+        // $listRekognisi = profilDosen::with(['rekognisis' => function ($q) {
+        //     $q->orderBy('tahun', 'DESC');
+        //   },'detaildosen'])
+        //     ->whereRelation('rekognisis','tahun', $tahunlist->ts)
+        //     ->orWhereRelation('rekognisis','tahun', $tahunlist->ts1)
+        //     ->orWhereRelation('rekognisis','tahun', $tahunlist->ts2)
+        //     ->get();
+
+        $arrTahun = [$tahunlist->ts, $tahunlist->ts1, $tahunlist->ts2];
+
+        $listDosen = profilDosen::with('detaildosen')->where('StatusDosen','Dosen Tetap')->get();
+        $allRekognisi = Rekognisi::whereIn('tahun',$arrTahun)->orderBy('tahun','DESC')->get();
+
+
+        foreach ($listDosen as $key => $ldsen) {
+            $profilSementara = $ldsen;
+            $rekogSementara = $allRekognisi->firstWhere('profil_dosen_id',$ldsen->id);
+            
+            $listRekognisi[] = collect(['profil_dosen'=>$profilSementara,'lastrekognisi'=>$rekogSementara]);
+            
+        }
+
+        return response()->json([
+            'success' => true,
+            'all_rekognisis' => $listRekognisi,
         ]);
     }
 
@@ -371,7 +517,7 @@ class SdmLaporanController extends Controller
     {
         $tahunlist = $this->tahuntsgenerator($tahun, 'akademik');
 
-        $profildos = profilDosen::with('pendidikans', 'detaildosen','serkoms')->where('StatusDosen', 'Dosen Tetap')->get();
+        $profildos = profilDosen::with('pendidikans', 'detaildosen', 'serkoms')->where('StatusDosen', 'Dosen Tetap')->get();
 
         $listDosen = array();
         $listMengajars = array();
@@ -383,9 +529,9 @@ class SdmLaporanController extends Controller
             if (!strcmp($profilSementara->StatusDosen, 'Dosen Tetap')) {
                 $callProfilSementara = collect($profilSementara);
                 $profilmengajar = Mengajar::whereRelation('matkul', 'tahun_akademik', $tahunlist->ts)
-                ->orWhereRelation('matkul', 'tahun_akademik', $tahunlist->ts1)
-                ->orWhereRelation('matkul', 'tahun_akademik', $tahunlist->ts2)->get();
-                $profilmengajar = $profilmengajar->where('profil_dosen_id',$profilSementara->id);
+                    ->orWhereRelation('matkul', 'tahun_akademik', $tahunlist->ts1)
+                    ->orWhereRelation('matkul', 'tahun_akademik', $tahunlist->ts2)->get();
+                $profilmengajar = $profilmengajar->where('profil_dosen_id', $profilSementara->id);
                 $listMengajars[] = $profilmengajar->where('matkul.prodi_id', 1);
                 $listMengajarLuars[] = $profilmengajar->where('matkul.prodi_id', '!=', 1);
                 $mengajars = $listMengajars[$key];
@@ -443,9 +589,164 @@ class SdmLaporanController extends Controller
         ]);
     }
 
+    public function exporttidaktetap(Request $request, $tahun)
+    {
+        $tahunlist = $this->tahuntsgenerator($tahun, 'akademik');
+
+        $profildos = profilDosen::with('pendidikans', 'detaildosen', 'serkoms')->where('StatusDosen', 'Dosen Tidak Tetap')->get();
+
+        $listDosen = array();
+        $listMengajars = array();
+        $listMengajarLuars = array();
+        $dataSatuAdas2 = false;
+
+        foreach ($profildos as $key => $profilds) {
+            $profilSementara = $profilds;
+            if (!strcmp($profilSementara->StatusDosen, 'Dosen Tidak Tetap')) {
+                $callProfilSementara = collect($profilSementara);
+                $profilmengajar = Mengajar::whereRelation('matkul', 'tahun_akademik', $tahunlist->ts)
+                    ->orWhereRelation('matkul', 'tahun_akademik', $tahunlist->ts1)
+                    ->orWhereRelation('matkul', 'tahun_akademik', $tahunlist->ts2)->get();
+                $profilmengajar = $profilmengajar->where('profil_dosen_id', $profilSementara->id);
+                $listMengajars[] = $profilmengajar->where('matkul.prodi_id', 1);
+                $listMengajarLuars[] = $profilmengajar->where('matkul.prodi_id', '!=', 1);
+                $mengajars = $listMengajars[$key];
+                $mengajarLuars = $listMengajarLuars[$key];
+                // $mengajars = $profilmengajar->filter(function ($mgj, $key) {
+                //     return $mgj->matkul->prodi_id == 1;
+                // });
+                $mengajarUnique = collect($mengajars->unique('matkul.kode_matkul'));
+                $mengajarLuarUnique = collect($mengajarLuars->unique('matkul.kode_matkul'));
+                $arrMengajar = array();
+                foreach ($mengajarUnique as $mUnikKey => $mUnik) {
+                    if ($mUnik) {
+                        $arrMengajar[] = $mUnik;
+                    }
+                }
+
+                $pascasarjana = ['magister' => '', 'doktor' => ''];
+                foreach ($profilds->pendidikans as $keypen => $pendidikan) {
+                    if (!strcmp($pendidikan->program_pendidikan, 'S2')) {
+                        $pascasarjana['magister'] = $pendidikan->program_pendidikan;
+                    }
+                    if (!strcmp($pendidikan->program_pendidikan, 'S3')) {
+                        $pascasarjana['doktor'] = $pendidikan->program_pendidikan;
+                    }
+                }
+
+                // if (!$dataSatuAdas2 && $callProfilSementara->contains('pendidikans.program_pendidikan','S2')) {
+                //     $dataSatuAdas2 = true;
+                // }
+
+                $dataSatuAdas2 = $callProfilSementara->contains('pendidikans.program_pendidikan', 'S2');
+
+                $arrMengajarLuar = array();
+                foreach ($mengajarLuarUnique as $mUnikKey => $mLuarUnik) {
+                    if ($mLuarUnik) {
+                        $arrMengajarLuar[] = $mLuarUnik;
+                    }
+                }
+
+                $profilSementara->mengajars = $arrMengajar;
+                $profilSementara->mengajarUns = $arrMengajar;
+                $profilSementara->mengajarLuar = $arrMengajarLuar;
+                $profilSementara->pascasarjana = collect($pascasarjana);
+
+                // $profilLengkap = collect($profilSementara);
+                $listDosen[] = $profilSementara;
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'dosentidaktetap' => $listDosen,
+            'dataMengajar' => $listMengajars,
+            'CEKS2' => $dataSatuAdas2,
+        ]);
+    }
+
+    public function exportdosenindustri(Request $request, $tahun)
+    {
+        $tahunlist = $this->tahuntsgenerator($tahun, 'akademik');
+
+        $profildos = profilDosen::with('pendidikans', 'detaildosen', 'serkoms')->where('StatusDosen', 'Dosen Industri')->get();
+
+        $listDosen = array();
+        $listMengajars = array();
+        $listMengajarLuars = array();
+        $dataSatuAdas2 = false;
+
+        foreach ($profildos as $key => $profilds) {
+            $profilSementara = $profilds;
+            if (!strcmp($profilSementara->StatusDosen, 'Dosen Industri')) {
+                $callProfilSementara = collect($profilSementara);
+                $profilmengajar = Mengajar::whereRelation('matkul', 'tahun_akademik', $tahunlist->ts)
+                    ->orWhereRelation('matkul', 'tahun_akademik', $tahunlist->ts1)
+                    ->orWhereRelation('matkul', 'tahun_akademik', $tahunlist->ts2)->get();
+                $profilmengajar = $profilmengajar->where('profil_dosen_id', $profilSementara->id);
+                $listMengajars[] = $profilmengajar->where('matkul.prodi_id', 1);
+                $listMengajarLuars[] = $profilmengajar->where('matkul.prodi_id', '!=', 1);
+                $mengajars = $listMengajars[$key];
+                $mengajarLuars = $listMengajarLuars[$key];
+                // $mengajars = $profilmengajar->filter(function ($mgj, $key) {
+                //     return $mgj->matkul->prodi_id == 1;
+                // });
+                $mengajarUnique = collect($mengajars->unique('matkul.kode_matkul'));
+                $mengajarLuarUnique = collect($mengajarLuars->unique('matkul.kode_matkul'));
+                $arrMengajar = array();
+                $sks_sum = 0;
+                foreach ($mengajarUnique as $mUnikKey => $mUnik) {
+                    if ($mUnik) {
+                        $arrMengajar[] = $mUnik;
+                        $sks_sum += intval($mUnik->sks);
+                    }
+                }
+
+                $pascasarjana = ['magister' => '', 'doktor' => ''];
+                foreach ($profilds->pendidikans as $keypen => $pendidikan) {
+                    if (!strcmp($pendidikan->program_pendidikan, 'S2')) {
+                        $pascasarjana['magister'] = $pendidikan->program_pendidikan;
+                    }
+                    if (!strcmp($pendidikan->program_pendidikan, 'S3')) {
+                        $pascasarjana['doktor'] = $pendidikan->program_pendidikan;
+                    }
+                }
+
+                // if (!$dataSatuAdas2 && $callProfilSementara->contains('pendidikans.program_pendidikan','S2')) {
+                //     $dataSatuAdas2 = true;
+                // }
+
+                $dataSatuAdas2 = $callProfilSementara->contains('pendidikans.program_pendidikan', 'S2');
+
+                $arrMengajarLuar = array();
+                foreach ($mengajarLuarUnique as $mUnikKey => $mLuarUnik) {
+                    if ($mLuarUnik) {
+                        $arrMengajarLuar[] = $mLuarUnik;
+                    }
+                }
+
+                $profilSementara->mengajars = $arrMengajar;
+                $profilSementara->mengajarUns = $arrMengajar;
+                $profilSementara->mengajarLuar = $arrMengajarLuar;
+                $profilSementara->sks_sum = $sks_sum;
+                $profilSementara->pascasarjana = collect($pascasarjana);
+
+                // $profilLengkap = collect($profilSementara);
+                $listDosen[] = $profilSementara;
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'dosenindustri' => $listDosen,
+            'dataMengajar' => $listMengajars,
+            'CEKS2' => $dataSatuAdas2,
+        ]);
+    }
+
     public function exportbimbingan(Request $request, $tahun)
     {
-        $tahunlist = $this->tahuntsgenerator($tahun,'akademik');
+        $tahunlist = $this->tahuntsgenerator($tahun, 'akademik');
         $arrTahun = [$tahunlist->ts, $tahunlist->ts1, $tahunlist->ts2];
 
         $profildos = profilDosen::with('bimbingans.prodi', 'bimbingans.mahasiswa')
@@ -468,31 +769,31 @@ class SdmLaporanController extends Controller
                 $listMembimbingLuars[] = $profilmembimbing->where('prodi_id', '!=', 1);
                 $membimbing = $listMembimbing[$key];
                 $membimbingLuar = $listMembimbingLuars[$key];
-                
-                $arrbimbinganProdi=array();
-                $arrbimbinganLuarProdi=array();
-                $listbimbinganTs=array();
+
+                $arrbimbinganProdi = array();
+                $arrbimbinganLuarProdi = array();
+                $listbimbinganTs = array();
                 $totalBimbingan = 0;
                 foreach ($arrTahun as $keyth => $th) {
-                    $bimbinganTS = $membimbing->where('tahun_akademik',$th)->count();
-                    $bimbinganTSluar = $membimbingLuar->where('tahun_akademik',$th)->count();
+                    $bimbinganTS = $membimbing->where('tahun_akademik', $th)->count();
+                    $bimbinganTSluar = $membimbingLuar->where('tahun_akademik', $th)->count();
 
-                    $arrbimbinganProdi[]=$bimbinganTS;
-                    $arrbimbinganLuarProdi[]=$bimbinganTSluar;
+                    $arrbimbinganProdi[] = $bimbinganTS;
+                    $arrbimbinganLuarProdi[] = $bimbinganTSluar;
 
-                    $totTS = $bimbinganTS+$bimbinganTSluar;
-                    $totalBimbingan+=$totTS;
+                    $totTS = $bimbinganTS + $bimbinganTSluar;
+                    $totalBimbingan += $totTS;
 
-                    $listbimbinganTs[] = collect(['ts'.$keyth=>$th,'bimbingan_dalam'=>$bimbinganTS,'bimbingan_luar'=>$bimbinganTSluar,'totalbimbing'=>$totTS]);
+                    $listbimbinganTs[] = collect(['ts' . $keyth => $th, 'bimbingan_dalam' => $bimbinganTS, 'bimbingan_luar' => $bimbinganTSluar, 'totalbimbing' => $totTS]);
                 }
 
                 $totalDalam = array_sum($arrbimbinganProdi);
-                $totalLuar= array_sum($arrbimbinganLuarProdi);
-                $totalLuarDalam = $totalLuar+$totalDalam;
+                $totalLuar = array_sum($arrbimbinganLuarProdi);
+                $totalLuarDalam = $totalLuar + $totalDalam;
 
-                $avgDalam = ($totalDalam>0)?round($totalDalam/3,1):0.0;
-                $avgLuar = ($totalLuar>0)?round($totalLuar/3,1):0.0;
-                $avgLuarDalam = ($totalLuarDalam>0)?round($totalLuarDalam/6,1):0.0;
+                $avgDalam = ($totalDalam > 0) ? round($totalDalam / 3, 1) : 0.0;
+                $avgLuar = ($totalLuar > 0) ? round($totalLuar / 3, 1) : 0.0;
+                $avgLuarDalam = ($totalLuarDalam > 0) ? round($totalLuarDalam / 6, 1) : 0.0;
 
                 $profilSementara->listBimbing = $listbimbinganTs;
                 $profilSementara->avgDalam = $avgDalam;
@@ -514,7 +815,7 @@ class SdmLaporanController extends Controller
 
     public function testambildata(Request $request, $tahun)
     {
-        $tahunlist = $this->tahuntsgenerator($tahun,'akademik');
+        $tahunlist = $this->tahuntsgenerator($tahun, 'akademik');
         $arrTahun = [$tahunlist->ts, $tahunlist->ts1, $tahunlist->ts2];
 
         $profildos = profilDosen::with('bimbingans.prodi', 'bimbingans.mahasiswa')
@@ -537,31 +838,31 @@ class SdmLaporanController extends Controller
                 $listMembimbingLuars[] = $profilmembimbing->where('prodi_id', '!=', 1);
                 $membimbing = $listMembimbing[$key];
                 $membimbingLuar = $listMembimbingLuars[$key];
-                
-                $arrbimbinganProdi=array();
-                $arrbimbinganLuarProdi=array();
-                $listbimbinganTs=array();
+
+                $arrbimbinganProdi = array();
+                $arrbimbinganLuarProdi = array();
+                $listbimbinganTs = array();
                 $totalBimbingan = 0;
                 foreach ($arrTahun as $keyth => $th) {
-                    $bimbinganTS = $membimbing->where('tahun_akademik',$th)->count();
-                    $bimbinganTSluar = $membimbingLuar->where('tahun_akademik',$th)->count();
+                    $bimbinganTS = $membimbing->where('tahun_akademik', $th)->count();
+                    $bimbinganTSluar = $membimbingLuar->where('tahun_akademik', $th)->count();
 
-                    $arrbimbinganProdi[]=$bimbinganTS;
-                    $arrbimbinganLuarProdi[]=$bimbinganTSluar;
+                    $arrbimbinganProdi[] = $bimbinganTS;
+                    $arrbimbinganLuarProdi[] = $bimbinganTSluar;
 
-                    $totTS = $bimbinganTS+$bimbinganTSluar;
-                    $totalBimbingan+=$totTS;
+                    $totTS = $bimbinganTS + $bimbinganTSluar;
+                    $totalBimbingan += $totTS;
 
-                    $listbimbinganTs[] = collect(['ts'.$keyth=>$th,'bimbingan_dalam'=>$bimbinganTS,'bimbingan_luar'=>$bimbinganTSluar,'totalbimbing'=>$totTS]);
+                    $listbimbinganTs[] = collect(['ts' . $keyth => $th, 'bimbingan_dalam' => $bimbinganTS, 'bimbingan_luar' => $bimbinganTSluar, 'totalbimbing' => $totTS]);
                 }
 
                 $totalDalam = array_sum($arrbimbinganProdi);
-                $totalLuar= array_sum($arrbimbinganLuarProdi);
-                $totalLuarDalam = $totalLuar+$totalDalam;
+                $totalLuar = array_sum($arrbimbinganLuarProdi);
+                $totalLuarDalam = $totalLuar + $totalDalam;
 
-                $avgDalam = ($totalDalam>0)?round($totalDalam/3,1):0.0;
-                $avgLuar = ($totalLuar>0)?round($totalLuar/3,1):0.0;
-                $avgLuarDalam = ($totalLuarDalam>0)?round($totalLuarDalam/6,1):0.0;
+                $avgDalam = ($totalDalam > 0) ? round($totalDalam / 3, 1) : 0.0;
+                $avgLuar = ($totalLuar > 0) ? round($totalLuar / 3, 1) : 0.0;
+                $avgLuarDalam = ($totalLuarDalam > 0) ? round($totalLuarDalam / 6, 1) : 0.0;
 
                 $profilSementara->listBimbing = $listbimbinganTs;
                 $profilSementara->avgDalam = $avgDalam;

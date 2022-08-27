@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Bbjurnaldos;
 use App\Models\CapKurikulum;
 use App\Models\Ewmp;
+use App\Models\KP_lulus;
 use App\Models\Mahasiswa;
 use App\Models\Matkul;
 use App\Models\Mitra;
@@ -431,6 +432,13 @@ class DatabaseSeeder extends Seeder
                 'keanggotaan' => 'devano',
             ]
         );
+
+        KP_lulus::create([
+            'tahun' => '2021',
+            'jmlh_lulusan' => '145',
+            'jmlh_terlacak' => '134',
+            'prodi_id' => 1,
+        ]);
 
     }
 }

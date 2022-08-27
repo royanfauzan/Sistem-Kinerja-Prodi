@@ -6,7 +6,32 @@ import style from "./sideb.module.css"
 export default function SidebarDosen() {
   const router = useRouter()
 
+  const pathHalaman = router.asPath
+  const arrHalaman = pathHalaman.split("/")
+  const HalamanActive = arrHalaman.slice(-1)[0]
+
   // const arrMenuSDM =['']
+
+  const listFolderDashboard = ["dashboards"]
+  const isMenuDashboard = listFolderDashboard.includes(arrHalaman[1])
+
+  const listFolderSdm = [
+    "sdm",
+    "rekognisi",
+    "publikasidos",
+    "penelitiandosen",
+    "pkmdosen",
+    "profildosen",
+    "profildetail",
+    "dtps",
+    "ewmp",
+    "produk",
+    "luaranlaindos",
+    "mengajar",
+    "bukujurnal",
+    "bimbingan",
+  ]
+  const isMenuSdm = listFolderSdm.includes(arrHalaman[1])
 
   const Logout = async () => {
     const lgToken = localStorage.getItem("token")
@@ -61,8 +86,10 @@ export default function SidebarDosen() {
         id="sidenav-collapse-main"
       >
         <ul className="navbar-nav">
-          <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards/dashboardadmin">
+          <li className={`nav-link ${
+                isMenuDashboard ? "active bg-light text-dark" : ""
+              }`}>
+            <a className="nav-link " href="/dashboards/dashboarddosen">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
@@ -96,13 +123,18 @@ export default function SidebarDosen() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a className="nav-link active" href="./dashboard_tabel.php">
+            <a className={`nav-link ${
+                isMenuSdm ? "active bg-light text-dark" : ""
+              }`}href="/sdm/dashboardsdm">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
-              <span className="nav-link-text ms-1">Tables</span>
+              <span className="nav-link-text ms-1">
+                Kriteria Sumber Daya <br />  Manusia(SDM)
+              </span>
             </a>
           </li>
+          
         </ul>
       </div>
       <div className=" mx-3 ">

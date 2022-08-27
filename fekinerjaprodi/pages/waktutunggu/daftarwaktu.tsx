@@ -229,7 +229,7 @@ export default function daftarbidang() {
                             NO
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Tahun Kepuasan Lulusan
+                            Tahun Lulusan
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Jumlah Lulusan <br /> Yang Dipesan

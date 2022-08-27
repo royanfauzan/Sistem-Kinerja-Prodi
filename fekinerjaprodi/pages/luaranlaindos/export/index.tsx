@@ -2,23 +2,22 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
-import CardPendidikanSimple from "../../components/Molecule/MenuCard/CardpendidikanSimple";
-import MenuCardUtama from "../../components/Molecule/MenuCard/MenuCardUtama";
-import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
-import LayoutForm from "../../components/Organism/Layout/LayoutDashboardBlue";
-import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
+import MenuCardUtama from "../../../components/Molecule/MenuCard/MenuCardUtama";
+import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
+import LayoutForm from "../../../components/Organism/Layout/LayoutDashboard";
+import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import CardSimple from "../../../components/Molecule/MenuCard/CardSimple";
 
-export default function dashboardadmin() {
+export default function index() {
   const router = useRouter();
-
+  const [dataRole, setRole] = useState("");
   const linkKelola = {
     profilDsn: "/profildosen/daftarprofil",
   };
 
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
-  const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -62,7 +61,7 @@ export default function dashboardadmin() {
         const { role } = response.data.user;
         setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 2) {
+        if (level_akses !== 3) {
           return router.push("/");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -82,23 +81,34 @@ export default function dashboardadmin() {
       {stadmin && (
         <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
-            <div className="row min-vh-75">
-            <div className="col-4">
-                <div className="card mb-0 px-3 pb-3 bg-light">
-                  <div className="row">
-                  <CardPendidikanSimple
-                      judul={`Penelitian`}
-                      icon={`bi bi-hourglass-split`}
-                      halaman={`/penelitian/daftarpenelitian`}
-                      keterangan={"Data Penelitian dikelola oleh Dosen"}
-                    />
-                  </div>
-                </div>
-              </div>
+            <div className="row justify-content-center">
+              <CardSimple
+                judul={`Bagian 1`}
+                icon={`bi bi-badge-tm`}
+                halaman={`/luaranlaindos/export/exportluaranpaten`}
+                keterangan={"Paten dan Paten sederhana"}
+              />
 
+              <CardSimple
+                judul={`Bagian 2`}
+                icon={`bi bi-person-rolodex`}
+                halaman={`bi bi-eyeglasses`}
+                keterangan={"Hak cipta, kekayaan intelektual"}
+              />
+              <CardSimple
+                judul={`Bagian 3`}
+                icon={`bi bi-cpu`}
+                halaman={`/luaranlaindos/export/exportluaranteknologi`}
+                keterangan={"Teknologi tepat guna"}
+              />
+              <CardSimple
+                judul={`Bagian 4`}
+                icon={`bi bi-book`}
+                halaman={`/luaranlaindos/export/exportluaranbukuisbn`}
+                keterangan={"Buku ber ISBN"}
+              />
+              
             </div>
-
-            <FooterUtama />
           </div>
         </LayoutForm>
       )}

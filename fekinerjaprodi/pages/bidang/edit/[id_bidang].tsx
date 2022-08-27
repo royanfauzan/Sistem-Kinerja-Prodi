@@ -32,9 +32,7 @@ export default function editkesesuaian(props) {
   // State Select
   const [stadmin, setStadmin] = useState(false);
   const [dataKesesuaian, setKesesuaians] = useState([]);
-  const [selectKesesuaian, setSelectKesesuaian] = useState(
-    kesesuaian.kepuasan_id
-  );
+  const [selectKesesuaian, setSelectKesesuaian] = useState(kesesuaian.kepuasan_id);
   const [dataRole, setRole] = useState("");
 
   // pake ngambil data untuk halaman input
@@ -145,6 +143,7 @@ export default function editkesesuaian(props) {
       });
   };
 
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -171,7 +170,7 @@ export default function editkesesuaian(props) {
                         Kesesuaian Bidang Kerja
                       </p>
                       <div className="row">
-                        <div className="col-md-6">
+                        <div className="col-md-8">
                           <div className="form-group">
                             <label
                               htmlFor="kepuasan"
@@ -184,6 +183,8 @@ export default function editkesesuaian(props) {
                               aria-label="Default select example"
                               defaultValue="0"
                               id="kepuasan"
+                              value={selectKesesuaian}
+                              onChange={handleChangeKesesuaian}
                             >
                               <option>Pilih Tahun Lulusan</option>
                               {dataKesesuaian.map((userkepuasan) => {
@@ -201,6 +202,12 @@ export default function editkesesuaian(props) {
                             </select>
                           </div>
                         </div>
+
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold" />
+                        <p className="text-uppercase text-sm">
+                          Tingkat Kepuasan Bidang Kerja
+                        </p>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
@@ -214,6 +221,7 @@ export default function editkesesuaian(props) {
                               type="text"
                               placeholder="Nama Kegiatan"
                               id="rendah"
+                              defaultValue={dataKesesuaians.rendah}
                               required
                             />
                           </div>
@@ -231,6 +239,7 @@ export default function editkesesuaian(props) {
                               type="text"
                               placeholder="sedang"
                               id="sedang"
+                              defaultValue={dataKesesuaians.sedang}
                               required
                             />
                           </div>
@@ -249,6 +258,7 @@ export default function editkesesuaian(props) {
                               type="text"
                               placeholder="tinggi"
                               id="tinggi"
+                              defaultValue={dataKesesuaians.tinggi}
                               required
                             />
                           </div>

@@ -174,7 +174,7 @@ export default function editwaktu(props) {
                               htmlFor="kepuasan"
                               className="form-control-label"
                             >
-                              Tahun Kepuasan Lulusan
+                              Tahun Lulusan
                             </label>
                             <select
                               className="form-select"

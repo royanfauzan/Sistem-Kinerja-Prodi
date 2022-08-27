@@ -161,7 +161,73 @@ export default function dashboardadmin() {
                           icon={`bi bi-building`}
                         />
                       </Carddashboard>
-                      <Carddashboard judul={`Kriteria Pendidikan`}>
+                      <Carddashboard
+                        judul={`Kriteria Luaran dan Capaian Tridarma`}
+                      >
+                        <ListCardDash
+                          judul={`Data IPK Mahasiswa`}
+                          icon={`bi bi-file-spreadsheet-fill`}
+                          halaman={`/ipk/daftaripk`}
+                          keterangan={
+                            "Data IPK Mahasiswa yang dikelola oleh admin"
+                          }
+                        />
+                        <ListCardDash
+                          judul={`Data Prestasi`}
+                          halaman={`/prestasi/daftarprestasi`}
+                          keterangan={
+                            "Data Prestasi Akademik dan Non akademik yang dikelola oleh admin"
+                          }
+                          icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                          judul={`Masa Studi Lulusan`}
+                          halaman={`/masastudi/daftarmasastudi`}
+                          keterangan={
+                            "Data Masa Studi Lulusan yang dikelola oleh admin"
+                          }
+                          icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                        <ListCardDash
+                          judul={`Waktu Tunggu Lulusan`}
+                          halaman={`/waktutunggu/daftarwaktu`}
+                          keterangan={
+                            "Data Waktu Tunggu Lulusan dan Non akademik yang dikelola oleh admin"
+                          }
+                          icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                          judul={`Data Luaran Lainnya`}
+                          halaman={`/luaran/daftarluaran`}
+                          keterangan={
+                            "Data Luaran Lainnya yang dikelola oleh admin"
+                          }
+                          icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                          judul={`Tulisan Mahasiswa`}
+                          halaman={`/tulisan/daftartulisan`}
+                          keterangan={
+                            "Data Tulisan Mahasiswa yang dikelola oleh admin"
+                          }
+                          icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                        <div className="row">
+                          <Link
+                            href={`/dashboards_capaian_tridarma/dashboardtridarma`}
+                          >
+                            <button className="btn btn-sm btn-outline-dark border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                              Selengkapnya...
+                            </button>
+                          </Link>
+                        </div>
+                      </Carddashboard>
+                    </div>
+                  </div>
+
+                  <div className="col-6">
+                    <div className="row d-flex justify-content-around">
+                    <Carddashboard judul={`Kriteria Pendidikan`}>
                         <ListCardDash
                           judul={"Capaian Kurikulum"}
                           keterangan={`Kelola Data Capaian Kurikulum`}
@@ -187,16 +253,53 @@ export default function dashboardadmin() {
                           icon={`bi bi-journal-text`}
                         />
                       </Carddashboard>
-                    </div>
-                    <div className="row d-flex justify-content-around">
-                      <Carddashboard judul={`Kriteria Sumber Daya Manusia`}>
+                      <Carddashboard
+                        judul={`Kriteria Sumber Daya Manusia`}
+                      >
                         <ListCardDash
                           judul={`Profil Dosen`}
                           icon={`bi bi-person-bounding-box`}
                           halaman={`/profildosen/tabelprofil`}
-                          keterangan={"Mengelola Data Profil Dosen"}
+                          keterangan={"List Profil Dosen Tersimpan"}
                         />
+                        <ListCardDash
+                          judul={`EWMP`}
+                          icon={`bi bi-input-cursor`}
+                          halaman={`/ewmp/tabelewmp`}
+                          keterangan={"Equivalen Waktu Mengajar Penuh Dosen"}
+                        />
+                        <ListCardDash
+                          judul={`Pengalaman Mengajar`}
+                          icon={`bi bi-collection`}
+                          halaman={`/mengajar/tabelmengajar`}
+                          keterangan={"Data Pengalaman mengajar Dosen"}
+                        />
+                        <ListCardDash
+                          judul={`Pembimbing Utama TA`}
+                          icon={`bi bi-bounding-box`}
+                          halaman={`/bimbingan/export/exportbimbingan`}
+                          keterangan={"Export Data perhitungan bimbingan Dosen"}
+                        />
+                        <ListCardDash
+                          judul={`Rekognisi DTPS`}
+                          icon={`bi bi-bookmark-check`}
+                          halaman={`/rekognisi/tabelrekognisi`}
+                          keterangan={
+                            "Mengelola data rekognisi DTPS"
+                          }
+                        />
+                        <div className="row">
+                          <Link
+                            href={`/sdm/dashboardsdmadm`}
+                          >
+                            <button className="btn btn-sm btn-outline-dark border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                              Selengkapnya...
+                            </button>
+                          </Link>
+                        </div>
                       </Carddashboard>
+                    </div>
+                    <div className="row d-flex justify-content-around">
                       <Carddashboard judul={`Kriteria Mahasiswa`}>
                         <ListCardDash
                           judul={`EWMP`}
@@ -214,83 +317,11 @@ export default function dashboardadmin() {
                           judul={`Pembimbing Utama TA`}
                           icon={`bi bi-bounding-box`}
                           halaman={`/bimbingan/export/exportbimbingan`}
-                          keterangan={"Export Data Pembimbing Utama Tugas akhir"}
-                        />
-                      </Carddashboard>
-
-                      <Carddashboard judul={` Mitra`}>
-                        <ListCardDash
-                          judul={`Publikasi Dosen`}
-                          icon={`bi bi-pip`}
-                          halaman={`/publikasidos/export/export_publikasidos`}
                           keterangan={
-                            "Export data Publikasi yang diikuti dosen"
+                            "Export Data Pembimbing Utama Tugas akhir"
                           }
                         />
                       </Carddashboard>
-                    </div>
-                  </div>
-
-                      <div className="row d-flex justify-content-around">
-                      <Carddashboard
-                        judul={`Kriteria Luaran dan Capaian Tridarma`}
-                      >
-                        <ListCardDash
-                          judul={`Data IPK Mahasiswa`}
-                          icon={`bi bi-file-spreadsheet-fill`}
-                          halaman={`/ipk/daftaripk`}
-                          keterangan={"Data IPK Mahasiswa yang dikelola oleh admin"}
-                        />
-                        <ListCardDash
-                        judul={`Data Prestasi`}
-                        halaman={`/prestasi/daftarprestasi`}
-                        keterangan={
-                          "Data Prestasi Akademik dan Non akademik yang dikelola oleh admin"
-                        }
-                         icon={`bi bi-card-text`}
-                        />
-                        <ListCardDash
-                        judul={`Masa Studi Lulusan`}
-                        halaman={`/masastudi/daftarmasastudi`}
-                        keterangan={
-                          "Data Masa Studi Lulusan yang dikelola oleh admin"
-                        }
-                         icon={`bi bi-file-spreadsheet-fill`}
-                        />
-                        <ListCardDash
-                        judul={`Waktu Tunggu Lulusan`}
-                        halaman={`/waktutunggu/daftarwaktu`}
-                        keterangan={
-                          "Data Waktu Tunggu Lulusan dan Non akademik yang dikelola oleh admin"
-                        }
-                         icon={`bi bi-card-text`}
-                        />
-                        <ListCardDash
-                          judul={`Data Luaran Lainnya`}
-                          halaman={`/luaran/daftarluaran`}
-                          keterangan={
-                            "Data Luaran Lainnya yang dikelola oleh admin"
-                          }
-                         icon={`bi bi-card-text`}
-                        />
-                        <ListCardDash
-                         judul={`Tulisan Mahasiswa`}
-                         halaman={`/tulisan/daftartulisan`}
-                         keterangan={
-                           "Data Tulisan Mahasiswa yang dikelola oleh admin"
-                         }
-                         icon={`bi bi-file-spreadsheet-fill`}
-                        />
-                        <div className="row">
-                          <Link href={`/dashboards_capaian_tridarma/dashboardtridarma`}>
-                            <button className="btn btn-sm btn-outline-dark border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                              Selengkapnya...
-                            </button>
-                          </Link>
-                        </div>
-                      </Carddashboard>
-                      
-                    </div>
                     </div>
                   </div>
                 </div>

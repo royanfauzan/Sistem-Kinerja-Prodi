@@ -65,183 +65,328 @@ class DatabaseSeeder extends Seeder
         ]);
         
         User::create([
-            'NIDK' => '87654321',
-            'role' => 'dosen',
-            'level_akses' => 2,
-            'password' => bcrypt('12345678'),
-        ]);
-
-        User::create([
-            'NIDK' => '11111111',
-            'role' => 'dosen',
-            'level_akses' => 2,
-            'password' => bcrypt('12345678'),
-        ]);
-
-        User::create([
-            'NIDK' => '22222222',
-            'role' => 'dosen',
-            'level_akses' => 2,
-            'password' => bcrypt('12345678'),
-        ]);
-
-        User::create([
-            'NIDK' => '33333333',
-            'role' => 'dosen',
-            'level_akses' => 2,
-            'password' => bcrypt('12345678'),
-        ]);
-
-        User::create([
-            'NIDK' => '44444444',
-            'role' => 'dosen',
-            'level_akses' => 2,
-            'password' => bcrypt('12345678'),
-        ]);
-
-        User::create([
-            'NIDK' => '55555555',
+            'NIDK' => '0010117504',
             'role' => 'dosen',
             'level_akses' => 2,
             'password' => bcrypt('12345678'),
         ]);
 
         profilDosen::create([
-            'NIDK' => '87654321',
-            'NamaDosen' => 'royanF',
-            'NIK' => "12345678",
-            'TempatLahir' => 'Tabanan',
-            'TanggalLahir' => '2000-12-25',
+            'NIDK' => '0010117504',
+            'NamaDosen' => 'I Wayan Suasnawa, ST.,MT.',
+            'NIK' => "197511102001121002",
+            'TempatLahir' => 'Denpasar',
+            'TanggalLahir' => '1975-10-10',
             'JenisKelamin' => 'Laki-Laki',
-            'StatusPerkawinan' => 'Belum Kawin',
-            'JabatanAkademik'=>'Lektor Kepala',
-            'Agama' => 'Kristen',
+            'StatusPerkawinan' => 'Kawin',
+            'JabatanAkademik'=>'Lektor',
+            'Agama' => 'Hindu',
+        ]);
+
+        User::create([
+            'NIDK' => '0026067304',
+            'role' => 'dosen',
+            'level_akses' => 2,
+            'password' => bcrypt('12345678'),
         ]);
 
         profilDosen::create([
-            'NIDK' => '11111111',
-            'NamaDosen' => 'nama 111',
-            'NIK' => "911111111",
+            'NIDK' => '0026067304',
+            'NamaDosen' => 'Sri Andriati Asri, ST., M.Kom',
+            'NIK' => "197306261999032001",
+            'TempatLahir' => 'Denpasar',
+            'TanggalLahir' => '1973-06-26',
+            'JenisKelamin' => 'Perempuan',
+            'StatusPerkawinan' => 'Kawin',
+            'JabatanAkademik'=>'Lektor Kepala',
+            'Agama' => 'Islam',
+        ]);
+
+        User::create([
+            'NIDK' => '0014037205',
+            'role' => 'dosen',
+            'level_akses' => 2,
+            'password' => bcrypt('12345678'),
+        ]);
+
+        profilDosen::create([
+            'NIDK' => '0014037205',
+            'NamaDosen' => 'Putu Gde Sukarata, ST.MT.',
+            'NIK' => "197203142001121001",
+            'TempatLahir' => 'Denpasar',
+            'TanggalLahir' => '1972-03-14',
+            'JenisKelamin' => 'Laki-Laki',
+            'StatusPerkawinan' => 'Kawin',
+            'JabatanAkademik'=>'Lektor',
+            'Agama' => 'Hindu',
+        ]);
+
+        User::create([
+            'NIDK' => '00051971',
+            'role' => 'dosen',
+            'level_akses' => 2,
+            'password' => bcrypt('12345678'),
+        ]);
+
+        profilDosen::create([
+            'NIDK' => '00051971',
+            'NamaDosen' => 'I Gusti Ngurah Bagus Caturbawa',
+            'NIK' => "97111051999031002",
             'TempatLahir' => 'Singaraja',
-            'TanggalLahir' => '1998-12-25',
+            'TanggalLahir' => '1971-02-17',
+            'JenisKelamin' => 'Laki-Laki',
+            'StatusPerkawinan' => 'Kawin',
+            'JabatanAkademik'=>'Lektor',
+            'Agama' => 'Hindu',
+        ]);
+
+        User::create([
+            'NIDK' => '0012026908',
+            'role' => 'dosen',
+            'level_akses' => 2,
+            'password' => bcrypt('12345678'),
+        ]);
+
+        profilDosen::create([
+            'NIDK' => '0012026908',
+            'NamaDosen' => 'Dr. I Nyoman Gede Arya Astawa, ST., M.Kom',
+            'NIK' => "196902121995121001 ",
+            'TempatLahir' => 'Singaraja',
+            'TanggalLahir' => '1969-02-12',
             'JenisKelamin' => 'Laki-Laki',
             'StatusPerkawinan' => 'Kawin',
             'JabatanAkademik'=>'Lektor Kepala',
             'Agama' => 'Hindu',
         ]);
 
+        User::create([
+            'NIDK' => '0805119002',
+            'role' => 'dosen',
+            'level_akses' => 2,
+            'password' => bcrypt('12345678'),
+        ]);
+
         profilDosen::create([
-            'NIDK' => '22222222',
-            'NamaDosen' => 'nama 222',
-            'NIK' => "922222222",
-            'TempatLahir' => 'Singaraja',
-            'TanggalLahir' => '1998-12-25',
+            'NIDK' => '0805119002',
+            'NamaDosen' => 'I Komang Wiratama, S.Kom., M.Cs.',
+            'NIK' => "199011052019031009 ",
+            'TempatLahir' => 'Denpasar',
+            'TanggalLahir' => '1990-10-05',
             'JenisKelamin' => 'Laki-Laki',
             'StatusPerkawinan' => 'Kawin',
-            'JabatanAkademik'=>'Lektor Kepala',
+            'JabatanAkademik'=>' ',
             'Agama' => 'Hindu',
         ]);
 
+        User::create([
+            'NIDK' => '0006078502',
+            'role' => 'dosen',
+            'level_akses' => 2,
+            'password' => bcrypt('12345678'),
+        ]);
+
         profilDosen::create([
-            'NIDK' => '33333333',
-            'NamaDosen' => 'nama 333',
-            'NIK' => "933333333",
-            'TempatLahir' => 'Singaraja',
-            'TanggalLahir' => '1998-12-25',
-            'JenisKelamin' => 'Laki-Laki',
+            'NIDK' => '0006078502',
+            'NamaDosen' => 'Gusti Nyoman Ayu Sukerti, S.S.,M.Hum',
+            'NIK' => "199011052019031009 ",
+            'TempatLahir' => 'Bangli',
+            'TanggalLahir' => '1985-07-06',
+            'JenisKelamin' => 'Perempuan',
             'StatusPerkawinan' => 'Kawin',
-            'JabatanAkademik'=>'Lektor Kepala',
+            'JabatanAkademik'=>'Lektor',
             'Agama' => 'Hindu',
         ]);
 
+        User::create([
+            'NIDK' => '0804049001',
+            'role' => 'dosen',
+            'level_akses' => 2,
+            'password' => bcrypt('12345678'),
+        ]);
+
         profilDosen::create([
-            'NIDK'=>'44444444',
-            'NamaDosen'=>'nama 444',
-            'NIK'=>"944444444",
-            'TempatLahir'=>'Singaraja',
-            'TanggalLahir'=>'1998-12-25',
-            'JenisKelamin'=>'Laki-Laki',
-            'StatusPerkawinan'=>'Kawin',
-            'Agama'=>'Hindu',
+            'NIDK' => '0804049001',
+            'NamaDosen' => 'I Made Riyan Adi Nugroho, S.S.I., M.T.',
+            'NIK' => "199004042019031017",
+            'TempatLahir' => 'Sukoharjo',
+            'TanggalLahir' => '1990-04-04',
+            'JenisKelamin' => 'Laki-Laki',
+            'StatusPerkawinan' => 'Kawin',
+            'JabatanAkademik'=>'Asisten Ahli',
+            'Agama' => 'Hindu',
         ]);
 
-        Ewmp::create([
-            'dtps' => true,
-            'profil_dosen_id' => 1,
-            'tahun_akademik' => '2019/2020',
-            'semester' => "Genap",
-            'sks_ps_akreditasi' => 8,
-            'sks_ps_lain_pt' => 4,
-            'sks_ps_luar_pt' => 0,
-            'sks_penelitian' => 4,
-            'sks_pengabdian' => 4,
-            'sks_tugas' => 4,
-        ]);
+        // User::create([
+        //     'NIDK' => '11111111',
+        //     'role' => 'dosen',
+        //     'level_akses' => 2,
+        //     'password' => bcrypt('12345678'),
+        // ]);
 
-        Ewmp::create([
-            'dtps' => true,
-            'profil_dosen_id' => 1,
-            'tahun_akademik' => '2019/2020',
-            'semester' => "Ganjil",
-            'sks_ps_akreditasi' => 8,
-            'sks_ps_lain_pt' => 4,
-            'sks_ps_luar_pt' => 0,
-            'sks_penelitian' => 4,
-            'sks_pengabdian' => 4,
-            'sks_tugas' => 4,
-        ]);
+        // User::create([
+        //     'NIDK' => '22222222',
+        //     'role' => 'dosen',
+        //     'level_akses' => 2,
+        //     'password' => bcrypt('12345678'),
+        // ]);
 
-        Ewmp::create([
-            'dtps' => true,
-            'profil_dosen_id' => 1,
-            'tahun_akademik' => '2020/2021',
-            'semester' => "Genap",
-            'sks_ps_akreditasi' => 8,
-            'sks_ps_lain_pt' => 4,
-            'sks_ps_luar_pt' => 0,
-            'sks_penelitian' => 4,
-            'sks_pengabdian' => 4,
-            'sks_tugas' => 4,
-        ]);
+        // User::create([
+        //     'NIDK' => '33333333',
+        //     'role' => 'dosen',
+        //     'level_akses' => 2,
+        //     'password' => bcrypt('12345678'),
+        // ]);
 
-        Ewmp::create([
-            'dtps' => true,
-            'profil_dosen_id' => 1,
-            'tahun_akademik' => '2020/2021',
-            'semester' => "Ganjil",
-            'sks_ps_akreditasi' => 10,
-            'sks_ps_lain_pt' => 4,
-            'sks_ps_luar_pt' => 0,
-            'sks_penelitian' => 4,
-            'sks_pengabdian' => 4,
-            'sks_tugas' => 4,
-        ]);
+        // User::create([
+        //     'NIDK' => '44444444',
+        //     'role' => 'dosen',
+        //     'level_akses' => 2,
+        //     'password' => bcrypt('12345678'),
+        // ]);
 
-        Ewmp::create([
-            'dtps' => true,
-            'profil_dosen_id' => 2,
-            'tahun_akademik' => '2020/2021',
-            'semester' => "Genap",
-            'sks_ps_akreditasi' => 8,
-            'sks_ps_lain_pt' => 4,
-            'sks_ps_luar_pt' => 0,
-            'sks_penelitian' => 4,
-            'sks_pengabdian' => 4,
-            'sks_tugas' => 4,
-        ]);
+        // User::create([
+        //     'NIDK' => '55555555',
+        //     'role' => 'dosen',
+        //     'level_akses' => 2,
+        //     'password' => bcrypt('12345678'),
+        // ]);
 
-        Ewmp::create([
-            'dtps' => true,
-            'profil_dosen_id' => 2,
-            'tahun_akademik' => '2020/2021',
-            'semester' => "Ganjil",
-            'sks_ps_akreditasi' => 10,
-            'sks_ps_lain_pt' => 4,
-            'sks_ps_luar_pt' => 0,
-            'sks_penelitian' => 4,
-            'sks_pengabdian' => 4,
-            'sks_tugas' => 4,
-        ]);
+        // profilDosen::create([
+        //     'NIDK' => '87654321',
+        //     'NamaDosen' => 'royanF',
+        //     'NIK' => "12345678",
+        //     'TempatLahir' => 'Tabanan',
+        //     'TanggalLahir' => '2000-12-25',
+        //     'JenisKelamin' => 'Laki-Laki',
+        //     'StatusPerkawinan' => 'Belum Kawin',
+        //     'JabatanAkademik'=>'Lektor Kepala',
+        //     'Agama' => 'Kristen',
+        // ]);
+
+        // profilDosen::create([
+        //     'NIDK' => '11111111',
+        //     'NamaDosen' => 'nama 111',
+        //     'NIK' => "911111111",
+        //     'TempatLahir' => 'Singaraja',
+        //     'TanggalLahir' => '1998-12-25',
+        //     'JenisKelamin' => 'Laki-Laki',
+        //     'StatusPerkawinan' => 'Kawin',
+        //     'JabatanAkademik'=>'Lektor Kepala',
+        //     'Agama' => 'Hindu',
+        // ]);
+
+        // profilDosen::create([
+        //     'NIDK' => '22222222',
+        //     'NamaDosen' => 'nama 222',
+        //     'NIK' => "922222222",
+        //     'TempatLahir' => 'Singaraja',
+        //     'TanggalLahir' => '1998-12-25',
+        //     'JenisKelamin' => 'Laki-Laki',
+        //     'StatusPerkawinan' => 'Kawin',
+        //     'JabatanAkademik'=>'Lektor Kepala',
+        //     'Agama' => 'Hindu',
+        // ]);
+
+        // profilDosen::create([
+        //     'NIDK' => '33333333',
+        //     'NamaDosen' => 'nama 333',
+        //     'NIK' => "933333333",
+        //     'TempatLahir' => 'Singaraja',
+        //     'TanggalLahir' => '1998-12-25',
+        //     'JenisKelamin' => 'Laki-Laki',
+        //     'StatusPerkawinan' => 'Kawin',
+        //     'JabatanAkademik'=>'Lektor Kepala',
+        //     'Agama' => 'Hindu',
+        // ]);
+
+        // profilDosen::create([
+        //     'NIDK'=>'44444444',
+        //     'NamaDosen'=>'nama 444',
+        //     'NIK'=>"944444444",
+        //     'TempatLahir'=>'Singaraja',
+        //     'TanggalLahir'=>'1998-12-25',
+        //     'JenisKelamin'=>'Laki-Laki',
+        //     'StatusPerkawinan'=>'Kawin',
+        //     'Agama'=>'Hindu',
+        // ]);
+
+        // Ewmp::create([
+        //     'dtps' => true,
+        //     'profil_dosen_id' => 1,
+        //     'tahun_akademik' => '2019/2020',
+        //     'semester' => "Genap",
+        //     'sks_ps_akreditasi' => 8,
+        //     'sks_ps_lain_pt' => 4,
+        //     'sks_ps_luar_pt' => 0,
+        //     'sks_penelitian' => 4,
+        //     'sks_pengabdian' => 4,
+        //     'sks_tugas' => 4,
+        // ]);
+
+        // Ewmp::create([
+        //     'dtps' => true,
+        //     'profil_dosen_id' => 1,
+        //     'tahun_akademik' => '2019/2020',
+        //     'semester' => "Ganjil",
+        //     'sks_ps_akreditasi' => 8,
+        //     'sks_ps_lain_pt' => 4,
+        //     'sks_ps_luar_pt' => 0,
+        //     'sks_penelitian' => 4,
+        //     'sks_pengabdian' => 4,
+        //     'sks_tugas' => 4,
+        // ]);
+
+        // Ewmp::create([
+        //     'dtps' => true,
+        //     'profil_dosen_id' => 1,
+        //     'tahun_akademik' => '2020/2021',
+        //     'semester' => "Genap",
+        //     'sks_ps_akreditasi' => 8,
+        //     'sks_ps_lain_pt' => 4,
+        //     'sks_ps_luar_pt' => 0,
+        //     'sks_penelitian' => 4,
+        //     'sks_pengabdian' => 4,
+        //     'sks_tugas' => 4,
+        // ]);
+
+        // Ewmp::create([
+        //     'dtps' => true,
+        //     'profil_dosen_id' => 1,
+        //     'tahun_akademik' => '2020/2021',
+        //     'semester' => "Ganjil",
+        //     'sks_ps_akreditasi' => 10,
+        //     'sks_ps_lain_pt' => 4,
+        //     'sks_ps_luar_pt' => 0,
+        //     'sks_penelitian' => 4,
+        //     'sks_pengabdian' => 4,
+        //     'sks_tugas' => 4,
+        // ]);
+
+        // Ewmp::create([
+        //     'dtps' => true,
+        //     'profil_dosen_id' => 2,
+        //     'tahun_akademik' => '2020/2021',
+        //     'semester' => "Genap",
+        //     'sks_ps_akreditasi' => 8,
+        //     'sks_ps_lain_pt' => 4,
+        //     'sks_ps_luar_pt' => 0,
+        //     'sks_penelitian' => 4,
+        //     'sks_pengabdian' => 4,
+        //     'sks_tugas' => 4,
+        // ]);
+
+        // Ewmp::create([
+        //     'dtps' => true,
+        //     'profil_dosen_id' => 2,
+        //     'tahun_akademik' => '2020/2021',
+        //     'semester' => "Ganjil",
+        //     'sks_ps_akreditasi' => 10,
+        //     'sks_ps_lain_pt' => 4,
+        //     'sks_ps_luar_pt' => 0,
+        //     'sks_penelitian' => 4,
+        //     'sks_pengabdian' => 4,
+        //     'sks_tugas' => 4,
+        // ]);
 
         Mitra::create([
             'namamitra' => 'Pilar Kreatif Teknologi',
@@ -527,7 +672,7 @@ class DatabaseSeeder extends Seeder
 
         // Seeder SDM
         $this->call([
-            SdmSeeder::class,
+            // SdmSeeder::class,
             // PostSeeder::class,
             // CommentSeeder::class,
         ]);

@@ -130,7 +130,7 @@ export default function exportdosenindustri() {
                 <div className="card">
                   <div className="card-header pb-0">
                     <div className="d-flex align-items-center">
-                      <h4>Dosen INdustri/Praktisi</h4>
+                      <h4>Dosen Industri/Praktisi</h4>
                     </div>
                   </div>
                   <div className="card-body">

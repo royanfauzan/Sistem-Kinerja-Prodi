@@ -20,11 +20,11 @@ class CreateProfilDosensTable extends Migration
                 ->on('users')->onUpdate('cascade');
             $table->string('NamaDosen');
             $table->string('NIK');
-            $table->string('TempatLahir');
-            $table->string('TanggalLahir');
-            $table->string('JenisKelamin');
-            $table->string('StatusPerkawinan');
-            $table->string('Agama');
+            $table->string('TempatLahir')->default('');
+            $table->string('TanggalLahir')->default('1970-01-01');
+            $table->string('JenisKelamin')->default('Laki-Laki');
+            $table->string('StatusPerkawinan')->default('Kawin');
+            $table->string('Agama')->default('');
             $table->string('StatusDosen')->default("Dosen Tetap");
             $table->string('Golongan')->default("");
             $table->string('Pangkat')->default("");

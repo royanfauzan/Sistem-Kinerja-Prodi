@@ -48,13 +48,6 @@ class ProfildosenController extends Controller
             'NIDK' => 'required|string',
             'NamaDosen' => 'required|string',
             'NIK' => "required|string",
-            'TempatLahir' => 'required|string',
-            'TanggalLahir' => 'required|string',
-            'JenisKelamin' => 'required|string',
-            'StatusPerkawinan' => 'required|string',
-            'kesesuaian' => 'required|string',
-            'bidangKeahlian' => 'required|string',
-            'Agama' => 'required|string',
             'StatusDosen' => 'required|string',
         ]);
 
@@ -70,7 +63,7 @@ class ProfildosenController extends Controller
         }
 
         $userBaru = User::create([
-            'NIDK' => ''.$request->NIDK,
+            'NIDK' => '' . $request->NIDK,
             'role' => 'dosen',
             'level_akses' => 2,
             'password' => bcrypt('dosen123'),
@@ -81,11 +74,6 @@ class ProfildosenController extends Controller
             'NIDK' => $request->NIDK,
             'NamaDosen' => $request->NamaDosen,
             'NIK' => $request->NIK,
-            'TempatLahir' => $request->TempatLahir,
-            'TanggalLahir' => $request->TanggalLahir,
-            'JenisKelamin' => $request->JenisKelamin,
-            'StatusPerkawinan' => $request->StatusPerkawinan,
-            'Agama' => $request->Agama,
             'StatusDosen' => $request->StatusDosen,
         ]);
 
@@ -93,16 +81,20 @@ class ProfildosenController extends Controller
         if ($request->kesesuaian) {
             $kesesuaian = $request->kesesuaian;
         }
-        
 
+
+        $bidangKeahlian = 'Teknik Elektro';
+        if ($request->bidangKeahlian) {
+            $bidangKeahlian = $request->bidangKeahlian;
+        }
         $detailDosen = Detaildosen::create([
             'profil_dosen_id' => $profil->id,
             'kesesuaian' => $kesesuaian,
-            'bidangKeahlian' => $request->bidangKeahlian
+            'bidangKeahlian' => $bidangKeahlian
         ]);
 
         $perusahaan = ' ';
-        if ($request->perusahaan && $profil->StatusDosen =='Dosen Industri') {
+        if ($request->perusahaan && $profil->StatusDosen == 'Dosen Industri') {
             $perusahaan = $request->perusahaan;
             $detailDosen->perusahaan = $perusahaan;
             $detailDosen->save();
@@ -116,6 +108,13 @@ class ProfildosenController extends Controller
         $profil->Alamat = isset($request->Alamat) ? $request->Alamat : '';
         $profil->NoTelepon = isset($request->NoTelepon) ? $request->NoTelepon : '';
         $profil->Email = isset($request->Email) ? $request->Email : '';
+
+        $profil->TempatLahir = isset($request->TempatLahir) ? $request->TempatLahir : '';
+        $profil->TanggalLahir = isset($request->TanggalLahir) ? $request->TanggalLahir : '';
+        $profil->JenisKelamin = isset($request->JenisKelamin) ? $request->JenisKelamin : '';
+        $profil->StatusPerkawinan = isset($request->StatusPerkawinan) ? $request->StatusPerkawinan : '';
+        $profil->bidangKeahlian = isset($request->bidangKeahlian) ? $request->bidangKeahlian : '';
+        $profil->Agama = isset($request->Agama) ? $request->Agama : '';
 
         $profil->save();
 
@@ -167,12 +166,6 @@ class ProfildosenController extends Controller
         $validator = Validator::make($data, [
             'NamaDosen' => 'required|string',
             'NIK' => "required|string",
-            'TempatLahir' => 'required|string',
-            'TanggalLahir' => 'required|string',
-            'JenisKelamin' => 'required|string',
-            'StatusPerkawinan' => 'required|string',
-            'bidangKeahlian' => 'required|string',
-            'Agama' => 'required|string',
             'StatusDosen' => 'required|string',
         ]);
 
@@ -191,15 +184,19 @@ class ProfildosenController extends Controller
             $detailDosen->kesesuaian = $kesesuaian;
             $detailDosen->save();
         } else {
+            $bidangKeahlian = 'Teknik Elektro';
+            if ($request->bidangKeahlian) {
+                $bidangKeahlian = $request->bidangKeahlian;
+            }
             $detailDosen = Detaildosen::create([
                 'profil_dosen_id' => $profilDosen->id,
                 'kesesuaian' => $kesesuaian,
-                'bidangKeahlian' => $request->bidangKeahlian
+                'bidangKeahlian' => $bidangKeahlian
             ]);
         }
 
         $perusahaan = ' ';
-        if ($request->perusahaan && $profilDosen->StatusDosen =='Dosen Industri') {
+        if ($request->perusahaan && $profilDosen->StatusDosen == 'Dosen Industri') {
             $perusahaan = $request->perusahaan;
             $detailDosen->perusahaan = $perusahaan;
             $detailDosen->save();
@@ -222,6 +219,13 @@ class ProfildosenController extends Controller
         $profilDosen->Alamat = isset($request->Alamat) ? $request->Alamat : '';
         $profilDosen->NoTelepon = isset($request->NoTelepon) ? $request->NoTelepon : '';
         $profilDosen->Email = isset($request->Email) ? $request->Email : '';
+
+        $profilDosen->TempatLahir = isset($request->TempatLahir) ? $request->TempatLahir : '';
+        $profilDosen->TanggalLahir = isset($request->TanggalLahir) ? $request->TanggalLahir : '';
+        $profilDosen->JenisKelamin = isset($request->JenisKelamin) ? $request->JenisKelamin : '';
+        $profilDosen->StatusPerkawinan = isset($request->StatusPerkawinan) ? $request->StatusPerkawinan : '';
+        $profilDosen->bidangKeahlian = isset($request->bidangKeahlian) ? $request->bidangKeahlian : '';
+        $profilDosen->Agama = isset($request->Agama) ? $request->Agama : '';
 
         $profilDosen->save();
 
@@ -250,7 +254,7 @@ class ProfildosenController extends Controller
                 'message' => "Gagal Dihapus"
             ]);
         }
-        
+
         return response()->json([
             'success' => true,
             'message' => "Berhasil Dihapus",
@@ -324,7 +328,7 @@ class ProfildosenController extends Controller
     public function profil_lengkap(Request $request, $nidk)
     {
         //
-        $profilDosen = profilDosen::where('NIDK', $nidk)->with('detaildosen', 'serkoms','pendidikans')
+        $profilDosen = profilDosen::where('NIDK', $nidk)->with('detaildosen', 'serkoms', 'pendidikans')
             ->first();
         return response()->json([
             'success' => true,

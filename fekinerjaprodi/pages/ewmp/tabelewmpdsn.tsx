@@ -143,7 +143,7 @@ export default function tabelewmp() {
                   <div className="card-header pb-0 px-3">
                     <div className="row">
                       <div className="col-4">
-                        <h4>Tabel Profil Dosen</h4>
+                        <h4>Tabel EWMP Dosen</h4>
                       </div>
                     </div>
 

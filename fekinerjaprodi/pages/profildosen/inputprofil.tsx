@@ -219,7 +219,7 @@ export default function inputprofil() {
                                   : ""
                               }
                             >
-                              NIK
+                              NIK/NIP
                             </label>
                             <input
                               className="form-control"

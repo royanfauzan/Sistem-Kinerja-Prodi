@@ -118,7 +118,7 @@ export default function input_mahasiswa_asing() {
         const { profil } = response.data
         //handle success
         toast.dismiss()
-        toast.success("Login Sugses!!")
+        toast.success("Login Sukses!!")
         // console.log(token);
         console.log(response.data)
         // router.push("/");

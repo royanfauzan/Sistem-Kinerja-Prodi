@@ -119,7 +119,7 @@ export default function inputewmp() {
         const { profil } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Simpan Sukses Sugses!!");
+        toast.success("Simpan Sukses!!");
         // console.log(token);
         console.log(profil);
         router.push("/ewmp/tabelewmp");

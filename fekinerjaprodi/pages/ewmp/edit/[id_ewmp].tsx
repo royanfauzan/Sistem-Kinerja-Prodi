@@ -131,7 +131,7 @@ export default function editewmp(props) {
         const { dataewmp } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Simpan Sukses Sugses!!");
+        toast.success("Simpan Sukses!!");
         // console.log(token);
         console.log(dataewmp);
         setTimeout(() => {

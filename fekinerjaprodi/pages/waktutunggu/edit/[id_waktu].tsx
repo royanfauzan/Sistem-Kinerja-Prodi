@@ -122,7 +122,7 @@ export default function editwaktu(props) {
         const { all_waktu } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Login Sugses!!");
+        toast.success("Login Sukses!!");
         // console.log(token);
         console.log(all_waktu);
         router.push("../../waktutunggu/daftarwaktu");

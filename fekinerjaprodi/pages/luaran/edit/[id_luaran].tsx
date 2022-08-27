@@ -102,7 +102,7 @@ export default function editluaran(props) {
         const { all_luaran } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Login Sugses!!");
+        toast.success("Login Sukses!!");
         // console.log(token);
         console.log(all_luaran);
         router.push("../../luaran/daftarluaran");

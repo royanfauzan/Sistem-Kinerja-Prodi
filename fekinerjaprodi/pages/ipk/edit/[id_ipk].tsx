@@ -122,7 +122,7 @@ export default function editprestasi(props) {
         const { profil } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Login Sugses!!");
+        toast.success("Login Sukses!!");
         // console.log(token);
         console.log(profil);
         router.push("../../ipk/daftaripk");

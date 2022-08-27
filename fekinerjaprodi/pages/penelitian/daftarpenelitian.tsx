@@ -60,7 +60,7 @@ export default function daftarpenelitian() {
         const { role } = response.data.user;
         setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 2) {
+        if (level_akses < 2) {
           return router.push("/");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -172,7 +172,11 @@ export default function daftarpenelitian() {
       // <--
       if (result.value) {
         // <-- if confirmed
-        router.push(`/penelitian/export/exportpenelitian`);
+        if (dataRole=='admin') {
+          router.push(`/penelitiandosen/export/pendexport`);
+        }else{
+          router.push(`/penelitian/export/exportpenelitian`);
+        }
       }
     });
   };

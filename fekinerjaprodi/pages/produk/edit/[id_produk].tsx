@@ -287,7 +287,7 @@ export default function editprodukdsn(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Pembimbing Utama Tugas akhir</p>
+                        <p className="mb-0">Produk/Jasa Diadopsi Masyarakat</p>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"

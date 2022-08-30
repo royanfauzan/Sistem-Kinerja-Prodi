@@ -133,7 +133,7 @@ export default function exportbimbingan() {
                 <div className="card">
                   <div className="card-header pb-0">
                     <div className="d-flex align-items-center">
-                      <h4>EWMP</h4>
+                      <h4>Bimbingan</h4>
                     </div>
                   </div>
                   <div className="card-body">

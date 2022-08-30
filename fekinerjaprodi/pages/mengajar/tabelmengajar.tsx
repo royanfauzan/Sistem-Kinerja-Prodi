@@ -174,7 +174,7 @@ export default function tabelmengajardsn() {
                               </button>
                             </Link>
                             <Link
-                              href={`/mengajar/export/exportmengajar`}
+                              href={`/dtps/export/`}
                             >
                               <button className=" btn btn-outline-success shadow-sm ps-3 ps-3 me-2 mt-3 mb-0">
                                 Cek Laporan

@@ -150,7 +150,7 @@ export default function inputpendidikan(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Sertifikat Kompetensi</p>
+                        <p className="mb-0">Riwayat Pendidikan</p>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -162,7 +162,7 @@ export default function inputpendidikan(props) {
                     <div className="card-body">
                       <hr className="horizontal dark" />
                       <p className="text-uppercase text-sm">
-                        Detail Sertifikat Kompetensi
+                        Detail Riwayat Pendidikan
                       </p>
                       <div className="row">
                         <div className="col-10">

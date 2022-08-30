@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Detaildosen;
+use App\Models\Mengajar;
 use App\Models\profilDosen;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -101,7 +102,6 @@ class ProfildosenController extends Controller
         }
 
 
-
         $profil->Golongan = isset($request->Golongan) ? $request->Golongan : '';
         $profil->Pangkat = isset($request->Pangkat) ? $request->Pangkat : '';
         $profil->JabatanAkademik = isset($request->JabatanAkademik) ? $request->JabatanAkademik : '';
@@ -109,12 +109,12 @@ class ProfildosenController extends Controller
         $profil->NoTelepon = isset($request->NoTelepon) ? $request->NoTelepon : '';
         $profil->Email = isset($request->Email) ? $request->Email : '';
 
-        $profil->TempatLahir = isset($request->TempatLahir) ? $request->TempatLahir : '';
-        $profil->TanggalLahir = isset($request->TanggalLahir) ? $request->TanggalLahir : '';
-        $profil->JenisKelamin = isset($request->JenisKelamin) ? $request->JenisKelamin : '';
-        $profil->StatusPerkawinan = isset($request->StatusPerkawinan) ? $request->StatusPerkawinan : '';
-        $profil->bidangKeahlian = isset($request->bidangKeahlian) ? $request->bidangKeahlian : '';
-        $profil->Agama = isset($request->Agama) ? $request->Agama : '';
+        $profil->TempatLahir = isset($request->TempatLahir) ? $request->TempatLahir : $profil->TempatLahir;
+        $profil->TanggalLahir = isset($request->TanggalLahir) ? $request->TanggalLahir : $profil->Tanggallahir;
+        $profil->JenisKelamin = isset($request->JenisKelamin) ? $request->JenisKelamin :$profil->JenisKelamin;
+        $profil->StatusPerkawinan = isset($request->StatusPerkawinan) ? $request->StatusPerkawinan : $profil->StatusPerkawinan;
+        // $profil->bidangKeahlian = isset($request->bidangKeahlian) ? $request->bidangKeahlian : '';
+        $profil->Agama = isset($request->Agama) ? $request->Agama : $profil->Agama;
 
         $profil->save();
 
@@ -224,7 +224,7 @@ class ProfildosenController extends Controller
         $profilDosen->TanggalLahir = isset($request->TanggalLahir) ? $request->TanggalLahir : '';
         $profilDosen->JenisKelamin = isset($request->JenisKelamin) ? $request->JenisKelamin : '';
         $profilDosen->StatusPerkawinan = isset($request->StatusPerkawinan) ? $request->StatusPerkawinan : '';
-        $profilDosen->bidangKeahlian = isset($request->bidangKeahlian) ? $request->bidangKeahlian : '';
+        // $profilDosen->bidangKeahlian = isset($request->bidangKeahlian) ? $request->bidangKeahlian : '';
         $profilDosen->Agama = isset($request->Agama) ? $request->Agama : '';
 
         $profilDosen->save();
@@ -330,9 +330,11 @@ class ProfildosenController extends Controller
         //
         $profilDosen = profilDosen::where('NIDK', $nidk)->with('detaildosen', 'serkoms', 'pendidikans')
             ->first();
+        $mengajars = Mengajar::with('matkul')->where('profil_dosen_id',$profilDosen->id)->get();
         return response()->json([
             'success' => true,
             'profilDosen' => $profilDosen,
+            'mengajars' => $mengajars,
         ]);
     }
 }

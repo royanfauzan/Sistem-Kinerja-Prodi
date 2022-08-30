@@ -87,7 +87,10 @@ export default function dashboardadmin() {
 
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 2) {
-          return router.push("/dashboards/dashboarddosen");
+          if (level_akses == 3) {
+            return router.push("/dashboards/dashboardadmin");
+          }
+          return router.push("/login");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         pengambilData();
@@ -96,7 +99,7 @@ export default function dashboardadmin() {
       .catch(function (err) {
         console.log("gagal");
         console.log(err.response);
-        return router.push("/");
+        return router.push("/login");
       });
   }, []);
 

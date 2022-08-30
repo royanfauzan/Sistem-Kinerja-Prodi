@@ -102,24 +102,24 @@ class DatabaseSeeder extends Seeder
             'Agama' => 'Islam',
         ]);
 
-        User::create([
-            'NIDK' => '0014037205',
-            'role' => 'dosen',
-            'level_akses' => 2,
-            'password' => bcrypt('12345678'),
-        ]);
+        // User::create([
+        //     'NIDK' => '0014037205',
+        //     'role' => 'dosen',
+        //     'level_akses' => 2,
+        //     'password' => bcrypt('12345678'),
+        // ]);
 
-        profilDosen::create([
-            'NIDK' => '0014037205',
-            'NamaDosen' => 'Putu Gde Sukarata, ST.MT.',
-            'NIK' => "197203142001121001",
-            'TempatLahir' => 'Denpasar',
-            'TanggalLahir' => '1972-03-14',
-            'JenisKelamin' => 'Laki-Laki',
-            'StatusPerkawinan' => 'Kawin',
-            'JabatanAkademik'=>'Lektor',
-            'Agama' => 'Hindu',
-        ]);
+        // profilDosen::create([
+        //     'NIDK' => '0014037205',
+        //     'NamaDosen' => 'Putu Gde Sukarata, ST.MT.',
+        //     'NIK' => "197203142001121001",
+        //     'TempatLahir' => 'Denpasar',
+        //     'TanggalLahir' => '1972-03-14',
+        //     'JenisKelamin' => 'Laki-Laki',
+        //     'StatusPerkawinan' => 'Kawin',
+        //     'JabatanAkademik'=>'Lektor',
+        //     'Agama' => 'Hindu',
+        // ]);
 
         User::create([
             'NIDK' => '00051971',

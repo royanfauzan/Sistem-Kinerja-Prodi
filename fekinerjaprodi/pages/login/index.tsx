@@ -87,7 +87,7 @@ export default function index() {
       .catch(function (error) {
         //handle error
         toast.dismiss();
-        if(error.response.status==400){
+        if(error.response.error){
             toast.error('Login Gagal, Silahkan Periksa Kembali NIDK dan Password!!');
         }else{
             toast.error('Login Gagal....');
@@ -135,6 +135,7 @@ export default function index() {
                     id="nidk"
                     name="nidk"
                     placeholder="NIDK"
+                    required
                   />
                 </div>
                 <div className="mb-3 form-password-toggle">
@@ -152,6 +153,7 @@ export default function index() {
                       name="password"
                       placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                       aria-describedby="password"
+                      required
                     />
                     <span className="input-group-text cursor-pointer">
                       <i className="bx bx-hide"></i>

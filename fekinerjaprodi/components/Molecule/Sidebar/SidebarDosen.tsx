@@ -73,7 +73,7 @@ export default function SidebarDosen() {
           target="_blank"
         >
           <img
-            src="/img/argon/logo-ct-dark.png"
+            src="/img/argon/LOgoPNB.png"
             className="navbar-brand-img h-100"
             alt="main_logo"
           />

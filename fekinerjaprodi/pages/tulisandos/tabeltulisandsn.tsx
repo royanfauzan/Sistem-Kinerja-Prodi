@@ -95,7 +95,7 @@ export default function tabeltulisan() {
         // <-- if confirmed
         axios({
           method: "post",
-          url: `http://127.0.0.1:8000/api/delete_tulisan/${id}`,
+          url: `http://127.0.0.1:8000/api/delete_tulisandos/${id}`,
         })
           .then(function (response) {
             const { datatulisans } = response.data;

@@ -16,10 +16,12 @@ export async function getServerSideProps(context) {
     `http://127.0.0.1:8000/api/profillengkap/${context.query.nidk_dsn}`
   );
   const res = await req.data.profilDosen;
+  const res2 = await req.data.mengajars;
 
   return {
     props: {
       profilDsn: res, // <-- assign response
+      mengajars: res2, // <-- assign response
     },
   };
 }
@@ -27,9 +29,10 @@ export async function getServerSideProps(context) {
 export default function lihatprofil(props) {
   const router = useRouter();
   const apiurl = "http://127.0.0.1:8000/";
-  const { profilDsn } = props;
+  const { profilDsn,mengajars } = props;
 
   const [userDosens, setuserDosens] = useState([]);
+  const [userMengajars, setuserMengajars] = useState(mengajars);
   const [editMode, seteditMode] = useState(false);
   const [readOnly, setreadOnly] = useState("-plaintext");
   const [userDosen, setuserDosen] = useState(profilDsn);
@@ -931,6 +934,35 @@ export default function lihatprofil(props) {
                             <Link href={`/profildetail/inputpendidikan/${userDosen.NIDK}`}>
                               <button className="btn btn-sm btn-outline-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                 Tambah Riwayat Pendidikan
+                              </button>
+                            </Link>
+                          </div>
+                        </CardSertif>
+                      </div>
+                      <div className="col-12 m-0 p-0">
+                        <CardSertif judul={"Riwayat Mengajar"}>
+                          {userDosen &&
+                            (userMengajars.length ? (
+                              userMengajars.map((mengajar, indx) => {
+                                return (
+                                  <ListCardSertif
+                                    key={mengajar.id + "" + indx}
+                                    judul={`${mengajar.matkul.nama_matkul} ${mengajar.tahun_akademik}`}
+                                    halamanEdit={`/mengajar/edit/${mengajar.id}`}
+                                    halaman={`mengajar/tabelmengajar`}
+                                    icon={`bi bi-patch-check`}
+                                  />
+                                );
+                              })
+                            ) : (
+                              <></>
+                            ))}
+                          <div className="row">
+                            <Link
+                              href={`/mengajar/tabelmengajar`}
+                            >
+                              <button className="btn btn-sm btn-outline-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                Tambah Data mengajar
                               </button>
                             </Link>
                           </div>

@@ -15,6 +15,7 @@ export default function myprofil() {
   const apiurl = "http://127.0.0.1:8000/";
 
   const [userDosens, setuserDosens] = useState([]);
+  const [userMengajars, setuserMengajars] = useState([]);
   const [editMode, seteditMode] = useState(false);
   const [readOnly, setreadOnly] = useState("-plaintext");
   const [userDosen, setuserDosen] = useState();
@@ -42,10 +43,11 @@ export default function myprofil() {
         console.log(response);
         console.log("Sukses");
 
-        const { profilDosen } = response.data;
+        const { profilDosen,mengajars } = response.data;
         console.log("INI DOSEN YG LOGIN");
         console.log(profilDosen);
         setuserDosen(profilDosen);
+        setuserMengajars(mengajars);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -924,6 +926,35 @@ export default function myprofil() {
                             >
                               <button className="btn btn-sm btn-outline-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
                                 Tambah Data Pendidikan
+                              </button>
+                            </Link>
+                          </div>
+                        </CardSertif>
+                      </div>
+                      <div className="col-12 m-0 p-0">
+                        <CardSertif judul={"Riwayat Mengajar"}>
+                          {userDosen &&
+                            (userMengajars.length ? (
+                              userMengajars.map((mengajar, indx) => {
+                                return (
+                                  <ListCardSertif
+                                    key={mengajar.id + "" + indx}
+                                    judul={`${mengajar.matkul.nama_matkul} ${mengajar.tahun_akademik}`}
+                                    halamanEdit={`/mengajar/edit/${mengajar.id}`}
+                                    halaman={`mengajar/tabelmengajardsn`}
+                                    icon={`bi bi-patch-check`}
+                                  />
+                                );
+                              })
+                            ) : (
+                              <></>
+                            ))}
+                          <div className="row">
+                            <Link
+                              href={`/mengajar/inputmengajardsn`}
+                            >
+                              <button className="btn btn-sm btn-outline-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                                Tambah Data mengajar
                               </button>
                             </Link>
                           </div>

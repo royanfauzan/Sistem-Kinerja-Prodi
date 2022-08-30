@@ -106,7 +106,7 @@ export default function exportproduk() {
   const tampildata = (tahun) => {
     axios({
       method: "get",
-      url: `http://127.0.0.1:8000/api/laporanprodukth/${tahun}`,
+      url: `http://127.0.0.1:8000/api/laporanproduk/`,
     })
       .then(function (response) {
         const { all_produk } = response.data;
@@ -135,7 +135,7 @@ export default function exportproduk() {
                     </div>
                   </div>
                   <div className="card-body">
-                    <div className="row">
+                    {/* <div className="row">
                       <div className="col-md-6">
                         <h5>Pilih Tahun</h5>
                       </div>
@@ -171,7 +171,7 @@ export default function exportproduk() {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="row">
                       <div className="col-12 d-flex flex-row-reverse">
                         {dataProduks && (

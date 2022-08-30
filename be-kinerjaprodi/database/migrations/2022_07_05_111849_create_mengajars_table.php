@@ -20,7 +20,7 @@ class CreateMengajarsTable extends Migration
             $table->string('kesesuaian')->default('V');
             $table->foreignId('profil_dosen_id')->references('id')
                 ->on('profil_dosens')
-                ->onDelete('cascade');;
+                ->onDelete('cascade');
             $table->foreignId('matkul_id');
             $table->timestamps();
         });

@@ -95,7 +95,7 @@ export default function tabelseminar() {
         // <-- if confirmed
         axios({
           method: "post",
-          url: `http://127.0.0.1:8000/api/delete_seminar/${id}`,
+          url: `http://127.0.0.1:8000/api/delete_seminardos/${id}`,
         })
           .then(function (response) {
             const { dataseminars } = response.data;

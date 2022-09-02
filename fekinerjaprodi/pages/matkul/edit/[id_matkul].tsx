@@ -90,7 +90,7 @@ export default function update_datamatkul(props) {
         const { role } = response.data.user;
         setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 2) {
+        if (level_akses < 2) {
           return router.push('/');
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin

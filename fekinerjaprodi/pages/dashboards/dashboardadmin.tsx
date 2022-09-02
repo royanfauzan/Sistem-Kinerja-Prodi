@@ -227,7 +227,7 @@ export default function dashboardadmin() {
 
                   <div className="col-6">
                     <div className="row d-flex justify-content-around">
-                    <Carddashboard judul={`Kriteria Pendidikan`}>
+                      <Carddashboard judul={`Kriteria Pendidikan`}>
                         <ListCardDash
                           judul={"Capaian Kurikulum"}
                           keterangan={`Kelola Data Capaian Kurikulum`}
@@ -251,6 +251,12 @@ export default function dashboardadmin() {
                           keterangan={`Kelola Data Mata Kuliah`}
                           halaman={"/matkul/daftarmatkul"}
                           icon={`bi bi-journal-text`}
+                        />
+                        <ListCardDash
+                          judul={"Penelitian"}
+                          keterangan={`Kelola Data Penelitian`}
+                          halaman={"/penelitian/daftarpenelitian"}
+                          icon={`bi bi-hourglass-split`}
                         />
                       </Carddashboard>
                       <Carddashboard

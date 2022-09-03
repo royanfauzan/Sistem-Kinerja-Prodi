@@ -108,6 +108,18 @@ export default function dashboardadmin() {
                   </div>
                 </div>
               </div>
+              <div className="col-4">
+                <div className="card mb-4 px-3 pb-3 bg-light">
+                  <div className="row">
+                  <CardPendidikanSimple
+                      judul={`Mahasiswa`}
+                      icon={`bi bi-people-fill`}
+                      halaman={`/mahasiswa/daftarmhs`}
+                      keterangan={"Data Mahasiswa dikelola oleh Admin"}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
             <FooterUtama />
           </div>

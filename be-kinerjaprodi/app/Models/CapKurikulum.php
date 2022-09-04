@@ -12,7 +12,7 @@ class CapKurikulum extends Model
     
     public function matkul()
     {
-        return $this->belongsTo(Matkul::class,'matkul_ID','id');
+        return $this->belongsTo(Matkul::class,'matkul_ID','id'); //matkul_ID salah satu kolom digunakan sebagai penghubung antara cap kurikulum &matkul 
     }
 
     public function prodi()
@@ -20,8 +20,5 @@ class CapKurikulum extends Model
         return $this->belongsTo(Prodi::class,'prodi_ID','id');
     }
 
-    public function anggotaMatkuls()
-    {
-        return $this->belongsToMany(Matkul::class,'relasi_cap_matkuls','cap_kurikulum_id','matkul_ID')->withPivot('keanggotaan');
-    }
+    
 }

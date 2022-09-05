@@ -207,7 +207,7 @@ export default function exportbimbingan() {
                             border-collapse: collapse;
                           }
                         `}</style>
-                        <table id="tableEWMP" border={1}>
+                        <table id="tableBimbingan" border={1}>
                           <thead>
                             <tr>
                               <td rowSpan={3}>No</td>

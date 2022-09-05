@@ -92,7 +92,7 @@ export default function index() {
               <CardSimple
                 judul={`Bagian 2`}
                 icon={`bi bi-person-rolodex`}
-                halaman={`bi bi-eyeglasses`}
+                halaman={`/luaranlaindos/export/exportluaranhakcipta`}
                 keterangan={"Hak cipta, kekayaan intelektual"}
               />
               <CardSimple

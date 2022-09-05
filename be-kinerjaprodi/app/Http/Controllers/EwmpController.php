@@ -135,7 +135,7 @@ class EwmpController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => $validator->errors(),
+                'error' => $validator->errors(),
             ], 400);
         }
 

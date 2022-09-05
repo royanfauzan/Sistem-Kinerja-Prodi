@@ -238,7 +238,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="keandalan_4"
                               className={dataError.keandalan_4 ? "is-invalid" : ""}>
-                              Keandalan : Buruk
+                              Keandalan : Sangat Baik
                             </label>
                             <input
                               className="form-control"
@@ -260,7 +260,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="keandalan_3"
                               className={dataError.keandalan_3 ? "is-invalid" : ""}>
-                              Keandalan : Cukup
+                              Keandalan : Baik
                             </label>
                             <input
                               className="form-control"
@@ -282,7 +282,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="keandalan_2"
                               className={dataError.keandalan_2 ? "is-invalid" : ""}>
-                              Keandalan : Baik
+                              Keandalan : Cukup
                             </label>
                             <input
                               className="form-control"
@@ -304,7 +304,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="keandalan_1"
                               className={dataError.keandalan_1 ? "is-invalid" : ""}>
-                              Keandalan : Sangat Baik
+                              Keandalan : Buruk
                             </label>
                             <input
                               className="form-control"
@@ -348,7 +348,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="dayatanggap_4"
                               className={dataError.dayatanggap_4 ? "is-invalid" : ""}>
-                              Daya Tanggap : Buruk
+                              Daya Tanggap : Sangat Baik
                             </label>
                             <input
                               className="form-control"
@@ -370,7 +370,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="dayatanggap_3"
                               className={dataError.dayatanggap_3 ? "is-invalid" : ""}>
-                              Daya Tanggap : Cukup
+                              Daya Tanggap : Baik
                             </label>
                             <input
                               className="form-control"
@@ -392,7 +392,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="dayatanggap_2"
                               className={dataError.dayatanggap_2 ? "is-invalid" : ""}>
-                              Daya Tanggap : Baik
+                              Daya Tanggap : Cukup
                             </label>
                             <input
                               className="form-control"
@@ -414,7 +414,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="dayatanggap_1"
                               className={dataError.dayatanggap_1 ? "is-invalid" : ""}>
-                              Daya Tanggap : Sangat Baik
+                              Daya Tanggap : Buruk
                             </label>
                             <input
                               className="form-control"
@@ -458,7 +458,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="kepastian_4"
                               className={dataError.kepastian_4 ? "is-invalid" : ""}>
-                              Kepastian : Buruk
+                              Kepastian : Sangat Baik
                             </label>
                             <input
                               className="form-control"
@@ -480,7 +480,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="kepastian_3"
                               className={dataError.kepastian_3 ? "is-invalid" : ""}>
-                              Kepastian : Cukup
+                              Kepastian : Baik
                             </label>
                             <input
                               className="form-control"
@@ -502,7 +502,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="kepastian_2"
                               className={dataError.kepastian_2 ? "is-invalid" : ""}>
-                              Kepastian : Baik
+                              Kepastian : Cukup
                             </label>
                             <input
                               className="form-control"
@@ -524,7 +524,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="kepastian_1"
                               className={dataError.kepastian_1 ? "is-invalid" : ""}>
-                              Kepastian : Sangat Baik
+                              Kepastian : Buruk
                             </label>
                             <input
                               className="form-control"
@@ -568,7 +568,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="empati_4"
                               className={dataError.empati_4 ? "is-invalid" : ""}>
-                              Empati : Buruk
+                              Empati : Sangat Baik
                             </label>
                             <input
                               className="form-control"
@@ -590,7 +590,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="empati_3"
                               className={dataError.empati_3 ? "is-invalid" : ""}>
-                              Empati : Cukup
+                              Empati : Baik
                             </label>
                             <input
                               className="form-control"
@@ -612,7 +612,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="empati_2"
                               className={dataError.empati_2 ? "is-invalid" : ""}>
-                              Empati : Baik
+                              Empati : Cukup
                             </label>
                             <input
                               className="form-control"
@@ -634,7 +634,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="empati_1"
                               className={dataError.empati_1 ? "is-invalid" : ""}>
-                              Empati : Sangat Baik
+                              Empati : Buruk
                             </label>
                             <input
                               className="form-control"
@@ -678,7 +678,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="tangible_4"
                               className={dataError.tangible_4 ? "is-invalid" : ""}>
-                              Tangible : Buruk
+                              Tangible : Sangat Baik
                             </label>
                             <input
                               className="form-control"
@@ -700,7 +700,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="tangible_3"
                               className={dataError.tangible_3 ? "is-invalid" : ""}>
-                              Tangible : Cukup
+                              Tangible : Baik
                             </label>
                             <input
                               className="form-control"
@@ -722,7 +722,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="tangible_2"
                               className={dataError.tangible_2 ? "is-invalid" : ""}>
-                              Tangible : Baik
+                              Tangible : Cukup
                             </label>
                             <input
                               className="form-control"
@@ -744,7 +744,7 @@ export default function inputkepuasanmhs() {
                           <div className="form-group">
                             <label htmlFor="tangible_1"
                               className={dataError.tangible_1 ? "is-invalid" : ""}>
-                              Tangible : Sangat Baik
+                              Tangible : Buruk
                             </label>
                             <input
                               className="form-control"

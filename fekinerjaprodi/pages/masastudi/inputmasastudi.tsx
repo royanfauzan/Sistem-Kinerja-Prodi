@@ -108,7 +108,7 @@ export default function inputprestasi() {
         const { all_masastudi } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Login Sugses!!");
+        toast.success("Login Sukses!!");
         // console.log(token);
         console.log(all_masastudi);
         router.push("../masastudi/daftarmasastudi");

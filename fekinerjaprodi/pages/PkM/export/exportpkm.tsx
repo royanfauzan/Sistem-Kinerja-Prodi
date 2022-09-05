@@ -61,7 +61,7 @@ export default function pkm() {
         setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 2) {
-          return router.push("/");
+          return router.push(`/pkmdosen/export/pkmdexport`);
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         setStadmin(true);

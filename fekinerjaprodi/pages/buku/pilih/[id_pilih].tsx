@@ -121,7 +121,7 @@ export default function editbuku(props) {
         const { all_buku } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Login Sugses!!");
+        toast.success("Login Sukses!!");
         // console.log(token);
         console.log(all_buku);
         router.push("../../buku/daftarbuku");

@@ -141,7 +141,7 @@ export default function editpagelaran(props) {
         const { all_tulisan } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Login Sugses!!");
+        toast.success("Login Sukses!!");
         // console.log(token);
         console.log(all_tulisan);
         router.push("../../tulisan/daftartulisan");

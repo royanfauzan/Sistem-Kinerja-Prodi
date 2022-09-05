@@ -30,7 +30,7 @@ export default function daftarkurikulum() {
       .then(function (response) {
         console.log(response);
         console.log("Sukses");
-        const { all_capkurikulum } = response.data;
+        const { all_capkurikulum } = response.data; //nampilin di console
         setcapkurikulum(all_capkurikulum);
 
         console.log(all_capkurikulum);

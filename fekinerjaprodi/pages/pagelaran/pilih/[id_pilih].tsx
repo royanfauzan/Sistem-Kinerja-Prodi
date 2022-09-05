@@ -121,7 +121,7 @@ export default function editPagelaran(props) {
         const { all_pagelaran } = response.data;
         //handle success
         toast.dismiss();
-        toast.success("Login Sugses!!");
+        toast.success("Login Sukses!!");
         // console.log(token);
         console.log(all_pagelaran);
         router.push("../../pagelaran/daftarpagelaran");

@@ -195,7 +195,7 @@ export default function editpagelaran(props) {
                       <div className="col-md-6">
                         <div className="form-group">
                           <label htmlFor="dosen" className="form-control-label">
-                            Prodi
+                            Mahasiswa
                           </label>
                           <select
                             className="form-select"
@@ -205,7 +205,7 @@ export default function editpagelaran(props) {
                             value={selectPrestasi}
                             onChange={handleChangePrestasi}
                           >
-                            <option>Pilih Prodi</option>
+                            <option>Pilih Mahasiswa</option>
                             {dataTulisans.map((userdosen) => {
                                {
                                 return (

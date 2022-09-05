@@ -16,22 +16,20 @@ export default function daftarprestasi() {
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
   const [dataRole, setRole] = useState("");
+  const [isLoaded, setisLoaded] = useState(false);
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
 
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/prestasi",
-      headers: { Authorization: `Bearer ${lgToken}` },
+      url: `http://127.0.0.1:8000/api/presakademik/Akademik`,
     })
       .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { all_prestasi } = response.data;
-        setprofilDosen(all_prestasi);
-
-        console.log(all_prestasi);
+        const { searchakademik } = response.data;
+        setprofilDosen(searchakademik);
+        setisLoaded(true);
+        console.log(searchakademik);
       })
       .catch(function (err) {
         console.log("gagal");
@@ -73,6 +71,29 @@ export default function daftarprestasi() {
       });
   }, []);
 
+  const tampildata = (search) => {
+    axios({
+      method: "get",
+      url: `http://127.0.0.1:8000/api/presakademik/${search}`,
+    })
+      .then(function (response) {
+        const { searchakademik } = response.data;
+        setprofilDosen(searchakademik);
+        setisLoaded(true);
+        console.log(searchakademik);
+      })
+      .catch(function (err) {
+        console.log("gagal");
+        console.log(err.response);
+      });
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    console.log(e.target.value);
+    tampildata(value);
+  };
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
@@ -100,7 +121,7 @@ export default function daftarprestasi() {
                       <h6>Authors table</h6>
                     </div>
 
-                    <div className="row justify-content-between mb-4">
+                    <div className="row justify-content-between mb-2">
                       <div className="col-4">
                         <Link href={`/prestasi/daftarprestasi/`}>
                           <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
@@ -117,6 +138,38 @@ export default function daftarprestasi() {
                           sheet="tablexls"
                           buttonText="Export Excel"
                         />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="row">
+                      <div className="col-6">
+                        <h6 className="pb-0 mb-0 ms-1">Pilih Tahun</h6>
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-6">
+                        <div className="row">
+                          <div className="col-4">
+                            <div className="form-group">
+                              <select
+                                className="form-select ms-1"
+                                aria-label="Default select example"
+                                defaultValue={'Akademik'}
+                                id="tahun"
+                                onChange={handleChange}
+                              >
+                                <option value={'Akademik'} >
+                                  {'Akademik'}
+                                </option>
+                                <option value={'non'} >
+                                  {'Non Akademik'}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -169,7 +169,7 @@ export default function inputtulisan() {
                               htmlFor="dosen"
                               className={dataError.dosen_id ? "is-invalid" : ""}
                             >
-                              Dosen
+                              Mahasiswa
                             </label>
                             <select
                               className="form-select"
@@ -177,7 +177,7 @@ export default function inputtulisan() {
                               defaultValue="0"
                               id="dosen"
                             >
-                              <option value="">Pilih Dosen</option>
+                              <option value="">Pilih Mahasiswa</option>
                               {userDosens.map((userdosen) => {
                                 return (
                                   <option

@@ -248,12 +248,12 @@ export default function inputipk() {
                                 dataError.ipk_min ? "is-invalid" : ""
                               }
                             >
-                              IPK Minimal
+                              IPK Maksimal
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="IPK Minimal"
+                              type="varchar"
+                              placeholder="IPK Maksimal"
                               id="min"
                             />
                             {dataError.ipk_min ? (
@@ -271,12 +271,12 @@ export default function inputipk() {
                             <label htmlFor="max" className={
                                 dataError.ipk_max ? "is-invalid" : ""
                               }>
-                              IPK Maksimal
+                              IPK Minimal
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="IPK Maksimal"
+                              type="varchar"
+                              placeholder="IPK Minimal"
                               id="max"
                             />{dataError.ipk_max ? (
                               <div className="invalid-feedback">
@@ -297,7 +297,7 @@ export default function inputipk() {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="IPK Rata - rata"
                               id="avg"
                             />

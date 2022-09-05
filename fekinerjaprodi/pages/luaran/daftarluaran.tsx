@@ -243,7 +243,7 @@ export default function daftarluaran() {
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Tahun
                           </th>
-                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
+                          <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2 ">
                             Jenis Luaran
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2 pe-0"></th>

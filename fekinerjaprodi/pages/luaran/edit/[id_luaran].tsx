@@ -233,18 +233,20 @@ export default function editluaran(props) {
                               onChange={handleChangeKategori}
                             >
                               <option value="">Pilih Jenis Luaran</option>
-                              <option value="Bagian-1">
+                              <option value="Paten, Paten Sederhana">
                                 Bagian-1 HKI (Paten, Paten Sederhana)
                               </option>
-                              <option value="Bagian-2">
+                              <option value="Hak Cipta, Desain Produk Industri,
+                                dll.">
                                 Bagian-2 HKI (Hak Cipta, Desain Produk Industri,
                                 dll.)
                               </option>
-                              <option value="Bagian-3">
+                              <option value="Teknologi Tepat Guna, Produk, Karya
+                                Seni, Rekayasa Sosial">
                                 Bagian-3 Teknologi Tepat Guna, Produk, Karya
                                 Seni, Rekayasa Sosial
                               </option>
-                              <option value="Bagian-4">
+                              <option value="Buku Ber-ISBN, Book Chapter">
                                 Bagian-4 Buku Ber-ISBN, Book Chapter
                               </option>
                             </select>

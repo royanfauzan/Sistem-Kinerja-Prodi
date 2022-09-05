@@ -16,10 +16,12 @@ export async function getServerSideProps(context) {
     `http://127.0.0.1:8000/api/tampil_Penelitian/${context.query.id_pilih_dosen}`
   );
   const res = await req.data.all_penelitian;
+  const res2 = await req.data.all_dosen;
 
   return {
     props: {
-      penelitian: res, // <-- assign response
+      penelitian: res,
+      all_dosen : res2 // <-- assign response
     },
   };
 }
@@ -27,7 +29,7 @@ export async function getServerSideProps(context) {
 export default function editluaran(props) {
   const router = useRouter();
   const { id_pilih_dosen } = router.query;
-  const { penelitian } = props;
+  const { penelitian, all_dosen } = props;
   const [dataPenelitian, setPenelitian] = useState(penelitian);
 
   console.log(penelitian);
@@ -37,7 +39,7 @@ export default function editluaran(props) {
   const [dataPenelitians, setPenelitians] = useState([]);
   const [selectPenelitian, setSelectPenelitian] = useState(penelitian.profil_dosen_id);
   const [selectId, setSelectId] = useState(id_pilih_dosen);
-  const [dataDosen, setdataDosen] = useState();
+  const [dataDosen, setdataDosen] = useState(all_dosen);
   const [dataError, setError] = useState([]);
   const MySwal = withReactContent(Swal);
 
@@ -67,7 +69,7 @@ export default function editluaran(props) {
         console.log(response);
         console.log('Sukses');
         const { profilDosens } = response.data;
-        setdataDosen(profilDosens);
+        // setdataDosen(profilDosens);
         console.log(profilDosens);
       })
       .catch(function (err) {

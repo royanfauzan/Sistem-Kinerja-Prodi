@@ -113,7 +113,7 @@ class CapKurikulumController extends Controller
         if($request->mata_kuliah_kompetensi){
             $mata_kuliah_kompetensi = $request->mata_kuliah_kompetensi;
         }
-
+        //jika data kosong maka kolom di isi ''
         $sikap = '';
         if($request->sikap){
             $sikap = $request->sikap;

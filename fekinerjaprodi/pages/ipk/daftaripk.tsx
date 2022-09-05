@@ -179,7 +179,7 @@ export default function daftaripk() {
                 <div className="card-header pb-0 px-3">
                   <div className="row">
                     <div className="col-4">
-                      <h6>Authors table</h6>
+                      <h6>Tabel Data IPK Mahasiswa</h6>
                     </div>
                   </div>
 

@@ -526,11 +526,151 @@ class DatabaseSeeder extends Seeder
 
 
         // Seeder SDM
-        $this->call([
-            SdmSeeder::class,
-            // PostSeeder::class,
-            // CommentSeeder::class,
-        ]);
+        // $this->call([
+        //     SdmSeeder::class,
+        //     // PostSeeder::class,
+        //     // CommentSeeder::class,
+        // ]);
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323031',
+                'nama' => 'Nurhakiki Putri Irawan',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323003',
+                'nama' => 'Made Dwiki Satria Wibawa',
+            ]
+        );
+        
+        Mahasiswa::create(
+            [
+                'nim' => '1615323039',
+                'nama' => 'KOMANG ANOM SUANDI',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1715323002',
+                'nama' => 'NI PANDE PUTU YUNI ANTARI',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1715323006',
+                'nama' => 'I PUTU AGUS GUNAWAN',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323054',
+                'nama' => 'NARENDRA BRILLIAN AL-GHIFARI',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323057',
+                'nama' => 'GUSTI AYU NYOMAN SITA WAHANA MURTI',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323065',
+                'nama' => 'NI NYOMAN LENI  ARIDANI',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323072',
+                'nama' => 'MADE GEDE ARYA ANDIKA DHARMA KRISNA',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323074',
+                'nama' => 'PUTU KHRISVANA VHARIYANA',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1815323084',
+                'nama' => 'I PUTU YUDHA PRATAMA',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1915323069',
+                'nama' => 'MUHAMMAD ALIEVYO RAMADHANI',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '2015323056',
+                'nama' => 'ALE AKBAR RIZKY',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '2015323052',
+                'nama' => 'JAKA WAHYU RAMADHAN',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '2015323008',
+                'nama' => 'I NYOMAN WAHYU ADITYA',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '2015323064',
+                'nama' => 'HABIL HUSNA ADITYA HADI',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '2015323104',
+                'nama' => 'PANDE KOMANG THEO ASTA',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1915323049',
+                'nama' => 'I KOMANG GEDE MAHA WIJASA',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1915323013',
+                'nama' => 'DEWA GEDE ADITYA PUTRA',
+            ]
+        );
+
+        Mahasiswa::create(
+            [
+                'nim' => '1915323045',
+                'nama' => 'I PUTU AGUS EKA CAHYADI',
+            ]
+        );
                 
 
         RelasiDosPen::create(
@@ -641,6 +781,90 @@ class DatabaseSeeder extends Seeder
                 'tl_tangible' => 'Upaya untuk mengingkatkan fasilitas pembelajaran merupakan salah satu bentuk optimalitas pembelajaran',      
                 'prodi_id' => 1,
                 ]
+        );
+
+          //
+        // Sumber dalam negri
+        Penelitian::create( 
+            [
+                'tema_sesuai_roadmap'=> 'Teknologi Informasi dan Komunikasi',
+                'judul' => 'Analisis Sentimen Twitter terhadap Pelaksanaan Belajar Daring Selama Masa Pandemi', 
+                'tahun' => '2021', 
+                'sumber_dana_PT_mandiri' => 'Dipa PNB', 
+                'dana_PT_Mandiri' => 14000000, 
+                'sumber_dalam_negri' => '-', 
+                'dana_dalam_negri' => 0, 
+                'sumber_luar_negri' => '-', 
+                'dana_luar_negri' => 0,
+            ]
+        );
+
+        Penelitian::create( 
+            [
+                'tema_sesuai_roadmap'=> 'Smart building',
+                'judul' => 'Perancangan dan Implementasi Computer Vision Sebagai Kendali Lampu Pada Smart Home', 
+                'tahun' => '2018', 
+                'sumber_dana_PT_mandiri' => '-', 
+                'dana_PT_Mandiri' => 0, 
+                'sumber_dalam_negri' => '-', 
+                'dana_dalam_negri' => 0, 
+                'sumber_luar_negri' => '-', 
+                'dana_luar_negri' => 0,
+            ]
+        );
+
+        // Sumber Luar negri
+        Pkm::create( 
+            [
+                'tema_sesuai_roadmap'=> 'Mengabdi Desa',
+                'judul_kegiatan' => 'Pelatihan Digital Marketing bagi UMKM di Desa Serangan Denpasar Bali', 
+                'lokasi' => 'Desa Serangan, Denpasar', 
+                'tahun' => '2021', 
+                'sumber_dana_PT_mandiri' => 'Dana Mandiri', 
+                'dana_PT_Mandiri' => 10000000, 
+                'sumber_dalam_negri' => '-', 
+                'dana_dalam_negri' => 0, 
+                'sumber_luar_negri' => '=', 
+                'dana_luar_negri' => 0,
+            ]
+        );
+
+        Pkm::create( 
+            [
+                'tema_sesuai_roadmap'=> 'Application of Information Technology and Internet of Think In Tourism',
+                'judul_kegiatan' => 'Instalasi Jaringan Komputer dan Sosialisasi Sistem Informasi pada Desa Wisata Pinge, Kecamatan Marga, Kabupaten Tabanan, Bali', 
+                'lokasi' => 'Desa Wisata Pinge, Kecamatan Marga, Kabupaten Tabanan, Bali', 
+                'tahun' => '2019', 
+                'sumber_dana_PT_mandiri' => '-', 
+                'dana_PT_Mandiri' => 0, 
+                'sumber_dalam_negri' => '-', 
+                'dana_dalam_negri' => 0, 
+                'sumber_luar_negri' => '-', 
+                'dana_luar_negri' => 0,
+            ]
+        );
+
+        Pkm::create( 
+            [
+                'tema_sesuai_roadmap'=> 'Sistem Informasi',
+                'judul_kegiatan' => 'PKM Pengelolaan Keuangan Banjar Adat', 
+                'lokasi' => 'Banjar Sibang, Desa Sangeh', 
+                'tahun' => '2018', 
+                'sumber_dana_PT_mandiri' => '-', 
+                'dana_PT_Mandiri' => 0, 
+                'sumber_dalam_negri' => 'DRPM', 
+                'dana_dalam_negri' => 41000000, 
+                'sumber_luar_negri' => '-', 
+                'dana_luar_negri' => 0,
+            ]
+        );
+
+        RelasiDosPen::create(
+            [
+                'profil_dosen_id'=> 1,
+                'penelitian_id' => 1,
+                'keanggotaan' => 'Ketua', 
+            ]
         );
 
     }

@@ -144,6 +144,18 @@ class ProdiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $prodi = Prodi::find($id);
+        $prodi->delete();
+
+        if (!$prodi) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
     }
 }

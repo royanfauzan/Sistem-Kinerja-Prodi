@@ -33,6 +33,15 @@ export default function SidebarDosen() {
   ]
   const isMenuSdm = listFolderSdm.includes(arrHalaman[1])
 
+  const listFolderPendidikan = ["dashboardpendidikan", "integrasi", "matkul", "mahasiswa"]
+  const isMenuPendidikan = listFolderPendidikan.includes(arrHalaman[1])
+
+  const listFolderPenelitian = ["dashboardpenelitian", "penelitian"]
+  const isMenuPenelitian = listFolderPenelitian.includes(arrHalaman[1])
+
+  const listFolderPkm = ["dashboardpkm", "pkm"]
+  const isMenuPkm = listFolderPkm.includes(arrHalaman[1])
+
   const Logout = async () => {
     const lgToken = localStorage.getItem("token")
 
@@ -86,10 +95,13 @@ export default function SidebarDosen() {
         id="sidenav-collapse-main"
       >
         <ul className="navbar-nav">
-          <li className={`nav-link ${
-                isMenuDashboard ? "active bg-light text-dark" : ""
-              }`}>
-            <a className="nav-link " href="/dashboards/dashboarddosen">
+        <li className={`nav-item `}>
+            <a
+              className={`nav-link ${
+                isMenuDashboard ? "active bg-light text-dark opacity-10" : ""
+              }`}
+              href="/dashboards/dashboarddosen"
+            >
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
@@ -97,28 +109,38 @@ export default function SidebarDosen() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards/dashboardpendidikan">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Kriteria Pendidikan</span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards/dashboardpenelitian">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Kriteria Penelitian</span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards/dashboardpkm">
+            <a className={`nav-link ${
+                isMenuPendidikan ? "active bg-light text-dark" : ""
+              }`}href="/dashboardpendidikan/dashboardpendidikan">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
               <span className="nav-link-text ms-1">
-                Kriteria Pengabdian <br /> Kepada Masyarakat
+                Kriteria Pendidikan
+              </span>
+            </a>
+          </li>
+          <li className={`nav-item `}>
+            <a className={`nav-link ${
+                isMenuPenelitian ? "active bg-light text-dark" : ""
+              }`}href="/dashboardpenelitian/dashboardpenelitian">
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">
+                Kriteria Penelitian
+              </span>
+            </a>
+          </li>
+          <li className={`nav-item `}>
+            <a className={`nav-link ${
+                isMenuPkm ? "active bg-light text-dark" : ""
+              }`}href="/dashboardpkm/dashboardpkm">
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">
+                Kriteria PKM
               </span>
             </a>
           </li>

@@ -6,6 +6,8 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 interface Udosen {
   id: number;
@@ -19,6 +21,7 @@ export default function inputprodi() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState<Udosen[]>([]);
+  const [dataRole, setRole] = useState("");
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -61,6 +64,8 @@ export default function inputprodi() {
             console.log(response);
             console.log('Sukses');
             const {level_akses} = response.data.user;
+            const { role } = response.data.user;
+            setRole(role);
             // kalo ga admin dipindah ke halaman lain
             if(level_akses !== 3){
               return router.push('/');
@@ -126,7 +131,7 @@ export default function inputprodi() {
     <>
     <LoadingUtama loadStatus={stadmin}/>
       {stadmin  &&(
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
         <div className="container-fluid py-4">
           <div className="row">
             <div className="col-md-8">
@@ -134,7 +139,7 @@ export default function inputprodi() {
                 <div className="card">
                   <div className="card-header pb-0">
                     <div className="d-flex align-items-center">
-                      <p className="mb-0">Input Data</p>
+                      <h6 className="mb-0">Input Data Program Studi</h6>
                       <button
                         className="btn btn-primary btn-sm ms-auto"
                         type="submit"
@@ -144,7 +149,6 @@ export default function inputprodi() {
                     </div>
                   </div>
                   <div className="card-body">
-                    <p className="text-uppercase text-sm">Profil Dosen</p>
                     <div className="row">
                       <div className="col-md-6">
                         <div className="form-group">

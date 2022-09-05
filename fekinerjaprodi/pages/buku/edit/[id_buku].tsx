@@ -31,15 +31,14 @@ export default function editbuku(props) {
 
   // State Select
   const [stadmin, setStadmin] = useState(false);
-  
+  const [selectTingkat, setselectTingkat] = useState(buku.kategori_jurnal);
   const url = "http://127.0.0.1:8000/";
   const [dataurl, setUrl] = useState(url);
   const [dataBukus, setBukus] = useState([]);
+  const [dataRole, setRole] = useState("");
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () => {
-    
-  };
+  const pengambilData = async () => {};
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
@@ -60,6 +59,8 @@ export default function editbuku(props) {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -95,8 +96,7 @@ export default function editbuku(props) {
     axios({
       method: "post",
       url:
-        `http://127.0.0.1:8000/api/edit_buku/${dataBuku.id}` +
-        `?_method=PUT`,
+        `http://127.0.0.1:8000/api/edit_buku/${dataBuku.id}` + `?_method=PUT`,
       data: formData,
       headers: {
         Authorization: `Bearer ${lgToken}`,
@@ -127,16 +127,19 @@ export default function editbuku(props) {
       });
   };
 
+  const handleChangeTingkat = (e) => {
+    setselectTingkat(e.target.value);
+  };
+
   const handleChangeFile = (e) => {
     setfilebuktis(e.target.files[0]);
-
   };
 
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -154,153 +157,197 @@ export default function editbuku(props) {
                       </div>
                     </div>
                     <div className="card-body">
-                    <p className="text-uppercase text-sm">Pagelaran Mahasiswa</p>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="judul" className="form-control-label">
-                            Judul
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Judul"
-                            id="judul"
-                            defaultValue={dataBuku.judul}
-                            required
-                          />
+                      <p className="text-uppercase text-sm">
+                        Pagelaran Mahasiswa
+                      </p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="judul"
+                              className="form-control-label"
+                            >
+                              Judul
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Judul"
+                              id="judul"
+                              defaultValue={dataBuku.judul}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="kategori"
+                              className="form-control-label"
+                            >
+                              Kategori Jurnal
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
+                              id="kategori"
+                              value={selectTingkat}
+                              onChange={handleChangeTingkat}
+                              required
+                            >
+                              <option value="">Pilih Kategori Jurnal</option>
+                              <option value="tidak terakreditasi">
+                                Jurnal Penelitian Tidak Terakreditasi
+                              </option>
+                              <option value="nasional terakreditasi">
+                                Jurnal penelitian nasional terakreditasi
+                              </option>
+                              <option value="internasional">
+                                Jurnal penelitian internasional
+                              </option>
+                              <option value="internasional bereputasi">
+                                Jurnal penelitian internasional bereputasi
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="nama"
+                              className="form-control-label"
+                            >
+                              Nama Jurnal
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Nama Jurnal"
+                              id="nama"
+                              defaultValue={dataBuku.nm_jurnal}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="keterangan"
+                              className="form-control-label"
+                            >
+                              Keterangan
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Keterangan"
+                              id="keterangan"
+                              defaultValue={dataBuku.keterangan}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="volume"
+                              className="form-control-label"
+                            >
+                              Volume
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Volume"
+                              id="volume"
+                              defaultValue={dataBuku.volume}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="tahun"
+                              className="form-control-label"
+                            >
+                              Tahun
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tahun"
+                              id="tahun"
+                              defaultValue={dataBuku.tahun}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="nomor"
+                              className="form-control-label"
+                            >
+                              Nomor
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Nomor"
+                              id="nomor"
+                              defaultValue={dataBuku.nomor}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="halaman"
+                              className="form-control-label"
+                            >
+                              Halaman
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Halaman"
+                              id="halaman"
+                              defaultValue={dataBuku.halaman}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="sitasi"
+                              className="form-control-label"
+                            >
+                              Sitasi
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Sitasi"
+                              id="sitasi"
+                              defaultValue={dataBuku.sitasi}
+                              required
+                            />
+                          </div>
                         </div>
                       </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="kategori" className="form-control-label">
-                            Kategori Jurnal
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Judul Kategori"
-                            id="kategori"
-                            defaultValue={dataBuku.kategori_jurnal}
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="nama" className="form-control-label">
-                          Nama Jurnal
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Nama Jurnal"
-                            id="nama"
-                            defaultValue={dataBuku.nm_jurnal}
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="keterangan" className="form-control-label">
-                          Keterangan
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Keterangan"
-                            id="keterangan"
-                            defaultValue={dataBuku.keterangan}
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="volume" className="form-control-label">
-                          Volume
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Volume"
-                            id="volume"
-                            defaultValue={dataBuku.volume}
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tahun" className="form-control-label">
-                          Tahun
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tahun"
-                            id="tahun"
-                            defaultValue={dataBuku.tahun}
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="nomor" className="form-control-label">
-                          Nomor
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Nomor"
-                            id="nomor"
-                            defaultValue={dataBuku.nomor}
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="halaman" className="form-control-label">
-                            Halaman
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Halaman"
-                            id="halaman"
-                            defaultValue={dataBuku.halaman}
-                            required
-                          />
-                        </div>
-                      </div> 
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="sitasi" className="form-control-label">
-                            Sitasi
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Sitasi"
-                            id="sitasi"
-                            defaultValue={dataBuku.sitasi}
-                            required
-                          />
-                        </div>
-                      </div> 
-
                     </div>
-                  </div>
                   </div>
                 </form>
               </div>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mahasiswa;
 use App\Models\Pkm;
+use App\Models\profilDosen;
 use App\Models\RelasiPkmDos;
 use App\Models\RelasiPkmMhs;
 use Illuminate\Http\Request;
@@ -20,6 +22,22 @@ class PKMController extends Controller
         return response()->json([ //ngirim ke front end
             'success' => true,
             'all_pkm' => Pkm::with(['anggotaDosens', 'anggotaMahasiswas'])->get(),
+        ]);
+    }
+
+    public function relasiPkmMhs($id)
+    {
+        return response()->json([ //ngirim ke front end
+            'success' => true,
+            'all_relasi' => RelasiPkmMhs::with('mahasiswa')->where('pkm_id', $id)->get(),
+        ]);
+    }
+
+    public function relasipkmdosen($id)
+    {
+        return response()->json([ //ngirim ke front end
+            'success' => true,
+            'all_relasi' => RelasiPkmDos::with('dosen')->where('pkm_id', $id)->get(),
         ]);
     }
 
@@ -44,6 +62,55 @@ class PKMController extends Controller
                 ->orwhere('dana_luar_negri', 'LIKE', "%{$search}%")
                 ->get()
 
+        ]);
+    }
+
+    public function searchhapus($id,$search)
+    {
+        $datarelasi = RelasiPkmDos::with('dosen')
+        ->whereRelation('dosen', 'NamaDosen', 'LIKE', "%{$search}%")
+        ->orWhereRelation('dosen', 'NIDK', 'LIKE', "%{$search}%")     
+        ->get();
+
+        // $datafilter = $datarelasi->where('pkm_id',$id);
+        $arrRekognisi = array();
+        foreach ($datarelasi as $key => $Rekognisi) {
+            if ($Rekognisi->pkm_id == $id) {
+                $arrRekognisi[] = $Rekognisi;
+            }
+        }
+
+
+        return response()->json([
+            'success' => true,
+            'searchhapus' =>  $arrRekognisi, 
+            'searchrelasi' =>  $datarelasi,
+            
+        ]);
+    }
+
+
+    public function searchhapusmhs($id,$search)
+    {
+        $datarelasi = RelasiPkmMhs::with('mahasiswa')
+        ->whereRelation('mahasiswa', 'nim', 'LIKE', "%{$search}%")
+        ->orWhereRelation('mahasiswa', 'nama', 'LIKE', "%{$search}%")     
+        ->get();
+
+        // $datafilter = $datarelasi->where('pkm_id',$id);
+        $arrRekognisi = array();
+        foreach ($datarelasi as $key => $Rekognisi) {
+            if ($Rekognisi->pkm_id == $id) {
+                $arrRekognisi[] = $Rekognisi;
+            }
+        }
+
+
+        return response()->json([
+            'success' => true,
+            'searchhapusmhs' =>  $arrRekognisi, 
+            'searchrelasi' =>  $datarelasi,
+            
         ]);
     }
 
@@ -129,9 +196,31 @@ class PKMController extends Controller
      */
     public function show($id)
     {
+        $listanggota = RelasiPkmDos::where('pkm_id', $id)->get();
+
+        $idtags = array();
+        foreach ($listanggota as $anggota) {
+            $idtags[] = $anggota->profil_dosen_id;
+        }
+
+        $profilDosens = profilDosen::whereNotIn('id', $idtags)->get();
+
+//------------------------------------------------------------------------
+        $listanggotamhs = RelasiPkmMhs::where('pkm_id', $id)->get();
+
+        $idtagsmhs = array();
+        foreach ($listanggotamhs as $anggota) {
+            $idtagsmhs[] = $anggota->mahasiswa_id;
+        }
+
+        $profilmhs = Mahasiswa::whereNotIn('id', $idtagsmhs)->get();
+
+      
         return response()->json([
             'success' => true,
             'all_pkm' => Pkm::with(['anggotaDosens', 'anggotaMahasiswas'])->where('id', $id)->first(),
+            'all_dosen' =>  $profilDosens,
+            'all_mhs' =>  $profilmhs,
             'id' => $id
         ]);
     }
@@ -175,7 +264,7 @@ class PKMController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $pkm->tema_sesuai_roadmap = $request->tema_sesuai_roadmap;
@@ -312,6 +401,40 @@ class PKMController extends Controller
             'pkm_id' => $request->pkm_id,
             'keanggotaan' => $request->keanggotaan,
             'all_pkm' => Pkm::all()
+        ]);
+    }
+
+    public function deletedosen($id)
+    {
+        $pkm = RelasiPkmDos::find($id);
+        $pkm->delete();
+
+        if (!$pkm) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
+    }
+
+    public function deletemhs($id)
+    {
+        $pkm = RelasiPkmMhs::find($id);
+        $pkm->delete();
+
+        if (!$pkm) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
         ]);
     }
 }

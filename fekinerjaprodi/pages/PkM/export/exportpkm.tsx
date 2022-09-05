@@ -16,6 +16,7 @@ export default function pkm() {
   const [tampilPKM, settampilPKM] = useState([]);
   const [anggota_dosens, setdataDosen] = useState([]);
   const [anggota_mahasiswas, setdataMahasiswa] = useState([]);
+  const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -56,8 +57,10 @@ export default function pkm() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 3) {
+        if (level_akses !== 2) {
           return router.push("/");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -76,7 +79,7 @@ export default function pkm() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
@@ -123,8 +126,8 @@ export default function pkm() {
                 </div>
                 
                 <div className="card-body p-3">
-                  <div className="table-responsive p-0"></div>
-                  <table id="tabelpkm" border="1">
+                  <div className="table-responsive p-0">
+                  <table id="tabelpkm" className="table align-items-center mb-0 table-hover" border="1">
                     <thead>
                       <tr>
                         <th>No</th>
@@ -155,8 +158,8 @@ export default function pkm() {
                               })}
                             </th>
 
-                            <th className="align-middle ">
-                              <p className="mb-0 text-sm text-center">
+                            <th className="align-middle text-start">
+                              <p className="mb-0 text-sm ">
                                 {tPKM.tema_sesuai_roadmap}
                               </p>
                             </th>
@@ -164,7 +167,7 @@ export default function pkm() {
                             <th>
                               {tPKM.anggota_mahasiswas.map((anggota_mahasiswas) => {
                                 return (
-                                  <p className="mb-0 text-sm text-center" key='anggota.id'>
+                                  <p className="mb-0 text-sm text-start" key='anggota.id'>
                                     {anggota_mahasiswas.nama}
                                   </p>
                                 );
@@ -172,7 +175,7 @@ export default function pkm() {
                             </th>
 
                             <th>
-                              <p className="mb-0 text-sm text-center">
+                              <p className="mb-0 text-sm text-start">
                                 {tPKM.judul_kegiatan}
                               </p>
                             </th>
@@ -189,6 +192,7 @@ export default function pkm() {
                       })}
                     </tbody>
                   </table>
+                  </div>
                 </div>
               </div>
             </div>

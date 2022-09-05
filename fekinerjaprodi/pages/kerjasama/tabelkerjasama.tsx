@@ -17,6 +17,7 @@ export default function tabelkerjasama() {
   const [tampilKerjasama, settampilKerjasama] = useState([])
   const url = "http://127.0.0.1:8000/storage/kerjasama/"
   const [dataurl, setUrl] = useState(url)
+  const [dataRole, setRole] = useState("")
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token")
@@ -57,6 +58,8 @@ export default function tabelkerjasama() {
         console.log(response)
         console.log("Sukses")
         const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/")
@@ -74,13 +77,14 @@ export default function tabelkerjasama() {
 
   const deleteKjs = (id) => {
     MySwal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Apa Kamu Yakin Untuk Menghapus Data?",
+      text: "Jika Data Terhapus, Data Tidak Dapat Kembali",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       // <--
       if (result.isConfirmed) {
@@ -101,12 +105,14 @@ export default function tabelkerjasama() {
   }
   const editKjs = (id) => {
     MySwal.fire({
-      title: "Edit",
-      text: "Are you sure? ",
+      title: "Edit Data Kerjasama",
+      text: "Yakin Untuk Edit Data? ",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
+      cancelButtonColor: "#d33",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -117,12 +123,14 @@ export default function tabelkerjasama() {
   }
   const tambahKjs = () => {
     MySwal.fire({
-      title: "Tambah",
-      text: "Are you sure? ",
+      title: "Tambah Data Kerjasama",
+      text: "Apa kamu yakin? ",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
+      cancelButtonColor: "#d33",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -133,12 +141,14 @@ export default function tabelkerjasama() {
   }
   const exportKjs = () => {
     MySwal.fire({
-      title: "EXport",
-      text: "Are you sure? ",
+      title: "Export Data Kerjasama",
+      text: "Apa kamu yakin? ",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      confirmButtonText: "Iya",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -164,33 +174,34 @@ export default function tabelkerjasama() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className=" container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
                 <div className="card-header pb-0">
                   <div className="row justify-content-between">
+                  <p className="text-uppercase text-sm text-center"> <h5>TABEL DATA KERJASAMA </h5> </p>
                     <div className="col-8">
                       <button
                         onClick={() => tambahKjs()}
                         className="btn btn-sm btn-success border-0 shadow-sm  m-0"
                       >
-                        Tambah
+                        Tambah Data
                       </button>
 
                       <button
                         onClick={() => exportKjs()}
                         className="btn ms-2 btn-sm btn-success border-0 shadow-sm  m-0"
                       >
-                        Export
+                        Export Data
                       </button>
                     </div>
 
                     <div className="col-4 d-flex flex-row-reverse">
-                      <input
-                        className="rounded-3"
+                      <input 
+                        className="form-control d-flex flex-row-reverse me-2 mt-3 mb-0"
                         type="text"
-                        placeholder="search.."
+                        placeholder="Cari Data Kerjasama..."
                         defaultValue=""
                         id="search"
                         onChange={searchdata}
@@ -294,7 +305,7 @@ export default function tabelkerjasama() {
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
                                   <h6 className="mb-0 text-sm">
-                                    {tKjs.mitra.bidang}
+                                    {tKjs.bidang}
                                   </h6>
                                 </span>
                               </td>

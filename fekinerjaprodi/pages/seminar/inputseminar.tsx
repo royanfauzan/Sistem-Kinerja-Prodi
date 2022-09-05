@@ -12,6 +12,8 @@ export default function inputseminar() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState([]);
+  const [dataRole, setRole] = useState('');
+  const [dataError, setError] = useState([]);
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -54,6 +56,8 @@ export default function inputseminar() {
             console.log(response);
             console.log('Sukses');
             const {level_akses} = response.data.user;
+            const { role } = response.data.user;
+            setRole(role);
             // kalo ga admin dipindah ke halaman lain
             if(level_akses !== 3){
               return router.push('/');
@@ -101,7 +105,7 @@ export default function inputseminar() {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(all_seminar);
-        // router.push("../seminar/daftarseminar");
+        router.push("../seminar/daftarseminar");
       })
       .catch(function (error) {
         //handle error
@@ -121,7 +125,7 @@ export default function inputseminar() {
     <>
     <LoadingUtama loadStatus={stadmin}/>
       {stadmin  &&(
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
         <div className="container-fluid py-4">
           <div className="row">
             <div className="col-md-8">
@@ -141,33 +145,43 @@ export default function inputseminar() {
                   <div className="card-body">
                     <p className="text-uppercase text-sm">Seminar Mahasiswa</p>
                     <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="mahasiswa" className="form-control-label">
-                            Nama Mahasiswa
-                          </label>
-                          <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            defaultValue="0"
-                            id="mahasiswa"
-                          >
-                            <option>Pilih Mahasiswa</option>
-                            {userDosens.map((usermahasiswa) => {
-                               {
+                    <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="mahasiswa"
+                              className={dataError.mahasiswa_id ? "is-invalid" : ""}
+                            >
+                              Mahasiswa
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
+                              id="mahasiswa"
+                            >
+                              <option value="">Pilih mahasiswa</option>
+                              {userDosens.map((usermahasiswa) => {
                                 return (
                                   <option
                                     value={usermahasiswa.id}
                                     key={usermahasiswa.id}
                                   >
-                                    {usermahasiswa.nim}
+                                    {usermahasiswa.nama +
+                                      ` ` +
+                                      usermahasiswa.nim}
                                   </option>
                                 );
-                              }
-                            })}
-                          </select>
+                              })}
+                            </select>
+                            {dataError.mahasiswa_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.mahasiswa_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
                       <div className="col-md-6">
                         <div className="form-group">
                           <label htmlFor="tahun" className="form-control-label">
@@ -178,7 +192,6 @@ export default function inputseminar() {
                             type="text"
                             placeholder="Tahun"
                             id="tahun"
-                            required
                           />
                         </div>
                       </div>
@@ -192,7 +205,6 @@ export default function inputseminar() {
                             type="text"
                             placeholder="Judul Kegiatan"
                             id="judul"
-                            required
                           />
                         </div>
                       </div>
@@ -220,7 +232,7 @@ export default function inputseminar() {
                           <input
                             className="form-control"
                             type="text"
-                            placeholder="K Seminarategori"
+                            placeholder="Kategori Seminar"
                             id="kategori"
                             required
                           />

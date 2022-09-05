@@ -6,6 +6,8 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 
 // Untuk Ngambil Data Berdasarkan ID
@@ -45,10 +47,14 @@ export default function update_datakepuasanmhs(props) {
 
   const [datakepuasanmhs, setdatakepuasanmhs] = useState(kepuasanmhs);
   const [dataprodi, setdataprodi] = useState(prodi);
+  const [dataError, setError] = useState([]);
+  const MySwal = withReactContent(Swal);
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
   const [selectProdi, setselectProdi] = useState(kepuasanmhs.prodi_id);
+
+  const [dataRole, setRole] = useState("");
 
 
 
@@ -82,6 +88,8 @@ export default function update_datakepuasanmhs(props) {
         console.log(response);
         console.log('Sukses');
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push('/');
@@ -147,27 +155,26 @@ export default function update_datakepuasanmhs(props) {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        const { profil } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(response.data);
-        router.push("../../kepuasanmhs/daftarkepuasanmhs");
+    .then(function (response) {
+      MySwal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Berhasil Di Edit",
       })
-      .catch(function (error) {
-        //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
 
-        console.log("tidak success");
-        console.log(error.response);
-      });
+      router.push("/kepuasanmhs/daftarkepuasanmhs")
+    })
+    .catch(function (error) {
+      //handle error
+      setError(error.response.data.error)
+      console.log(error.response.data.error)
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Data Gagal Di Edit",
+      })
+      console.log(error.response)
+    })
   };
 
   const handleChangeProdi = (e) => {
@@ -178,7 +185,7 @@ export default function update_datakepuasanmhs(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -199,38 +206,52 @@ export default function update_datakepuasanmhs(props) {
                     <div className="card-body">
                       <div className="row">
 
-                        <div className="col-md-6">
+                        
+                      <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="prodi" className="form-control-label">
-                              Program Studi
+                            <label
+                              htmlFor="prodi"
+                              className={dataError.prodi_id ? "is-invalid" : ""}
+                            >
+                              Prodi
                             </label>
                             <select
                               className="form-select"
                               aria-label="Default select example"
-                              value={selectProdi}
+                              defaultValue="0"
                               id="prodi"
+
+                              value={selectProdi}
                               onChange={handleChangeProdi}
                             >
-                              <option>Pilih Program Studi</option>
-                              {dataprodi.map((userProdi) => {
-                                {
-                                  return (
-                                    <option
-                                      value={userProdi.id}
-                                      key={userProdi.id}
-                                    >
-                                      {userProdi.prodi + ' ' + userProdi.nama_prodi}
-                                    </option>
-                                  );
-                                }
+                              <option value="">Pilih Prodi</option>
+                              {dataprodi.map((userprodi) => {
+                                return (
+                                  <option
+                                    value={userprodi.id}
+                                    key={userprodi.id}
+                                  >
+                                    {userprodi.prodi +
+                                      ` ` +
+                                      userprodi.nama_prodi}
+                                  </option>
+                                );
                               })}
                             </select>
+                            {dataError.prodi_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.prodi_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tahun" className="form-control-label">
+                            <label htmlFor="tahun" 
+                            className={dataError.tahun ? "is-invalid" : ""}>
                               Tahun
                             </label>
                             <input
@@ -239,13 +260,20 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="Tahun"
                               id="tahun"
-                              required
                             />
+                            {dataError.tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="keandalan_4" className="form-control-label">
+                            <label htmlFor="keandalan_4" 
+                            className={dataError.keandalan_4 ? "is-invalid" : ""}>
                               Keandalan : Buruk
                             </label>
                             <input
@@ -254,16 +282,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="4"
                               id="keandalan_4"
-                              required
                             />
+                            {dataError.keandalan_4 ? (
+                              <div className="invalid-feedback">
+                                {dataError.keandalan_4}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
-
-
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="keandalan_3" className="form-control-label">
+                            <label htmlFor="keandalan_3" 
+                            className={dataError.keandalan_3 ? "is-invalid" : ""}>
                               Keandalan : Cukup
                             </label>
                             <input
@@ -272,14 +305,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="3"
                               id="keandalan_3"
-                              required
                             />
+                            {dataError.keandalan_3 ? (
+                              <div className="invalid-feedback">
+                                {dataError.keandalan_3}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="keandalan_2" className="form-control-label">
+                            <label htmlFor="keandalan_2" 
+                            className={dataError.keandalan_2 ? "is-invalid" : ""}>
                               Keandalan : Baik
                             </label>
                             <input
@@ -288,14 +328,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="2"
                               id="keandalan_2"
-                              required
                             />
+                            {dataError.keandalan_2 ? (
+                              <div className="invalid-feedback">
+                                {dataError.keandalan_2}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="keandalan_1" className="form-control-label">
+                            <label htmlFor="keandalan_1" 
+                            className={dataError.keandalan_1 ? "is-invalid" : ""}>
                               Keandalan : Sangat Baik
                             </label>
                             <input
@@ -304,14 +351,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="1"
                               id="keandalan_1"
-                              required
                             />
+                            {dataError.keandalan_1 ? (
+                              <div className="invalid-feedback">
+                                {dataError.keandalan_1}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tl_keandalan" className="form-control-label">
+                            <label htmlFor="tl_keandalan" 
+                             className={dataError.tl_keandalan ? "is-invalid" : ""}>
                               TL Keandalan
                             </label>
                             <input
@@ -320,14 +374,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="Tindakan yang Dilakukan"
                               id="tl_keandalan"
-                              required
                             />
+                            {dataError.tl_keandalan ? (
+                              <div className="invalid-feedback">
+                                {dataError.tl_keandalan}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="dayatanggap_4" className="form-control-label">
+                            <label htmlFor="dayatanggap_4" 
+                            className={dataError.dayatanggap_4 ? "is-invalid" : ""}>
                               Daya Tanggap : Buruk
                             </label>
                             <input
@@ -336,14 +397,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="4"
                               id="dayatanggap_4"
-                              required
                             />
+                            {dataError.dayatanggap_4 ? (
+                              <div className="invalid-feedback">
+                                {dataError.dayatanggap_4}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="dayatanggap_3" className="form-control-label">
+                            <label htmlFor="dayatanggap_3" 
+                            className={dataError.dayatanggap_3 ? "is-invalid" : ""}>
                               Daya Tanggap : Cukup
                             </label>
                             <input
@@ -352,14 +420,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="3"
                               id="dayatanggap_3"
-                              required
                             />
+                            {dataError.dayatanggap_3 ? (
+                              <div className="invalid-feedback">
+                                {dataError.dayatanggap_3}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="dayatanggap_2" className="form-control-label">
+                            <label htmlFor="dayatanggap_2" 
+                             className={dataError.dayatanggap_2 ? "is-invalid" : ""}>
                               Daya Tanggap : Baik
                             </label>
                             <input
@@ -368,14 +443,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="2"
                               id="dayatanggap_2"
-                              required
                             />
+                            {dataError.dayatanggap_2 ? (
+                              <div className="invalid-feedback">
+                                {dataError.dayatanggap_2}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="dayatanggap_1" className="form-control-label">
+                            <label htmlFor="dayatanggap_1" 
+                            className={dataError.dayatanggap_1 ? "is-invalid" : ""}>
                               Daya Tanggap : Sangat Baik
                             </label>
                             <input
@@ -384,14 +466,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="1"
                               id="dayatanggap_1"
-                              required
                             />
+                            {dataError.dayatanggap_1 ? (
+                              <div className="invalid-feedback">
+                                {dataError.dayatanggap_1}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tl_dayatanggap" className="form-control-label">
+                            <label htmlFor="tl_dayatanggap" 
+                            className={dataError.tl_dayatanggap ? "is-invalid" : ""}>
                               TL Daya Tanggap
                             </label>
                             <input
@@ -400,14 +489,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="Tindakan yang Dilakukan"
                               id="tl_dayatanggap"
-                              required
                             />
+                             {dataError.tl_dayatanggap ? (
+                              <div className="invalid-feedback">
+                                {dataError.tl_dayatanggap}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="kepastian_4" className="form-control-label">
+                            <label htmlFor="kepastian_4" 
+                            className={dataError.kepastian_4 ? "is-invalid" : ""}>
                               Kepastian : Buruk
                             </label>
                             <input
@@ -416,14 +512,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="4"
                               id="kepastian_4"
-                              required
                             />
+                            {dataError.kepastian_4 ? (
+                              <div className="invalid-feedback">
+                                {dataError.kepastian_4}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="kepastian_3" className="form-control-label">
+                            <label htmlFor="kepastian_3" 
+                            className={dataError.kepastian_3 ? "is-invalid" : ""}>
                               Kepastian : Cukup
                             </label>
                             <input
@@ -432,14 +535,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="3"
                               id="kepastian_3"
-                              required
                             />
+                            {dataError.kepastian_3 ? (
+                              <div className="invalid-feedback">
+                                {dataError.kepastian_3}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="kepastian_2" className="form-control-label">
+                            <label htmlFor="kepastian_2" 
+                            className={dataError.kepastian_2 ? "is-invalid" : ""}>
                               Kepastian : Baik
                             </label>
                             <input
@@ -448,14 +558,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="2"
                               id="kepastian_2"
-                              required
                             />
+                            {dataError.kepastian_2 ? (
+                              <div className="invalid-feedback">
+                                {dataError.kepastian_2}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="kepastian_1" className="form-control-label">
+                            <label htmlFor="kepastian_1" 
+                            className={dataError.kepastian_1 ? "is-invalid" : ""}>
                               Kepastian : Sangat Baik
                             </label>
                             <input
@@ -464,14 +581,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="1"
                               id="kepastian_1"
-                              required
                             />
+                            {dataError.kepastian_1 ? (
+                              <div className="invalid-feedback">
+                                {dataError.kepastian_1}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tl_kepastian" className="form-control-label">
+                            <label htmlFor="tl_kepastian" 
+                            className={dataError.tl_kepastian ? "is-invalid" : ""}>
                               TL Kepastian
                             </label>
                             <input
@@ -480,14 +604,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="Tindakan yang Dilakukan"
                               id="tl_kepastian"
-                              required
                             />
+                            {dataError.tl_kepastian ? (
+                              <div className="invalid-feedback">
+                                {dataError.tl_kepastian}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="empati_4" className="form-control-label">
+                            <label htmlFor="empati_4" 
+                            className={dataError.empati_4 ? "is-invalid" : ""}>
                               Empati : Buruk
                             </label>
                             <input
@@ -496,14 +627,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="4"
                               id="empati_4"
-                              required
                             />
+                            {dataError.empati_4 ? (
+                              <div className="invalid-feedback">
+                                {dataError.empati_4}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="empati_3" className="form-control-label">
+                            <label htmlFor="empati_3" 
+                            className={dataError.empati_3 ? "is-invalid" : ""}>
                               Empati : Cukup
                             </label>
                             <input
@@ -512,14 +650,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="3"
                               id="empati_3"
-                              required
                             />
+                            {dataError.empati_3 ? (
+                              <div className="invalid-feedback">
+                                {dataError.empati_3}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="empati_2" className="form-control-label">
+                            <label htmlFor="empati_2" 
+                            className={dataError.empati_2 ? "is-invalid" : ""}>
                               Empati : Baik
                             </label>
                             <input
@@ -528,14 +673,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="2"
                               id="empati_2"
-                              required
                             />
+                             {dataError.empati_2 ? (
+                              <div className="invalid-feedback">
+                                {dataError.empati_2}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="empati_1" className="form-control-label">
+                            <label htmlFor="empati_1" 
+                            className={dataError.empati_1 ? "is-invalid" : ""}>
                               Empati : Sangat Baik
                             </label>
                             <input
@@ -544,14 +696,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="1"
                               id="empati_1"
-                              required
                             />
+                            {dataError.empati_1 ? (
+                              <div className="invalid-feedback">
+                                {dataError.empati_1}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tl_empati" className="form-control-label">
+                            <label htmlFor="tl_empati" 
+                            className={dataError.tl_empati ? "is-invalid" : ""}>
                               Tl Empati
                             </label>
                             <input
@@ -560,14 +719,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="Tindakan yang Dilakukan"
                               id="tl_empati"
-                              required
                             />
+                            {dataError.tl_empati ? (
+                              <div className="invalid-feedback">
+                                {dataError.tl_empati}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tangible_4" className="form-control-label">
+                            <label htmlFor="tangible_4" 
+                            className={dataError.tangible_4 ? "is-invalid" : ""}>
                               Tangible : Buruk
                             </label>
                             <input
@@ -576,14 +742,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="4"
                               id="tangible_4"
-                              required
                             />
+                            {dataError.tangible_4 ? (
+                              <div className="invalid-feedback">
+                                {dataError.tangible_4}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tangible_3" className="form-control-label">
+                            <label htmlFor="tangible_3"
+                            className={dataError.tangible_3 ? "is-invalid" : ""}>
                               Tangible : Cukup
                             </label>
                             <input
@@ -592,14 +765,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="3"
                               id="tangible_3"
-                              required
                             />
+                            {dataError.tangible_3 ? (
+                              <div className="invalid-feedback">
+                                {dataError.tangible_3}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tangible_2" className="form-control-label">
+                            <label htmlFor="tangible_2" 
+                            className={dataError.tangible_2 ? "is-invalid" : ""}>
                               Tangible : Baik
                             </label>
                             <input
@@ -608,14 +788,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="2"
                               id="tangible_2"
-                              required
                             />
+                            {dataError.tangible_2 ? (
+                              <div className="invalid-feedback">
+                                {dataError.tangible_2}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tangible_1" className="form-control-label">
+                            <label htmlFor="tangible_1" 
+                            className={dataError.tangible_1 ? "is-invalid" : ""}>
                               Tangible : Sangat Baik
                             </label>
                             <input
@@ -624,14 +811,21 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="1"
                               id="tangible_1"
-                              required
                             />
+                             {dataError.tangible_1 ? (
+                              <div className="invalid-feedback">
+                                {dataError.tangible_1}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tl_tangible" className="form-control-label">
+                            <label htmlFor="tl_tangible" 
+                             className={dataError.tl_tangible ? "is-invalid" : ""}>
                               TL Tangible
                             </label>
                             <input
@@ -640,8 +834,14 @@ export default function update_datakepuasanmhs(props) {
                               type="text"
                               placeholder="Tindakan yang Dilakukan"
                               id="tl_tangible"
-                              required
                             />
+                            {dataError.tl_tangible ? (
+                              <div className="invalid-feedback">
+                                {dataError.tl_tangible}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 

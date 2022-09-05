@@ -62,7 +62,7 @@ export default function tabelewmp() {
         setRole(role);
 
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses == 3) {
+        if (level_akses != 2) {
           return router.push("/ewmp/tabelewmp");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -143,7 +143,7 @@ export default function tabelewmp() {
                   <div className="card-header pb-0 px-3">
                     <div className="row">
                       <div className="col-4">
-                        <h4>Tabel Profil Dosen</h4>
+                        <h4>Tabel EWMP Dosen</h4>
                       </div>
                     </div>
 
@@ -177,7 +177,7 @@ export default function tabelewmp() {
                           </div>
 
                           <div className="col-8 d-flex justify-content-end">
-                          <Link href={`/ewmp/inputewmp/`}>
+                          <Link href={`/ewmp/inputewmpdsn`}>
                               <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                                 Tambah Data
                               </button>

@@ -33,7 +33,7 @@ export default function edit_penggunaan_dana(props) {
   console.log(dataPenggunaanDana)
   const [dataProdi, setdataProdi] = useState([])
   const [selectProdi, setSelectProdi] = useState(penggunaanDana.Prodi_Id)
-
+  const [dataRole, setRole] = useState("")
   // state pake test user
   const [stadmin, setStadmin] = useState(false)
 
@@ -75,6 +75,8 @@ export default function edit_penggunaan_dana(props) {
         console.log(response)
         console.log("Sukses")
         const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/")
@@ -198,7 +200,7 @@ export default function edit_penggunaan_dana(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -206,7 +208,7 @@ export default function edit_penggunaan_dana(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Input Data Penggunaan Dana</p>
+                      <p className="text-uppercase text-sm"> <h5>FORM EDIT DATA PENGGUNAAN DANA </h5> </p>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -216,7 +218,7 @@ export default function edit_penggunaan_dana(props) {
                       </div>
                     </div>
                     <div className="card-body">
-                      <p className="text-uppercase text-sm"> Penggunaan Dana</p>
+                     
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">

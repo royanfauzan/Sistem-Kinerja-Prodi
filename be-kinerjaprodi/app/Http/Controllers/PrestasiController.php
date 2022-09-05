@@ -38,6 +38,18 @@ class PrestasiController extends Controller
         ]);
     }
 
+    public function searchakademik($search)
+    {
+        if(!strcmp($search,'non')){
+            $search = 'Non Akademik';
+        }
+        return response()->json([
+            'success' => true,
+            'searchakademik' =>  Prestasi:: where('kategori', $search)
+                ->get()
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -60,7 +72,7 @@ class PrestasiController extends Controller
 
         //valid credential
         $validator = Validator::make($dataprestasi, [
-            'nm_kegiatan' => 'required|string|',
+            'nm_kegiatan' =>"required",
             'tahun' => 'required',
             'tingkat' => 'required',
             'prestasi_dicapai' => 'required',

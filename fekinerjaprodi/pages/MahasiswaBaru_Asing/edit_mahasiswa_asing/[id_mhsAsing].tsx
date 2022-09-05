@@ -34,6 +34,7 @@ export default function editMahasiswaAsing(props) {
     mahasiswaAsing.Program_Studi_Prodi_Id
   )
   const [dataError, setError] = useState([])
+  const [dataRole, setRole] = useState("")
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false)
@@ -75,6 +76,8 @@ export default function editMahasiswaAsing(props) {
         console.log(response)
         console.log("Sukses")
         const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/")
@@ -149,7 +152,7 @@ export default function editMahasiswaAsing(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -157,7 +160,7 @@ export default function editMahasiswaAsing(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Input Data Mahasiswa Asing</p>
+                      <p className="text-uppercase text-sm"> <h5>FORM EDIT DATA MAHASISWA ASING </h5> </p>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -167,7 +170,7 @@ export default function editMahasiswaAsing(props) {
                       </div>
                     </div>
                     <div className="card-body">
-                      <p className="text-uppercase text-sm"> Mahasiswa Asing</p>
+                     
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">

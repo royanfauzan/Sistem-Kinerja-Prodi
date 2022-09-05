@@ -16,7 +16,9 @@ export default function daftarmatkul() {
 
   const [stadmin, setStadmin] = useState(false);
   const [matkul, setmatkul] = useState([]);
-  const MySwal = withReactContent(Swal)
+  const MySwal = withReactContent(Swal);
+
+  const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -57,8 +59,10 @@ export default function daftarmatkul() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 3) {
+        if (level_akses < 2) {
           return router.push("/");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -72,18 +76,66 @@ export default function daftarmatkul() {
       });
   }, []);
 
-  const deletematkul = (id) => {
-    axios({
-      method: "post",
-      url: `http://127.0.0.1:8000/api/Matkul_Delete/${id}`,
-    })
-      .then(function (response) {
-        router.reload();
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+  const tambahmatkul = () => {
+    MySwal.fire({
+      title: "Tambah Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/matkul/inputmatkul`);
+      }
+    });
+  };
+
+  const editmatkul = (id) => {
+    MySwal.fire({
+      title: "Edit Data",
+      text: "Apakah kalian yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/matkul/edit/${id}`);
+      }
+    });
+  };
+
+  const deletematkul= (id) => {
+    MySwal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, hapus ini!",
+    }).then((result) => {
+      // <--
+      if (result.isConfirmed) {
+        // <-- if confirmed
+        axios({
+          method: "post",
+          url: `http://127.0.0.1:8000/api/Matkul_Delete/${id}`,
+        })
+          .then(function (response) {
+            router.reload();
+          })
+          .catch(function (err) {
+            console.log("gagal");
+            console.log(err.response);
+          });
+      }
+    });
   };
 
   const searchdata= async (e) => {
@@ -104,7 +156,7 @@ export default function daftarmatkul() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
@@ -116,7 +168,7 @@ export default function daftarmatkul() {
                     <div className="row justify-content-end">
                   <div className="col-3 d-flex flex-row-reverse pe-2">
                     <input
-                      className="form-control d-flex flex-row-reverse me-3"
+                      className="form-control d-flex flex-row-reverse"
                       type="search"
                       placeholder="Search.."
                       aria-label="Search"
@@ -127,14 +179,17 @@ export default function daftarmatkul() {
                   </div>
                   </div>
                     <div className="row justify-content-between mb-4">
-                      <div className="col-4">
-                        <div className="align-middle">
-                          <Link href={`/matkul/inputmatkul/`}>
-                            <button className=" btn btn-primary border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                              Tambah Data
-                            </button>
-                          </Link>
-                        </div>
+                      <div className="col-5">
+                      <div className="col-5">
+                      <td className="align-middle">
+                        <button
+                          onClick={() => tambahmatkul()}
+                          className="btn btn-primary border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                        >
+                          Tambah Data
+                        </button>
+                      </td>
+                    </div>
                       </div>
                     </div>
                   </div>
@@ -159,7 +214,7 @@ export default function daftarmatkul() {
                             SKS
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-2">
-                            Prodi ID
+                            Program Studi
                           </th>
                           <th className="text-secondary opacity-7"></th>
                         </tr>
@@ -193,17 +248,19 @@ export default function daftarmatkul() {
 
                               <td className="align-middle text-sm ps-2">
                                 <p className="text-xs font-weight-bold mb-0">
-                                  {matakuliah.prodi_id}
+                                  {matakuliah.prodi.prodi + ` ` + matakuliah.prodi.nama_prodi}
                                 </p>
                               </td>
+                              
 
 
                               <td className="align-middle pe-3 text-end">
-                                <Link href={`/matkul/edit/${matakuliah.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
+                                <button 
+                                  onClick={() => editmatkul(matakuliah.id)}
+                                  className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
+                                >
+                                  Edit
+                                </button>
 
                                 <button
                                   onClick={() => deletematkul(matakuliah.id)}

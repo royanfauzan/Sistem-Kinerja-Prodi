@@ -8,6 +8,22 @@ use Illuminate\Support\Facades\Validator;
 
 class MasastudiController extends Controller
 {
+    private function tahuntsgenerator($tahun, $tipe = 'biasa')
+    {
+        $tslist = collect();
+        $thnInt = intval($tahun);
+        $tslist->ts2 = '' . ($thnInt -2);
+        $tslist->ts3 = '' . ($thnInt - 3);
+        $tslist->ts4 = '' . ($thnInt - 4);
+        
+        if (!strcmp($tipe, 'akademik')) {
+            $tslist->ts = "" . ($thnInt - 1) . "/" . ($thnInt);
+            $tslist->ts1 = "" . ($thnInt - 2) . "/" . ($thnInt - 1);
+            $tslist->ts2 = "" . ($thnInt - 3) . "/" . ($thnInt - 2);
+        }
+        return $tslist;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,6 +34,23 @@ class MasastudiController extends Controller
         return response()->json([
             'success' => true,
             'all_masastudi' => Masastudi::with('prodi')->get(),
+        ]);
+    }
+
+    public function searchmasastudi($search)
+    {
+        return response()->json([
+            'success' => true,
+            'searchmasastudi' =>  Masastudi::with('prodi')
+                ->whereRelation('prodi', 'prodi','LIKE', "%{$search}%")
+                ->orWhereRelation('prodi','nama_prodi', 'LIKE', "%{$search}%")
+                ->orwhere('tahun_masuk', 'LIKE', "%{$search}%")
+                ->orwhere('jmlh_mhs', 'LIKE', "%{$search}%")
+                ->orwhere('lulus_thn_1', 'LIKE', "%{$search}%")
+                ->orwhere('lulus_thn_2', 'LIKE', "%{$search}%")
+                ->orwhere('lulus_thn_3', 'LIKE', "%{$search}%")
+                ->orwhere('lulus_thn_4', 'LIKE', "%{$search}%")
+                ->get()
         ]);
     }
 
@@ -180,6 +213,47 @@ class MasastudiController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Berhasil Dihapus"
+        ]);
+    }
+
+    public function exportmasastudi(Request $request, $tahun)
+    {
+        $tahunlist = $this->tahuntsgenerator($tahun);
+        $masastudits = collect([]);
+
+
+        $masastudis = Masastudi::where('tahun_masuk', $tahunlist->ts2)
+            ->orWhere('tahun_masuk', $tahunlist->ts3)
+            ->orWhere('tahun_masuk', $tahunlist->ts4)
+            ->get();
+
+        $arrTahun = [$tahunlist->ts2, $tahunlist->ts3, $tahunlist->ts4];
+
+        foreach ($arrTahun as $key => $th) {
+            $listmasastudits = $masastudis->where('tahun_masuk', $th)->first();
+
+            $sementara = collect(['masastudits' . $key => $listmasastudits, 'ts' => $th]);
+            $masastudits->push(collect($sementara));
+        }
+
+        return response()->json([
+            'success' => true,
+            'all_masastudi' => $masastudis,
+            'masastudi_ts' => $masastudits,
+        ]);
+    }
+
+    public function listtahun(Request $request)
+    {
+        //
+        $allmasastudi = Masastudi::all()->groupBy('tahun_masuk');
+        $arrTahun = array();
+        foreach ($allmasastudi as $key => $masastudithn) {
+            $arrTahun[] = $masastudithn[0]->tahun_masuk;
+        }
+        return response()->json([
+            'success' => true,
+            'tahunmasastudis' => $arrTahun,
         ]);
     }
 }

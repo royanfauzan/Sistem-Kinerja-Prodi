@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
+import Carddashboard from "../../components/Molecule/MenuCard/Carddashboard";
+import ListCardDash from "../../components/Molecule/MenuCard/ListCardDash";
 import MenuCardUtama from "../../components/Molecule/MenuCard/MenuCardUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutDashboardBlue from "../../components/Organism/Layout/LayoutDashboardBlue";
@@ -85,7 +87,7 @@ export default function dashboardadmin() {
 
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
-          return router.push("/dashboards/darboarddosen");
+          return router.push("/dashboards/dashboarddosen");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         pengambilData();
@@ -103,162 +105,225 @@ export default function dashboardadmin() {
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
         <LayoutDashboardBlue rlUser={dataRole}>
-          <div className="container-fluid py-4">
+          <div className="container-fluid pb-4 pt-0 mt-0">
             <div className="row mx-3 my-3 bg-white rounded">
               <div className="col-12 mx-2 my-2">
                 <div className="row justify-content-center mt-3">
-                  <div className="col-10 border-top border-bottom">
-                  <h3 className="text-center"> Overview Kriteria Sumber Daya Manusia </h3>
+                  <div className="col-10 border-bottom">
+                    <h3 className="text-center">
+                      {" "}
+                      Sistem Informasi Kinerja Program Studi{" "}
+                    </h3>
                   </div>
                 </div>
-                <div className="row justify-content-center ">
-                  <div className="col-10 mb-3 pb-3 border-bottom">
-                    <div className="row mb-3 mt-3">
-                      <h5 className="text-center">
-                        Ringkasan Pengumpulan Data EWMP
-                      </h5>
-                    </div>
-                    <div className="row mb-3">
-                      <div className="col-3 border-end text-center">
-                        <p>Jumlah DTPS</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_dtps}</h5>
-                        )}
-                      </div>
-                      <div className="col-3 border-end text-center">
-                        <p>Data EWMP TS</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_ewmp_ts}</h5>
-                        )}
-                      </div>
-                      <div className="col-3 border-end text-center">
-                        <p>Data EWMP TS-1</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_ewmp_ts1}</h5>
-                        )}
-                      </div>
-                      <div className="col-3 text-center">
-                        <p>Data EWMP TS-2</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_ewmp_ts2}</h5>
-                        )}
-                      </div>
-                    </div>
-                    <div className="row mb-0 mt-5">
-                      <h5 className="text-center">Overall EWMP Progress</h5>
-                    </div>
-                    <div className="row mb-0">
-                      <p className="text-center fw-lighter fst-italic pb-0">
-                        <small>
-                          *Berdasarkan data ideal(DTPS * 3Tahun * 2 Semester)
-                        </small>
-                      </p>
-                    </div>
-                    <div className="row mb-3 justify-content-center">
-                      <div className="col-3 text-center border-bottom">
-                        {dataDashboardadmin && <h5>{progresEwmp}%</h5>}
-                        <div className="progress p-0">
-                          <div
-                            className="progress-bar bg-info text-xs"
-                            role="progressbar"
-                            style={{ width: `${progresEwmp}%` }}
-                            aria-valuenow={progresEwmp}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          >
-                            {progresEwmp}%
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row mb-0 mt-5 justify-content-center">
-                      <div className="col-4">
+                <div className="row mt-4 ">
+                  <div className="col-6">
+                    <div className="row d-flex justify-content-around">
+                      <Carddashboard judul={`Kriteria Kerjasama`}>
+                        <ListCardDash
+                          judul={"Data Kriteria Kerjasama"}
+                          keterangan={`Mengelola Data Kerjasama Pendidikan, Penelitian dan Pengabdian Masyarakat`}
+                          halaman={"/kerjasama/tabelkerjasama"}
+                          icon={`bi bi-person-workspace`}
+                        />
+                      </Carddashboard>
+                      <Carddashboard judul={`Kriteria Mahasiswa`}>
+                        <ListCardDash
+                          judul={"Seleksi Mahasiswa Baru"}
+                          keterangan={`Mengelola Data Penerimaan Mahasiswa`}
+                          halaman={"/MahasiswaBaru_Asing/tabel_penerimaan"}
+                          icon={`bi bi-person-check-fill`}
+                        />
+                        <ListCardDash
+                          judul={"Mahasiswa Asing"}
+                          keterangan={`Mengelola Data Mahasiswa Asing`}
+                          halaman={"/MahasiswaBaru_Asing/tabel_mahasiswa_asing"}
+                          icon={`bi bi-person-check`}
+                        />
+                      </Carddashboard>
+
+                      <Carddashboard
+                        judul={`Kriteria Keuangan, Sarana dan Prasarana`}
+                      >
+                        <ListCardDash
+                          judul={"Penggunaan Dana"}
+                          keterangan={`Mengelola Data Penggunaan Dana`}
+                          halaman={"/penggunaan_dana/tabel_penggunaan_dana"}
+                          icon={`bi bi-bank`}
+                        />
+                      </Carddashboard>
+
+                      <Carddashboard judul={` Mitra`}>
+                        <ListCardDash
+                          judul={"Data Mitra"}
+                          keterangan={`Mengelola Data Penggunaan Dana`}
+                          halaman={"/mitra/tabelmitra"}
+                          icon={`bi bi-building`}
+                        />
+                      </Carddashboard>
+                      <Carddashboard
+                        judul={`Kriteria Luaran dan Capaian Tridarma`}
+                      >
+                        <ListCardDash
+                          judul={`Data IPK Mahasiswa`}
+                          icon={`bi bi-file-spreadsheet-fill`}
+                          halaman={`/ipk/daftaripk`}
+                          keterangan={
+                            "Data IPK Mahasiswa yang dikelola oleh admin"
+                          }
+                        />
+                        <ListCardDash
+                          judul={`Data Prestasi`}
+                          halaman={`/prestasi/daftarprestasi`}
+                          keterangan={
+                            "Data Prestasi Akademik dan Non akademik yang dikelola oleh admin"
+                          }
+                          icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                          judul={`Masa Studi Lulusan`}
+                          halaman={`/masastudi/daftarmasastudi`}
+                          keterangan={
+                            "Data Masa Studi Lulusan yang dikelola oleh admin"
+                          }
+                          icon={`bi bi-file-spreadsheet-fill`}
+                        />
+                        <ListCardDash
+                          judul={`Waktu Tunggu Lulusan`}
+                          halaman={`/waktutunggu/daftarwaktu`}
+                          keterangan={
+                            "Data Waktu Tunggu Lulusan dan Non akademik yang dikelola oleh admin"
+                          }
+                          icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                          judul={`Data Luaran Lainnya`}
+                          halaman={`/luaran/daftarluaran`}
+                          keterangan={
+                            "Data Luaran Lainnya yang dikelola oleh admin"
+                          }
+                          icon={`bi bi-card-text`}
+                        />
+                        <ListCardDash
+                          judul={`Tulisan Mahasiswa`}
+                          halaman={`/tulisan/daftartulisan`}
+                          keterangan={
+                            "Data Tulisan Mahasiswa yang dikelola oleh admin"
+                          }
+                          icon={`bi bi-file-spreadsheet-fill`}
+                        />
                         <div className="row">
-                          <Link href={`/ewmp/tabelewmp/`}>
-                            <button className=" btn btn-outline-primary shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                              Kelola EWMP
+                          <Link
+                            href={`/dashboards_capaian_tridarma/dashboardtridarma`}
+                          >
+                            <button className="btn btn-sm btn-outline-dark border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                              Selengkapnya...
                             </button>
                           </Link>
                         </div>
-                      </div>
+                      </Carddashboard>
                     </div>
                   </div>
-                  <hr />
-                </div>
-                <div className="row justify-content-center ">
-                  <div className="col-10 mb-3 pb-3 border-bottom">
-                    <div className="row mb-3 mt-3">
-                      <h5 className="text-center">
-                        Data Pagelaran/Publikasi Ilmiah
-                      </h5>
-                    </div>
-                    <div className="row mb-3">
-                      <div className="col-3 border-end text-center">
-                        <p>Jurnal</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_publikasi_jurnal}</h5>
-                        )}
-                      </div>
-                      <div className="col-3 text-center border-end">
-                        <p>Sitasi Jurnal</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_sitasi_jurnal}</h5>
-                        )}
-                      </div>
-                      <div className="col-3 border-end text-center">
-                        <p>Seminar</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_publikasi_seminar}</h5>
-                        )}
-                      </div>
-                      <div className="col-3 border-end text-center">
-                        <p>Pagelaran</p>
-                        {dataDashboardadmin && (
-                          <h5>{dataDashboardadmin.jumlah_publikasi_pagelaran}</h5>
-                        )}
-                      </div>
-                      
-                    </div>
-                    <div className="row mb-0 mt-5">
-                      <h5 className="text-center">Total Publikasi Tersimpan</h5>
-                    </div>
-                    <div className="row mb-0">
-                      <p className="text-center fw-lighter fst-italic pb-0">
-                        <small>
-                          *Jurnal + Seminar + Pagelaran
-                        </small>
-                      </p>
-                    </div>
-                    <div className="row mb-3 justify-content-center">
-                      <div className="col-3 text-center border-bottom">
-                        {dataDashboardadmin && (<h5>{dataDashboardadmin.total_publikasi}</h5>)}
-                        {/* <div className="progress p-0">
-                          <div
-                            className="progress-bar bg-info text-xs"
-                            role="progressbar"
-                            style={{ width: `${progresEwmp}%` }}
-                            aria-valuenow={progresEwmp}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          >
-                            {progresEwmp}%
-                          </div>
-                        </div> */}
-                      </div>
-                    </div>
-                    <div className="row mb-0 mt-5 justify-content-center">
-                      <div className="col-4">
+
+                  <div className="col-6">
+                    <div className="row d-flex justify-content-around">
+                    <Carddashboard judul={`Kriteria Pendidikan`}>
+                        <ListCardDash
+                          judul={"Capaian Kurikulum"}
+                          keterangan={`Kelola Data Capaian Kurikulum`}
+                          halaman={"/capkurikulum/daftarkurikulum"}
+                          icon={`bi bi-book-half`}
+                        />
+                        <ListCardDash
+                          judul={"Data Mahasiswa"}
+                          keterangan={`Kelola Data Mahasiswa`}
+                          halaman={"/mahasiswa/daftarmhs"}
+                          icon={`bi bi-calendar3-range`}
+                        />
+                        <ListCardDash
+                          judul={"Kepuasan Mahasiswa"}
+                          keterangan={`Kelola Data Kepuasan Mahasiswa`}
+                          halaman={"/kepuasanmhs/daftarkepuasanmhs"}
+                          icon={`bi bi-people-fill`}
+                        />
+                        <ListCardDash
+                          judul={"Mata Kuliah"}
+                          keterangan={`Kelola Data Mata Kuliah`}
+                          halaman={"/matkul/daftarmatkul"}
+                          icon={`bi bi-journal-text`}
+                        />
+                      </Carddashboard>
+                      <Carddashboard
+                        judul={`Kriteria Sumber Daya Manusia`}
+                      >
+                        <ListCardDash
+                          judul={`Profil Dosen`}
+                          icon={`bi bi-person-bounding-box`}
+                          halaman={`/profildosen/tabelprofil`}
+                          keterangan={"List Profil Dosen Tersimpan"}
+                        />
+                        <ListCardDash
+                          judul={`EWMP`}
+                          icon={`bi bi-input-cursor`}
+                          halaman={`/ewmp/tabelewmp`}
+                          keterangan={"Equivalen Waktu Mengajar Penuh Dosen"}
+                        />
+                        <ListCardDash
+                          judul={`Pengalaman Mengajar`}
+                          icon={`bi bi-collection`}
+                          halaman={`/mengajar/tabelmengajar`}
+                          keterangan={"Data Pengalaman mengajar Dosen"}
+                        />
+                        <ListCardDash
+                          judul={`Pembimbing Utama TA`}
+                          icon={`bi bi-bounding-box`}
+                          halaman={`/bimbingan/export/exportbimbingan`}
+                          keterangan={"Export Data perhitungan bimbingan Dosen"}
+                        />
+                        <ListCardDash
+                          judul={`Rekognisi DTPS`}
+                          icon={`bi bi-bookmark-check`}
+                          halaman={`/rekognisi/tabelrekognisi`}
+                          keterangan={
+                            "Mengelola data rekognisi DTPS"
+                          }
+                        />
                         <div className="row">
-                          <Link href={`/ewmp/tabelewmp/`}>
-                            <button className=" btn btn-outline-primary shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                              Kelola Publikasi
+                          <Link
+                            href={`/sdm/dashboardsdmadm`}
+                          >
+                            <button className="btn btn-sm btn-outline-dark border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
+                              Selengkapnya...
                             </button>
                           </Link>
                         </div>
-                      </div>
+                      </Carddashboard>
+                    </div>
+                    <div className="row d-flex justify-content-around">
+                      <Carddashboard judul={`Kriteria Mahasiswa`}>
+                        <ListCardDash
+                          judul={`EWMP`}
+                          icon={`bi bi-input-cursor`}
+                          halaman={`/ewmp/tabelewmp`}
+                          keterangan={"Equivalen Waktu Mengajar Penuh Dosen"}
+                        />
+                        <ListCardDash
+                          judul={"Mahasiswa Asing"}
+                          keterangan={`Mengelola Data Mahasiswa Asing`}
+                          halaman={"/MahasiswaBaru_Asing/tabel_mahasiswa_asing"}
+                          icon={`bi bi-file-spreadsheet`}
+                        />
+                        <ListCardDash
+                          judul={`Pembimbing Utama TA`}
+                          icon={`bi bi-bounding-box`}
+                          halaman={`/bimbingan/export/exportbimbingan`}
+                          keterangan={
+                            "Export Data Pembimbing Utama Tugas akhir"
+                          }
+                        />
+                      </Carddashboard>
                     </div>
                   </div>
-                  <hr />
                 </div>
               </div>
             </div>

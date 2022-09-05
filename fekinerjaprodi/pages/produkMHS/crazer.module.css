@@ -1,0 +1,7 @@
+.bordernol{
+    border: 0 in !important;
+}
+
+p.ex1 {
+    max-width: 150px;
+  }

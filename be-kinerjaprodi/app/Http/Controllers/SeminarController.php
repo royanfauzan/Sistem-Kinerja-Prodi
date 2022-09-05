@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\relasi_seminarmhs;
 use App\Models\Seminar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -18,6 +19,82 @@ class SeminarController extends Controller
         return response()->json([
             'success' => true,
             'all_seminar' => Seminar::with('mahasiswa')->get(),
+        ]);
+    }
+
+    public function tampilrelasi($id)
+    {
+        return response()->json([
+            'success' => true,
+            'all_relasi' => relasi_seminarmhs::with('seminar','mahasiswa')->where('seminar_id',$id)->get(),
+        ]);
+        
+    }
+
+    public function deletemahasiswa($id)
+    {
+        $seminar = relasi_seminarmhs::find($id);
+        $seminar->delete();
+
+        if (!$seminar) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
+    }
+
+    public function pilihmahasiswa(Request $request, $id)
+    {
+        $luaran = Seminar::where('id', $id)->first();
+        $dataluaran = $request->only('mahasiswa_id', 'seminar_id', 'keanggotaan');
+
+        //valid credential
+        $validator = Validator::make($dataluaran, [
+            'mahasiswa_id' => 'required',
+            'seminar_id' => 'required',
+            'keanggotaan' => 'required',
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        $relasimahasiswa = relasi_seminarmhs::create(
+            [
+                'mahasiswa_id' => $request->mahasiswa_id,
+                'seminar_id' => $request->seminar_id,
+                'keanggotaan' => $request->keanggotaan,
+            ]
+        );
+
+
+        //Token created, return with success response and jwt token
+        return response()->json([
+            'success' => true,
+            'mahasiswa_id' => $request->mahasiswa_id,
+            'seminar_id' => $request->seminar_id,
+            'keanggotaan' => $request->keanggotaan,
+            'all_seminar' => Seminar::all()
+        ]);
+    }
+
+    public function searchseminar($search)
+    {
+        return response()->json([
+            'success' => true,
+            'searchseminar' => Seminar::with('mahasiswa')
+                ->whereRelation('mahasiswa', 'nama','LIKE', "%{$search}%")
+                ->orwhere('judul_kegiatan', 'LIKE', "%{$search}%")
+                ->orwhere('tahun', 'LIKE', "%{$search}%")
+                ->orwhere('penyelenggara', 'LIKE', "%{$search}%")
+                ->orwhere('kategori_seminar', 'LIKE', "%{$search}%")
+                ->get()
         ]);
     }
 

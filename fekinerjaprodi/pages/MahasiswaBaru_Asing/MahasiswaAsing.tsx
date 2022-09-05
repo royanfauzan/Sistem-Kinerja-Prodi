@@ -20,6 +20,7 @@ export default function input_mahasiswa_asing() {
   // state pake test user
   const [stadmin, setStadmin] = useState(false)
   const [dataError, setError] = useState([])
+  const [dataRole, setRole] = useState("")
   // pake ngambil data untuk halaman input
   const pengambilData = async () => {
     axios({
@@ -58,6 +59,8 @@ export default function input_mahasiswa_asing() {
         console.log(response)
         console.log("Sukses")
         const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/")
@@ -128,7 +131,7 @@ export default function input_mahasiswa_asing() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">

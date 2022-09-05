@@ -24,7 +24,9 @@ class CreateEwmpsTable extends Migration
             $table->integer('sks_tugas')->default(0);
             $table->string('tahun_akademik');
             $table->string('semester');
-            $table->foreignId('profil_dosen_id');
+            $table->foreignId('profil_dosen_id')->references('id')
+                ->on('profil_dosens')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

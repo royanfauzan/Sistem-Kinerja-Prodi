@@ -12,7 +12,7 @@ import withReactContent from "sweetalert2-react-content"
 
 export default function tabelmitra() {
   const router = useRouter()
-
+  const [dataRole, setRole] = useState("")
   const [stadmin, setStadmin] = useState(false)
   const [tampilUser, settampilUser] = useState([])
   const MySwal = withReactContent(Swal)
@@ -56,6 +56,8 @@ export default function tabelmitra() {
         console.log(response)
         console.log("Sukses")
         const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/")
@@ -90,6 +92,7 @@ export default function tabelmitra() {
         })
           .then(function (response) {
             router.reload()
+            console.log(response.data)
           })
           .catch(function (err) {
             console.log("gagal")
@@ -99,9 +102,9 @@ export default function tabelmitra() {
     })
   }
 
-  const editUser = (id) => {
+  const resetUser = (id) => {
     MySwal.fire({
-      title: "Edit Data Mitra",
+      title: "Edit Data User?",
       text: "Yakin Edit Data? ",
       icon: "warning",
       showCancelButton: true,
@@ -111,7 +114,18 @@ export default function tabelmitra() {
       // <--
       if (result.value) {
         // <-- if confirmed
-        router.push(`/User/edit/${id}`)
+        axios({
+          method: "get",
+          url: `http://127.0.0.1:8000/api/reset_user/${id}`,
+        })
+          .then(function (response) {
+            router.reload()
+            console.log(response.data)
+          })
+          .catch(function (err) {
+            console.log("gagal")
+            console.log(err.response)
+          })
       }
     })
   }
@@ -150,7 +164,7 @@ export default function tabelmitra() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
@@ -217,10 +231,10 @@ export default function tabelmitra() {
 
                               <td className="align-middle text-center">
                                 <button
-                                  onClick={() => editUser(User.id)}
+                                  onClick={() => resetUser(User.id)}
                                   className="btn btn-sm btn-primary border-0 shadow-sm mb-3 me-3"
                                 >
-                                  EDIT
+                                  RESET PASSWORD
                                 </button>
 
                                 <button

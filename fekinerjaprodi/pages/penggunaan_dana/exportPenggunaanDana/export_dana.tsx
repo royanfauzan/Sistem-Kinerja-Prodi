@@ -8,93 +8,43 @@ import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama"
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm"
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama"
 import Link from "next/link"
-
+import ReactHTMLTableToExcel from "react-html-table-to-excel"
 interface Prodi {
   nama_prodi: string
 }
-// Untuk Ngambil Data Berdasarkan ID
-// export async function getServerSideProps(context) {
-//   //http request
-//   const reqtahun1 = await axios.get(
-//     `http://127.0.0.1:8000/api/export_penggunaan_dana/${context.query.tahun1}`
-//   )
-//   const pgdanath1 = await reqtahun1.data.tampil_ts
-//   const danapkmth1 = await reqtahun1.data.dana_pkm
-//   const danapenelitianth1 = await reqtahun1.data.dana_penelitian
 
-//   const reqtahun2 = await axios.get(
-//     `http://127.0.0.1:8000/api/export_penggunaan_dana/${context.query.tahun2}`
-//   )
-//   const pgdanath2 = await reqtahun2.data.tampil_ts
-//   const danapkmth2 = await reqtahun2.data.dana_pkm
-//   const danapenelitianth2 = await reqtahun2.data.dana_penelitian
-
-//   const reqtahun3 = await axios.get(
-//     `http://127.0.0.1:8000/api/export_penggunaan_dana/${context.query.tahun3}`
-//   )
-//   const pgdanath3 = await reqtahun3.data.tampil_ts
-//   const danapkmth3 = await reqtahun3.data.dana_pkm
-//   const danapenelitianth3 = await reqtahun3.data.dana_penelitian
-//   return {
-//     props: {
-//       ts1: pgdanath1,
-//       dnpkm1: danapkmth1,
-//       dnpenelitian1: danapenelitianth1,
-//       ts2: pgdanath2,
-//       dnpkm2: danapkmth2,
-//       dnpenelitian2: danapenelitianth2,
-//       ts3: pgdanath3,
-//       dnpkm3: danapkmth3,
-//       dnpenelitian3: danapenelitianth3,
-//       // <-- assign response
-//     },
-//   }
-// }
-export default function input_mahasiswa_asing(props) {
+export default function export_dana() {
   const router = useRouter()
-  // untuk ngambil data tahun
-  // const ts1 = props.ts1
-  // const { dnpkm1 } = props
-  // const { dnpenelitian1 } = props
-  // const ts2 = props.ts2
-  // const { dnpkm2 } = props
-  // const { dnpenelitian2 } = props
-  // const ts3 = props.ts3
-  // const { dnpkm3 } = props
-  // const { dnpenelitian3 } = props
-  // console.log(ts1)
-  // console.log(ts2)
-  // console.log(ts3)
-  const [dataTs1, setDataTs1] = useState([])
-  const [dataDnpkm1, setDataDnpkm1] = useState([])
-  const [dataDnpenelitian1, setDataDnpenelitian1] = useState([])
-  const [dataTs2, setDataTs2] = useState([])
-  const [dataDnpkm2, setDataDnpkm2] = useState([])
-  const [dataDnpenelitian2, setDataDnpenelitian2] = useState([])
-  const [dataTs3, setDataTs3] = useState([])
-  const [dataDnpkm3, setDataDnpkm3] = useState([])
-  const [dataDnpenelitian3, setDataDnpenelitian3] = useState([])
+  const [listtahun, setlisttahun] = useState([0])
 
   const [dataSelectTahun, setSelectTahun] = useState([])
-
-  const [dataError, setError] = useState([])
+  const [dataRole, setRole] = useState("")
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false)
+
   const [tampildana, setdataDana] = useState([])
+  const [tampilpkm, setdataPkm] = useState([])
+  const [tampilpenelitian, setdataPenelitian] = useState([])
+  const [tampilrata, setdataRata] = useState([])
+  const [tampiljumlah, setdataJumlah] = useState([])
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () => {
     axios({
       method: "get",
-      url: "http://127.0.0.1:8000/api/read_penggunaan_dana",
+      url: "http://127.0.0.1:8000/api/tampil_export_penggunaan_dana",
     })
       .then(function (response) {
         console.log(response)
         console.log("Sukses")
         const { tampil_penggunaan_dana } = response.data
         setdataDana(tampil_penggunaan_dana)
-        console.log(tampildana)
+        setdataPkm(response.data.tampil_pkm)
+        setdataPenelitian(response.data.tampil_penelitian)
+        setdataRata(response.data.rata)
+        setdataJumlah(response.data.jumlah)
+        console.log(response.data)
       })
       .catch(function (err) {
         console.log("gagal")
@@ -121,6 +71,8 @@ export default function input_mahasiswa_asing(props) {
         console.log(response)
         console.log("Sukses")
         const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/")
@@ -128,6 +80,7 @@ export default function input_mahasiswa_asing(props) {
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
         setStadmin(true)
         pengambilData()
+        gettahun()
       })
       .catch(function (err) {
         console.log("gagal")
@@ -137,14 +90,8 @@ export default function input_mahasiswa_asing(props) {
   }, [])
 
   const handleChange = (e) => {
-    const value = Array.from(
-      e.target.selectedOptions,
-      (options) => options.value
-    )
-
-    setSelectTahun(value)
-
-    // setSelectTahun(value)
+    setSelectTahun(e.target.value)
+    console.log(e.target.value)
   }
   const tampildata = (tahun) => {
     console.log(tahun)
@@ -153,45 +100,33 @@ export default function input_mahasiswa_asing(props) {
       url: `http://127.0.0.1:8000/api/export_penggunaan_dana/${tahun}`,
     })
       .then(function (response) {
-        const { tampil_ts1 } = response.data
-        const { tampil_ts2 } = response.data
-        const { tampil_ts3 } = response.data
-        setDataTs1(tampil_ts1)
-        setDataTs2(tampil_ts2)
-        setDataTs3(tampil_ts3)
-        const { dana_penelitian1 } = response.data
-        const { dana_penelitian2 } = response.data
-        const { dana_penelitian3 } = response.data
-        setDataDnpenelitian1(dana_penelitian1)
-        setDataDnpenelitian2(dana_penelitian2)
-        setDataDnpenelitian3(dana_penelitian3)
-        const { dana_pkm1 } = response.data
-        const { dana_pkm2 } = response.data
-        const { dana_pkm3 } = response.data
-        setDataDnpkm1(dana_pkm1)
-        setDataDnpkm2(dana_pkm2)
-        setDataDnpkm3(dana_pkm3)
-        console.log(tampil_ts1)
-        console.log(tampil_ts2)
-        console.log(tampil_ts3)
-        console.log(dana_penelitian1)
-        console.log(dana_penelitian2)
-        console.log(dana_penelitian3)
-        console.log(dana_pkm1)
-        console.log(dana_pkm2)
-        console.log(dana_pkm3)
+        setdataDana(response.data.tampil_penggunaan_dana)
+        setdataPkm(response.data.tampil_pkm)
+        setdataPenelitian(response.data.tampil_penelitian)
+        setdataJumlah(response.data.jumlah)
+        setdataRata(response.data.rata)
+        console.log(response.data)
       })
       .catch(function (err) {
         console.log("gagal")
         console.log(err.response)
       })
   }
+  const gettahun = () => {
+    const tahun = new Date().getFullYear()
+    let tahunarr = []
 
+    for (let i = 0; i < 6; i++) {
+      tahunarr[i] = tahun - i
+    }
+    setlisttahun(tahunarr)
+    console.log(tahunarr)
+  }
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-12">
@@ -220,15 +155,12 @@ export default function input_mahasiswa_asing(props) {
                             defaultValue={dataSelectTahun}
                             id="tahun"
                             onChange={handleChange}
-                            multiple
                           >
-                            {tampildana.map((datadana) => {
+                            <option value="">Pilih Tahun</option>
+                            {listtahun.map((tahun) => {
                               return (
-                                <option
-                                  value={datadana.Tahun}
-                                  key={datadana.id}
-                                >
-                                  {datadana.Tahun}
+                                <option value={tahun} key={tahun}>
+                                  {tahun}
                                 </option>
                               )
                             })}
@@ -243,7 +175,7 @@ export default function input_mahasiswa_asing(props) {
             <div className="col-12">
               <style jsx>{`
                 table,
-                td,
+                th,
                 th {
                   border: 1px solid;
                   text-align: center;
@@ -254,721 +186,1323 @@ export default function input_mahasiswa_asing(props) {
                   border-collapse: collapse;
                 }
               `}</style>
-              <div className="card mb-4">
+              <div className="card mb-4 mt-5">
                 <div className="card-header pb-0">
                   <div className="row justify-content-between">
                     <div className="col-4">
-                      <h6>Authors table</h6>
+                      <h6>Penggunaan Dana</h6>
                     </div>
                     <div className="col-4 d-flex flex-row-reverse">
-                      <button className="btn btn-sm btn-success border-0 shadow-sm mb-3 me-3">
-                        EXPORT
-                      </button>
+                      <ReactHTMLTableToExcel
+                        id="test-table-xls-button"
+                        className="download-table-xls-button btn btn-success ms-3"
+                        table="table1"
+                        filename="Penggunaan Dana"
+                        sheet="Penggunaan Dana"
+                        buttonText="Export Excel"
+                      />
                     </div>
                   </div>
                 </div>
-                <table>
-                  <thead>
-                    <tr>
-                      <th rowspan="2">No</th>
-                      <th rowspan="2">Program Studi</th>
-                      <th rowspan="2" className="w-20">
-                        Jenis Penggunaan
-                      </th>
-                      <th colspan="4">
-                        Unit Pengelola Program Studi <br />
-                        (Rupiah)
-                      </th>
-                      <th colspan="4">
-                        Program Studi <br />
-                        (Rupiah)
-                      </th>
-                    </tr>
-                    <tr>
-                      {!dataTs1.Tahun ? (
-                        <>
-                          {" "}
-                          <th>TS-2</th>
-                          <th>TS-1</th>
-                          <th>TS</th>
-                          <th>Rata-rata</th>
-                          <th>TS-2</th>
-                          <th>TS-1</th>
-                          <th>TS</th>
-                          <th>Rata-rata</th>
-                        </>
-                      ) : (
-                        <>
-                          {" "}
-                          <th>{dataTs3.Tahun}</th>
-                          <th>{dataTs2.Tahun}</th>
-                          <th>{dataTs1.Tahun}</th>
-                          <th>Rata-rata</th>
-                          <th>{dataTs3.Tahun}</th>
-                          <th>{dataTs2.Tahun}</th>
-                          <th>{dataTs1.Tahun}</th>
-                          <th>Rata-rata</th>
-                        </>
-                      )}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Manajemen Informatika</td>
-                      <td>Biaya Operasional Pendidikan</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>a. Biaya Dosen (Gaji, Honor)</td>
-                      <td>{dataTs3.Biaya_Dosen_UPPS}</td>
-                      <td>{dataTs2.Biaya_Dosen_UPPS}</td>
-                      <td>{dataTs1.Biaya_Dosen_UPPS}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataTs3.Biaya_Dosen_UPPS) +
-                            parseInt(dataTs2.Biaya_Dosen_UPPS) +
-                            parseInt(dataTs1.Biaya_Dosen_UPPS)) /
-                            3
-                        )}
-                      </td>
-                      <td>{dataTs3.Biaya_Dosen_Prodi}</td>
-                      <td>{dataTs2.Biaya_Dosen_Prodi}</td>
-                      <td>{dataTs1.Biaya_Dosen_Prodi}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataTs3.Biaya_Dosen_Prodi) +
-                            parseInt(dataTs2.Biaya_Dosen_Prodi) +
-                            parseInt(dataTs1.Biaya_Dosen_Prodi)) /
-                            3
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>b. Biaya Tenaga Kependidikan (Gaji, Honor)</td>
-                      <td>{dataTs3.Biaya_Tenaga_Kependidikan_UPPS}</td>
-                      <td>{dataTs2.Biaya_Tenaga_Kependidikan_UPPS}</td>
-                      <td>{dataTs1.Biaya_Tenaga_Kependidikan_UPPS}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataTs3.Biaya_Tenaga_Kependidikan_UPPS) +
-                            parseInt(dataTs2.Biaya_Tenaga_Kependidikan_UPPS) +
-                            parseInt(dataTs1.Biaya_Tenaga_Kependidikan_UPPS)) /
-                            3
-                        )}
-                      </td>
-                      <td>{dataTs3.Biaya_Tenaga_Kependidikan_Prodi}</td>
-                      <td>{dataTs2.Biaya_Tenaga_Kependidikan_Prodi}</td>
-                      <td>{dataTs1.Biaya_Tenaga_Kependidikan_Prodi}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataTs3.Biaya_Tenaga_Kependidikan_Prodi) +
-                            parseInt(dataTs2.Biaya_Tenaga_Kependidikan_Prodi) +
-                            parseInt(dataTs1.Biaya_Tenaga_Kependidikan_Prodi)) /
-                            3
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>
-                        c. Biaya Operasional Pembelajaran (Bahan dan Peralatan
-                        Habis Pakai)
-                      </td>
-                      <td>{dataTs3.Biaya_Operasional_Pembelajaran_UPPS}</td>
-                      <td>{dataTs2.Biaya_Operasional_Pembelajaran_UPPS}</td>
-                      <td>{dataTs1.Biaya_Operasional_Pembelajaran_UPPS}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(
-                            dataTs3.Biaya_Operasional_Pembelajaran_UPPS
-                          ) +
-                            parseInt(
-                              dataTs2.Biaya_Operasional_Pembelajaran_UPPS
-                            ) +
-                            parseInt(
-                              dataTs1.Biaya_Operasional_Pembelajaran_UPPS
-                            )) /
-                            3
-                        )}
-                      </td>
-                      <td>{dataTs3.Biaya_Operasional_Pembelajaran_Prodi}</td>
-                      <td>{dataTs2.Biaya_Operasional_Pembelajaran_Prodi}</td>
-                      <td>{dataTs1.Biaya_Operasional_Pembelajaran_Prodi}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(
-                            dataTs3.Biaya_Operasional_Pembelajaran_Prodi
-                          ) +
-                            parseInt(
-                              dataTs2.Biaya_Operasional_Pembelajaran_Prodi
-                            ) +
-                            parseInt(
-                              dataTs1.Biaya_Operasional_Pembelajaran_Prodi
-                            )) /
-                            3
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>
-                        d. Biaya Operasional Tidak Langsung (Listrik, Gas, Air,
-                        Pemeliharaan Gedung, Pemeliharaan Sarana, Uang Lembur,
-                        Telekomunikasi, Konsumsi, Transport Lokal, Pajak,
-                        Asuransi, dll.)
-                      </td>
-                      <td>{dataTs3.Biaya_Operasional_TidakLangsung_UPPS}</td>
-                      <td>{dataTs2.Biaya_Operasional_TidakLangsung_UPPS}</td>
-                      <td>{dataTs1.Biaya_Operasional_TidakLangsung_UPPS}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(
-                            dataTs3.Biaya_Operasional_TidakLangsung_UPPS
-                          ) +
-                            parseInt(
-                              dataTs2.Biaya_Operasional_TidakLangsung_UPPS
-                            ) +
-                            parseInt(
-                              dataTs1.Biaya_Operasional_TidakLangsung_UPPS
-                            )) /
-                            3
-                        )}
-                      </td>
-                      <td>{dataTs3.Biaya_Operasional_TidakLangsung_Prodi}</td>
-                      <td>{dataTs2.Biaya_Operasional_TidakLangsung_Prodi}</td>
-                      <td>{dataTs1.Biaya_Operasional_TidakLangsung_Prodi}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(
-                            dataTs3.Biaya_Operasional_TidakLangsung_Prodi
-                          ) +
-                            parseInt(
-                              dataTs2.Biaya_Operasional_TidakLangsung_Prodi
-                            ) +
-                            parseInt(
-                              dataTs1.Biaya_Operasional_TidakLangsung_Prodi
-                            )) /
-                            3
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td></td>
-                      <td>
-                        Biaya operasional kemahasiswaan (penalaran, minat,
-                        bakat, dan kesejahteraan).
-                      </td>
-                      <td>{dataTs3.Biaya_Operasional_Kemahasiswaan_UPPS}</td>
-                      <td>{dataTs2.Biaya_Operasional_Kemahasiswaan_UPPS}</td>
-                      <td>{dataTs1.Biaya_Operasional_Kemahasiswaan_UPPS}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(
-                            dataTs3.Biaya_Operasional_Kemahasiswaan_UPPS
-                          ) +
-                            parseInt(
-                              dataTs2.Biaya_Operasional_Kemahasiswaan_UPPS
-                            ) +
-                            parseInt(
-                              dataTs1.Biaya_Operasional_Kemahasiswaan_UPPS
-                            )) /
-                            3
-                        )}
-                      </td>
-                      <td>{dataTs3.Biaya_Operasional_Kemahasiswaan_Prodi}</td>
-                      <td>{dataTs2.Biaya_Operasional_Kemahasiswaan_Prodi}</td>
-                      <td>{dataTs1.Biaya_Operasional_Kemahasiswaan_Prodi}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(
-                            dataTs3.Biaya_Operasional_Kemahasiswaan_Prodi
-                          ) +
-                            parseInt(
-                              dataTs2.Biaya_Operasional_Kemahasiswaan_Prodi
-                            ) +
-                            parseInt(
-                              dataTs1.Biaya_Operasional_Kemahasiswaan_Prodi
-                            )) /
-                            3
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>Jumlah</td>
-                      <td>
-                        {parseInt(dataTs3.Biaya_Dosen_UPPS) +
-                          parseInt(dataTs3.Biaya_Tenaga_Kependidikan_UPPS) +
-                          parseInt(
-                            dataTs3.Biaya_Operasional_Pembelajaran_UPPS
-                          ) +
-                          parseInt(
-                            dataTs3.Biaya_Operasional_TidakLangsung_UPPS
-                          ) +
-                          parseInt(
-                            dataTs3.Biaya_Operasional_Kemahasiswaan_UPPS
-                          )}
-                      </td>
-                      <td>
-                        {parseInt(dataTs2.Biaya_Dosen_UPPS) +
-                          parseInt(dataTs2.Biaya_Tenaga_Kependidikan_UPPS) +
-                          parseInt(
-                            dataTs2.Biaya_Operasional_Pembelajaran_UPPS
-                          ) +
-                          parseInt(
-                            dataTs2.Biaya_Operasional_TidakLangsung_UPPS
-                          ) +
-                          parseInt(
-                            dataTs2.Biaya_Operasional_Kemahasiswaan_UPPS
-                          )}
-                      </td>
-                      <td>
-                        {parseInt(dataTs2.Biaya_Dosen_UPPS) +
-                          parseInt(dataTs2.Biaya_Tenaga_Kependidikan_UPPS) +
-                          parseInt(
-                            dataTs1.Biaya_Operasional_Pembelajaran_UPPS
-                          ) +
-                          parseInt(
-                            dataTs1.Biaya_Operasional_TidakLangsung_UPPS
-                          ) +
-                          parseInt(
-                            dataTs1.Biaya_Operasional_Kemahasiswaan_UPPS
-                          )}
-                      </td>
-                      <td>
-                        {Math.round(
-                          (parseInt(dataTs3.Biaya_Dosen_UPPS) +
-                            parseInt(dataTs2.Biaya_Dosen_UPPS) +
-                            parseInt(dataTs1.Biaya_Dosen_UPPS)) /
-                            3 +
-                            (parseInt(dataTs3.Biaya_Tenaga_Kependidikan_UPPS) +
-                              parseInt(dataTs2.Biaya_Tenaga_Kependidikan_UPPS) +
-                              parseInt(
-                                dataTs1.Biaya_Tenaga_Kependidikan_UPPS
-                              )) /
-                              3 +
-                            (parseInt(
-                              dataTs3.Biaya_Operasional_Pembelajaran_UPPS
-                            ) +
-                              parseInt(
-                                dataTs2.Biaya_Operasional_Pembelajaran_UPPS
-                              ) +
-                              parseInt(
-                                dataTs1.Biaya_Operasional_Pembelajaran_UPPS
-                              )) /
-                              3 +
-                            (parseInt(
-                              dataTs3.Biaya_Operasional_TidakLangsung_UPPS
-                            ) +
-                              parseInt(
-                                dataTs2.Biaya_Operasional_TidakLangsung_UPPS
-                              ) +
-                              parseInt(
-                                dataTs1.Biaya_Operasional_TidakLangsung_UPPS
-                              )) /
-                              3 +
-                            (parseInt(
-                              dataTs3.Biaya_Operasional_Kemahasiswaan_UPPS
-                            ) +
-                              parseInt(
-                                dataTs2.Biaya_Operasional_Kemahasiswaan_UPPS
-                              ) +
-                              parseInt(
-                                dataTs1.Biaya_Operasional_Kemahasiswaan_UPPS
-                              )) /
-                              3
-                        )}
-                      </td>
-                      {/* PRODI */}
-                      <td>
-                        {parseInt(dataTs3.Biaya_Dosen_Prodi) +
-                          parseInt(dataTs3.Biaya_Tenaga_Kependidikan_Prodi) +
-                          parseInt(
-                            dataTs3.Biaya_Operasional_Pembelajaran_Prodi
-                          ) +
-                          parseInt(
-                            dataTs3.Biaya_Operasional_TidakLangsung_Prodi
-                          ) +
-                          parseInt(
-                            dataTs3.Biaya_Operasional_Kemahasiswaan_Prodi
-                          )}
-                      </td>
-                      <td>
-                        {parseInt(dataTs2.Biaya_Dosen_Prodi) +
-                          parseInt(dataTs2.Biaya_Tenaga_Kependidikan_Prodi) +
-                          parseInt(
-                            dataTs2.Biaya_Operasional_Pembelajaran_Prodi
-                          ) +
-                          parseInt(
-                            dataTs2.Biaya_Operasional_TidakLangsung_Prodi
-                          ) +
-                          parseInt(
-                            dataTs2.Biaya_Operasional_Kemahasiswaan_Prodi
-                          )}
-                      </td>
-                      <td>
-                        {parseInt(dataTs2.Biaya_Dosen_Prodi) +
-                          parseInt(dataTs2.Biaya_Tenaga_Kependidikan_Prodi) +
-                          parseInt(
-                            dataTs1.Biaya_Operasional_Pembelajaran_Prodi
-                          ) +
-                          parseInt(
-                            dataTs1.Biaya_Operasional_TidakLangsung_Prodi
-                          ) +
-                          parseInt(
-                            dataTs1.Biaya_Operasional_Kemahasiswaan_Prodi
-                          )}
-                      </td>
-                      <td>
-                        {Math.round(
-                          (parseInt(dataTs3.Biaya_Dosen_Prodi) +
-                            parseInt(dataTs2.Biaya_Dosen_Prodi) +
-                            parseInt(dataTs1.Biaya_Dosen_Prodi)) /
-                            3 +
-                            (parseInt(dataTs3.Biaya_Tenaga_Kependidikan_Prodi) +
-                              parseInt(
-                                dataTs2.Biaya_Tenaga_Kependidikan_Prodi
-                              ) +
-                              parseInt(
-                                dataTs1.Biaya_Tenaga_Kependidikan_Prodi
-                              )) /
-                              3 +
-                            (parseInt(
-                              dataTs3.Biaya_Operasional_Pembelajaran_Prodi
-                            ) +
-                              parseInt(
-                                dataTs2.Biaya_Operasional_Pembelajaran_Prodi
-                              ) +
-                              parseInt(
-                                dataTs1.Biaya_Operasional_Pembelajaran_Prodi
-                              )) /
-                              3 +
-                            (parseInt(
-                              dataTs3.Biaya_Operasional_TidakLangsung_Prodi
-                            ) +
-                              parseInt(
-                                dataTs2.Biaya_Operasional_TidakLangsung_Prodi
-                              ) +
-                              parseInt(
-                                dataTs1.Biaya_Operasional_TidakLangsung_Prodi
-                              )) /
-                              3 +
-                            (parseInt(
-                              dataTs3.Biaya_Operasional_Kemahasiswaan_Prodi
-                            ) +
-                              parseInt(
-                                dataTs2.Biaya_Operasional_Kemahasiswaan_Prodi
-                              ) +
-                              parseInt(
-                                dataTs1.Biaya_Operasional_Kemahasiswaan_Prodi
-                              )) /
-                              3
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td></td>
-                      <td>Biaya Penelitian</td>
-                      <td>{dataDnpenelitian3.dana_PT_Mandiri}</td>
-                      <td>{dataDnpenelitian2.dana_PT_Mandiri}</td>
-                      <td>{dataDnpenelitian1.dana_PT_Mandiri}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataDnpenelitian3.dana_PT_Mandiri) +
-                            parseInt(dataDnpenelitian2.dana_PT_Mandiri) +
-                            parseInt(dataDnpenelitian1.dana_PT_Mandiri)) /
-                            3
-                        )}
-                      </td>
-                      <td>{dataDnpenelitian3.dana_PT_Mandiri}</td>
-                      <td>{dataDnpenelitian2.dana_PT_Mandiri}</td>
-                      <td>{dataDnpenelitian1.dana_PT_Mandiri}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataDnpenelitian3.dana_PT_Mandiri) +
-                            parseInt(dataDnpenelitian2.dana_PT_Mandiri) +
-                            parseInt(dataDnpenelitian1.dana_PT_Mandiri)) /
-                            3
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td></td>
-                      <td>Biaya PKM</td>
-                      <td>{dataDnpkm3.dana_PT_Mandiri}</td>
-                      <td>{dataDnpkm2.dana_PT_Mandiri}</td>
-                      <td>{dataDnpkm1.dana_PT_Mandiri}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataDnpkm3.dana_PT_Mandiri) +
-                            parseInt(dataDnpkm2.dana_PT_Mandiri) +
-                            parseInt(dataDnpkm3.dana_PT_Mandiri)) /
-                            3
-                        )}
-                      </td>
-                      <td>{dataDnpkm3.dana_PT_Mandiri}</td>
-                      <td>{dataDnpkm2.dana_PT_Mandiri}</td>
-                      <td>{dataDnpkm1.dana_PT_Mandiri}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataDnpkm3.dana_PT_Mandiri) +
-                            parseInt(dataDnpkm2.dana_PT_Mandiri) +
-                            parseInt(dataDnpkm3.dana_PT_Mandiri)) /
-                            3
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>Jumlah</td>
-                      <td>
-                        {parseInt(dataDnpenelitian3.dana_PT_Mandiri) +
-                          parseInt(dataDnpkm3.dana_PT_Mandiri)}
-                      </td>
-                      <td>
-                        {parseInt(dataDnpenelitian2.dana_PT_Mandiri) +
-                          parseInt(dataDnpkm2.dana_PT_Mandiri)}
-                      </td>
-                      <td>
-                        {parseInt(dataDnpenelitian1.dana_PT_Mandiri) +
-                          parseInt(dataDnpkm1.dana_PT_Mandiri)}
-                      </td>
-                      <td>
-                        {Math.round(
-                          (parseInt(dataDnpenelitian3.dana_PT_Mandiri) +
-                            parseInt(dataDnpenelitian2.dana_PT_Mandiri) +
-                            parseInt(dataDnpenelitian1.dana_PT_Mandiri)) /
-                            3 +
-                            (parseInt(dataDnpkm3.dana_PT_Mandiri) +
-                              parseInt(dataDnpkm2.dana_PT_Mandiri) +
-                              parseInt(dataDnpkm3.dana_PT_Mandiri)) /
-                              3
-                        )}
-                      </td>
-                      <td>
-                        {parseInt(dataDnpenelitian3.dana_PT_Mandiri) +
-                          parseInt(dataDnpkm3.dana_PT_Mandiri)}
-                      </td>
-                      <td>
-                        {parseInt(dataDnpenelitian2.dana_PT_Mandiri) +
-                          parseInt(dataDnpkm2.dana_PT_Mandiri)}
-                      </td>
-                      <td>
-                        {parseInt(dataDnpenelitian1.dana_PT_Mandiri) +
-                          parseInt(dataDnpkm1.dana_PT_Mandiri)}
-                      </td>
-                      <td>
-                        {Math.round(
-                          (parseInt(dataDnpenelitian3.dana_PT_Mandiri) +
-                            parseInt(dataDnpenelitian2.dana_PT_Mandiri) +
-                            parseInt(dataDnpenelitian1.dana_PT_Mandiri)) /
-                            3 +
-                            (parseInt(dataDnpkm3.dana_PT_Mandiri) +
-                              parseInt(dataDnpkm2.dana_PT_Mandiri) +
-                              parseInt(dataDnpkm3.dana_PT_Mandiri)) /
-                              3
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>5</td>
-                      <td></td>
-                      <td>Biaya Investasi SDM</td>
-                      <td>{dataTs3.Biaya_Investasi_SDM_UPPS}</td>
-                      <td>{dataTs2.Biaya_Investasi_SDM_UPPS}</td>
-                      <td>{dataTs1.Biaya_Investasi_SDM_UPPS}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataTs3.Biaya_Investasi_SDM_UPPS) +
-                            parseInt(dataTs2.Biaya_Investasi_SDM_UPPS) +
-                            parseInt(dataTs1.Biaya_Investasi_SDM_UPPS)) /
-                            3
-                        )}
-                      </td>
-                      <td>{dataTs3.Biaya_Investasi_SDM_Prodi}</td>
-                      <td>{dataTs2.Biaya_Investasi_SDM_Prodi}</td>
-                      <td>{dataTs1.Biaya_Investasi_SDM_Prodi}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataTs3.Biaya_Investasi_SDM_UPPS) +
-                            parseInt(dataTs2.Biaya_Investasi_SDM_UPPS) +
-                            parseInt(dataTs1.Biaya_Investasi_SDM_UPPS)) /
-                            3
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>6</td>
-                      <td></td>
-                      <td>Biaya Investasi Sarana</td>
-                      <td>{dataTs3.Biaya_Investasi_Sarana_UPPS}</td>
-                      <td>{dataTs2.Biaya_Investasi_Sarana_UPPS}</td>
-                      <td>{dataTs1.Biaya_Investasi_Sarana_UPPS}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataTs3.Biaya_Investasi_Sarana_UPPS) +
-                            parseInt(dataTs2.Biaya_Investasi_Sarana_UPPS) +
-                            parseInt(dataTs1.Biaya_Investasi_Sarana_UPPS)) /
-                            3
-                        )}
-                      </td>
-                      <td>{dataTs3.Biaya_Investasi_Sarana_Prodi}</td>
-                      <td>{dataTs2.Biaya_Investasi_Sarana_Prodi}</td>
-                      <td>{dataTs1.Biaya_Investasi_Sarana_Prodi}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataTs3.Biaya_Investasi_Sarana_Prodi) +
-                            parseInt(dataTs2.Biaya_Investasi_Sarana_Prodi) +
-                            parseInt(dataTs1.Biaya_Investasi_Sarana_Prodi)) /
-                            3
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>7</td>
-                      <td></td>
-                      <td>Biaya Investasi Prasarana</td>
-                      <td>{dataTs3.Biaya_Investasi_Prasarana_UPPS}</td>
-                      <td>{dataTs2.Biaya_Investasi_Prasarana_UPPS}</td>
-                      <td>{dataTs1.Biaya_Investasi_Prasarana_UPPS}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataTs3.Biaya_Investasi_Prasarana_UPPS) +
-                            parseInt(dataTs2.Biaya_Investasi_Prasarana_UPPS) +
-                            parseInt(dataTs1.Biaya_Investasi_Prasarana_UPPS)) /
-                            3
-                        )}
-                      </td>
-                      <td>{dataTs3.Biaya_Investasi_Prasarana_Prodi}</td>
-                      <td>{dataTs2.Biaya_Investasi_Prasarana_Prodi}</td>
-                      <td>{dataTs1.Biaya_Investasi_Prasarana_Prodi}</td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataTs3.Biaya_Investasi_Prasarana_Prodi) +
-                            parseInt(dataTs2.Biaya_Investasi_Prasarana_Prodi) +
-                            parseInt(dataTs1.Biaya_Investasi_Prasarana_Prodi)) /
-                            3
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>Jumlah</td>
-                      <td>
-                        {parseInt(dataTs3.Biaya_Investasi_SDM_UPPS) +
-                          parseInt(dataTs3.Biaya_Investasi_Sarana_UPPS) +
-                          parseInt(dataTs3.Biaya_Investasi_Prasarana_UPPS)}
-                      </td>
-                      <td>
-                        {parseInt(dataTs2.Biaya_Investasi_SDM_UPPS) +
-                          parseInt(dataTs2.Biaya_Investasi_Sarana_UPPS) +
-                          parseInt(dataTs2.Biaya_Investasi_Prasarana_UPPS)}
-                      </td>
-                      <td>
-                        {parseInt(dataTs1.Biaya_Investasi_SDM_UPPS) +
-                          parseInt(dataTs1.Biaya_Investasi_Sarana_UPPS) +
-                          parseInt(dataTs1.Biaya_Investasi_Prasarana_UPPS)}
-                      </td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataTs3.Biaya_Investasi_SDM_UPPS) +
-                            parseInt(dataTs2.Biaya_Investasi_SDM_UPPS) +
-                            parseInt(dataTs1.Biaya_Investasi_SDM_UPPS)) /
-                            3 +
-                            (parseInt(dataTs3.Biaya_Investasi_Sarana_UPPS) +
-                              parseInt(dataTs2.Biaya_Investasi_Sarana_UPPS) +
-                              parseInt(dataTs1.Biaya_Investasi_Sarana_UPPS)) /
-                              3 +
-                            (parseInt(dataTs3.Biaya_Investasi_Prasarana_UPPS) +
-                              parseInt(dataTs2.Biaya_Investasi_Prasarana_UPPS) +
-                              parseInt(
-                                dataTs1.Biaya_Investasi_Prasarana_UPPS
-                              )) /
-                              3
-                        )}
-                      </td>
-                      <td>
-                        {parseInt(dataTs2.Biaya_Investasi_SDM_Prodi) +
-                          parseInt(dataTs2.Biaya_Investasi_Sarana_Prodi) +
-                          parseInt(dataTs2.Biaya_Investasi_Prasarana_Prodi)}
-                      </td>
-                      <td>
-                        {parseInt(dataTs1.Biaya_Investasi_SDM_Prodi) +
-                          parseInt(dataTs1.Biaya_Investasi_Sarana_Prodi) +
-                          parseInt(dataTs1.Biaya_Investasi_Prasarana_Prodi)}
-                      </td>
-                      <td>
-                        {parseInt(dataTs1.Biaya_Investasi_SDM_Prodi) +
-                          parseInt(dataTs1.Biaya_Investasi_Sarana_Prodi) +
-                          parseInt(dataTs1.Biaya_Investasi_Prasarana_Prodi)}
-                      </td>
-                      {/* rata-rata */}
-                      <td>
-                        {Math.round(
-                          (parseInt(dataTs3.Biaya_Investasi_SDM_Prodi) +
-                            parseInt(dataTs2.Biaya_Investasi_SDM_Prodi) +
-                            parseInt(dataTs1.Biaya_Investasi_SDM_Prodi)) /
-                            3 +
-                            (parseInt(dataTs3.Biaya_Investasi_Sarana_Prodi) +
-                              parseInt(dataTs2.Biaya_Investasi_Sarana_Prodi) +
-                              parseInt(dataTs1.Biaya_Investasi_Sarana_Prodi)) /
-                              3 +
-                            (parseInt(dataTs3.Biaya_Investasi_Prasarana_Prodi) +
-                              parseInt(
-                                dataTs2.Biaya_Investasi_Prasarana_Prodi
-                              ) +
-                              parseInt(
-                                dataTs1.Biaya_Investasi_Prasarana_Prodi
-                              )) /
-                              3
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div className="card-body px-0 pt-0 pb-2">
-                  <div className="table-responsive p-0"></div>
+                <div className="card-body ">
+                  <div className="table-responsive p-0">
+                    <table id="table1" border={1}>
+                      <thead>
+                        <tr>
+                          <th rowspan="2">
+                            <h3 className="mb-0 text-sm">No</h3>
+                          </th>
+                          <th rowspan="2">
+                            <h3 className="mb-0 text-sm">Program Studi</h3>
+                          </th>
+                          <th rowspan="2" className="w-20">
+                            <h3 className="mb-0 text-sm">Jenis Penggunaan</h3>
+                          </th>
+                          <th colspan="4">
+                            <h3 className="mb-0 text-sm">
+                              Unit Pengelola Program Studi <br />
+                              (Rupiah)
+                            </h3>
+                          </th>
+                          <th colspan="4">
+                            <h3 className="mb-0 text-sm">
+                              Program Studi <br />
+                              (Rupiah)
+                            </h3>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS-2</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS-1</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">Rata-rata</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS-2</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS-1</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">TS</h3>
+                          </th>
+                          <th>
+                            <h3 className="mb-0 text-sm">Rata-rata</h3>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th>
+                            <h4 className="mb-0 text-sm">1</h4>
+                          </th>
+                          <th>
+                            <h4 className="mb-0 text-sm">
+                              Manajemen Informatika
+                            </h4>
+                          </th>
+                          <th>
+                            <h4 className="mb-0 text-sm">
+                              Biaya Operasional Pendidikan
+                            </h4>
+                          </th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th>
+                            <h4 className="mb-0 text-sm">
+                              a. Biaya Dosen (Gaji, Honor)
+                            </h4>
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Dosen_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Dosen_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Dosen_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].bdsn_upps)}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Dosen_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Dosen_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Dosen_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].bdsn_prodi)}
+                              </h4>
+                            )}
+                          </th>
+                        </tr>
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th>
+                            <h4 className="mb-0 text-sm">
+                              b. Biaya Tenaga Kependidikan (Gaji, Honor)
+                            </h4>
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Tenaga_Kependidikan_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Tenaga_Kependidikan_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Tenaga_Kependidikan_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].btenaga_upps)}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Tenaga_Kependidikan_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Tenaga_Kependidikan_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Tenaga_Kependidikan_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].btenaga_prodi)}
+                              </h4>
+                            )}
+                          </th>
+                        </tr>
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th>
+                            <h4 className="mb-0 text-sm">
+                              c. Biaya Operasional Pembelajaran (Bahan dan
+                              Peralatan Habis Pakai)
+                            </h4>
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[2]
+                                    .Biaya_Operasional_Pembelajaran_UPPS
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[1]
+                                    .Biaya_Operasional_Pembelajaran_UPPS
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[0]
+                                    .Biaya_Operasional_Pembelajaran_UPPS
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].boperasional_pmbljrn_upps
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                          {/* Biaya_Operasional_Pembelajaran_Prodi */}
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[2]
+                                    .Biaya_Operasional_Pembelajaran_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[1]
+                                    .Biaya_Operasional_Pembelajaran_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[0]
+                                    .Biaya_Operasional_Pembelajaran_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].boperasional_pmbljrn_prodi
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                        </tr>
+                        {/* end Biaya_Operasional_Pembelajaran_Prodi */}
+
+                        {/* Biaya Operasional Tidak Langsung UPPS */}
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th>
+                            <h4 className="mb-0 text-sm">
+                              d. Biaya Operasional Tidak Langsung (Listrik, Gas,
+                              Air, Pemeliharaan Gedung, Pemeliharaan Sarana,
+                              Uang Lembur, Telekomunikasi, Konsumsi, Transport
+                              Lokal, Pajak, Asuransi, dll.)
+                            </h4>
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[2]
+                                    .Biaya_Operasional_TidakLangsung_UPPS
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[1]
+                                    .Biaya_Operasional_TidakLangsung_UPPS
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[0]
+                                    .Biaya_Operasional_TidakLangsung_UPPS
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].boperasional_tdklgsg_upps
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                          {/* end  Biaya_Operasional_TidakLangsung_UPPS*/}
+
+                          {/* Biaya_Operasional_TidakLangsung_Prodi */}
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[2]
+                                    .Biaya_Operasional_TidakLangsung_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[1]
+                                    .Biaya_Operasional_TidakLangsung_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[0]
+                                    .Biaya_Operasional_TidakLangsung_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].boperasional_tdklgsg_prodi
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                        </tr>
+                        {/* end  Biaya_Operasional_TidakLangsung_Prodi*/}
+
+                        {/* Biaya operasional kemahasiswaan UPPS */}
+                        <tr>
+                          <th>
+                            <h4 className="mb-0 text-sm">2</h4>
+                          </th>
+                          <th></th>
+                          <th>
+                            <h4 className="mb-0 text-sm">
+                              Biaya operasional kemahasiswaan (penalaran, minat,
+                              bakat, dan kesejahteraan).
+                            </h4>
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[2]
+                                    .Biaya_Operasional_Kemahasiswaan_UPPS
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[1]
+                                    .Biaya_Operasional_Kemahasiswaan_UPPS
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[0]
+                                    .Biaya_Operasional_Kemahasiswaan_UPPS
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].boperasional_mhs_upps
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                          {/* end Biaya_Operasional_Kemahasiswaan_UPPS */}
+
+                          {/* Biaya_Operasional_Kemahasiswaan_Prodi */}
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[2]
+                                    .Biaya_Operasional_Kemahasiswaan_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[1]
+                                    .Biaya_Operasional_Kemahasiswaan_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {
+                                  tampildana[0]
+                                    .Biaya_Operasional_Kemahasiswaan_Prodi
+                                }
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].boperasional_mhs_prodi
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                        </tr>
+                        {/* end Biaya_Operasional_Kemahasiswaan_Prodi */}
+
+                        {/* Jumlah UPPS */}
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th>
+                            <h4 className="mb-0 text-sm">Jumlah</h4>
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_bo_ts2_upps}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_bo_ts1_upps}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_bo_ts_upps}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].bdsn_upps +
+                                    tampilrata[0].btenaga_upps +
+                                    tampilrata[0].boperasional_pmbljrn_upps +
+                                    tampilrata[0].boperasional_tdklgsg_upps +
+                                    tampilrata[0].boperasional_mhs_upps
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                          {/* End Jumlah UPPS */}
+
+                          {/* PRODI */}
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_bo_ts2_prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_bo_ts1_prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_bo_ts_prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].bdsn_prodi +
+                                    tampilrata[0].btenaga_prodi +
+                                    tampilrata[0].boperasional_pmbljrn_prodi +
+                                    tampilrata[0].boperasional_tdklgsg_prodi +
+                                    tampilrata[0].boperasional_mhs_prodi
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                        </tr>
+                        {/*Biaya Penelitian  */}
+                        <tr>
+                          <th>
+                            <h4 className="mb-0 text-sm">3</h4>
+                          </th>
+                          <th></th>
+                          <th>
+                            <h4 className="mb-0 text-sm">Biaya Penelitian</h4>
+                          </th>
+                          <th>
+                            {tampilpenelitian[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpenelitian[2].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpenelitian[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpenelitian[1].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpenelitian[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpenelitian[0].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].bpenelitian_upps)}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpenelitian[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpenelitian[2].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpenelitian[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpenelitian[1].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpenelitian[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpenelitian[0].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].bpenelitian_prodi)}
+                              </h4>
+                            )}
+                          </th>
+                        </tr>
+                        {/* end biaya penelitian */}
+
+                        {/* Biaya PKM */}
+                        <tr>
+                          <th>
+                            <h4 className="mb-0 text-sm">4</h4>
+                          </th>
+                          <th></th>
+                          <th>
+                            <h4 className="mb-0 text-sm">Biaya PKM</h4>
+                          </th>
+                          <th>
+                            {tampilpkm[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpkm[2].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpkm[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpkm[1].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpkm[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpkm[0].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].bpkm_upps)}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpkm[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpkm[2].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpkm[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpkm[1].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilpkm[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampilpkm[0].dana_PT_Mandiri}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].bpkm_prodi)}
+                              </h4>
+                            )}
+                          </th>
+                        </tr>
+                        {/* end biaya pkm */}
+
+                        {/* jumlah pkm penlitain  */}
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th>
+                            <h4 className="mb-0 text-sm">Jumlah</h4>
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_pp_ts2_upps}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_pp_ts1_upps}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_pp_ts_upps}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].bpkm_upps +
+                                    tampilrata[0].bpenelitian_upps
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_pp_ts2_prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_pp_ts1_prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_pp_ts_prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].bpkm_prodi +
+                                    tampilrata[0].bpenelitian_prodi
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                        </tr>
+                        {/* end jumlah pkm penelitian */}
+
+                        {/*  Biaya Investasi SDM */}
+                        <tr>
+                          <th>
+                            <h4 className="mb-0 text-sm">5</h4>
+                          </th>
+                          <th></th>
+                          <th>
+                            <h4 className="mb-0 text-sm">
+                              Biaya Investasi SDM
+                            </h4>
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Investasi_SDM_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Investasi_SDM_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Investasi_SDM_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].binvestasi_sdm_upps)}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Investasi_SDM_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Investasi_SDM_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Investasi_SDM_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(tampilrata[0].binvestasi_sdm_prodi)}
+                              </h4>
+                            )}
+                          </th>
+                        </tr>
+                        {/* end biaya investasi sdm  */}
+
+                        {/* Biaya Investasi Sarana */}
+                        <tr>
+                          <th>
+                            <h4 className="mb-0 text-sm">6</h4>
+                          </th>
+                          <th></th>
+                          <th>
+                            <h4 className="mb-0 text-sm">
+                              Biaya Investasi Sarana
+                            </h4>
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Investasi_Sarana_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Investasi_Sarana_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Investasi_Sarana_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].binvestasi_sarana_upps
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Investasi_Sarana_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Investasi_Sarana_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Investasi_Sarana_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].binvestasi_sarana_prodi
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                        </tr>
+                        {/* biaya sarana  */}
+
+                        {/* biaya prasarana */}
+                        <tr>
+                          <th>
+                            <h4 className="mb-0 text-sm">7</h4>
+                          </th>
+                          <th></th>
+                          <th>
+                            <h4 className="mb-0 text-sm">
+                              Biaya Investasi Prasarana
+                            </h4>
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Investasi_Prasarana_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Investasi_Prasarana_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Investasi_Prasarana_UPPS}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].binvestasi_prasarana_upps
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[2] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[2].Biaya_Investasi_Prasarana_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[1] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[1].Biaya_Investasi_Prasarana_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampildana[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampildana[0].Biaya_Investasi_Prasarana_Prodi}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampilrata[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].binvestasi_prasarana_prodi
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                        </tr>
+                        {/* biaya prasarana */}
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th>
+                            <h4 className="mb-0 text-sm">Jumlah</h4>
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_investasi_ts2_upps}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_investasi_ts1_upps}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_investasi_ts_upps}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].binvestasi_sdm_upps +
+                                    tampilrata[0].binvestasi_sarana_upps +
+                                    tampilrata[0].binvestasi_prasarana_upps
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_investasi_ts2_prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_investasi_ts1_prodi}
+                              </h4>
+                            )}
+                          </th>
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {tampiljumlah[0].jmlh_investasi_ts_prodi}
+                              </h4>
+                            )}
+                          </th>
+                          {/* rata-rata */}
+                          <th>
+                            {tampiljumlah[0] == null ? (
+                              0
+                            ) : (
+                              <h4 className="mb-0 text-sm">
+                                {Math.round(
+                                  tampilrata[0].binvestasi_sdm_prodi +
+                                    tampilrata[0].binvestasi_sarana_prodi +
+                                    tampilrata[0].binvestasi_prasarana_prodi
+                                )}
+                              </h4>
+                            )}
+                          </th>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>

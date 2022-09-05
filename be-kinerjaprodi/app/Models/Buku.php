@@ -9,4 +9,9 @@ class Buku extends Model
 {
     use HasFactory;
     protected $guarded = ["id"];
+
+    public function anggotaMahasiswas()
+    {
+        return $this->belongsToMany(Mahasiswa::class, 'relasi_bukumhs', 'buku_id', 'mahasiswa_id')->withPivot('keanggotaan');
+    }
 }

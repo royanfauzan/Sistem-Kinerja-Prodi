@@ -17,6 +17,8 @@ export default function pkm() {
     const [anggota_dosens, setdataDosen] = useState([]);
     const [anggota_mahasiswas, setdataMahasiswa] = useState([]);
 
+    const [dataRole, setRole] = useState("");
+
     const pengambilData = async () => {
         const lgToken = localStorage.getItem("token");
 
@@ -56,6 +58,8 @@ export default function pkm() {
                 console.log(response);
                 console.log("Sukses");
                 const { level_akses } = response.data.user;
+                const { role } = response.data.user;
+                setRole(role);
                 // kalo ga admin dipindah ke halaman lain
                 if (level_akses !== 3) {
                     return router.push("/");
@@ -76,7 +80,7 @@ export default function pkm() {
         <>
             <LoadingUtama loadStatus={stadmin} />
             {stadmin && (
-                <LayoutForm>
+                <LayoutForm rlUser={dataRole}>
                     <div className="container-fluid py-4">
                         <div className="col-12">
                             <div className="card mb-4">
@@ -95,7 +99,7 @@ export default function pkm() {
                                     
                                 `}</style>
                                 <div className="card-header">
-                                    <h6>Export Kepuasan Mahasiswa</h6>
+                                    <h6>Export Capaian Kurikulum</h6>
                                 </div>
                                 <div className="row justify-content-between mb-4">
                                     <div className="col-4">
@@ -125,23 +129,23 @@ export default function pkm() {
                                                     <th rowspan="2">NO</th>
                                                     <th rowspan="2">Semester</th>
                                                     <th rowspan="2">Kode Mata Kuliah</th>
-                                                    <th rowspan="2">Nama <br/>Mata <br/> Kuliah</th>
-                                                    <th rowspan="2">Mata <br/> Kuliah <br/> Kompetensi</th>
+                                                    <th rowspan="2">Nama Mata Kuliah</th>
+                                                    <th rowspan="2">Mata Kuliah Kompetensi</th>
                                                     <th colspan="3">Bobot Kredit (sks)</th>
-                                                    <th rowspan="2">Konversi  <br/>Kredit ke <br/>Jam</th>
+                                                    <th rowspan="2">Konversi Kredit ke Jam</th>
                                                     <th colspan="4">Capaian Pembelajaran</th>
-                                                    <th rowspan="2">Dokumen <br/>Rencana <br/>Pembelajaran</th>
-                                                    <th rowspan="2">Unit <br/>Penyelenggara</th>
+                                                    <th rowspan="2">Dokumen Rencana Pembelajaran</th>
+                                                    <th rowspan="2">Unit Penyelenggara</th>
                                                 </tr>
                                                 <tr>
-                                                    <th >Kuliah/ <br/>Responsi/ <br/>Tutorial</th>
+                                                    <th >Kuliah/Responsi/Tutorial</th>
                                                     <th >Seminar</th>
-                                                    <th >Praktikum/ <br/>Praktik/<br/> Praktik <br/>Lapangan</th>
+                                                    <th >Praktikum/Praktik/Praktik Lapangan</th>
 
                                                     <th >Sikap</th>
                                                     <th >Pengetahuan</th>
-                                                    <th >Keterampilan <br/> Umum</th>
-                                                    <th >Keterampilan <br/>Khusus</th>
+                                                    <th >Keterampilan Umum</th>
+                                                    <th >Keterampilan Khusus</th>
 
                                                 </tr>
                                             </thead>
@@ -159,23 +163,16 @@ export default function pkm() {
                                                                     {tcap.semester}
                                                                 </p>
                                                             </td>
-                                                            <td>
-                                                                {tcap.anggota_matkuls.map((anggota_matkuls) => {
-                                                                    return (
-                                                                        <p className="mb-0 text-sm text-center" key='anggota.id'>
-                                                                            {anggota_matkuls.kode_matkul}
-                                                                        </p>
-                                                                    );
-                                                                })}
+                                                            <td className="align-middle text-sm">
+                                                                <p className="text-xs font-weight-bold mb-0 pe-3">
+                                                                    {tcap.matkul.kode_matkul}
+                                                                </p>
                                                             </td>
-                                                            <td>
-                                                                {tcap.anggota_matkuls.map((anggota_matkuls) => {
-                                                                    return (
-                                                                        <p className="mb-0 text-sm text-center" key='anggota.id'>
-                                                                            {anggota_matkuls.nama_matkul}
-                                                                        </p>
-                                                                    );
-                                                                })}
+
+                                                            <td className="align-middle text-sm">
+                                                                <p className="text-xs font-weight-bold mb-0 pe-3">
+                                                                    {tcap.matkul.nama_matkul}
+                                                                </p>
                                                             </td>
 
                                                             <td className="align-middle ">

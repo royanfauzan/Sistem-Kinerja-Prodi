@@ -1,38 +1,88 @@
-import axios from "axios";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import axios from "axios"
+import { useRouter } from "next/router"
+import React, { useEffect, useState } from "react"
 import style from "./sideb.module.css"
 
-
 export default function SidebarUtama() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const pathHalaman = router.asPath;
-  const arrHalaman = pathHalaman.split("/");
-  const HalamanActive = arrHalaman.slice(-1)[0];
+  const pathHalaman = router.asPath
+  const arrHalaman = pathHalaman.split("/")
+  const HalamanActive = arrHalaman.slice(-1)[0]
+
+  const listFolderDashboard = ["dashboards"]
+  const isMenuDashboard = listFolderDashboard.includes(arrHalaman[1])
+
+  const listFolderSdm = [
+    "sdm",
+    "rekognisi",
+    "publikasidos",
+    "penelitiandosen",
+    "pkmdosen",
+    "profildosen",
+    "profildetail",
+    "dtps",
+    "ewmp",
+    "produk",
+    "luaranlaindos",
+    "mengajar",
+    "bukujurnal",
+    "bimbingan",
+  ]
+  const isMenuSdm = listFolderSdm.includes(arrHalaman[1])
+
+  const listFolderPendidikan = [
+    "dashboardadmin",
+    "capkurikulum",
+    "integrasi",
+    "kepuasanmhs",
+    "matkul",
+    "mahasiswa",
+  ]
+  const isMenuPendidikan = listFolderPendidikan.includes(arrHalaman[1])
+
+  const listFolderCapaian = ["dashboards_capaian_tridarma", "prestasi", "ipk"]
+  const isMenuCapaian = listFolderCapaian.includes(arrHalaman[1])
+
+  const listFolderMitra = ["mitra"]
+  const isMenuMitra = listFolderMitra.includes(arrHalaman[1])
+
+  const listFolderKjs = ["kerjasama"]
+  const isMenuKjs = listFolderKjs.includes(arrHalaman[1])
+
+  const listFolderMhs = ["MahasiswaBaru_Asing"]
+  const isMenuMhs = listFolderMhs.includes(arrHalaman[1])
+
+  const listFolderKeuangan = ["penggunaan_dana"]
+  const isMenuKeuangan = listFolderKeuangan.includes(arrHalaman[1])
+
+  const listFolderUser = ["User"]
+  const isMenuUser = listFolderUser.includes(arrHalaman[1])
+  console.log(arrHalaman)
+  console.log(`arrHalaman`)
 
   const Logout = async () => {
-    const lgToken = localStorage.getItem("token");
+    const lgToken = localStorage.getItem("token")
 
     axios({
-        method: "get",
-        url: "http://127.0.0.1:8000/api/logout",
-        headers: { Authorization: `Bearer ${lgToken}` },
-        params:{
-          token:lgToken
-        }
+      method: "get",
+      url: "http://127.0.0.1:8000/api/logout",
+      headers: { Authorization: `Bearer ${lgToken}` },
+      params: {
+        token: lgToken,
+      },
     })
-        .then(function (response) {
-            console.log(response);
-            console.log("Sukses");
-            localStorage.removeItem("token");
-            router.push('/login');
-        })
-        .catch(function (err) {
-            console.log("gagal");
-            console.log(err.response);
-        });
-};
+      .then(function (response) {
+        console.log(response)
+        console.log("Sukses")
+        localStorage.removeItem("token")
+        router.push("/login")
+      })
+      .catch(function (err) {
+        console.log("gagal")
+        console.log(err.response)
+      })
+  }
 
   return (
     <aside
@@ -65,7 +115,12 @@ export default function SidebarUtama() {
       >
         <ul className="navbar-nav">
           <li className={`nav-item `}>
-            <a className={`nav-link ${(HalamanActive == 'dashboardadmin')?'active bg-primary text-white':''}`} href="/dashboards/dashboardadmin">
+            <a
+              className={`nav-link ${
+                isMenuDashboard ? "active bg-light text-dark opacity-10" : ""
+              }`}
+              href="/dashboards/dashboardadmin"
+            >
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
@@ -74,7 +129,98 @@ export default function SidebarUtama() {
           </li>
           <li className={`nav-item `}>
             <a
-              className="nav-link "
+              className={`nav-link ${
+                isMenuUser ? "active bg-light text-dark opacity-10" : ""
+              }`}
+              href="/User/Tabel_User"
+            >
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">User</span>
+            </a>
+          </li>
+
+          <li className={`nav-item `}>
+            <a
+              className={`nav-link ${
+                isMenuMitra
+                  ? "active bg-light text-dark opacity-10"
+                  : ""
+              }`}
+              href="/mitra/tabelmitra"
+            >
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">
+                Data Mitra
+              </span>
+            </a>
+          </li>
+
+          <li className={`nav-item `}>
+            <a
+              className={`nav-link ${
+                isMenuKjs
+                  ? "active bg-light text-dark opacity-10"
+                  : ""
+              }`}
+              href="/kerjasama/tabelkerjasama"
+            >
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">
+                Kriteria Kerjasama
+              </span>
+            </a>
+          </li>
+
+          <li className={`nav-item `}>
+            <a
+              className={`nav-link ${
+                isMenuMhs
+                  ? "active bg-light text-dark opacity-10"
+                  : ""
+              }`}
+              href="/dashboard_rona/dashboard_mahasiswa"
+            >
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">
+                Kriteria Mahasiswa
+              </span>
+            </a>
+          </li>
+
+          <li className={`nav-item `}>
+            <a
+              className={`nav-link ${
+                isMenuKeuangan
+                  ? "active bg-light text-dark opacity-10"
+                  : ""
+              }`}
+              href="/penggunaan_dana/tabel_penggunaan_dana"
+            >
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">
+                
+                Kriteria Keuangan, <br /> Sarana dan Prasarana
+               
+              </span>
+            </a>
+          </li>
+
+
+          <li className={`nav-item `}>
+            <a
+              className={`nav-link ${
+                isMenuCapaian ? "active bg-light text-dark opacity-10" : ""
+              }`}
               href="/dashboards_capaian_tridarma/dashboardtridarma"
             >
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -86,7 +232,12 @@ export default function SidebarUtama() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards_eva/dashboardpendidikan">
+            <a
+              className={`nav-link ${
+                isMenuPendidikan ? "active bg-light text-dark opacity-10" : ""
+              }`}
+              href="/dashboardadmin/dashboardpendidikan"
+            >
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
@@ -94,94 +245,27 @@ export default function SidebarUtama() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards_eva/dashboardpenelitian">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Kriteria Penelitian</span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards_eva/dashboardpkm">
+            <a
+              className={`nav-link ${
+                isMenuSdm ? "active bg-light text-dark" : ""
+              }`}
+              href="/sdm/dashboardsdmadm"
+            >
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
               <span className="nav-link-text ms-1">
-                Kriteria Pengabdian <br /> Kepada Masyarakat
+                Kriteria Sumber Daya
+                <br /> Manusia(SDM)
               </span>
             </a>
           </li>
-          <li className={`nav-item `}>
-            <a className="nav-link active" href="./dashboard_tabel.php">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Tables</span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="./dashboard_form.php">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-credit-card text-success text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Form</span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="./login.php">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-app text-info text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Login</span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="../pages/rtl.html">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-world-2 text-danger text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">RTL</span>
-            </a>
-          </li>
-          <li className="nav-item mt-3">
-            <h6 className="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
-              Account pages
-            </h6>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="../pages/profile.html">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-single-02 text-dark text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Profile</span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="../pages/sign-in.html">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Sign In</span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="../pages/sign-up.html">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-collection text-info text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Sign Up</span>
-            </a>
-          </li>
+          
         </ul>
       </div>
       <div className="mx-3 ">
-        
-        <a
-          href="https://www.creative-tim.com/learning-lab/bootstrap/license/argon-dashboard"
-          target="_blank"
-          className="btn btn-dark btn-sm w-100 mb-3"
-        >
-          Documentation
+        <a href="/User/UbahPassword" className="btn btn-dark btn-sm w-100 mb-3">
+          Change Password
         </a>
         <a
           className="btn btn-sm btn-outline-danger mb-0 w-100"
@@ -192,5 +276,5 @@ export default function SidebarUtama() {
         </a>
       </div>
     </aside>
-  );
+  )
 }

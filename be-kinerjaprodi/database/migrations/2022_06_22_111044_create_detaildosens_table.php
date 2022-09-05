@@ -21,10 +21,9 @@ class CreateDetaildosensTable extends Migration
                     ->onDelete('cascade');
             $table->string('bidangKeahlian');
             $table->string('kesesuaian');
-            $table->string('jabatanAkademik');
-            $table->string('Perusahaan')->nullable();
-            $table->string('noSertifPendidik');
-            $table->string('fileBukti');
+            $table->string('perusahaan')->default('');
+            $table->string('noSertifPendidik')->default('');
+            $table->string('fileBukti')->default('');
             $table->timestamps();
         });
     }

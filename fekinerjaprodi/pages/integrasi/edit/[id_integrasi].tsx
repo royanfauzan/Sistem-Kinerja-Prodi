@@ -6,6 +6,8 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 
 // Untuk Ngambil Data Berdasarkan ID
@@ -68,20 +70,23 @@ export default function update_dataintegrasi(props) {
   const [dataPKM, setdataPKM] = useState(PKM);
   const [datamatkul, setdatamatkul] = useState(matkul);
   const [filebukti, setfilebuktis] = useState<File>([]);
+  const [dataError, setError] = useState([]);
+  const MySwal = withReactContent(Swal);
   const penelitianref = useRef(null);
   const pkmref = useRef(null);
+
+  const [dataRole, setRole] = useState("");
 
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
-  const url = "http://127.0.0.1:8000/";
-  const [dataurl, setUrl] = useState(url);
+  const apiurl = "http://127.0.0.1:8000/"
   const [selectDosen, setSelectDosen] = useState(integrasi.dosen_id);
   const [selectPenelitian, setSelectPenelitian] = useState(integrasi.penelitian_id);
   const [selectPKM, setselectPKM] = useState(integrasi.PkM_id);
   const [selectMatkul, setselectMatkul] = useState(integrasi.matkul_id);
 
-  const handleChangepnltn= (e) => {
+  const handleChangepnltn = (e) => {
     setSelectPenelitian(e.target.value);
     pkmref.current.value = null
   };
@@ -135,8 +140,11 @@ export default function update_dataintegrasi(props) {
         console.log(response);
         console.log('Sukses');
         const { level_akses } = response.data.user;
+
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 3) {
+        if (level_akses !== 2) {
           return router.push('/');
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -169,7 +177,7 @@ export default function update_dataintegrasi(props) {
     formData.append("tahun", event.target.tahun.value);
     formData.append("file_bukti", filebukti);
 
-    console.log(filebukti);
+    console.log(formData);
 
 
     axios({
@@ -182,34 +190,31 @@ export default function update_dataintegrasi(props) {
       },
     })
       .then(function (response) {
-        const { profil } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(response.data);
-        router.push("../../integrasi/daftarintegrasi");
+        MySwal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data Berhasil Di Edit",
+        })
+
+        router.push("/integrasi/daftarintegrasi")
       })
       .catch(function (error) {
         //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
-        console.log(error.response);
-      });
+        setError(error.response.data.error)
+        console.log(error.response.data.error)
+        MySwal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Data Gagal Di Edit",
+        })
+        console.log(error.response)
+      })
   };
 
   const handleChangeDosen = (e) => {
     setSelectDosen(e.target.value);
 
   };
-
-  
 
   const handleChangeMatkul = (e) => {
     setselectMatkul(e.target.value);
@@ -227,7 +232,7 @@ export default function update_dataintegrasi(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -247,39 +252,51 @@ export default function update_dataintegrasi(props) {
                     </div>
                     <div className="card-body">
                       <div className="row">
-
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="profil_dosen_id" className="form-control-label">
+                            <label
+                              htmlFor="profil_dosen_id"
+                              className={dataError.dosen_id ? "is-invalid" : ""}
+                            >
                               Profil Dosen
                             </label>
                             <select
                               className="form-select"
                               aria-label="Default select example"
-                              value={selectDosen}
+                              defaultValue="0"
                               id="profil_dosen_id"
+
+                              value={selectDosen}
                               onChange={handleChangeDosen}
                             >
-                              <option>Pilih NIDK User</option>
-                              {dataDosen.map((profil_dosen) => {
-                                {
-                                  return (
-                                    <option
-                                      value={profil_dosen.id}
-                                      key={profil_dosen.id}
-                                    >
-                                      {profil_dosen.NamaDosen + ' ' + profil_dosen.NIK}
-                                    </option>
-                                  );
-                                }
+                              <option value="">Pilih Profil Dosen</option>
+                              {dataDosen.map((userdosen) => {
+                                return (
+                                  <option
+                                    value={userdosen.id}
+                                    key={userdosen.id}
+                                  >
+                                    {userdosen.NamaDosen +
+                                      ` ` +
+                                      userdosen.NIDK}
+                                  </option>
+                                );
                               })}
                             </select>
+                            {dataError.dosen_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.dosen_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="penelitian" className="form-control-label">
+                            <label htmlFor="penelitian"
+                              className={dataError.penelitian_id ? "is-invalid" : ""}>
                               Penelitian
                             </label>
                             <select
@@ -304,12 +321,20 @@ export default function update_dataintegrasi(props) {
                                 }
                               })}
                             </select>
+                            {dataError.penelitian_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.penelitian_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="pkm" className="form-control-label">
+                            <label htmlFor="pkm"
+                              className={dataError.PkM_id ? "is-invalid" : ""}>
                               PKM
                             </label>
                             <select
@@ -320,7 +345,7 @@ export default function update_dataintegrasi(props) {
                               id="pkm"
                               onChange={handleChangepkm}
                             >
-                              <option>Pilih NIDK User</option>
+                              <option>Pilih PKM </option>
                               {dataPKM.map((dataPKM) => {
                                 {
                                   return (
@@ -334,41 +359,60 @@ export default function update_dataintegrasi(props) {
                                 }
                               })}
                             </select>
+                            {dataError.PkM_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.PkM_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
+
+
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="matkul" className="form-control-label">
+                            <label
+                              htmlFor="matkul"
+                              className={dataError.matkul_id ? "is-invalid" : ""}
+                            >
                               Mata Kuliah
                             </label>
                             <select
                               className="form-select"
                               aria-label="Default select example"
+                              defaultValue="0"
                               value={selectMatkul}
                               id="matkul"
                               onChange={handleChangeMatkul}
                             >
-                              <option>Pilih nama matkul</option>
-                              {datamatkul.map((matkul) => {
-                                {
-                                  return (
-                                    <option
-                                      value={matkul.id}
-                                      key={matkul.id}
-                                    >
-                                      {matkul.nama_matkul}
-                                    </option>
-                                  );
-                                }
+                              <option value="">Pilih Mata Kuliah</option>
+                              {datamatkul.map((userMatkul) => {
+                                return (
+                                  <option
+                                    value={userMatkul.id}
+                                    key={userMatkul.id}
+                                  >
+                                    {userMatkul.kode_matkul + ' ' + userMatkul.nama_matkul}
+                                  </option>
+                                );
                               })}
                             </select>
+                            {dataError.matkul_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.matkul_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="bentuk" className="form-control-label">
+                            <label htmlFor="bentuk"
+                              className={dataError.bentuk_integrasi ? "is-invalid" : ""}>
                               Bentuk Integrasi
                             </label>
                             <input
@@ -377,13 +421,20 @@ export default function update_dataintegrasi(props) {
                               type="text"
                               placeholder="Bentuk Integrasi"
                               id="bentuk"
-                              required
                             />
+                            {dataError.bentuk_integrasi ? (
+                              <div className="invalid-feedback">
+                                {dataError.bentuk_integrasi}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="tahun" className="form-control-label">
+                            <label htmlFor="tahun"
+                              className={dataError.tahun ? "is-invalid" : ""}>
                               Tahun
                             </label>
                             <input
@@ -392,24 +443,38 @@ export default function update_dataintegrasi(props) {
                               type="text"
                               placeholder="Tahun"
                               id="tahun"
-                              required
                             />
+                            {dataError.tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="file_bukti" className="form-control-label">
+                            <label htmlFor="filebukti"
+                              className={dataError.file_bukti ? "is-invalid" : ""}>
                               File Bukti
                             </label>
                             <div>
-                              <a href={dataurl + dataIntegrasi.file_bukti}> {dataIntegrasi.file_bukti}</a> </div>
+                            <a href={`${apiurl+dataIntegrasi.file_bukti}`}>{dataIntegrasi.file_bukti.split("/").slice(-1)[0] }</a> </div>
                             <input
                               className="form-control"
                               type="file"
                               onChange={handleChangeFile}
-                              id="file_bukti"
+                              id="filebukti"
                             />
+                            {dataError.file_bukti ? (
+                              <div className="invalid-feedback">
+                                {dataError.file_bukti}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
                       </div>

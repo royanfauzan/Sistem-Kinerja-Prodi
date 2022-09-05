@@ -1,17 +1,99 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Penerimaan;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class PenerimaanController extends Controller
 {
-    public function tampilmahasiswa()
+    public function tampilexport_penerimaan($tahun)
     {
+
+        // delklarasi variable array tahun
+        $tahunn = array();
+        $tahunn[] = $tahun;
+        $tahunn[] = $tahun - 1;
+        $tahunn[] = $tahun - 2;
+        $tahunn[] = $tahun - 3;
+        $tahunn[] = $tahun - 4;
+
+        $mhsarray = array();
+
+        // mencari data mahasiswa seleksi berdasarkan tahun dan disimpan ke variable array
+        foreach ($tahunn as $key => $th) {
+            array_push($mhsarray, Penerimaan::with('prodi')->where('Tahun_Akademik', $th)->first());
+        }
+
+        $jmlh_pendaftaran = 0;
+        $jmlh_lulus = 0;
+        $jmlh_reguler_baru = 0;
+        $jmlh_transfer_baru = 0;
+        $jmlh_transfer_aktif = 0;
+        $jmlh_reguler_aktif = 0;
+
+        $jumlaharay = array();
+        // menghitung jumlah total calon mhs, mhs baru, mhs aktif
+        for ($i = 0; $i < 5; $i++) {
+            if ($mhsarray[$i] == null) {
+            } else {
+                $jmlh_pendaftaran += $mhsarray[$i]->Pendaftaran;
+                $jmlh_lulus += $mhsarray[$i]->Lulus_Seleksi;
+                $jmlh_reguler_baru += $mhsarray[$i]->Maba_Reguler;
+                $jmlh_transfer_baru += $mhsarray[$i]->Maba_Transfer;
+                $jmlh_reguler_aktif += $mhsarray[$i]->Mahasiswa_Aktif_Reguler;
+                $jmlh_transfer_aktif += $mhsarray[$i]->Mahasiswa_Aktif_Transfer;
+            }
+        }
+        array_push($jumlaharay, [
+            'jmlh_pendaftaran' => $jmlh_pendaftaran, 'jmlh_lulus' => $jmlh_lulus, 'jmlh_reguler_baru' => $jmlh_reguler_baru, 'jmlh_transfer_baru' => $jmlh_transfer_baru,
+            'jmlh_reguler_transfer_aktif' => $jmlh_reguler_aktif + $jmlh_transfer_aktif
+        ]);
         return response()->json([
             'success' => true,
-            'Seleksi' => Penerimaan::with('prodi')->get()
+            'seleksi' => $mhsarray,
+            'jumlah' => $jumlaharay
+
+        ]);
+    }
+    public function tampilmahasiswa()
+    {
+        $jmlh_pendaftaran = 0;
+        $jmlh_lulus = 0;
+        $jmlh_reguler_baru = 0;
+        $jmlh_transfer_baru = 0;
+        $jmlh_transfer_aktif = 0;
+        $jmlh_reguler_aktif = 0;
+
+        $jumlaharay = array();
+        $mhsarray = array();
+        $mhs = Penerimaan::with('prodi')->orderBy('Tahun_Akademik', 'desc')->get();
+        $count = count($mhs);
+        for ($i = 0; $i < $count; $i++) {
+
+            array_push($mhsarray, $mhs[$i]);
+        }
+        // menghitung jumlah total calon mhs, mhs baru, mhs aktif
+        for ($i = 0; $i < $count; $i++) {
+
+            $jmlh_pendaftaran += $mhsarray[$i]->Pendaftaran;
+            $jmlh_lulus += $mhsarray[$i]->Lulus_Seleksi;
+            $jmlh_reguler_baru += $mhsarray[$i]->Maba_Reguler;
+            $jmlh_transfer_baru += $mhsarray[$i]->Maba_Transfer;
+            $jmlh_reguler_aktif += $mhsarray[$i]->Mahasiswa_Aktif_Reguler;
+            $jmlh_transfer_aktif += $mhsarray[$i]->Mahasiswa_Aktif_Transfer;
+        }
+        array_push($jumlaharay, [
+            'jmlh_pendaftaran' => $jmlh_pendaftaran, 'jmlh_lulus' => $jmlh_lulus, 'jmlh_reguler_baru' => $jmlh_reguler_baru, 'jmlh_transfer_baru' => $jmlh_transfer_baru,
+            'jmlh_reguler_transfer_aktif' => $jmlh_reguler_aktif + $jmlh_transfer_aktif
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'Seleksi' => Penerimaan::with('prodi')->orderBy('Tahun_Akademik', 'desc')->get(),
+            'Jumlah' => $jumlaharay
         ]);
     }
     public function searchmahasiswa($search)

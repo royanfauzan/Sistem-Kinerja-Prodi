@@ -1,14 +1,45 @@
 import { useRouter } from "next/router";
 import React from "react";
 
-export default function NavbarUtama() {
+interface NavProps {
+  rlUser: String;
+  kriteria?: string;
+  halaman?: string;
+}
+export default function NavbarUtama(props: Partial<NavProps>) {
+  const { rlUser } = props;
   const router = useRouter();
   const pathHalaman = router.asPath;
   const arrHalaman = pathHalaman.split("/");
 
-  const listHalaman = ['dashboardadmin','tabelewmp','tabelewmpdsn'];
-  const namaHalaman = ['Dashboard Admin','Tabel List Ewmp','List Ewmp Dosen'];
-  const indexNama = listHalaman.findIndex((a)=>{return a == arrHalaman.slice(-1)[0]});
+  let kriteriaSekarang = "Dashboard";
+  let halamanSekarang = "/dashboards/dashboardadmin";
+
+  if (props.kriteria) {
+    kriteriaSekarang = props.kriteria;
+  }
+
+  if (props.halaman) {
+    halamanSekarang = props.halaman;
+  }
+
+  const listHalaman = [
+    "dashboardadmin",
+    "tabelewmp",
+    "tabelewmpdsn",
+    "dashboarddosen",
+    "daftarmatkul",
+  ];
+  const namaHalaman = [
+    "Dashboard Admin",
+    "Tabel List Ewmp",
+    "List Ewmp Dosen",
+    "Dashboard Dosen",
+    "Mata Kuliah",
+  ];
+  const indexNama = listHalaman.findIndex((a) => {
+    return a == arrHalaman.slice(-1)[0];
+  });
   let namaHalamanIni = namaHalaman[indexNama];
   if (!namaHalamanIni) {
     namaHalamanIni = arrHalaman.slice(-1)[0];
@@ -21,12 +52,11 @@ export default function NavbarUtama() {
       data-scroll="false"
     >
       <div className="container-fluid py-1 px-3">
-        <nav aria-label="breadcrumb">
-          <ol className="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-            {arrHalaman.map((hal, key, arrHalaman) => {
+        <nav aria-label="breadcrumb mt-2">
+          {/* {arrHalaman.map((hal, key, arrHalaman) => {
               if (key + 1 === arrHalaman.length) {
                 return (
-                  <li className="breadcrumb-item text-sm">
+                  <li className="breadcrumb-item text-sm" key={`halaman${key}`}>
                     <a className="text-white text-bold" href="#">
                       {hal}
                     </a>
@@ -34,7 +64,7 @@ export default function NavbarUtama() {
                 );
               } else {
                 return (
-                  <li className="breadcrumb-item text-sm">
+                  <li className="breadcrumb-item text-sm" key={`halaman${key}`}>
                     <a className="opacity-5 text-white" href="#">
                       {hal}
                     </a>
@@ -42,9 +72,16 @@ export default function NavbarUtama() {
                 );
               }
               
-            })}
-          </ol>
-          <h6 className="font-weight-bolder text-white mb-0">{namaHalamanIni}</h6>
+            })} */}
+
+          <a className="text-white text-bold fs-6 mt-3" href="#">
+            <p className="text-xs mb-0 mt-2">Kriteria : </p>
+          </a>
+          <a href={halamanSekarang}>
+            <h5 className="font-weight-bolder text-white mb-0">
+              {kriteriaSekarang}
+            </h5>
+          </a>
         </nav>
         <div
           className="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
@@ -52,21 +89,16 @@ export default function NavbarUtama() {
         >
           <div className="ms-md-auto pe-md-3 d-flex align-items-center">
             <div className="input-group">
-              <span className="input-group-text text-body">
-                <i className="fas fa-search" aria-hidden="true"></i>
-              </span>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Type here..."
-              />
+              <h4 className="text-white">
+                Sistem Informasi Kinerja Program Studi
+              </h4>
             </div>
           </div>
           <ul className="navbar-nav  justify-content-end">
             <li className="nav-item d-flex align-items-center">
               <a href="#" className="nav-link text-white font-weight-bold px-0">
                 <i className="fa fa-user me-sm-1"></i>
-                <span className="d-sm-inline d-none">Sign In</span>
+                <span className="d-sm-inline d-none">{`lv : ${rlUser}`}</span>
               </a>
             </li>
             <li className="nav-item d-xl-none ps-3 d-flex align-items-center">

@@ -7,7 +7,6 @@ import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama"
 import LayoutForm from "../../components/Organism/Layout/LayoutForm"
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama"
 import Link from "next/link"
-
 import Swal from "sweetalert2"
 import withReactContent from "sweetalert2-react-content"
 
@@ -16,7 +15,7 @@ export default function daftarprofil() {
   const MySwal = withReactContent(Swal)
   const [stadmin, setStadmin] = useState(false)
   const [tampil_penggunaan_dana, settampilPenggunaanDana] = useState([])
-
+  const [dataRole, setRole] = useState("")
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token")
 
@@ -26,24 +25,24 @@ export default function daftarprofil() {
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { tampil_penggunaan_dana} = response.data;
-        settampilPenggunaanDana(tampil_penggunaan_dana);
+        console.log(response)
+        console.log("Sukses")
+        const { tampil_penggunaan_dana } = response.data
+        settampilPenggunaanDana(tampil_penggunaan_dana)
 
-        console.log(tampil_penggunaan_dana);
+        console.log(tampil_penggunaan_dana)
       })
       .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
-  };
+        console.log("gagal")
+        console.log(err.response)
+      })
+  }
 
   useEffect(() => {
     // cek token, kalo gaada disuruh login
-    const lgToken = localStorage.getItem("token");
+    const lgToken = localStorage.getItem("token")
     if (!lgToken) {
-      router.push("/login");
+      router.push("/login")
     }
 
     // perjalanan validasi token
@@ -53,34 +52,36 @@ export default function daftarprofil() {
       headers: { Authorization: `Bearer ${lgToken}` },
     })
       .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { level_akses } = response.data.user;
+        console.log(response)
+        console.log("Sukses")
+        const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
-          return router.push("/");
+          return router.push("/")
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
-        setStadmin(true);
-        pengambilData();
+        setStadmin(true)
+        pengambilData()
       })
       .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-        return router.push("/");
-      });
-  }, []);
-
+        console.log("gagal")
+        console.log(err.response)
+        return router.push("/")
+      })
+  }, [])
 
   const deletePenggunaanDana = (id) => {
     MySwal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Apakah yakin untuk hapus data?",
+      text: "Data Tidak Dapat Kembali Jika Sudah Di Hapus",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.isConfirmed) {
@@ -101,12 +102,14 @@ export default function daftarprofil() {
   }
   const tambahDana = () => {
     MySwal.fire({
-      title: "Tambah",
-      text: "Are you sure? ",
+      title: "Tambah Data Penggunaan Dana",
+      text: "Apa Kamu Yakin? ",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -117,12 +120,14 @@ export default function daftarprofil() {
   }
   const exportDana = () => {
     MySwal.fire({
-      title: "EXport",
-      text: "Are you sure? ",
+      title: "Export Data Penggunaan Dana",
+      text: "Apa kamu yakin? ",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -133,12 +138,14 @@ export default function daftarprofil() {
   }
   const editDana = (id) => {
     MySwal.fire({
-      title: "Edit",
-      text: "Are you sure? ",
+      title: "Edit Data Penggunaan Dana",
+      text: "Apa kamu yakin?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -163,17 +170,18 @@ export default function daftarprofil() {
       settampilPenggunaanDana(res)
     }
   }
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
                 <div className="card-header pb-0">
-
                   <div className="row justify-content-between">
+                  <p className="text-uppercase text-sm text-center"> <h5>TABEL  PENGGUNAAN DANA </h5> </p>
                     <div className="col-8">
                       <button
                         onClick={() => tambahDana()}
@@ -191,36 +199,21 @@ export default function daftarprofil() {
                     </div>
                     <div className="col-4 d-flex flex-row-reverse">
                       <input
-                        className="rounded-3"
+                       className="form-control d-flex flex-row-reverse me-2 mt-3 mb-0"
                         type="text"
-                        placeholder="search.."
+                        placeholder="Cari Data Penggunaan Dana..."
                         defaultValue=""
                         id="search"
                         onChange={searchdata}
                       />
                     </div>
                   </div>
-
-                  <div className="row justify-content-between">
-                    <div className="col-4">
-                      <h6>Authors table</h6>
-                    </div>
-                    <div className="col-4 d-flex flex-row-reverse">
-                      <Link href={"/exportPenggunaanDana/selectexport"}>
-                        <button className="btn btn-sm btn-primary border-0 shadow-sm mb-3 me-3">
-                          EXPORT
-                        </button>
-                      </Link>
-                    </div>
-                  </div>
-
                 </div>
                 <div className="card-body px-0 pt-0 pb-2">
                   <div className="table-responsive p-0">
                     <table className="table align-items-center mb-0">
                       <thead>
                         <tr>
-
                           <th className="text-uppercase text-secondary text-xxs font-weight-bolder ">
                             <h5>Biaya Dosen Prodi</h5>
                           </th>
@@ -295,153 +288,6 @@ export default function daftarprofil() {
 
                           <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder ">
                             <h5> Aksi</h5>
-
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Biaya Dosen Prodi
-                          </th>
-
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-
-                           Biaya Dosen UPPS
-                          </th>
-
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                          Biaya Investasi Prasarana Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                          Biaya Investasi Prasarana UPPS
-                          </th>
-                        
-                         
-
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                          Biaya Investasi Sarana Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                          Biaya Investasi Sarana UPPS
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                          Biaya Investasi SDM Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                        Biaya Investasi SDM UPPS
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                       Biaya Operasional Kemahasiswaan Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                       Biaya Operasional Kemahasiswaan UPPS
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                       Biaya Operasional Pembelajaran Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                       Biaya Operasional Pembelajaran UPPS
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                       Biaya Operasional Tidak Langsung Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                       Biaya Operasional Tidak Langsung UPPS
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                       Biaya Tenaga Kependidikan Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                       Biaya Tenaga Kependidikan UPPS
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                       Nama Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                     Tahun
-                          </th>
-
-                            Biaya Dosen UPPS
-                          </th>
-
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Biaya Investasi Prasarana Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Biaya Investasi Prasarana UPPS
-                          </th>
-
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            Biaya Investasi Sarana Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Biaya Investasi Sarana UPPS
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Biaya Investasi SDM Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Biaya Investasi SDM UPPS
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Biaya Operasional Kemahasiswaan Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Biaya Operasional Kemahasiswaan UPPS
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Biaya Operasional Pembelajaran Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Biaya Operasional Pembelajaran UPPS
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Biaya Operasional Tidak Langsung Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Biaya Operasional Tidak Langsung UPPS
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Biaya Tenaga Kependidikan Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Biaya Tenaga Kependidikan UPPS
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Nama Prodi
-                          </th>
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Tahun
-                          </th>
-
-
-                          <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                            Aksi
-
                           </th>
                         </tr>
                       </thead>
@@ -449,217 +295,144 @@ export default function daftarprofil() {
                       <tbody>
                         {tampil_penggunaan_dana.map((tPenggunaanDana) => {
                           return (
-
-                            <tr key={`tPenggunaanDana`+tampil_penggunaan_dana.id}>
-                              <td>
-                               
-                                  <h6 className="mb-0 text-sm">
-                                      {tPenggunaanDana.Biaya_Dosen_Prodi}
-                                    </h6>
-                                  
+                            <tr
+                              key={
+                                `tPenggunaanDana` + tampil_penggunaan_dana.id
+                              }
+                            >
+                              <td className="align-middle  text-center text-sm">
+                                <h6 className="mb-0 text-sm">
+                                  {tPenggunaanDana.Biaya_Dosen_Prodi}
+                                </h6>
                               </td>
-                              <td>
-                              <div className="d-flex flex-column justify-content-center">
-                                    <h6 className="mb-0 text-sm">
-                                    {tPenggunaanDana.Biaya_Dosen_UPPS}
-                                    </h6>
-                                   
-                                  </div>
+                              <td className="align-middle text-center text-sm ">
+                                <h6 className="mb-0 text-sm">
+                                  {tPenggunaanDana.Biaya_Dosen_UPPS}
+                                </h6>
                               </td>
-                              <td className="align-middle ">
-                              <p className="text-xs text-secondary mb-0">
-                              {tPenggunaanDana.Biaya_Investasi_Prasarana_Prodi}
-                                    </p>
-                              </td>
-                          
                               <td className="align-middle text-center text-sm">
-                              <p className="text-xs font-weight-bold mb-0">
-                              {tPenggunaanDana.Biaya_Investasi_Prasarana_UPPS}
-                                </p>
+                                <h6 className="mb-0 text-sm">
+                                  {
+                                    tPenggunaanDana.Biaya_Investasi_Prasarana_Prodi
+                                  }
+                                </h6>
+                              </td>
+
+                              <td className="align-middle text-center text-sm">
+                                <h6 className="mb-0 text-sm">
+                                  {
+                                    tPenggunaanDana.Biaya_Investasi_Prasarana_UPPS
+                                  }
+                                </h6>
                               </td>
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
-                                <p className="text-xs font-weight-bold mb-0">
-                                {tPenggunaanDana.Biaya_Investasi_Sarana_Prodi}
-                                </p>
-
-                            
-
+                                  <h6 className="mb-0 text-sm">
+                                    {
+                                      tPenggunaanDana.Biaya_Investasi_Sarana_Prodi
+                                    }
+                                  </h6>
                                 </span>
                               </td>
 
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
-
-                                <p className="text-xs font-weight-bold mb-0">
-                                {tPenggunaanDana.Biaya_Investasi_Sarana_UPPS}
-                                </p>
-
                                   <h6 className="mb-0 text-sm">
                                     {
                                       tPenggunaanDana.Biaya_Investasi_Sarana_UPPS
                                     }
                                   </h6>
-
                                 </span>
                               </td>
 
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
-
                                   <h6 className="mb-0 text-sm">
                                     {tPenggunaanDana.Biaya_Investasi_SDM_Prodi}
                                   </h6>
-
-
-                                <p className="text-xs font-weight-bold mb-0">
-                                {tPenggunaanDana.Biaya_Investasi_SDM_Prodi}
-                                </p>
-
-                                  <h6 className="mb-0 text-sm">
-                                    {tPenggunaanDana.Biaya_Investasi_SDM_Prodi}
-                                  </h6>
-
                                 </span>
                               </td>
 
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
-
                                   <h6 className="mb-0 text-sm">
                                     {tPenggunaanDana.Biaya_Investasi_SDM_UPPS}
                                   </h6>
-
-                                <p className="text-xs font-weight-bold mb-0">
-                                {tPenggunaanDana.Biaya_Investasi_SDM_UPPS}
-                                </p>
-
-                                  <h6 className="mb-0 text-sm">
-                                    {tPenggunaanDana.Biaya_Investasi_SDM_UPPS}
-                                  </h6>
-
                                 </span>
                               </td>
 
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
-
-                                <p className="text-xs font-weight-bold mb-0">
-                                {tPenggunaanDana.Biaya_Operasional_Kemahasiswaan_Prodi}
-                                </p>
-
                                   <h6 className="mb-0 text-sm">
                                     {
                                       tPenggunaanDana.Biaya_Operasional_Kemahasiswaan_Prodi
                                     }
                                   </h6>
-
                                 </span>
                               </td>
 
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
-
-                                <p className="text-xs font-weight-bold mb-0">
-                                {tPenggunaanDana.Biaya_Operasional_Kemahasiswaan_UPPS}
-                                </p>
-
                                   <h6 className="mb-0 text-sm">
                                     {
                                       tPenggunaanDana.Biaya_Operasional_Kemahasiswaan_UPPS
                                     }
                                   </h6>
-
                                 </span>
                               </td>
 
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
-
-                                <p className="text-xs font-weight-bold mb-0">
-                                {tPenggunaanDana.Biaya_Operasional_Pembelajaran_Prodi}
-                                </p>
-
                                   <h6 className="mb-0 text-sm">
                                     {
                                       tPenggunaanDana.Biaya_Operasional_Pembelajaran_Prodi
                                     }
                                   </h6>
-
                                 </span>
                               </td>
 
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
-
-                                <p className="text-xs font-weight-bold mb-0">
-                                {tPenggunaanDana.Biaya_Operasional_Pembelajaran_UPPS}
-                                </p>
-
                                   <h6 className="mb-0 text-sm">
                                     {
                                       tPenggunaanDana.Biaya_Operasional_Pembelajaran_UPPS
                                     }
                                   </h6>
-
                                 </span>
                               </td>
 
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
-
-                                <p className="text-xs font-weight-bold mb-0">
-                                {tPenggunaanDana.Biaya_Operasional_TidakLangsung_Prodi}
-                                </p>
-
                                   <h6 className="mb-0 text-sm">
                                     {
                                       tPenggunaanDana.Biaya_Operasional_TidakLangsung_Prodi
                                     }
                                   </h6>
-
                                 </span>
                               </td>
 
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
-
-                                <p className="text-xs font-weight-bold mb-0">
-                                {tPenggunaanDana.Biaya_Operasional_TidakLangsung_UPPS}
-                                </p>
-
                                   <h6 className="mb-0 text-sm">
                                     {
                                       tPenggunaanDana.Biaya_Operasional_TidakLangsung_UPPS
                                     }
                                   </h6>
-
                                 </span>
                               </td>
 
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
-
-                                <p className="text-xs font-weight-bold mb-0">
-                                {tPenggunaanDana.Biaya_Tenaga_Kependidikan_Prodi}
-                                </p>
-
                                   <h6 className="mb-0 text-sm">
                                     {
                                       tPenggunaanDana.Biaya_Tenaga_Kependidikan_Prodi
                                     }
                                   </h6>
-
                                 </span>
                               </td>
 
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
-
-                                <p className="text-xs font-weight-bold mb-0">
-                                {tPenggunaanDana.Biaya_Tenaga_Kependidikan_UPPS}
-                                </p>
-
                                   <h6 className="mb-0 text-sm">
                                     {
                                       tPenggunaanDana.Biaya_Tenaga_Kependidikan_UPPS
@@ -673,39 +446,37 @@ export default function daftarprofil() {
                                   <h6 className="mb-0 text-sm">
                                     {tPenggunaanDana.prodi.nama_prodi}
                                   </h6>
-
-                                <p className="text-xs font-weight-bold mb-0">
-                                {tPenggunaanDana.prodi.nama_prodi}
-                                </p>
-
-                                  <h6 className="mb-0 text-sm">
-                                    {tPenggunaanDana.prodi.nama_prodi}
-                                  </h6>
-
                                 </span>
                               </td>
 
                               <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">
-                                <p className="text-xs font-weight-bold mb-0">
-                                {tPenggunaanDana.Tahun}
-                                </p>
+                                  <h6 className="mb-0 text-sm">
+                                    {tPenggunaanDana.Tahun}
+                                  </h6>
                                 </span>
                               </td>
                               <td className="align-middle text-center">
-                                <a
-                                  className="text-secondary  font-weight-bold text-xs"
-                                  data-toggle="tooltip"
-                                  data-original-title="Edit user"
+                                <button
+                                  onClick={() => editDana(tPenggunaanDana.id)}
+                                  className="btn btn-sm btn-primary border-0 shadow-sm mb-3 me-3"
                                 >
-                                  Edit
-                                </a>
+                                  EDIT
+                                </button>
+
+                                <button
+                                  onClick={() =>
+                                    deletePenggunaanDana(tPenggunaanDana.id)
+                                  }
+                                  className="btn btn-sm btn-danger border-0 shadow-sm mb-3 me-3"
+                                >
+                                  HAPUS
+                                </button>
                               </td>
                             </tr>
-                          );
+                          )
                         })}
-                        </tbody>
-
+                      </tbody>
                     </table>
                   </div>
                 </div>
@@ -716,5 +487,5 @@ export default function daftarprofil() {
         </LayoutForm>
       )}
     </>
-    )
+  )
 }

@@ -26,6 +26,7 @@ export default function editwaktu(props) {
   const router = useRouter();
   const { waktu } = props;
   const [dataWaktu, setWaktu] = useState(waktu);
+  const [dataRole, setRole] = useState('');
 
   console.log(waktu);
 
@@ -72,6 +73,8 @@ export default function editwaktu(props) {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -143,7 +146,7 @@ export default function editwaktu(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -165,13 +168,13 @@ export default function editwaktu(props) {
                         Prestasi Mahasiswa
                       </p>
                       <div className="row">
-                        <div className="col-md-6">
+                        <div className="col-md-10">
                           <div className="form-group">
                             <label
                               htmlFor="kepuasan"
                               className="form-control-label"
                             >
-                              Tahun Kepuasan Lulusan
+                              Tahun Lulusan
                             </label>
                             <select
                               className="form-select"
@@ -197,7 +200,13 @@ export default function editwaktu(props) {
                             </select>
                           </div>
                         </div>
-                        <div className="col-md-6">
+                         {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jumlah Lulusan Dipesan
+                        </p>
+                        <div className="col-md-10">
                           <div className="form-group">
                             <label
                               htmlFor="dipesan"
@@ -207,7 +216,7 @@ export default function editwaktu(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah Lulusan Dipesan"
                               id="dipesan"
                               defaultValue={dataWaktu.jmlh_lls_dipesan}
@@ -215,6 +224,13 @@ export default function editwaktu(props) {
                             />
                           </div>
                         </div>
+
+                         {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jumlah Lulusan Sesuai Waktu Tunggu
+                        </p>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
@@ -225,7 +241,7 @@ export default function editwaktu(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah tunggu lulusan 3 bulan"
                               id="tiga"
                               defaultValue={dataWaktu.jmlh_tunggu_lls_3bln}
@@ -243,7 +259,7 @@ export default function editwaktu(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah tunggu lulusan 6 bulan"
                               id="enam"
                               defaultValue={dataWaktu.jmlh_tunggu_lls_6bln}
@@ -262,7 +278,7 @@ export default function editwaktu(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah tunggu lulusan lebih 6 bulan"
                               id="enamlebih"
                               defaultValue={dataWaktu.jmlh_tunggu_lls_lebih_6bln}

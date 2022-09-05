@@ -8,12 +8,16 @@ import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
 import Link from "next/link";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export default function daftarbidang() {
   const router = useRouter();
 
   const [stadmin, setStadmin] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
+  const MySwal = withReactContent(Swal);
+  const [dataRole, setRole] = useState('');
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -54,6 +58,8 @@ export default function daftarbidang() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -69,18 +75,83 @@ export default function daftarbidang() {
       });
   }, []);
 
-  const deletewaktu = (id) => {
-    axios({
-      method: "post",
-      url: `http://127.0.0.1:8000/api/delete_waktutunggu/${id}`,
-    })
-      .then(function (response) {
-        router.reload();
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+  const editprestasi = (id) => {
+    MySwal.fire({
+      title: "Edit Data",
+      text: "Apakah kalian yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/waktutunggu/edit/${id}`);
+      }
+    });
+  };
+
+  const tambahprestasi = () => {
+    MySwal.fire({
+      title: "Tambah Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/waktutunggu/inputwaktu`);
+      }
+    });
+  };
+
+  const exportKjs = () => {
+    MySwal.fire({
+      title: "Export Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/waktutunggu/export/export_waktu`);
+      }
+    });
+  };
+
+  const deleteprestasi = (id) => {
+    MySwal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, hapus ini!",
+    }).then((result) => {
+      // <--
+      if (result.isConfirmed) {
+        // <-- if confirmed
+        axios({
+          method: "post",
+          url: `http://127.0.0.1:8000/api/delete_waktutunggu/${id}`,
+        })
+          .then(function (response) {
+            router.reload();
+          })
+          .catch(function (err) {
+            console.log("gagal");
+            console.log(err.response);
+          });
+      }
+    });
   };
 
   const searchdata = async (e) => {
@@ -101,7 +172,7 @@ export default function daftarbidang() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
@@ -125,20 +196,22 @@ export default function daftarbidang() {
                   <div className="row justify-content-between mb-4">
                     <div className="col-4">
                       <td className="align-middle">
-                        <Link href={`/waktutunggu/inputwaktu/`}>
-                          <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                            Tambah Data
-                          </button>
-                        </Link>
+                        <button
+                          onClick={() => tambahprestasi()}
+                          className="btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                        >
+                          Tambah Data
+                        </button>
                       </td>
                     </div>
                     <div className="col-4 d-flex flex-row-reverse">
                       <td className="align-middle">
-                        <Link href={`/waktutunggu/export/export_waktu`}>
-                          <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-5 mt-3 mb-0">
-                            Export Excel
-                          </button>
-                        </Link>
+                        <button
+                          onClick={() => exportKjs()}
+                          className="btn btn-success border-0 shadow-sm ps-3 ps-3 me-2 mt-3 mb-0"
+                        >
+                          Export
+                        </button>
                       </td>
                     </div>
                   </div>
@@ -156,7 +229,7 @@ export default function daftarbidang() {
                             NO
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Tahun Kepuasan Lulusan
+                            Tahun Lulusan
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Jumlah Lulusan <br /> Yang Dipesan
@@ -214,14 +287,15 @@ export default function daftarbidang() {
                               </td>
 
                               <td className="align-middle pe-0">
-                                <Link href={`/waktutunggu/edit/${ksn.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
+                                <button
+                                  onClick={() => editprestasi(ksn.id)}
+                                  className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 mt-2 me-2"
+                                >
+                                  EDIT
+                                </button>
 
                                 <button
-                                  onClick={() => deletewaktu(ksn.id)}
+                                  onClick={() => deleteprestasi(ksn.id)}
                                   className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 mt-2"
                                 >
                                   Hapus

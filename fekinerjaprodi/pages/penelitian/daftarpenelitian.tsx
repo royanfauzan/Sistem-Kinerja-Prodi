@@ -15,7 +15,8 @@ export default function daftarpenelitian() {
 
   const [stadmin, setStadmin] = useState(false);
   const [penelitian, setpenelitian] = useState([]);
-  const MySwal = withReactContent(Swal)
+  const MySwal = withReactContent(Swal);
+  const [dataRole, setRole] = useState("");
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -56,8 +57,10 @@ export default function daftarpenelitian() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 3) {
+        if (level_akses !== 2) {
           return router.push("/");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -71,18 +74,152 @@ export default function daftarpenelitian() {
       });
   }, []);
 
+  const pilihdosen = (id) => {
+    MySwal.fire({
+      title: "Pilih Dosen",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/penelitian/pilih_dosen/${id}`);
+      }
+    });
+  };
+
+  const pilihmhs = (id) => {
+    MySwal.fire({
+      title: "Pilih Mahasiswa",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/penelitian/pilih_mahasiswa/${id}`);
+      }
+    });
+  };
+
+  const hapusdosen = (id) => {
+    MySwal.fire({
+      title: "Hapus Dosen",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/penelitian/hapusdosen/${id}`);
+      }
+    });
+  };
+
+  const hapusmhs = (id) => {
+    MySwal.fire({
+      title: "Hapus Mahasiswa",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/penelitian/hapusmhs/${id}`);
+      }
+    });
+  };
+
+
+  const tambahpenelitian = () => {
+    MySwal.fire({
+      title: "Tambah Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/penelitian/inputpenelitian`);
+      }
+    });
+  };
+
+  const exportpenelitian = () => {
+    MySwal.fire({
+      title: "Export Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/penelitian/export/exportpenelitian`);
+      }
+    });
+  };
+
+  const editpenelitian = (id) => {
+    MySwal.fire({
+      title: "Edit Data",
+      text: "Apakah kalian yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/penelitian/edit/${id}`);
+      }
+    });
+  };
+
   const deletepenelitian = (id) => {
-    axios({
-      method: "post",
-      url: `http://127.0.0.1:8000/api/Penelitian_Delete/${id}`,
-    })
-      .then(function (response) {
-        router.reload();
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+    MySwal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, hapus ini!",
+    }).then((result) => {
+      // <--
+      if (result.isConfirmed) {
+        // <-- if confirmed
+        axios({
+          method: "post",
+          url: `http://127.0.0.1:8000/api/Penelitian_Delete/${id}`,
+        })
+          .then(function (response) {
+            router.reload();
+          })
+          .catch(function (err) {
+            console.log("gagal");
+            console.log(err.response);
+          });
+      }
+    });
   };
 
   const searchdata = async (e) => {
@@ -104,7 +241,7 @@ export default function daftarpenelitian() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
@@ -126,22 +263,24 @@ export default function daftarpenelitian() {
                 </div>
                 <div className="row justify-content-between mb-4">
                   <div className="col-4">
-                    <div className="align-middle">
-                      <Link href={`/penelitian/inputpenelitian/`}>
-                        <button className=" btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                          Tambah Data
-                        </button>
-                      </Link>
-                    </div>
+                    <td className="align-middle">
+                      <button
+                        onClick={() => tambahpenelitian()}
+                        className="btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                      >
+                        Tambah Data
+                      </button>
+                    </td>
                   </div>
                   <div className="col-4 d-flex flex-row-reverse">
-                    <div className="align-middle">
-                      <Link href={`/penelitian/export/exportpenelitian/`}>
-                        <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                          Export Tabel
-                        </button>
-                      </Link>
-                    </div>
+                    <td className="align-middle">
+                      <button
+                        onClick={() => exportpenelitian()}
+                        className="btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                      >
+                        Export Data
+                      </button>
+                    </td>
                   </div>
                 </div>
 
@@ -185,7 +324,7 @@ export default function daftarpenelitian() {
                             Sumber Luar Negri
                           </th>
                           <th className="text-uppercase text-dark text-xs font-weight-bolder opacity-9 ps-3">
-                            Dana Dalam Negri
+                            Dana Luar Negri
                           </th>
                           <th className="text-secondary opacity-7"></th>
                         </tr>
@@ -248,7 +387,7 @@ export default function daftarpenelitian() {
 
                               <td>
                                 <p className="text-xs font-weight-bold mb-0 ps-2 pe-3">
-                                  {penelitian.dana_PT_mandiri}
+                                  {penelitian.dana_PT_Mandiri}
                                 </p>
                               </td>
 
@@ -278,45 +417,51 @@ export default function daftarpenelitian() {
 
                               <td className="align-middle pe-3 justify-content-evenly">
                                 <tr>
-                                  <Link href={`/penelitian/edit/${penelitian.id}`}>
-                                    <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                      Edit Penelitian
-                                    </button>
-                                  </Link>
+                                  <button
+                                    onClick={() => editpenelitian(penelitian.id)}
+                                    className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-7 mt-2"
+                                  >
+                                    Edit
+                                  </button>
 
                                   <button
                                     onClick={() => deletepenelitian(penelitian.id)}
                                     className="btn btn-sm btn-danger border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
                                   >
-                                    Hapus Pnelitian
+                                    Hapus
                                   </button>
-
-                                  <Link href={`/penelitian/pilih_dosen/${penelitian.id}`}>
-                                    <button className="btn btn-sm btn-info border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                      Pilih Dosen
-                                    </button>
-                                  </Link>
                                 </tr>
 
                                 <tr>
-                                  <Link href={`/penelitian/pilih_mahasiswa/${penelitian.id}`}>
-                                    <button className="btn btn-sm btn-dark border-0 shadow-sm  ps-3 pe-3 mb-3 me-3 mt-3">
-                                      Pilih mahasiswa
-                                    </button>
-                                  </Link>
+                                  <button
+                                    onClick={() => pilihdosen(penelitian.id)}
+                                    className="btn btn-sm btn-outline-info shadow-sm ps-3 pe-3 mb-2 mt-2 me-5"
+                                  >
+                                    Pilih Dosen
+                                  </button>
 
-                                  <Link href={`/penelitian/hapus/hapusmhs`}>
-                                    <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                      Hapus mahasiswa
-                                    </button>
-                                  </Link>
+                                  <button
+                                    onClick={() => hapusdosen(penelitian.id)}
+                                    className="btn btn-sm btn-outline-secondary shadow-sm ps-3 pe-3 mb-2 mt-2 me-2"
+                                  >
+                                    Hapus Dosen
+                                  </button>
+                                </tr>
 
-                                  <Link href={`/penelitian/hapus/hapusmhs`}>
-                                    <button className="btn btn-sm btn-warning border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                      Hapus Dosen
-                                    </button>
-                                  </Link>
+                                <tr>
+                                  <button
+                                    onClick={() => pilihmhs(penelitian.id)}
+                                    className="btn btn-sm btn-outline-dark shadow-sm ps-3 pe-3 mb-2 mt-2 me-4"
+                                  >
+                                    Pilih Mahasiswa
+                                  </button>
 
+                                  <button
+                                    onClick={() => hapusmhs(penelitian.id)}
+                                    className="btn btn-sm btn-outline-warning shadow-sm ps-3 pe-3 mb-2 mt-2 me-2"
+                                  >
+                                    Hapus Mahasiswa
+                                  </button>
                                 </tr>
                               </td>
                             </tr>

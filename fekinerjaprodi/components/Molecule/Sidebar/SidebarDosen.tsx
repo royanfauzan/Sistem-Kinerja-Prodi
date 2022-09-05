@@ -1,15 +1,49 @@
-import axios from "axios";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import axios from "axios"
+import { useRouter } from "next/router"
+import React, { useEffect, useState } from "react"
 import style from "./sideb.module.css"
 
 export default function SidebarDosen() {
-  const router = useRouter();
+  const router = useRouter()
+
+  const pathHalaman = router.asPath
+  const arrHalaman = pathHalaman.split("/")
+  const HalamanActive = arrHalaman.slice(-1)[0]
 
   // const arrMenuSDM =['']
 
+  const listFolderDashboard = ["dashboards"]
+  const isMenuDashboard = listFolderDashboard.includes(arrHalaman[1])
+
+  const listFolderSdm = [
+    "sdm",
+    "rekognisi",
+    "publikasidos",
+    "penelitiandosen",
+    "pkmdosen",
+    "profildosen",
+    "profildetail",
+    "dtps",
+    "ewmp",
+    "produk",
+    "luaranlaindos",
+    "mengajar",
+    "bukujurnal",
+    "bimbingan",
+  ]
+  const isMenuSdm = listFolderSdm.includes(arrHalaman[1])
+
+  const listFolderPendidikan = ["dashboardpendidikan", "integrasi", "matkul", "mahasiswa"]
+  const isMenuPendidikan = listFolderPendidikan.includes(arrHalaman[1])
+
+  const listFolderPenelitian = ["dashboardpenelitian", "penelitian"]
+  const isMenuPenelitian = listFolderPenelitian.includes(arrHalaman[1])
+
+  const listFolderPkm = ["dashboardpkm", "pkm"]
+  const isMenuPkm = listFolderPkm.includes(arrHalaman[1])
+
   const Logout = async () => {
-    const lgToken = localStorage.getItem("token");
+    const lgToken = localStorage.getItem("token")
 
     axios({
       method: "get",
@@ -20,16 +54,16 @@ export default function SidebarDosen() {
       },
     })
       .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        localStorage.removeItem("token");
-        router.push("/login");
+        console.log(response)
+        console.log("Sukses")
+        localStorage.removeItem("token")
+        router.push("/login")
       })
       .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
-  };
+        console.log("gagal")
+        console.log(err.response)
+      })
+  }
 
   return (
     <aside
@@ -61,8 +95,13 @@ export default function SidebarDosen() {
         id="sidenav-collapse-main"
       >
         <ul className="navbar-nav">
-          <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards/dashboardadmin">
+        <li className={`nav-item `}>
+            <a
+              className={`nav-link ${
+                isMenuDashboard ? "active bg-light text-dark opacity-10" : ""
+              }`}
+              href="/dashboards/dashboarddosen"
+            >
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
@@ -70,61 +109,59 @@ export default function SidebarDosen() {
             </a>
           </li>
           <li className={`nav-item `}>
-            <a
-              className="nav-link "
-              href="/dashboards_capaian_tridarma/dashboardtridarma"
-            >
+            <a className={`nav-link ${
+                isMenuPendidikan ? "active bg-light text-dark" : ""
+              }`}href="/dashboardpendidikan/dashboardpendidikan">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
               <span className="nav-link-text ms-1">
-                Kriteria Luaran dan <br /> Capaian Tridarama
+                Kriteria Pendidikan
               </span>
             </a>
           </li>
           <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards_eva/dashboardpendidikan">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Kriteria Pendidikan</span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards_eva/dashboardpenelitian">
-              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-              </div>
-              <span className="nav-link-text ms-1">Kriteria Penelitian</span>
-            </a>
-          </li>
-          <li className={`nav-item `}>
-            <a className="nav-link " href="/dashboards_eva/dashboardpkm">
+            <a className={`nav-link ${
+                isMenuPenelitian ? "active bg-light text-dark" : ""
+              }`}href="/dashboardpenelitian/dashboardpenelitian">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
               <span className="nav-link-text ms-1">
-                Kriteria Pengabdian <br /> Kepada Masyarakat
+                Kriteria Penelitian
               </span>
             </a>
           </li>
           <li className={`nav-item `}>
-            <a className="nav-link active" href="./dashboard_tabel.php">
+            <a className={`nav-link ${
+                isMenuPkm ? "active bg-light text-dark" : ""
+              }`}href="/dashboardpkm/dashboardpkm">
               <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
               </div>
-              <span className="nav-link-text ms-1">Tables</span>
+              <span className="nav-link-text ms-1">
+                Kriteria PKM
+              </span>
             </a>
           </li>
+          <li className={`nav-item `}>
+            <a className={`nav-link ${
+                isMenuSdm ? "active bg-light text-dark" : ""
+              }`}href="/sdm/dashboardsdm">
+              <div className="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+              </div>
+              <span className="nav-link-text ms-1">
+                Kriteria Sumber Daya <br />  Manusia(SDM)
+              </span>
+            </a>
+          </li>
+          
         </ul>
       </div>
       <div className=" mx-3 ">
-        <a
-          href="https://www.creative-tim.com/learning-lab/bootstrap/license/argon-dashboard"
-          target="_blank"
-          className="btn btn-dark btn-sm w-100 mb-3"
-        >
-          Documentation
+        <a href="/User/UbahPassword" className="btn btn-dark btn-sm w-100 mb-3">
+          Change Password
         </a>
         <a
           className="btn btn-sm btn-outline-danger mb-0 w-100"
@@ -135,5 +172,5 @@ export default function SidebarDosen() {
         </a>
       </div>
     </aside>
-  );
+  )
 }

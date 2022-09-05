@@ -129,6 +129,7 @@ export default function inputprestasi() {
       console.log(error.response);
     });
   };
+  
 
   return (
     <>
@@ -156,7 +157,7 @@ export default function inputprestasi() {
                         Kesesuaian Bidang Kerja
                       </p>
                       <div className="row">
-                      <div className="col-md-6">
+                      <div className="col-md-8">
                           <div className="form-group">
                             <label
                               htmlFor="kepuasan"
@@ -191,6 +192,12 @@ export default function inputprestasi() {
                             )}
                           </div>
                         </div>
+
+                         {/* Garis */}
+                         <hr className="horizontal dark mt-4 text-bold" />
+                        <p className="text-uppercase text-sm">
+                          Tingkat Kepuasan Bidang Kerja 
+                        </p>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label

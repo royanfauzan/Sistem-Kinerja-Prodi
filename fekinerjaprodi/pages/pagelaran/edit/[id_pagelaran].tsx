@@ -6,6 +6,8 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 // Untuk Ngambil Data Berdasarkan ID
 export async function getServerSideProps(context) {
@@ -27,12 +29,16 @@ export default function editpagelaran(props) {
   const { pagelaran } = props;
   const [dataPagelaran, setPagelaran] = useState(pagelaran);
   const [filebukti, setfilebuktis] = useState<File>([]);
+  const MySwal = withReactContent(Swal);
+
+  const [dataError, setError] = useState([]);
+  const [dataRole, setRole] = useState("");
 
   console.log(pagelaran);
 
   // State Select
   const [stadmin, setStadmin] = useState(false);
-  
+
   const url = "http://127.0.0.1:8000/";
   const [dataurl, setUrl] = useState(url);
   const [dataPagelarans, setPagelarans] = useState([]);
@@ -75,6 +81,8 @@ export default function editpagelaran(props) {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -117,39 +125,37 @@ export default function editpagelaran(props) {
       },
     })
       .then(function (response) {
-        const { all_pagelaran } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(all_pagelaran);
+        MySwal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data Berhasil Di Input",
+        });
+
         router.push("../../pagelaran/daftarpagelaran");
-        console.log(response.data);
       })
+
       .catch(function (error) {
         //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
-
-        console.log("tidak success");
+        setError(error.response.data.error);
+        console.log(error.response.data.error);
+        MySwal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Data Gagal Di Input",
+        });
         console.log(error.response);
       });
   };
 
   const handleChangeFile = (e) => {
     setfilebuktis(e.target.files[0]);
-
   };
 
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -167,90 +173,127 @@ export default function editpagelaran(props) {
                       </div>
                     </div>
                     <div className="card-body">
-                    <p className="text-uppercase text-sm">Pagelaran Mahasiswa</p>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="judul" className="form-control-label">
-                            Judul Pagelaran
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Judul Pagelaran"
-                            id="judul"
-                            defaultValue={dataPagelaran.judul}
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tahun" className="form-control-label">
-                            Tahun
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tahun"
-                            id="tahun"
-                            defaultValue={dataPagelaran.tahun}
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="penyelenggara" className="form-control-label">
-                          Penyelenggara
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Penyelenggara"
-                            id="penyelenggara"
-                            defaultValue={dataPagelaran.penyelenggara}
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="ruang" className="form-control-label">
-                          Ruang Lingkup
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="K Seminarategori"
-                            id="ruang"
-                            defaultValue={dataPagelaran.ruang_lingkup}
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
+                      <p className="text-uppercase text-sm">
+                        Pagelaran Mahasiswa
+                      </p>
+                      <div className="row">
+                        <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="file_bukti" className="form-control-label">
-                              File Bukti
+                            <label
+                              htmlFor="judul"
+                              className="form-control-label"
+                            >
+                              Judul Pagelaran
                             </label>
-                            <div>
-                              <a href={dataurl + dataPagelaran.file_bukti}> {dataPagelaran.file_bukti}</a> </div>
                             <input
                               className="form-control"
-                              type="file"
-                              onChange={handleChangeFile}
-                              id="file_bukti"
-
+                              type="text"
+                              placeholder="Judul Pagelaran"
+                              id="judul"
+                              defaultValue={dataPagelaran.judul}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="tahun"
+                              className="form-control-label"
+                            >
+                              Tahun
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tahun"
+                              id="tahun"
+                              defaultValue={dataPagelaran.tahun}
                             />
                           </div>
                         </div>
 
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="penyelenggara"
+                              className="form-control-label"
+                            >
+                              Penyelenggara
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Penyelenggara"
+                              id="penyelenggara"
+                              defaultValue={dataPagelaran.penyelenggara}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="ruang"
+                              className="form-control-label"
+                            >
+                              Ruang Lingkup
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="K Seminarategori"
+                              id="ruang"
+                              defaultValue={dataPagelaran.ruang_lingkup}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <div className="row">
+                            <div className="col-md-11">
+                              <div className="form-group">
+                                <label
+                                  htmlFor="file_bukti"
+                                  className={
+                                    dataError.file_bukti ? "is-invalid" : ""
+                                  }
+                                >
+                                  File Bukti :{" "}
+                                  <span>
+                                    <a
+                                      href={`${
+                                        dataurl + dataPagelaran.file_bukti
+                                      }`}
+                                    >
+                                      {
+                                        dataPagelaran.file_bukti
+                                          .split("/")
+                                          .slice(-1)[0]
+                                      }
+                                    </a>
+                                  </span>
+                                </label>
+                                <input
+                                  className="form-control"
+                                  type="file"
+                                  onChange={handleChangeFile}
+                                  id="file_bukti"
+                                />
+                                {dataError.file_bukti ? (
+                                  <div className="invalid-feedback">
+                                    {dataError.file_bukti}
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
                   </div>
                 </form>
               </div>

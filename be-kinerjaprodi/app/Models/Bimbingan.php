@@ -15,7 +15,7 @@ class Bimbingan extends Model
         return $this->belongsTo(Prodi::class,'prodi_id','id');
     }
 
-    public function dosen()
+    public function profilDosen()
     {
         return $this->belongsTo(profilDosen::class,'profil_dosen_id','id');
     }

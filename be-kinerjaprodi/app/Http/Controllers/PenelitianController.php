@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mahasiswa;
 use App\Models\Penelitian;
+use App\Models\profilDosen;
 use App\Models\RelasiDosPen;
 use App\Models\RelasiPenMhs;
 use Illuminate\Http\Request;
@@ -23,11 +25,19 @@ class PenelitianController extends Controller
         ]);
     }
 
-    public function relasipenmhs()
+    public function relasipenmhs($id)
     {
         return response()->json([ //ngirim ke front end
             'success' => true,
-            'all_relasi' => RelasiPenMhs::with('mahasiswa')->get(),
+            'all_relasi' => RelasiPenMhs::with('mahasiswa')->where('penelitian_id', $id)->get(),
+        ]);
+    }
+
+    public function relasipendosen($id)
+    {
+        return response()->json([ //ngirim ke front end
+            'success' => true,
+            'all_relasi' => RelasiDosPen::with('dosen')->where('penelitian_id', $id)->get(),
         ]);
     }
 
@@ -53,6 +63,40 @@ class PenelitianController extends Controller
 
         ]);
     }
+
+    public function searchhapus($id,$search)
+    {
+        $datarelasi = RelasiDosPen::with('dosen')
+        ->whereRelation('dosen', 'NamaDosen', 'LIKE', "%{$search}%")
+        ->orWhereRelation('dosen', 'NIDK', 'LIKE', "%{$search}%")     
+        ->get();
+
+        $datafilter = $datarelasi->where('penelitian_id',$id);
+
+        return response()->json([
+            'success' => true,
+            'searchhapus' =>  $datafilter,
+            
+        ]);
+    }
+
+    public function searchhapusmhs($id,$search)
+    {
+        $datarelasi = RelasiPenMhs::with('mahasiswa')
+        ->whereRelation('mahasiswa', 'nama', 'LIKE', "%{$search}%")
+        ->orWhereRelation('mahasiswa', 'nim', 'LIKE', "%{$search}%")     
+        ->get();
+
+        $datafilter = $datarelasi->where('penelitian_id',$id);
+
+        return response()->json([
+            'success' => true,
+            'searchhapusmhs' =>  $datafilter,
+            
+        ]);
+    }
+
+    
 
     /**
      * Show the form for creating a new resource.
@@ -133,9 +177,31 @@ class PenelitianController extends Controller
      */
     public function show($id)
     {
+        $listanggota = RelasiDosPen::where('penelitian_id', $id)->get();
+
+        $idtags = array();
+        foreach ($listanggota as $anggota) {
+            $idtags[] = $anggota->profil_dosen_id;
+        }
+
+        $profilDosens = profilDosen::whereNotIn('id', $idtags)->get();
+
+//------------------------------------------------------------------------
+        $listanggotamhs = RelasiPenMhs::where('penelitian_id', $id)->get();
+
+        $idtagsmhs = array();
+        foreach ($listanggotamhs as $anggota) {
+            $idtagsmhs[] = $anggota->mahasiswa_id;
+        }
+
+        $profilmhs = Mahasiswa::whereNotIn('id', $idtagsmhs)->get();
+
+      
         return response()->json([
             'success' => true,
             'all_penelitian' => Penelitian::with(['anggotaDosens', 'anggotaMahasiswas'])->where('id', $id)->first(),
+            'all_dosen' =>  $profilDosens,
+            'all_mhs' =>  $profilmhs,
             'id' => $id
         ]);
     }
@@ -178,7 +244,7 @@ class PenelitianController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
         $penelitian->tema_sesuai_roadmap = $request->tema_sesuai_roadmap;
@@ -332,4 +398,23 @@ class PenelitianController extends Controller
             'message' => "Berhasil Dihapus"
         ]);
     }
+
+    public function deletedosen($id)
+    {
+        $penelitian = RelasiDosPen::find($id);
+        $penelitian->delete();
+
+        if (!$penelitian) {
+            return response()->json([
+                'success' => false,
+                'message' => "Gagal Dihapus"
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Dihapus"
+        ]);
+    }
+
+    
 }

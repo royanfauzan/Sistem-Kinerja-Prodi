@@ -14,6 +14,7 @@ export default function daftarprofil() {
   const MySwal = withReactContent(Swal)
   const [stadmin, setStadmin] = useState(false)
   const [tampilMahasiswaAsing, settampilMahasiswaAsing] = useState([])
+  const [dataRole, setRole] = useState("")
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token")
@@ -54,6 +55,8 @@ export default function daftarprofil() {
         console.log(response)
         console.log("Sukses")
         const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/")
@@ -70,17 +73,30 @@ export default function daftarprofil() {
   }, [])
 
   const deleteMhsAsing = (id) => {
+    MySwal.fire({
+      title: "Apakah yakin untuk hapus data?",
+      text: "Data Tidak Dapat Kembali Jika Sudah Di Hapus",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
+    }).then((result) => {
+      if (result.isConfirmed) {
     axios({
       method: "post",
       url: `http://127.0.0.1:8000/api/delete_mahasiswa_asing/${id}`,
     })
-      .then(function (response) {
-        router.reload()
-      })
-      .catch(function (err) {
-        console.log("gagal")
-        console.log(err.response)
-      })
+    .then(function (response) {
+      router.reload()
+    })
+    .catch(function (err) {
+      console.log("gagal")
+      console.log(err.response)
+    })
+  }
+    })
   }
   const searchdata = async (e) => {
     if (e.target.value == "") {
@@ -101,11 +117,13 @@ export default function daftarprofil() {
   const exportAsing = () => {
     MySwal.fire({
       title: "Export Data Mahasiswa Asing",
-      text: "Yakin Export? ",
+      text: "Apa kamu yakin? ",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Ya !",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -116,12 +134,14 @@ export default function daftarprofil() {
   }
   const tambahAsing = () => {
     MySwal.fire({
-      title: "Tambah",
-      text: "Are you sure? ",
+      title: "Tambah Data Mahasiswa Asing",
+      text: "Apa Kamu Yakin? ",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -132,12 +152,14 @@ export default function daftarprofil() {
   }
   const editAsing = (id) => {
     MySwal.fire({
-      title: "Edit",
-      text: "Are you sure? ",
+      title: "Edit Data Mahasiswa Asing?",
+      text: "Apa kamu yakin?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes !",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       // <--
       if (result.value) {
@@ -150,12 +172,13 @@ export default function daftarprofil() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
                 <div className="card-header pb-0">
                   <div className="row justify-content-between">
+                  <p className="text-uppercase text-sm text-center"> <h5>TABEL  MAHASISWA ASING </h5> </p>
                     <div className="col-8">
                       <button
                         onClick={() => tambahAsing()}
@@ -174,9 +197,9 @@ export default function daftarprofil() {
 
                     <div className="col-4 d-flex flex-row-reverse">
                       <input
-                        className="rounded-3"
+                        className="form-control d-flex flex-row-reverse me-2 mt-3 mb-0"
                         type="text"
-                        placeholder="search.."
+                        placeholder="Cari Data Mahasiswa Asing..."
                         defaultValue=""
                         id="search"
                         onChange={searchdata}

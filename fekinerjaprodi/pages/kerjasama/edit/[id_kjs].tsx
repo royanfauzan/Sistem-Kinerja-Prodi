@@ -35,7 +35,7 @@ export default function editkerjasama(props) {
   const [filebukti, setFilebukti] = useState<File>()
   const [dataError, setError] = useState([])
   const MySwal = withReactContent(Swal)
-
+  const [dataRole, setRole] = useState("")
   console.log(kerjasama)
 
   // State Select
@@ -84,6 +84,8 @@ export default function editkerjasama(props) {
         console.log(response)
         console.log("Sukses")
         const { level_akses } = response.data.user
+        const { role } = response.data.user
+        setRole(role)
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/")
@@ -166,7 +168,7 @@ export default function editkerjasama(props) {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -174,7 +176,7 @@ export default function editkerjasama(props) {
                   <div className="card">
                     <div className="card-header pb-0">
                       <div className="d-flex align-items-center">
-                        <p className="mb-0">Input Data</p>
+                      <p className="text-uppercase text-sm"> <h5>FORM EDIT DATA KERJASAMA </h5> </p>
                         <button
                           className="btn btn-primary btn-sm ms-auto"
                           type="submit"
@@ -238,13 +240,15 @@ export default function editkerjasama(props) {
                               onChange={handleChangeBidang}
                             >
                               <option value="">Pilih Bidang</option>
-                              {dataMitras.map((dataMitra) => {
-                                return (
-                                  <option value={dataMitra.bidang}>
-                                    {dataMitra.bidang}
-                                  </option>
-                                )
-                              })}
+                              <option value="Kerjasama Pendidikan">
+                                Kerjasama Pendidikan
+                              </option>
+                              <option value="Kerjasama Penelitian">
+                                Kerjasama Penelitian
+                              </option>
+                              <option value="Kerjasama Pengabdian Kepada Masyarakat">
+                                Kerjasama Pengabdian Kepada Masyarakat
+                              </option>
                             </select>
                             {dataError.bidang ? (
                               <div className="invalid-feedback">

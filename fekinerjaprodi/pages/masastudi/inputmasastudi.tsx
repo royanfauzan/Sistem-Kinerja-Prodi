@@ -6,12 +6,15 @@ import FooterUtama from "../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export default function inputprestasi() {
   const router = useRouter();
 
   const [userDosens, setuserDosens] = useState([]);
   const [fileBukti, setfileBuktis] = useState<File>([]);
+  const [dataRole, setRole] = useState("");
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -54,6 +57,8 @@ export default function inputprestasi() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -106,7 +111,7 @@ export default function inputprestasi() {
         toast.success("Login Sugses!!");
         // console.log(token);
         console.log(all_masastudi);
-        // router.push("../prestasi/daftarprestasi");
+        router.push("../masastudi/daftarmasastudi");
       })
       .catch(function (error) {
         //handle error
@@ -126,7 +131,7 @@ export default function inputprestasi() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -145,7 +150,7 @@ export default function inputprestasi() {
                     </div>
                     <div className="card-body">
                       <p className="text-uppercase text-sm">
-                        Prestasi Mahasiswa
+                        Masa Studi Lulusan
                       </p>
                       <div className="row">
                         <div className="col-md-6">
@@ -180,6 +185,11 @@ export default function inputprestasi() {
                             </select>
                           </div>
                         </div>
+
+                        {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
@@ -207,7 +217,7 @@ export default function inputprestasi() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah Mahasiswa"
                               id="jumlah_mhs"
                               required
@@ -215,6 +225,12 @@ export default function inputprestasi() {
                           </div>
                         </div>
 
+                        {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jumlah Lulusan
+                        </p>
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
@@ -225,7 +241,7 @@ export default function inputprestasi() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah Lulus Tahun 1"
                               id="satu"
                               required
@@ -240,7 +256,7 @@ export default function inputprestasi() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah Lulus Tahun 2"
                               id="dua"
                               required
@@ -258,7 +274,7 @@ export default function inputprestasi() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah Lulus Tahun 3"
                               id="tiga"
                               required
@@ -276,7 +292,7 @@ export default function inputprestasi() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               placeholder="Jumlah Lulus Tahun 4"
                               id="empat"
                               required

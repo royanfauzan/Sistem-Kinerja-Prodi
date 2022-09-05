@@ -15,7 +15,10 @@ export default function daftarintgrs() {
 
   const [stadmin, setStadmin] = useState(false);
   const [integrasi, setintegrasi] = useState([]);
-  const MySwal = withReactContent(Swal)
+  const MySwal = withReactContent(Swal);
+  const apiurl = "http://127.0.0.1:8000/"
+
+  const [dataRole, setRole] = useState('');
 
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
@@ -56,8 +59,11 @@ export default function daftarintgrs() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 3) {
+        if (level_akses !== 2) {
           return router.push("/");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -71,21 +77,87 @@ export default function daftarintgrs() {
       });
   }, []);
 
-  const deleteintegrasi = (id) => {
-    axios({
-      method: "post",
-      url: `http://127.0.0.1:8000/api/Integrasi_Delete/${id}`,
-    })
-      .then(function (response) {
-        router.reload();
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+  const tambahintegrasi = () => {
+    MySwal.fire({
+      title: "Tambah Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/integrasi/inputintegrasi`);
+      }
+    });
   };
 
-  const searchdata= async (e) => {
+  const editintegrasi = (id) => {
+    MySwal.fire({
+      title: "Edit Data",
+      text: "Apakah kalian yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/integrasi/edit/${id}`);
+      }
+    });
+  };
+
+  const exportintegrasi = () => {
+    MySwal.fire({
+      title: "Export Data",
+      text: "Apakah anda yakin? ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Iya !",
+    }).then((result) => {
+      // <--
+      if (result.value) {
+        // <-- if confirmed
+        router.push(`/integrasi/export/exportintegrasi`);
+      }
+    });
+  };
+
+
+  const deleteintegrasi = (id) => {
+    MySwal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, hapus ini!",
+    }).then((result) => {
+      // <--
+      if (result.isConfirmed) {
+        // <-- if confirmed
+        axios({
+          method: "post",
+          url: `http://127.0.0.1:8000/api/Integrasi_Delete/${id}`,
+        })
+          .then(function (response) {
+            router.reload();
+          })
+          .catch(function (err) {
+            console.log("gagal");
+            console.log(err.response);
+          });
+      }
+    });
+  };
+
+  const searchdata = async (e) => {
     if (e.target.value == "") {
       const req = await axios.get(`http://127.0.0.1:8000/api/Integrasi/`)
       const res = await req.data.all_integrasi
@@ -104,7 +176,7 @@ export default function daftarintgrs() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">
@@ -123,25 +195,30 @@ export default function daftarintgrs() {
                       onChange={searchdata}
                     />
                   </div>
-                  </div>
+                </div>
                 <div className="row justify-content-between mb-4">
-                  <div className="col-4">
-                    <div className="align-middle">
-                      <Link href={`/integrasi/inputintegrasi/`}>
-                        <button className=" btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
+                  <div className="col-5">
+                    <div className="col-5">
+                      <td className="align-middle">
+                        <button
+                          onClick={() => tambahintegrasi()}
+                          className="btn btn-primary border-0 shadow-sm ms-3 ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                        >
                           Tambah Data
                         </button>
-                      </Link>
+                      </td>
                     </div>
                   </div>
+
                   <div className="col-4 d-flex flex-row-reverse">
-                    <div className="align-middle">
-                      <Link href={`/integrasi/export/exportintegrasi/`}>
-                        <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
-                          Export Tabel
-                        </button>
-                      </Link>
-                    </div>
+                    <td className="align-middle">
+                      <button
+                        onClick={() => exportintegrasi()}
+                        className="btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0"
+                      >
+                        Export Tabel
+                      </button>
+                    </td>
                   </div>
                 </div>
                 <div className="card-body p-3">
@@ -184,7 +261,7 @@ export default function daftarintgrs() {
                             <tr key={`intgrs` + intgrs.id}>
 
                               <td className="ps-3 pe-3">
-                                <h6 className="mb-0 text-sm">{number + 1}</h6>
+                                <p className="mb-0 text-sm">{number + 1}</p>
                               </td>
 
                               <td>
@@ -230,20 +307,23 @@ export default function daftarintgrs() {
                                   {intgrs.tahun}
                                 </p>
                               </td>
-                              <td className="align-middle text-sm">
-                                <span className="text-dark text-xs font-weight-bold">
-                                  <p className="text-xs font-weight-bold mb-0 pe-3">
-                                    {intgrs.file_bukti}
-                                  </p>
+                              <td className="align-middle ">
+                                <span className="text-secondary text-xs font-weight-bold">
+                                  <h6 className="mb-0 text-sm">
+                                  <a href={`${apiurl+intgrs.file_bukti}`}>{intgrs.file_bukti.split("/").slice(-1)[0] }</a>
+                                  </h6>
                                 </span>
                               </td>
 
+
                               <td className="align-middle pe-3 text-end">
-                                <Link href={`/integrasi/edit/${intgrs.id}`}>
-                                  <button className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2">
-                                    Edit
-                                  </button>
-                                </Link>
+
+                                <button
+                                  onClick={() => editintegrasi(intgrs.id)}
+                                  className="btn btn-sm btn-primary border-0 shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
+                                >
+                                  Edit
+                                </button>
 
                                 <button
                                   onClick={() => deleteintegrasi(intgrs.id)}

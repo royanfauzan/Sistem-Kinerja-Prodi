@@ -16,6 +16,7 @@ export default function exportkepuasan() {
   const [isLoaded, setisLoaded] = useState(false);
   const [profilDosen, setprofilDosen] = useState([]);
   const [dataSelectTahun, setSelectTahun] = useState(``);
+  const [dataRole, setRole] = useState('');
 
   // console.log(dataSelectTahun);
 
@@ -67,6 +68,8 @@ export default function exportkepuasan() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -103,7 +106,7 @@ export default function exportkepuasan() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="col-12">
               <div className="card mb-4">

@@ -39,42 +39,41 @@ class PendidikanController extends Controller
     {
         //
         $user = JWTAuth::parseToken()->authenticate();
-        $dosenId = null;
-        if ($user->profilDosen) {
-            $dosenId=$user->profilDosen->id;
-        }else{
-            $dosenId = $request->dosenId;
-        }
+        // $dosenId = null;
+        // if ($user->profilDosen) {
+        //     $dosenId=$user->profilDosen->id;
+        // }else{
+        //     $dosenId = $request->dosenId;
+        // }
 
-        $data = $request->only('tahun_lulus', 'program_pendidikan', 'perguruan_tinggi', 'jurusan', 'prodi');
+        $data = $request->only('profil_dosen_id', 'tahun_lulus', 'program_pendidikan', 'perguruan_tinggi', 'jurusan', 'prodi');
         $validator = Validator::make($data, [
-            'tahun_lulus'=>'required|string',
-            'program_pendidikan'=>'required|string',
-            'perguruan_tinggi'=>"required|string",
-            'jurusan'=>"required|string",
-            'prodi'=>"required|string",
+            'profil_dosen_id' => 'required|string',
+            'tahun_lulus' => 'required|string',
+            'program_pendidikan' => 'required|string',
+            'perguruan_tinggi' => "required|string",
+            'jurusan' => "required|string",
+            'prodi' => "required|string",
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors(),
-            ], 400);
+            return response()->json(['error' => $validator->errors()], 400);
         }
 
+
         $pendidikan = Pendidikan::create([
-            'tahun_lulus'=>$request->tahun_lulus,
-            'program_pendidikan'=>$request->program_pendidikan,
-            'perguruan_tinggi'=>$request->perguruan_tinggi,
-            'jurusan'=>$request->jurusan,
-            'prodi'=>$request->prodi,
-            'profil_dosen_id'=>$dosenId
+            'tahun_lulus' => $request->tahun_lulus,
+            'program_pendidikan' => $request->program_pendidikan,
+            'perguruan_tinggi' => $request->perguruan_tinggi,
+            'jurusan' => $request->jurusan,
+            'prodi' => $request->prodi,
+            'profil_dosen_id' => $request->profil_dosen_id
         ]);
 
         return response()->json([
             'success' => true,
             'pendidikans' => $pendidikan,
-            'dosenId'=> $dosenId
+            'dosenId' => $request->profil_dosen_id
         ]);
     }
 
@@ -87,6 +86,12 @@ class PendidikanController extends Controller
     public function show($id)
     {
         //
+        $pendidikan = Pendidikan::with('profilDosen')->find($id);
+        return response()->json([
+            'success' => true,
+            'datapendidikan' => $pendidikan,
+            // 'dosenId'=> $dosenId
+        ]);
     }
 
     /**
@@ -110,6 +115,39 @@ class PendidikanController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $data = $request->only('profil_dosen_id', 'tahun_lulus', 'program_pendidikan', 'perguruan_tinggi', 'jurusan', 'prodi');
+        $validator = Validator::make($data, [
+            'profil_dosen_id' => 'required|string',
+            'tahun_lulus' => 'required|string',
+            'program_pendidikan' => 'required|string',
+            'perguruan_tinggi' => "required|string",
+            'jurusan' => "required|string",
+            'prodi' => "required|string",
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+            ], 400);
+        }
+
+        $pendidikan = Pendidikan::find($id);
+
+        $pendidikan->tahun_lulus = $request->tahun_lulus;
+        $pendidikan->program_pendidikan = $request->program_pendidikan;
+        $pendidikan->perguruan_tinggi = $request->perguruan_tinggi;
+        $pendidikan->jurusan = $request->jurusan;
+        $pendidikan->prodi = $request->prodi;
+        $pendidikan->profil_dosen_id = $request->profil_dosen_id;
+        $pendidikan->save();
+
+
+        return response()->json([
+            'success' => true,
+            'pendidikans' => $pendidikan,
+            'dosenId' => $request->profil_dosen_id
+        ]);
     }
 
     /**
@@ -121,5 +159,13 @@ class PendidikanController extends Controller
     public function destroy($id)
     {
         //
+        $pendidikan = Pendidikan::find($id);
+
+        $pendidikan->delete();
+
+        return response()->json([
+            'success' => true,
+            'pendidikanDosen' => $pendidikan,
+        ]);
     }
 }

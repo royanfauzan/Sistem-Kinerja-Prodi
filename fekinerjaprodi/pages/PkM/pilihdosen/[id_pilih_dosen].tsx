@@ -6,18 +6,22 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 // Untuk Ngambil Data Berdasarkan ID
 export async function getServerSideProps(context) {
   //http request
   const req = await axios.get(
-    `http://127.0.0.1:8000/api/tampil_Penelitian/${context.query.id_pilih_dosen}`
+    `http://127.0.0.1:8000/api/tampil_PKM/${context.query.id_pilih_dosen}`
   );
-  const res = await req.data.all_penelitian;
+  const res = await req.data.all_pkm;
+  const res2 = await req.data.all_dosen;
 
   return {
     props: {
-      pkm: res, // <-- assign response
+      pkm: res, 
+      all_dosen: res2,// <-- assign response
     },
   };
 }
@@ -25,17 +29,21 @@ export async function getServerSideProps(context) {
 export default function editluaran(props) {
   const router = useRouter();
   const { id_pilih_dosen } = router.query;
-  const { pkm } = props;
+  const { pkm, all_dosen } = props;
   const [datapkm, setpkm] = useState(pkm);
+  const [dataError, setError] = useState([]);
+  const MySwal = withReactContent(Swal);
 
   console.log(pkm);
 
   // State Select
   const [stadmin, setStadmin] = useState(false);
   const [datapkms, setpkms] = useState([]);
-  const [selectpkm, setSelectpkm] = useState(pkm.dosen_id);
+  const [selectpkm, setSelectpkm] = useState(pkm.profil_dosen_id);
   const [selectId, setSelectId] = useState(id_pilih_dosen);
-  const [dataDosen, setdataDosen] = useState();
+  const [dataDosen, setdataDosen] = useState(all_dosen);
+
+  const [dataRole, setRole] = useState("");
 
   // pake ngambil data untuk halaman input
   const pengambilData = async () => {
@@ -61,8 +69,7 @@ export default function editluaran(props) {
         console.log(response);
         console.log('Sukses');
         const { profilDosens } = response.data;
-        setdataDosen(profilDosens);
-        console.log("aaaaaaaaaaaaa");
+        // setdataDosen(profilDosens);
         console.log(profilDosens);
       })
       .catch(function (err) {
@@ -81,8 +88,10 @@ export default function editluaran(props) {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 3) {
+        if (level_akses !== 2) {
           return router.push("/");
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -121,35 +130,33 @@ export default function editluaran(props) {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        const { all_luaran } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(all_luaran);
-        router.push("../../PkM/daftarpkm");
-        console.log(response.data);
+    .then(function (response) {
+      MySwal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Berhasil Di Input",
       })
-      .catch(function (error) {
-        //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
 
-        console.log("tidak success");
-        console.log(error.response);
-      });
+      router.push("/PkM/daftarpkm")
+    })
+    .catch(function (error) {
+      //handle error
+      setError(error.response.data.error)
+      console.log(error.response.data.error)
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Data Gagal Di Input",
+      })
+      console.log(error.response)
+    })
   };
 
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">

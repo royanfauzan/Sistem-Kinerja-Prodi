@@ -15,6 +15,7 @@ export default function inputipk() {
   const [userDosens, setuserDosens] = useState([]);
   const [dataError, setError] = useState([]);
   const MySwal = withReactContent(Swal);
+  const [dataRole, setRole] = useState('');
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -57,6 +58,8 @@ export default function inputipk() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -124,7 +127,7 @@ export default function inputipk() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -144,7 +147,7 @@ export default function inputipk() {
                     <div className="card-body">
                       <p className="text-uppercase text-sm">IPK Mahasiswa</p>
                       <div className="row">
-                        <div className="col-md-6">
+                        <div className="col-md-12">
                           <div className="form-group">
                             <label
                               htmlFor="prodi"
@@ -231,6 +234,12 @@ export default function inputipk() {
                           </div>
                         </div>
 
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold" />
+                        <p className="text-uppercase text-sm">
+                          Nilai IPK Mahasiswa 
+                        </p>
+
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
@@ -239,12 +248,12 @@ export default function inputipk() {
                                 dataError.ipk_min ? "is-invalid" : ""
                               }
                             >
-                              IPK Minimal
+                              IPK Maksimal
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="IPK Minimal"
+                              type="varchar"
+                              placeholder="IPK Maksimal"
                               id="min"
                             />
                             {dataError.ipk_min ? (
@@ -262,12 +271,12 @@ export default function inputipk() {
                             <label htmlFor="max" className={
                                 dataError.ipk_max ? "is-invalid" : ""
                               }>
-                              IPK Maksimal
+                              IPK Minimal
                             </label>
                             <input
                               className="form-control"
-                              type="text"
-                              placeholder="IPK Maksimal"
+                              type="varchar"
+                              placeholder="IPK Minimal"
                               id="max"
                             />{dataError.ipk_max ? (
                               <div className="invalid-feedback">
@@ -288,7 +297,7 @@ export default function inputipk() {
                             </label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="varchar"
                               placeholder="IPK Rata - rata"
                               id="avg"
                             />

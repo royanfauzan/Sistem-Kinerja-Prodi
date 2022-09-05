@@ -6,6 +6,8 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 
 // Untuk Ngambil Data Berdasarkan ID
@@ -40,6 +42,9 @@ export default function update_datamhs(props) {
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
+  const [dataError, setError] = useState([])
+  const MySwal = withReactContent(Swal);
+  const [dataRole, setRole] = useState("");
   
   
 
@@ -73,8 +78,10 @@ export default function update_datamhs(props) {
             console.log(response);
             console.log('Sukses');
             const {level_akses} = response.data.user;
+            const { role } = response.data.user;
+            setRole(role);
             // kalo ga admin dipindah ke halaman lain
-            if(level_akses !== 3){
+            if(level_akses <2 ){
               return router.push('/');
             }
             // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin
@@ -114,34 +121,33 @@ export default function update_datamhs(props) {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        const { profil } = response.data;
-        //handle success
-        toast.dismiss();
-        toast.success("Login Sugses!!");
-        // console.log(token);
-        console.log(response.data);
-        router.push("../../mahasiswa/daftarmhs");
+    .then(function (response) {
+      MySwal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Berhasil Di Edit",
       })
-      .catch(function (error) {
-        //handle error
-        toast.dismiss();
-        if (error.response.status == 400) {
-          toast.error("Gagal Menyimpan Data!!");
-        } else {
-          toast.error("Gagal Menyimpan Data");
-        }
 
-        console.log("tidak success");
-        console.log(error.response);
-      });
+      router.push("/mahasiswa/daftarmhs")
+    })
+    .catch(function (error) {
+      //handle error
+      setError(error.response.data.error)
+      console.log(error.response.data.error)
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Data Gagal Di Edit",
+      })
+      console.log(error.response)
+    })
   };
 
   return (
     <>
     <LoadingUtama loadStatus={stadmin}/>
       {stadmin  &&(
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
         <div className="container-fluid py-4">
           <div className="row">
             <div className="col-md-8">
@@ -163,7 +169,8 @@ export default function update_datamhs(props) {
 
                     <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="nim" className="form-control-label">
+                          <label htmlFor="nim" 
+                          className={dataError.nim ? "is-invalid" : ""}>
                             NIM Mahasiswa
                           </label>
                           <input
@@ -172,13 +179,20 @@ export default function update_datamhs(props) {
                             type="text"
                             placeholder="NIM Mahasiswa"
                             id="nim"
-                            required
                           />
+                          {dataError.nim ? (
+                              <div className="invalid-feedback">
+                                {dataError.nim}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="nama" className="form-control-label">
+                          <label htmlFor="nama" 
+                          className={dataError.nama ? "is-invalid" : ""}>
                             Nama Mahasiswa
                           </label>
                           <input
@@ -187,8 +201,14 @@ export default function update_datamhs(props) {
                             type="text"
                             placeholder="Nama Mahasiswa"
                             id="nama"
-                            required
                           />
+                          {dataError.nama ? (
+                              <div className="invalid-feedback">
+                                {dataError.nama}
+                              </div>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>  
                     </div>

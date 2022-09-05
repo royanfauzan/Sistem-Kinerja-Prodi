@@ -26,17 +26,18 @@ export default function editluaran(props) {
   const router = useRouter();
   const { luaran } = props;
   const [dataLuaran, setLuaran] = useState(luaran);
+  const [dataError, setError] = useState([]);
+  const [selectKategori, setselectKategori] = useState(luaran.jenis_luaran);
 
   console.log(luaran);
 
   // State Select
   const [stadmin, setStadmin] = useState(false);
   const [dataLuarans, setLuarans] = useState([]);
+  const [dataRole, setRole] = useState("");
 
   // pake ngambil data untuk halaman input
-  const pengambilData = async () => {
-    
-  };
+  const pengambilData = async () => {};
 
   // Setelah halaman Loading nya muncul, ini jalan
   // untuk mastiin yg akses halaman ini user admin
@@ -57,6 +58,8 @@ export default function editluaran(props) {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -119,11 +122,15 @@ export default function editluaran(props) {
       });
   };
 
+  const handleChangeKategori = (e) => {
+    setselectKategori(e.target.value);
+  };
+
   return (
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -141,72 +148,119 @@ export default function editluaran(props) {
                       </div>
                     </div>
                     <div className="card-body">
-                    <p className="text-uppercase text-sm">Luaran Lainnya</p>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="judul" className="form-control-label">
-                            judul
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="judul"
-                            id="judul"
-                            defaultValue={dataLuaran.judul}
-                            required
-                          />
+                      <p className="text-uppercase text-sm">Luaran Lainnya</p>
+                      <div className="row">
+                        <div className="col-md-7">
+                          <div className="form-group">
+                            <label
+                              htmlFor="judul"
+                              className="form-control-label"
+                            >
+                              judul
+                            </label>
+                            <textarea
+                              className="form-control"
+                              placeholder="judul"
+                              id="judul"
+                              defaultValue={dataLuaran.judul}
+                              required
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="keterangan" className="form-control-label">
-                            Keterangan
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Keterangan"
-                            id="keterangan"
-                            defaultValue={dataLuaran.keterangan}
-                            required
-                          />
-                        </div>
-                      </div>
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="tahun" className="form-control-label">
-                          Tahun
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Tahun"
-                            id="tahun"
-                            defaultValue={dataLuaran.tahun}
-                            required
-                          />
+                        <div className="col-md-4 ms-3">
+                          <div className="form-group">
+                            <label
+                              htmlFor="tahun"
+                              className="form-control-label"
+                            >
+                              Tahun
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tahun"
+                              id="tahun"
+                              defaultValue={dataLuaran.tahun}
+                              required
+                            />
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="jenis" className="form-control-label">
-                          Jenis Luaran
-                          </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Jenis Luaran"
-                            id="jenis"
-                            defaultValue={dataLuaran.jenis_luaran}
-                            required
-                          />
+                        <div className="col-md-7">
+                          <div className="form-group">
+                            <label
+                              htmlFor="keterangan"
+                              className="form-control-label"
+                            >
+                              Keterangan
+                            </label>
+                            <textarea
+                              className="form-control"
+                              placeholder="Keterangan"
+                              id="keterangan"
+                              defaultValue={dataLuaran.keterangan}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-5">
+                          <div className="form-group">
+                            <label
+                              htmlFor="tahun"
+                              className="form-control-label"
+                            ></label>
+                          </div>
+                        </div>
+
+                        <div className="col-md-12">
+                          <div className="form-group">
+                            <label
+                              htmlFor="jenis"
+                              className={
+                                dataError.jenis_luaran ? "is-invalid" : ""
+                              }
+                            >
+                              Jenis Luaran
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
+                              id="jenis"
+                              value={selectKategori}
+                              onChange={handleChangeKategori}
+                            >
+                              <option value="">Pilih Jenis Luaran</option>
+                              <option value="Paten, Paten Sederhana">
+                                Bagian-1 HKI (Paten, Paten Sederhana)
+                              </option>
+                              <option value="Hak Cipta, Desain Produk Industri,
+                                dll.">
+                                Bagian-2 HKI (Hak Cipta, Desain Produk Industri,
+                                dll.)
+                              </option>
+                              <option value="Teknologi Tepat Guna, Produk, Karya
+                                Seni, Rekayasa Sosial">
+                                Bagian-3 Teknologi Tepat Guna, Produk, Karya
+                                Seni, Rekayasa Sosial
+                              </option>
+                              <option value="Buku Ber-ISBN, Book Chapter">
+                                Bagian-4 Buku Ber-ISBN, Book Chapter
+                              </option>
+                            </select>
+                            {dataError.jenis_luaran ? (
+                              <div className="invalid-feedback">
+                                {dataError.jenis_luaran}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
                   </div>
                 </form>
               </div>

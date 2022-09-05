@@ -12,9 +12,7 @@ import ReactHTMLTableToExcel from "react-html-table-to-excel";
 export default function exportbimbingan() {
   const router = useRouter();
 
-  
   const [stadmin, setStadmin] = useState(false);
-  const [dataSelectTahun, setSelectTahun] = useState(``);
 
   // console.log(dataSelectTahun);
 
@@ -23,35 +21,54 @@ export default function exportbimbingan() {
 
   const [tampilMhsAsing, settampilMhsAsing] = useState([]);
   const [dataProdis, setdataProdi] = useState([]);
-  
-  const [dataRole, setRole] = useState('');
 
+  const [dataRole, setRole] = useState("");
+
+  const [dataSelectTahun, setSelectTahun] = useState(
+    `${new Date().getFullYear()}`
+  );
+
+  const tanggalSekarang = new Date();
+  const tahunSekarang = tanggalSekarang.getFullYear();
+
+  function tahunGenerator(tahun: number, tipe: String, jumlah: number) {
+    let counter = -5;
+    const tahunPertama =
+      tipe == "akademik"
+        ? `${tahun + counter - 2}/${tahun + counter - 1}`
+        : `${tahun + counter - 1}`;
+    const arrTahun = [tahunPertama];
+    if (tipe == "akademik") {
+      for (let index = 0; index <= jumlah; index++) {
+        if (counter > 0) {
+          counter++;
+          arrTahun.push(`${tahun + counter - 2}/${tahun + counter - 1}`);
+        }
+        if (counter <= 0) {
+          arrTahun.push(`${tahun + counter - 1}/${tahun + counter}`);
+          counter++;
+        }
+      }
+    } else {
+      for (let index = 0; index <= jumlah; index++) {
+        arrTahun.push(`${tahun + counter}`);
+        counter++;
+      }
+    }
+    setListTahun(arrTahun);
+  }
 
   const handleChange = (e) => {
-    const value = e.target.value
-    console.log(e.target.value)
+    const value = e.target.value;
+    console.log(e.target.value);
     setSelectTahun(value);
     tampildata(value);
   };
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
 
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/bimbinganlisttahun",
-    })
-      .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { tahunbimbingans } = response.data;
-        setListTahun(tahunbimbingans);
-        setSelectTahun(tahunbimbingans[0].split("/")[1]);
-        tampildata(tahunbimbingans[0].split("/")[1]);
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+    tahunGenerator(new Date().getFullYear(), "akademik", 10);
+    tampildata(`${new Date().getFullYear()}`);
   };
 
   useEffect(() => {
@@ -71,7 +88,7 @@ export default function exportbimbingan() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
-        const {role} = response.data.user;
+        const { role } = response.data.user;
         setRole(role);
 
         // kalo ga admin dipindah ke halaman lain
@@ -162,18 +179,17 @@ export default function exportbimbingan() {
                     </div>
                     <div className="row">
                       <div className="col-12 d-flex flex-row-reverse">
-                          {dataBimbingans&&(
-                              <ReactHTMLTableToExcel
-                              id="test-table-xls-button"
-                              className="download-table-xls-button btn btn-success ms-3"
-                              table="tableBimbingan"
-                              filename={`tabelBimbingan_TH${dataSelectTahun}`}
-                              sheet="3a3"
-                              buttonText="Export Excel"
-                              border="1"
-                            />
-                          )}
-                        
+                        {dataBimbingans && (
+                          <ReactHTMLTableToExcel
+                            id="test-table-xls-button"
+                            className="download-table-xls-button btn btn-success ms-3"
+                            table="tableBimbingan"
+                            filename={`tabelBimbingan_TH${dataSelectTahun}`}
+                            sheet="3a2"
+                            buttonText="Export Excel"
+                            border="1"
+                          />
+                        )}
                       </div>
                     </div>
                     <div className="row">
@@ -196,12 +212,13 @@ export default function exportbimbingan() {
                             <tr>
                               <td rowSpan={3}>No</td>
                               <td rowSpan={3}>Nama Dosen</td>
-                              <td colSpan={8}>
-                                Jumlah Mahasiswa Dibimbing
+                              <td colSpan={8}>Jumlah Mahasiswa Dibimbing</td>
+                              <td rowSpan={3}>
+                                Rata-rata Jumlah Bimbingan di semua Program/
+                                Semester
                               </td>
-                              <td rowSpan={3}>Rata-rata Jumlah Bimbingan di semua Program/ Semester</td>
                             </tr>
-                            <tr>                    
+                            <tr>
                               <td colSpan={4}>Pada PS Diakreditasi</td>
                               <td colSpan={4}>Pada PS Lain di PT</td>
                             </tr>
@@ -218,21 +235,32 @@ export default function exportbimbingan() {
                           </thead>
                           <tbody>
                             {dataBimbingans.map((bimbing, index) => {
-                              
                               return (
                                 <tr key={`tbimbing` + bimbing.id}>
                                   {/* no */}
                                   <td>{index + 1}</td>
                                   {/* prodi */}
                                   <td>{bimbing.NamaDosen}</td>
-                                  <td>{bimbing.listBimbing[2].bimbingan_dalam}</td>
-                                  <td>{bimbing.listBimbing[1].bimbingan_dalam}</td>
-                                  <td>{bimbing.listBimbing[0].bimbingan_dalam}</td>
+                                  <td>
+                                    {bimbing.listBimbing[2].bimbingan_dalam}
+                                  </td>
+                                  <td>
+                                    {bimbing.listBimbing[1].bimbingan_dalam}
+                                  </td>
+                                  <td>
+                                    {bimbing.listBimbing[0].bimbingan_dalam}
+                                  </td>
                                   <td>{bimbing.avgDalam}</td>
-                                  <td>{bimbing.listBimbing[2].bimbingan_luar}</td>
-                                  <td>{bimbing.listBimbing[1].bimbingan_luar}</td>
-                                  <td>{bimbing.listBimbing[0].bimbingan_luar}</td>
-                                  <td>{bimbing.avgLuar}</td> 
+                                  <td>
+                                    {bimbing.listBimbing[2].bimbingan_luar}
+                                  </td>
+                                  <td>
+                                    {bimbing.listBimbing[1].bimbingan_luar}
+                                  </td>
+                                  <td>
+                                    {bimbing.listBimbing[0].bimbingan_luar}
+                                  </td>
+                                  <td>{bimbing.avgLuar}</td>
                                   <td>{bimbing.avgSemester}</td>
                                 </tr>
                               );

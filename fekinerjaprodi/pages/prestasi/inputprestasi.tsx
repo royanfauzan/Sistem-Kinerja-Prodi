@@ -16,6 +16,7 @@ export default function inputprestasi() {
   const [dataError, setError] = useState([]);
   const [fileBukti, setfileBuktis] = useState<File>([]);
   const MySwal = withReactContent(Swal);
+  const [dataRole, setRole] = useState("");
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -58,6 +59,8 @@ export default function inputprestasi() {
         console.log(response);
         console.log("Sukses");
         const { level_akses } = response.data.user;
+        const { role } = response.data.user;
+        setRole(role);
         // kalo ga admin dipindah ke halaman lain
         if (level_akses !== 3) {
           return router.push("/");
@@ -129,7 +132,7 @@ export default function inputprestasi() {
     <>
       <LoadingUtama loadStatus={stadmin} />
       {stadmin && (
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
           <div className="container-fluid py-4">
             <div className="row">
               <div className="col-md-8">
@@ -192,6 +195,36 @@ export default function inputprestasi() {
                         <div className="col-md-6">
                           <div className="form-group">
                             <label
+                              htmlFor="tahun"
+                              className={dataError.tahun ? "is-invalid" : ""}
+                            >
+                              Tahun
+                            </label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              placeholder="Tahun"
+                              id="tahun"
+                            />
+                            {dataError.tahun ? (
+                              <div className="invalid-feedback">
+                                {dataError.tahun}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold" />
+                        <p className="text-uppercase text-sm">
+                          Prestasi: Akademik dan Non Akademik
+                        </p>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label
                               htmlFor="nm_kegiatan"
                               className={
                                 dataError.nm_kegiatan ? "is-invalid" : ""
@@ -214,29 +247,6 @@ export default function inputprestasi() {
                             )}
                           </div>
                         </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label
-                              htmlFor="tahun"
-                              className={dataError.tahun ? "is-invalid" : ""}
-                            >
-                              Tahun
-                            </label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              placeholder="Tahun"
-                              id="tahun"
-                            />
-                            {dataError.tahun ? (
-                              <div className="invalid-feedback">
-                                {dataError.tahun}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
 
                         <div className="col-md-6">
                           <div className="form-group">
@@ -253,11 +263,11 @@ export default function inputprestasi() {
                               id="tingkat"
                             >
                               <option value="">Pilih Tingkatan</option>
+                              <option value="Lokal">Lokal</option>
+                              <option value="Nasional">Nasional</option>
                               <option value="Internasional">
                                 Internasional
                               </option>
-                              <option value="Nasional">Nasional</option>
-                              <option value="Lokal">Lokal</option>
                             </select>
                             {dataError.tingkat ? (
                               <div className="invalid-feedback">
@@ -310,8 +320,8 @@ export default function inputprestasi() {
                               id="kategori"
                             >
                               <option value="">Pilih kategori</option>
-                              <option value="Nasional">Akademik</option>
-                              <option value="Lokal">Non Akademik</option>
+                              <option value="Akademik">Akademik</option>
+                              <option value="Non Akademik">Non Akademik</option>
                             </select>
                             {dataError.kategori ? (
                               <div className="invalid-feedback">

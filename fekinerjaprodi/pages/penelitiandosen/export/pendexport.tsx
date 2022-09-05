@@ -14,7 +14,7 @@ export default function pendexport() {
 
   const [stadmin, setStadmin] = useState(false);
   const [isLoaded, setisLoaded] = useState(false);
-  const [dataSelectTahun, setSelectTahun] = useState(``);
+  
 
   // console.log(dataSelectTahun);
 
@@ -26,6 +26,38 @@ export default function pendexport() {
   const [dataJmlTotal, setJmlTotal] = useState();
   const [dataRole, setRole] = useState('');
 
+  const [dataSelectTahun, setSelectTahun] = useState(`${new Date().getFullYear()}`);
+
+  const tanggalSekarang = new Date();
+  const tahunSekarang = tanggalSekarang.getFullYear();
+
+
+ function tahunGenerator(tahun:number,tipe:String,jumlah:number) {
+   let counter = -5;
+   const tahunPertama = tipe=='akademik'?(`${tahun+counter-2}/${tahun+counter-1}`):`${tahun+counter-1}`;
+   const arrTahun =[tahunPertama];
+   if(tipe=='akademik'){
+    for (let index = 0; index <= jumlah; index++) {
+      if(counter>0){
+        counter++;
+        arrTahun.push((`${tahun+counter-2}/${tahun+counter-1}`));
+      }
+      if(counter<=0){
+        arrTahun.push((`${tahun+counter-1}/${tahun+counter}`));
+        counter++;
+      }
+      
+    }
+   }else{
+    for (let index = 0; index <= jumlah; index++) {
+      arrTahun.push((`${tahun+counter}`));
+      counter++;
+    }
+   }
+   setListTahun(arrTahun);
+ }
+
+
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -36,22 +68,8 @@ export default function pendexport() {
   const pengambilData = async () => {
     const lgToken = localStorage.getItem("token");
 
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/penelitianlisttahun",
-    })
-      .then(function (response) {
-        console.log(response);
-        console.log("Sukses");
-        const { tahunpenelitians } = response.data;
-        setListTahun(tahunpenelitians);
-        setSelectTahun(tahunpenelitians[0]);
-        tampildata(tahunpenelitians[0]);
-      })
-      .catch(function (err) {
-        console.log("gagal");
-        console.log(err.response);
-      });
+    tahunGenerator(new Date().getFullYear(),'biasa',10);
+    tampildata(`${new Date().getFullYear()}`);
   };
 
   useEffect(() => {
@@ -142,7 +160,7 @@ setRole(role);
                               <select
                                 className="form-select"
                                 aria-label="Default select example"
-                                defaultValue={dataSelectTahun}
+                                value={dataSelectTahun}
                                 id="tahun"
                                 onChange={handleChange}
                               >
@@ -176,7 +194,7 @@ setRole(role);
                             className="download-table-xls-button btn btn-success ms-3"
                             table="tablePenelitianDosen"
                             filename={`tabelEWMP_TH${dataSelectTahun}`}
-                            sheet="3a3"
+                            sheet="3b2"
                             buttonText="Export Excel"
                             border="1"
                           />

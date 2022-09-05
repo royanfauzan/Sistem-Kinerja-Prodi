@@ -16,6 +16,7 @@ export default function inputwaktu() {
   const [userDosens, setuserDosens] = useState([]);
   const [dataError, setError] = useState([]);
   const MySwal = withReactContent(Swal);
+  const [dataRole, setRole] = useState('');
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -58,6 +59,8 @@ export default function inputwaktu() {
             console.log(response);
             console.log('Sukses');
             const {level_akses} = response.data.user;
+            const { role } = response.data.user;
+            setRole(role);
             // kalo ga admin dipindah ke halaman lain
             if(level_akses !== 3){
               return router.push('/');
@@ -126,7 +129,7 @@ export default function inputwaktu() {
     <>
     <LoadingUtama loadStatus={stadmin}/>
       {stadmin  &&(
-        <LayoutForm>
+        <LayoutForm rlUser={dataRole}>
         <div className="container-fluid py-4">
           <div className="row">
             <div className="col-md-8">
@@ -146,7 +149,7 @@ export default function inputwaktu() {
                   <div className="card-body">
                     <p className="text-uppercase text-sm">Prestasi Mahasiswa</p>
                     <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-10">
                           <div className="form-group">
                             <label
                               htmlFor="kepuasan"
@@ -154,7 +157,7 @@ export default function inputwaktu() {
                                 dataError.kepuasan_id ? "is-invalid" : ""
                               }
                             >
-                              Tahun Kepuasan
+                              Tahun Lulusan
                             </label>
                             <select
                               className="form-select"
@@ -183,7 +186,14 @@ export default function inputwaktu() {
                             )}
                           </div>
                         </div>
-                      <div className="col-md-6">
+
+                        {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jumlah Lulusan Dipesan
+                        </p>
+                      <div className="col-md-10">
                         <div className="form-group">
                           <label htmlFor="dipesan" 
                            className={
@@ -193,7 +203,7 @@ export default function inputwaktu() {
                           </label>
                           <input
                             className="form-control"
-                            type="text"
+                            type="number"
                             placeholder="Jumlah Lulusan Dipesan"
                             id="dipesan"
                           />
@@ -206,6 +216,13 @@ export default function inputwaktu() {
                             )}
                         </div>
                       </div>
+
+                      {/* PRESTASI */}
+                        {/* Garis */}
+                        <hr className="horizontal dark mt-4 text-bold text-bold" />
+                        <p className="text-uppercase text-dark mb-0 text-sm mb-3">
+                          Jumlah Lulusan Sesuai Waktu Tunggu
+                        </p>
                       <div className="col-md-6">
                         <div className="form-group">
                           <label htmlFor="tiga" 
@@ -216,7 +233,7 @@ export default function inputwaktu() {
                           </label>
                           <input
                             className="form-control"
-                            type="text"
+                            type="number"
                             placeholder="Jumlah tunggu lulusan 3 bulan"
                             id="tiga"
                           />
@@ -239,7 +256,7 @@ export default function inputwaktu() {
                           </label>
                           <input
                             className="form-control"
-                            type="text"
+                            type="number"
                             placeholder="Jumlah tunggu lulusan 6 bulan"
                             id="enam"
                           />
@@ -262,7 +279,7 @@ export default function inputwaktu() {
                           </label>
                           <input
                             className="form-control"
-                            type="text"
+                            type="number"
                             placeholder="Jumlah tunggu lulusan lebih 6 bulan"
                             id="enamlebih"
                           />

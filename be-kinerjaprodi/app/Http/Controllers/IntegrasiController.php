@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Integrasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class IntegrasiController extends Controller
 {
@@ -27,10 +28,12 @@ class IntegrasiController extends Controller
 
         return response()->json([
             'success' => true,
-            'searchintegrasi' =>  Integrasi::with('profil_dosen', 'penelitian', 'pkm' ,'matkul')
+            'searchintegrasi' =>  Integrasi::with('profil_dosen', 'penelitian', 'pkm', 'matkul')
                 ->whereRelation('profil_dosen', 'NamaDosen', 'LIKE', "%{$search}%")
                 ->orWhereRelation('penelitian', 'judul', 'LIKE', "%{$search}%")
-                ->orWhereRelation('pkm', 'judul_kegiatan', 'LIKE', "%{$search}%")
+                ->orWhereRelation('penelitian', 'tema_sesuai_roadmap', 'LIKE', "%{$search}%")
+                ->orWhereRelation('pkm', 'judul_kegiatan', 'LIKE', "%{$search}%")                
+                ->orWhereRelation('pkm', 'tema_sesuai_roadmap', 'LIKE', "%{$search}%")
                 ->orWhereRelation('matkul', 'nama_matkul', 'LIKE', "%{$search}%")
                 ->orwhere('bentuk_integrasi', 'LIKE', "%{$search}%")
                 ->orwhere('tahun', 'LIKE', "%{$search}%")
@@ -64,7 +67,7 @@ class IntegrasiController extends Controller
         $validator = Validator::make($dataintegrasi, [
             'bentuk_integrasi' => 'required',
             'tahun' => 'required',
-            'file_bukti' => "required|mimetypes:application/pdf|max:10000",
+            "file_bukti" => "required|mimetypes:application/pdf|max:10000",
             'dosen_id' => 'required',
             'matkul_id' => 'required'
 
@@ -76,21 +79,32 @@ class IntegrasiController extends Controller
         }
 
         $finalPathdokumen = "";
-        try {
-            $folderdokumen = "storage/integrasi/";
+        if ($request->file('file_bukti')) {
+            $finalPathdokumen = "";
+            try {
+                $folderdokumen = "storage/integrasi/";
 
-            $dokumen = $request->file('file_bukti');
+                $dokumen = $request->file('file_bukti');
 
-            $namaFiledokumen = $dokumen->getClientOriginalName();
+                $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".", $dokumen->getClientOriginalName(), 2)[0])) . "-" . time() . "." . $dokumen->getClientOriginalExtension();
 
-            $dokumen->move($folderdokumen, $namaFiledokumen);
+                $dokumen->move($folderdokumen, $namaFiledokumen);
+                $finalPathdokumen = $folderdokumen . $namaFiledokumen;
 
-            $finalPathdokumen = $folderdokumen . $namaFiledokumen;
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => "Gagal Menyimpan Dokumen" . $th,
-            ], 400);
+                // $filedihapus = File::exists(public_path($bimbingan->file_bukti));
+
+                // if ($filedihapus) {
+                //     File::delete(public_path($bimbingan->fileBukti));
+                // }
+
+
+                // $bimbingan->fileBukti = $finalPathdokumen;
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Gagal Menyimpan Dokumen" . $th,
+                ], 400);
+            }
         }
 
         $dataintegrasi = Integrasi::create( //ngirim ke database
@@ -100,12 +114,25 @@ class IntegrasiController extends Controller
                 'tahun' => $request->tahun,
                 'file_bukti' => $finalPathdokumen,
                 'dosen_id' => $request->dosen_id,
-                'penelitian_id' => $request->penelitian_id,
-                'PkM_id' => $request->PkM_id,
                 'matkul_id' => $request->matkul_id
 
             ]
         );
+
+        if(!is_numeric($request->penelitian_id) && !is_numeric($request->PkM_id)){
+            return response()->json(['error' => collect(['PkM_id'=>'Pilih PkM', 'penelitian_id'=>'Pilih Penelitian'])], 400);
+        }
+
+        if (is_numeric($request->penelitian_id) ) {
+            $dataintegrasi->penelitian_id = $request->penelitian_id;
+            $dataintegrasi->PkM_id = null;
+        }
+
+        if (is_numeric($request->PkM_id)) {
+            $dataintegrasi->PkM_id = $request->PkM_id;
+            $dataintegrasi->penelitian_id = null;
+        }
+        $dataintegrasi->save();
 
         //Token created, return with success response and jwt token
         return response()->json([ //ngirim ke front end
@@ -114,8 +141,6 @@ class IntegrasiController extends Controller
             'tahun' => $request->tahun,
             'file_bukti' => $finalPathdokumen,
             'dosen_id' => $request->dosen_id,
-            'penelitian_id' => $request->penelitian_id,
-            'PkM_id' => $request->PkM_id,
             'matkul_id' => $request->matkul_id,
             'all_integrasi' => Integrasi::all()
         ]);
@@ -157,45 +182,81 @@ class IntegrasiController extends Controller
     public function update(Request $request, $id)
     {
         $integrasi = Integrasi::where('id', $id)->first();
-        $dataintegrasi = $request->only('bentuk_integrasi', 'tahun', 'file_bukti', 'dosen_id', 'penelitian_id', 'PkM_id', 'matkul_id');
+        $dataintegrasi = $request->only('bentuk_integrasi', 'tahun', 'dosen_id', 'penelitian_id', 'PkM_id', 'matkul_id');
 
         //valid credential
         $validator = Validator::make($dataintegrasi, [
             'bentuk_integrasi' => 'required',
             'tahun' => 'required',
             'dosen_id' => 'required',
-            'matkul_id' => 'required'
+            'matkul_id' => 'required',
         ]);
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
+            return response()->json(['error' => $validator->errors()], 400);
         }
+
+        $integrasi = Integrasi::find($id);
 
         $finalPathdokumen = "";
-        try {
-            $folderdokumen = "storage/inetgrasi/";
+        if ($request->file('file_bukti')) {
+            $finalPathdokumen = "";
+            $validasiFile = Validator::make($request->only('file_bukti'), ["file_bukti" => "mimetypes:application/pdf|max:10000",]);
+            if ($validasiFile->fails()) {
+                return response()->json(['error' => $validasiFile->errors()], 400);
+            }
+            try {
+                $folderdokumen = "storage/integrasi/";
 
-            $dokumen = $request->file('file_bukti');
+                $dokumen = $request->file('file_bukti');
 
-            $namaFiledokumen = $dokumen->getClientOriginalName();
+                $namaFiledokumen = preg_replace('/\s+/', '_', trim(explode(".", $dokumen->getClientOriginalName(), 2)[0])) . "-" . time() . "." . $dokumen->getClientOriginalExtension();
 
-            $dokumen->move($folderdokumen, $namaFiledokumen);
+                $dokumen->move($folderdokumen, $namaFiledokumen);
 
-            $finalPathdokumen = $folderdokumen . $namaFiledokumen;
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => "Gagal Menyimpan Dokumen" . $th,
-            ], 400);
+                $finalPathdokumen = $folderdokumen . $namaFiledokumen;
+
+                $filedihapus = File::exists(public_path($integrasi->file_bukti));
+
+                if ($filedihapus) {
+                    File::delete(public_path($integrasi->file_bukti));
+                }
+
+                $integrasi->file_bukti = $finalPathdokumen;
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Gagal Menyimpan Dokumen" . $th,
+                ], 400);
+            }
         }
+
+
+        // if ($request->penelitian_id) {
+        //     $integrasi->penelitian_id = $request->penelitian_id;
+        //     $integrasi->PkM_id = null;
+        // }
+
+        // if ($request->PkM_id) {
+        //     $integrasi->PkM_id = $request->PkM_id;
+        //     $integrasi->penelitian_id = null;
+        // }
+
+        if (is_numeric($request->penelitian_id) ) {
+            $integrasi->penelitian_id = $request->penelitian_id;
+            $integrasi->PkM_id = null;
+        }
+
+        if (is_numeric($request->PkM_id)) {
+            $integrasi->PkM_id = $request->PkM_id;
+            $integrasi->penelitian_id = null;
+        }
+        $integrasi->save();
 
         $integrasi->bentuk_integrasi = $request->bentuk_integrasi;
         $integrasi->tahun = $request->tahun;
-        $integrasi->file_bukti = $finalPathdokumen;
         $integrasi->dosen_id = $request->dosen_id;
-        $integrasi->penelitian_id = $request->penelitian_id;
-        $integrasi->PkM_id = $request->PkM_id;
         $integrasi->matkul_id = $request->matkul_id;
         $integrasi->save();
 
@@ -205,10 +266,7 @@ class IntegrasiController extends Controller
             'success' => true,
             'bentuk_integrasi' => $request->bentuk_integrasi,
             'tahun' => $request->tahun,
-            'file_bukti' => $finalPathdokumen,
             'dosen_id' => $request->dosen_id,
-            'penelitian_id' => $request->penelitian_id,
-            'PkM_id' => $request->PkM_id,
             'matkul_id' => $request->matkul_id,
             'all_integrasi' => Integrasi::all()
         ]);

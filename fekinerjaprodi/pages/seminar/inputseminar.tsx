@@ -13,6 +13,7 @@ export default function inputseminar() {
 
   const [userDosens, setuserDosens] = useState([]);
   const [dataRole, setRole] = useState('');
+  const [dataError, setError] = useState([]);
 
   // state pake test user
   const [stadmin, setStadmin] = useState(false);
@@ -144,6 +145,43 @@ export default function inputseminar() {
                   <div className="card-body">
                     <p className="text-uppercase text-sm">Seminar Mahasiswa</p>
                     <div className="row">
+                    <div className="col-md-6">
+                          <div className="form-group">
+                            <label
+                              htmlFor="mahasiswa"
+                              className={dataError.mahasiswa_id ? "is-invalid" : ""}
+                            >
+                              Mahasiswa
+                            </label>
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              defaultValue="0"
+                              id="mahasiswa"
+                            >
+                              <option value="">Pilih mahasiswa</option>
+                              {userDosens.map((usermahasiswa) => {
+                                return (
+                                  <option
+                                    value={usermahasiswa.id}
+                                    key={usermahasiswa.id}
+                                  >
+                                    {usermahasiswa.nama +
+                                      ` ` +
+                                      usermahasiswa.nim}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                            {dataError.mahasiswa_id ? (
+                              <div className="invalid-feedback">
+                                {dataError.mahasiswa_id}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
                       <div className="col-md-6">
                         <div className="form-group">
                           <label htmlFor="tahun" className="form-control-label">

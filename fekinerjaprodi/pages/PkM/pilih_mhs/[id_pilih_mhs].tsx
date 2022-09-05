@@ -17,10 +17,12 @@ export async function getServerSideProps(context) {
     `http://127.0.0.1:8000/api/tampil_PKM/${context.query.id_pilih_mhs}`
   );
   const res = await req.data.all_pkm;
+  const res2 = await req.data.all_mhs;
 
   return {
     props: {
-      penelitian: res, // <-- assign response
+      penelitian: res,
+      all_mhs: res2 // <-- assign response
     },
   };
 }
@@ -28,7 +30,7 @@ export async function getServerSideProps(context) {
 export default function editPenelitian(props) {
   const router = useRouter();
   const { id_pilih_mhs } = router.query;
-  const { penelitian } = props;
+  const { penelitian, all_mhs } = props;
   const [dataPKM, setPKM] = useState(penelitian);
   const [dataError, setError] = useState([]);
   const MySwal = withReactContent(Swal);
@@ -37,7 +39,7 @@ export default function editPenelitian(props) {
 
   // State Select
   const [stadmin, setStadmin] = useState(false);
-  const [dataPKMs, setPKMs] = useState([]);
+  const [dataPKMs, setPKMs] = useState(all_mhs);
   const [selectPKM, setSelectPKM] = useState(penelitian.mahasiswa_id);
   const [selectId, setSelectId] = useState(id_pilih_mhs);
 
@@ -53,7 +55,7 @@ export default function editPenelitian(props) {
         console.log(response);
         console.log("Sukses");
         const { all_mhs } = response.data;
-        setPKMs(all_mhs);
+        // setPKMs(all_mhs);
         console.log(dataPKMs);
       })
       .catch(function (err) {

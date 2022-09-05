@@ -260,7 +260,7 @@ export default function exporttempat() {
 
                         <tr>
                           <th>
-                            <p className="mb-0 text-sm">1</p>
+                            <p className="mb-0 text-sm">2</p>
                           </th>
                           <td>
                             <p
@@ -275,11 +275,11 @@ export default function exporttempat() {
                           </td>
                           {profilDosen.presentase ? (
                             <>
-                              <td>{profilDosen.presentase.etika_4}</td>
-                              <td>{profilDosen.presentase.etika_3}</td>
-                              <td>{profilDosen.presentase.etika_2}</td>
-                              <td>{profilDosen.presentase.etika_1}</td>
-                              <td>{profilDosen.presentase.tindak_etika}</td>
+                              <td>{profilDosen.presentase.keahlian_bidang_4}</td>
+                              <td>{profilDosen.presentase.keahlian_bidang_3}</td>
+                              <td>{profilDosen.presentase.keahlian_bidang_2}</td>
+                              <td>{profilDosen.presentase.keahlian_bidang_1}</td>
+                              <td>{profilDosen.presentase.tindak_bidang}</td>
                             </>
                           ) : (
                             <>
@@ -294,7 +294,7 @@ export default function exporttempat() {
 
                         <tr>
                           <th>
-                            <p className="mb-0 text-sm">1</p>
+                            <p className="mb-0 text-sm">3</p>
                           </th>
                           <td>
                             <p
@@ -309,11 +309,11 @@ export default function exporttempat() {
                           </td>
                           {profilDosen.presentase ? (
                             <>
-                              <td>{profilDosen.presentase.etika_4}</td>
-                              <td>{profilDosen.presentase.etika_3}</td>
-                              <td>{profilDosen.presentase.etika_2}</td>
-                              <td>{profilDosen.presentase.etika_1}</td>
-                              <td>{profilDosen.presentase.tindak_etika}</td>
+                              <td>{profilDosen.presentase.bhs_asing_4}</td>
+                              <td>{profilDosen.presentase.bhs_asing_3}</td>
+                              <td>{profilDosen.presentase.bhs_asing_2}</td>
+                              <td>{profilDosen.presentase.bhs_asing_1}</td>
+                              <td>{profilDosen.presentase.tindak_bhs}</td>
                             </>
                           ) : (
                             <>
@@ -328,7 +328,7 @@ export default function exporttempat() {
 
                         <tr>
                           <th>
-                            <p className="mb-0 text-sm">1</p>
+                            <p className="mb-0 text-sm">4</p>
                           </th>
                           <td>
                             <p
@@ -343,11 +343,11 @@ export default function exporttempat() {
                           </td>
                           {profilDosen.presentase ? (
                             <>
-                              <td>{profilDosen.presentase.etika_4}</td>
-                              <td>{profilDosen.presentase.etika_3}</td>
-                              <td>{profilDosen.presentase.etika_2}</td>
-                              <td>{profilDosen.presentase.etika_1}</td>
-                              <td>{profilDosen.presentase.tindak_etika}</td>
+                              <td>{profilDosen.presentase.penggunaan_ti_4}</td>
+                              <td>{profilDosen.presentase.penggunaan_ti_3}</td>
+                              <td>{profilDosen.presentase.penggunaan_ti_2}</td>
+                              <td>{profilDosen.presentase.penggunaan_ti_1}</td>
+                              <td>{profilDosen.presentase.tindak_ti}</td>
                             </>
                           ) : (
                             <>
@@ -362,7 +362,7 @@ export default function exporttempat() {
 
                         <tr>
                           <th>
-                            <p className="mb-0 text-sm">1</p>
+                            <p className="mb-0 text-sm">5</p>
                           </th>
                           <td>
                             <p
@@ -377,11 +377,11 @@ export default function exporttempat() {
                           </td>
                           {profilDosen.presentase ? (
                             <>
-                              <td>{profilDosen.presentase.etika_4}</td>
-                              <td>{profilDosen.presentase.etika_3}</td>
-                              <td>{profilDosen.presentase.etika_2}</td>
-                              <td>{profilDosen.presentase.etika_1}</td>
-                              <td>{profilDosen.presentase.tindak_etika}</td>
+                              <td>{profilDosen.presentase.komunikasi_4}</td>
+                              <td>{profilDosen.presentase.komunikasi_3}</td>
+                              <td>{profilDosen.presentase.komunikasi_2}</td>
+                              <td>{profilDosen.presentase.komunikasi_1}</td>
+                              <td>{profilDosen.presentase.tindak_komunikasi}</td>
                             </>
                           ) : (
                             <>
@@ -396,7 +396,7 @@ export default function exporttempat() {
 
                         <tr>
                           <th>
-                            <p className="mb-0 text-sm">1</p>
+                            <p className="mb-0 text-sm">6</p>
                           </th>
                           <td>
                             <p
@@ -411,11 +411,11 @@ export default function exporttempat() {
                           </td>
                           {profilDosen.presentase ? (
                             <>
-                              <td>{profilDosen.presentase.etika_4}</td>
-                              <td>{profilDosen.presentase.etika_3}</td>
-                              <td>{profilDosen.presentase.etika_2}</td>
-                              <td>{profilDosen.presentase.etika_1}</td>
-                              <td>{profilDosen.presentase.tindak_etika}</td>
+                              <td>{profilDosen.presentase.kerjasama_4}</td>
+                              <td>{profilDosen.presentase.kerjasama_3}</td>
+                              <td>{profilDosen.presentase.kerjasama_2}</td>
+                              <td>{profilDosen.presentase.kerjasama_1}</td>
+                              <td>{profilDosen.presentase.tindak_kerjasama}</td>
                             </>
                           ) : (
                             <>
@@ -430,7 +430,7 @@ export default function exporttempat() {
 
                         <tr>
                           <th>
-                            <p className="mb-0 text-sm">1</p>
+                            <p className="mb-0 text-sm">7</p>
                           </th>
                           <td>
                             <p
@@ -445,11 +445,11 @@ export default function exporttempat() {
                           </td>
                           {profilDosen.presentase ? (
                             <>
-                              <td>{profilDosen.presentase.etika_4}</td>
-                              <td>{profilDosen.presentase.etika_3}</td>
-                              <td>{profilDosen.presentase.etika_2}</td>
-                              <td>{profilDosen.presentase.etika_1}</td>
-                              <td>{profilDosen.presentase.tindak_etika}</td>
+                              <td>{profilDosen.presentase.pengembangan_diri_4}</td>
+                              <td>{profilDosen.presentase.pengembangan_diri_3}</td>
+                              <td>{profilDosen.presentase.pengembangan_diri_2}</td>
+                              <td>{profilDosen.presentase.pengembangan_diri_1}</td>
+                              <td>{profilDosen.presentase.tindak_pengembangan}</td>
                             </>
                           ) : (
                             <>
@@ -463,24 +463,35 @@ export default function exporttempat() {
                         </tr>
 
                         {/* <tr>
-                        <th colspan="2">
-                          <h6 className="mb-0 text-sm">Jumlah</h6>
-                        </th>
-
-                        <th>
-                          <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_4 + tampilKepuasanmhs.dayatanggap_4 + tampilKepuasanmhs.kepastian_4 + tampilKepuasanmhs.empati_4 + tampilKepuasanmhs.tangible_4}</h6>
-                        </th>
-                        <th>
-                          <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_3 + tampilKepuasanmhs.dayatanggap_3 + tampilKepuasanmhs.kepastian_3 + tampilKepuasanmhs.empati_3 + tampilKepuasanmhs.tangible_3}</h6>
-                        </th>
-                        <th>
-                          <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_2 + tampilKepuasanmhs.dayatanggap_2 + tampilKepuasanmhs.kepastian_2 + tampilKepuasanmhs.empati_2 + tampilKepuasanmhs.tangible_2}</h6>
-                        </th>
-                        <th>
-                          <h6 className="mb-0 text-sm">{tampilKepuasanmhs.keandalan_1 + tampilKepuasanmhs.dayatanggap_1 + tampilKepuasanmhs.kepastian_1 + tampilKepuasanmhs.empati_1 + tampilKepuasanmhs.tangible_1}</h6>
-                        </th>
-
-                      </tr> */}
+                          <td colSpan={2}>
+                            <p
+                              className="text-center"
+                              data-a-wrap="true"
+                              data-b-a-s="thin"
+                              data-f-sz="10"
+                              data-t=""
+                            >
+                              Jumlah
+                            </p>
+                          </td>
+                          {profilDosen.presentase ? (
+                            <>
+                              <td>{profilDosen.presentase.etika_4 + profilDosen.presentase.keahlian_bidang_4 + profilDosen.presentase.bhs_asing_4 + profilDosen.presentase.kemampuan_ti_4  + profilDosen.presentase.komunikasi_4 + profilDosen.presentase.kerjasama_4 + profilDosen.presentase.pengembangan_diri_4}</td>
+                              <td>{profilDosen.presentase.etika_3}</td>
+                              <td>{profilDosen.presentase.etika_2}</td>
+                              <td>{profilDosen.presentase.etika_1}</td>
+                              <td></td>
+                            </>
+                          ) : (
+                            <>
+                              <td>{0}</td>
+                              <td>{0}</td>
+                              <td>{0}</td>
+                              <td>{0}</td>
+                              <td>{0}</td>
+                            </>
+                          )}
+                        </tr> */}
                       </tbody>
                     </table>
                   </div>

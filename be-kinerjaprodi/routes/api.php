@@ -104,6 +104,7 @@ Route::get('cari_ipk/{search}', [IpkController::class, 'searchipk']);
 Route::post('ipk_delete/{id}', [IpkController::class, 'destroy']);
 
 //Prestasi
+Route::get('presakademik/{search}', [PrestasiController::class, 'searchakademik']);
 Route::get('prestasi/{search}', [PrestasiController::class, 'searchprestasi']);
 Route::get('prestasi', [PrestasiController::class, 'index']);
 Route::post('prestasi', [PrestasiController::class, 'store']);

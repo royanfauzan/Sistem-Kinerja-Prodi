@@ -165,112 +165,112 @@ export default function daftarpresentase() {
                             Tahun Kepuasan
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Etika 4
+                            Sangat Baik
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Etika 3
+                            Baik
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Etika 2
+                            Cukup
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Etika 1
+                            Kurang
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Tindak Etika
                           </th>
 
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Keahlian Bidang 4
+                          Sangat Baik
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Keahlian Bidang 3
+                          Baik
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Keahlian Bidang 2
+                          Cukup
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Keahlian Bidang 1
+                          Kurang
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Tindak Keahlian Bidang
                           </th>
 
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Bahasa Asing 4
+                          Sangat Baik
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Bahasa Asing 3
+                          Baik
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Bahasa Asing 2
+                          Cukup
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Bahasa Asing 1
+                          Kurang
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Tindak Bahasa Asing
                           </th>
 
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Penggunaan TI 4
+                          Sangat Baik
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Penggunaan TI 3
+                          Baik
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Penggunaan TI 2
+                          Cukup
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Penggunaan TI 1
+                          Kurang
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Tindak Penggunaan TI
                           </th>
 
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Komunikasi 4
+                          Sangat Baik
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Komunikasi 3
+                          Baik
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Komunikasi 2
+                          Cukup
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Komunikasi 1
+                          Kurang
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Tindak Komunikasi
                           </th>
 
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Kerjasama 4
+                          Sangat Baik
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Kerjasama 3
+                          Baik
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Kerjasama 2
+                          Cukup
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Kerjasama 1
+                          Kurang
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Tindak Kerjasama
                           </th>
 
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Pengembangan Diri 4
+                          Sangat Baik
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Pengembangan Diri 3
+                          Baik
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Pengembangan Diri 2
+                            Cukup
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Pengembangan Diri 1
+                            Kurang
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Tindak Pengembangan Diri

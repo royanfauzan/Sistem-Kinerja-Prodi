@@ -233,7 +233,7 @@ export default function daftarprestasi() {
                             Mahasiswa
                           </th> */}
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
-                            Nama Dosen
+                            Nama Mahasiswa
                           </th>
                           <th className=" text-uppercase text-dark text-xs fw-bolder opacity-9 ps-2">
                             Judul Tulisan

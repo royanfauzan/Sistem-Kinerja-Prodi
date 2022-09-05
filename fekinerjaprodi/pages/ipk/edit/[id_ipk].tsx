@@ -251,7 +251,7 @@ export default function editprestasi(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="IPK Minimal"
                               id="min"
                               defaultValue={dataIPK.ipk_min}
@@ -267,7 +267,7 @@ export default function editprestasi(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="IPK Maksimal"
                               id="max"
                               defaultValue={dataIPK.ipk_max}
@@ -283,7 +283,7 @@ export default function editprestasi(props) {
                             </label>
                             <input
                               className="form-control"
-                              type="number"
+                              type="varchar"
                               placeholder="IPK Rata - rata"
                               id="avg"
                               defaultValue={dataIPK.ipk_avg}

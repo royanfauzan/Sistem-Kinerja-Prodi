@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mahasiswa;
 use App\Models\Penelitian;
+use App\Models\profilDosen;
 use App\Models\RelasiDosPen;
 use App\Models\RelasiPenMhs;
 use Illuminate\Http\Request;
@@ -175,9 +177,31 @@ class PenelitianController extends Controller
      */
     public function show($id)
     {
+        $listanggota = RelasiDosPen::where('penelitian_id', $id)->get();
+
+        $idtags = array();
+        foreach ($listanggota as $anggota) {
+            $idtags[] = $anggota->profil_dosen_id;
+        }
+
+        $profilDosens = profilDosen::whereNotIn('id', $idtags)->get();
+
+//------------------------------------------------------------------------
+        $listanggotamhs = RelasiPenMhs::where('penelitian_id', $id)->get();
+
+        $idtagsmhs = array();
+        foreach ($listanggotamhs as $anggota) {
+            $idtagsmhs[] = $anggota->mahasiswa_id;
+        }
+
+        $profilmhs = Mahasiswa::whereNotIn('id', $idtagsmhs)->get();
+
+      
         return response()->json([
             'success' => true,
             'all_penelitian' => Penelitian::with(['anggotaDosens', 'anggotaMahasiswas'])->where('id', $id)->first(),
+            'all_dosen' =>  $profilDosens,
+            'all_mhs' =>  $profilmhs,
             'id' => $id
         ]);
     }

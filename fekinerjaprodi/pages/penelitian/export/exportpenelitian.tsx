@@ -60,7 +60,7 @@ export default function penelitian() {
         const { role } = response.data.user;
         setRole(role);
         // kalo ga admin dipindah ke halaman lain
-        if (level_akses !== 2) {
+        if (level_akses < 2) {
           return router.push(`/penelitiandosen/export/pendexport`);
         }
         // yg non-admin sudah dieliminasi, berarti halaman dah bisa ditampilin

@@ -228,19 +228,10 @@ export default function daftarseminar() {
                                 <h6 className="mb-0 text-sm ps-2">{number + 1}</h6>
                               </td>
 
-                              <td>
-                                {smnr.anggota_mahasiswas.map(
-                                  (anggota_mahasiswas) => {
-                                    return (
-                                      <p
-                                        className="mb-0 text-sm"
-                                        key="anggota.id"
-                                      >
-                                        {anggota_mahasiswas.nama}
-                                      </p>
-                                    );
-                                  }
-                                )}
+                              <td className="align-middle  text-sm">
+                                <p className="text-xs font-weight-bold mb-0">
+                                  {smnr.mahasiswa.nama}
+                                </p>
                               </td>
 
                               <td className="align-middle  text-sm">

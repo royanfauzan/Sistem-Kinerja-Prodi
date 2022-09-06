@@ -32,7 +32,7 @@ export default function SidebarUtama() {
   const isMenuSdm = listFolderSdm.includes(arrHalaman[1])
 
   const listFolderPendidikan = [
-    "dashboards_eva",
+    "dashboardadmin",
     "capkurikulum",
     "integrasi",
     "kepuasanmhs",

@@ -311,7 +311,7 @@ export default function capkurikulum() {
                         </div>
 
                         <div className="col-md-6">
-                          <div className="form-group">
+                          <div className="form-group form-check">
                             <input
                               className="form-check-input"
                               type="checkbox"
@@ -342,7 +342,7 @@ export default function capkurikulum() {
                         </div>
 
                         <div className="col-md-6">
-                          <div className="form-group">
+                          <div className="form-group form-check">
                             <input
                               className="form-check-input"
                               type="checkbox"
@@ -486,7 +486,7 @@ export default function capkurikulum() {
                         </div>
 
                         <div className="col-md-6">
-                          <div className="form-group">
+                          <div className="form-group form-check">
                             <input
                               className="form-check-input"
                               type="checkbox"
@@ -515,7 +515,7 @@ export default function capkurikulum() {
                         </div>
 
                         <div className="col-md-6">
-                          <div className="form-group">
+                          <div className="form-group form-check">
                             <input
                               className="form-check-input"
                               type="checkbox"
@@ -544,7 +544,7 @@ export default function capkurikulum() {
                         </div>
 
                         <div className="col-md-6">
-                          <div className="form-group">
+                          <div className="form-group form-check">
                             <input
                               className="form-check-input"
                               type="checkbox"
@@ -573,7 +573,7 @@ export default function capkurikulum() {
                         </div>
 
                         <div className="col-md-6">
-                          <div className="form-group">
+                          <div className="form-group form-check">
                             <input
                               className="form-check-input"
                               type="checkbox"

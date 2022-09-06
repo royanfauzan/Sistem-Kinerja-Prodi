@@ -104,6 +104,7 @@ Route::get('cari_ipk/{search}', [IpkController::class, 'searchipk']);
 Route::post('ipk_delete/{id}', [IpkController::class, 'destroy']);
 
 //Prestasi
+Route::get('presakademik/{search}', [PrestasiController::class, 'searchakademik']);
 Route::get('prestasi/{search}', [PrestasiController::class, 'searchprestasi']);
 Route::get('prestasi', [PrestasiController::class, 'index']);
 Route::post('prestasi', [PrestasiController::class, 'store']);
@@ -455,6 +456,7 @@ Route::group(['middleware' => ['dosenonly']], function () {
 Route::post('Prodi', [ProdiController::class, 'store']);
 Route::put('Prodi/{id}', [ProdiController::class, 'update']);
 Route::get('Prodi', [ProdiController::class, 'tampilprodi']);
+Route::post('delete_prodi/{id}', [ProdiController::class, 'destroy']);
 
 //route mahasiswa
 Route::get('Mahasiswa_search/{id}', [MahasiswaController::class, 'searchmahasiswa']);

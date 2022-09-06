@@ -38,6 +38,18 @@ class PrestasiController extends Controller
         ]);
     }
 
+    public function searchakademik($search)
+    {
+        if(!strcmp($search,'non')){
+            $search = 'Non Akademik';
+        }
+        return response()->json([
+            'success' => true,
+            'searchakademik' =>  Prestasi:: where('kategori', $search)
+                ->get()
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

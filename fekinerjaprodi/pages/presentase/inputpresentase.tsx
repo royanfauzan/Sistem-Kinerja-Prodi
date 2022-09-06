@@ -252,12 +252,12 @@ export default function inputpresentase() {
                               htmlFor="etika_4"
                               className={dataError.etika_4 ? "is-invalid" : ""}
                             >
-                              Etika 4
+                              Sangat Baik
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Etika 4"
+                              type="varchar"
+                              placeholder="Sangat Baik"
                               id="etika_4"
                             />
                             {dataError.etika_4 ? (
@@ -275,12 +275,12 @@ export default function inputpresentase() {
                               htmlFor="etika_3"
                               className={dataError.etika_3 ? "is-invalid" : ""}
                             >
-                              Etika 3
+                              Baik
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Etika 3"
+                              type="varchar"
+                              placeholder="Baik"
                               id="etika_3"
                             />
                             {dataError.etika_3 ? (
@@ -298,12 +298,12 @@ export default function inputpresentase() {
                               htmlFor="etika_2"
                               className={dataError.etika_2 ? "is-invalid" : ""}
                             >
-                              Etika 2
+                              Cukup
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Etika 2"
+                              type="varchar"
+                              placeholder="Cukup"
                               id="etika_2"
                             />
                             {dataError.etika_2 ? (
@@ -321,12 +321,12 @@ export default function inputpresentase() {
                               htmlFor="etika_1"
                               className={dataError.etika_1 ? "is-invalid" : ""}
                             >
-                              Etika 1
+                              Kurang
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Etika 1"
+                              type="varchar"
+                              placeholder="Kuarang"
                               id="etika_1"
                             />
                             {dataError.etika_1 ? (
@@ -378,12 +378,12 @@ export default function inputpresentase() {
                                 dataError.keahlian_bidang_4 ? "is-invalid" : ""
                               }
                             >
-                              Keahlian Bidang 4
+                              Sangat Baik
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Keahlian Bidang 4"
+                              type="varchar"
+                              placeholder="Sangat Baik"
                               id="keahlian_bidang_4"
                             />
                             {dataError.keahlian_bidang_4 ? (
@@ -403,12 +403,12 @@ export default function inputpresentase() {
                                 dataError.keahlian_bidang_3 ? "is-invalid" : ""
                               }
                             >
-                              Keahlian Bidang 3
+                              Baik
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Keahlian Bidang 3"
+                              type="varchar"
+                              placeholder="Baik"
                               id="keahlian_bidang_3"
                             />
                             {dataError.keahlian_bidang_3 ? (
@@ -428,12 +428,12 @@ export default function inputpresentase() {
                                 dataError.keahlian_bidang_2 ? "is-invalid" : ""
                               }
                             >
-                              Keahlian Bidang 2
+                              Cukup
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Keahlian Bidang 2"
+                              type="varchar"
+                              placeholder="Cukup"
                               id="keahlian_bidang_2"
                             />
                             {dataError.keahlian_bidang_2 ? (
@@ -453,12 +453,12 @@ export default function inputpresentase() {
                                 dataError.keahlian_bidang_1 ? "is-invalid" : ""
                               }
                             >
-                              Keahlian Bidang 1
+                              Kurang
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Keahlian Bidang 1"
+                              type="varchar"
+                              placeholder="Kuarang"
                               id="keahlian_bidang_1"
                             />
                             {dataError.keahlian_bidang_1 ? (
@@ -510,12 +510,12 @@ export default function inputpresentase() {
                                 dataError.bhs_asing_4 ? "is-invalid" : ""
                               }
                             >
-                              Bahasa Asing 4
+                              Sangat Baik
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Bahasa Asing 4"
+                              type="varchar"
+                              placeholder="Sangat Baik"
                               id="bhs_asing_4"
                             />
                             {dataError.bhs_asing_4 ? (
@@ -535,12 +535,12 @@ export default function inputpresentase() {
                                 dataError.bhs_asing_3 ? "is-invalid" : ""
                               }
                             >
-                              Bahasa Asing 3
+                              Baik
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Bahasa Asing 3"
+                              type="varchar"
+                              placeholder="Baik"
                               id="bhs_asing_3"
                             />
                             {dataError.bhs_asing_3 ? (
@@ -560,12 +560,12 @@ export default function inputpresentase() {
                                 dataError.bhs_asing_2 ? "is-invalid" : ""
                               }
                             >
-                              Bahasa Asing 2
+                              Cukup
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Bahasa Asing 2"
+                              type="varchar"
+                              placeholder="Cukup"
                               id="bhs_asing_2"
                             />
                             {dataError.bhs_asing_2 ? (
@@ -585,12 +585,12 @@ export default function inputpresentase() {
                                 dataError.bhs_asing_1 ? "is-invalid" : ""
                               }
                             >
-                              Bahasa Asing 1
+                              Kurang
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Bahasa Asing 1"
+                              type="varchar"
+                              placeholder="Kurang"
                               id="bhs_asing_1"
                             />
                             {dataError.bhs_asing_1 ? (
@@ -642,12 +642,12 @@ export default function inputpresentase() {
                                 dataError.penggunaan_ti_4 ? "is-invalid" : ""
                               }
                             >
-                              Penggunaan teknologi informasi 4
+                              Sangat Baik
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Penggunaan teknologi informasi 4"
+                              type="varchar"
+                              placeholder="Sangat Baik"
                               id="penggunaan_ti_4"
                             />
                             {dataError.penggunaan_ti_4 ? (
@@ -667,12 +667,12 @@ export default function inputpresentase() {
                                 dataError.penggunaan_ti_3 ? "is-invalid" : ""
                               }
                             >
-                              Penggunaan teknologi informasi 3
+                              Baik
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Penggunaan teknologi informasi 3"
+                              type="varchar"
+                              placeholder="Baik"
                               id="penggunaan_ti_3"
                             />
                             {dataError.penggunaan_ti_3 ? (
@@ -692,12 +692,12 @@ export default function inputpresentase() {
                                 dataError.penggunaan_ti_2 ? "is-invalid" : ""
                               }
                             >
-                              Penggunaan teknologi informasi 2
+                              Cukup
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Penggunaan teknologi informasi 2"
+                              type="varchar"
+                              placeholder="Cukup"
                               id="penggunaan_ti_2"
                             />
                             {dataError.penggunaan_ti_2 ? (
@@ -717,12 +717,12 @@ export default function inputpresentase() {
                                 dataError.penggunaan_ti_1 ? "is-invalid" : ""
                               }
                             >
-                              Penggunaan teknologi informasi 1
+                              Kurang
                             </label>
                             <input
                               className="form-control"
                               type="text"
-                              placeholder="Penggunaan teknologi informasi 1"
+                              placeholder="Kurang"
                               id="penggunaan_ti_1"
                             />
                             {dataError.penggunaan_ti_1 ? (
@@ -774,12 +774,12 @@ export default function inputpresentase() {
                                 dataError.komunikasi_4 ? "is-invalid" : ""
                               }
                             >
-                              Berkomunikasi 4
+                              Sangat Baik
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Berkomunikasi 4"
+                              type="varchar"
+                              placeholder="Sangat Baik"
                               id="komunikasi_4"
                             />
                             {dataError.komunikasi_4 ? (
@@ -799,12 +799,12 @@ export default function inputpresentase() {
                                 dataError.komunikasi_3 ? "is-invalid" : ""
                               }
                             >
-                              Berkomunikasi 3
+                              Baik
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Berkomunikasi 3"
+                              type="varchar"
+                              placeholder="Baik"
                               id="komunikasi_3"
                             />
                             {dataError.komunikasi_3 ? (
@@ -824,12 +824,12 @@ export default function inputpresentase() {
                                 dataError.komunikasi_2 ? "is-invalid" : ""
                               }
                             >
-                              Berkomunikasi 2
+                              Cukup
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Berkomunikasi 2"
+                              type="varchar"
+                              placeholder="Cukup"
                               id="komunikasi_2"
                             />
                             {dataError.komunikasi_2 ? (
@@ -849,12 +849,12 @@ export default function inputpresentase() {
                                 dataError.komunikasi_1 ? "is-invalid" : ""
                               }
                             >
-                              Berkomunikasi 1
+                              Kurang
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Berkomunikasi 1"
+                              type="varchar"
+                              placeholder="Kurang"
                               id="komunikasi_1"
                             />
                             {dataError.komunikasi_1 ? (
@@ -906,12 +906,12 @@ export default function inputpresentase() {
                                 dataError.kerjasama_4 ? "is-invalid" : ""
                               }
                             >
-                              Kerjasama 4
+                              Sangat Baik
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Kerjasama 4"
+                              type="varchar"
+                              placeholder="Sangat Baik"
                               id="kerjasama_4"
                             />
                             {dataError.kerjasama_4 ? (
@@ -931,12 +931,12 @@ export default function inputpresentase() {
                                 dataError.kerjasama_3 ? "is-invalid" : ""
                               }
                             >
-                              Kerjasama 3
+                              Baik
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Kerjasama 3"
+                              type="varchar"
+                              placeholder="Baik"
                               id="kerjasama_3"
                             />
                             {dataError.kerjasama_3 ? (
@@ -956,12 +956,12 @@ export default function inputpresentase() {
                                 dataError.kerjasama_2 ? "is-invalid" : ""
                               }
                             >
-                              Kerjasama 2
+                              Cukup
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Kerjasama 2"
+                              type="varchar"
+                              placeholder="Cukup"
                               id="kerjasama_2"
                             />
                             {dataError.kerjasama_2 ? (
@@ -981,12 +981,12 @@ export default function inputpresentase() {
                                 dataError.kerjasama_1 ? "is-invalid" : ""
                               }
                             >
-                              Kerjasama 1
+                              Kurang
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Kerjasama 1"
+                              type="varchar"
+                              placeholder="Kurang"
                               id="kerjasama_1"
                             />
                             {dataError.kerjasama_1 ? (
@@ -1040,12 +1040,12 @@ export default function inputpresentase() {
                                   : ""
                               }
                             >
-                              Pengembangan Diri 4
+                              Sangat Baik
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Pengembangan Diri 4"
+                              type="varchar"
+                              placeholder="Sangat Baik"
                               id="pengembangan_diri_4"
                             />
                             {dataError.pengembangan_diri_4 ? (
@@ -1067,12 +1067,12 @@ export default function inputpresentase() {
                                   : ""
                               }
                             >
-                              Pengembangan Diri 3
+                              Baik
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Pengembangan Diri 3"
+                              type="varchar"
+                              placeholder="Baik"
                               id="pengembangan_diri_3"
                             />
                             {dataError.pengembangan_diri_3 ? (
@@ -1094,12 +1094,12 @@ export default function inputpresentase() {
                                   : ""
                               }
                             >
-                              Pengembangan Diri 2
+                              Cukup
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Pengembangan Diri 2"
+                              type="varchar"
+                              placeholder="Cukup"
                               id="pengembangan_diri_2"
                             />
                             {dataError.pengembangan_diri_2 ? (
@@ -1121,12 +1121,12 @@ export default function inputpresentase() {
                                   : ""
                               }
                             >
-                              Pengembangan Diri 1
+                              Kurang
                             </label>
                             <input
                               className="form-control"
-                              type="number"
-                              placeholder="Pengembangan Diri 1"
+                              type="varchar"
+                              placeholder="Kurang"
                               id="pengembangan_diri_1"
                             />
                             {dataError.pengembangan_diri_1 ? (

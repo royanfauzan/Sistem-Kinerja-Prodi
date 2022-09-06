@@ -13,13 +13,15 @@ import withReactContent from "sweetalert2-react-content"
 export async function getServerSideProps(context) {
   //http request
   const req = await axios.get(
-    `http://127.0.0.1:8000/api/PKM_relasidosen/${context.query.id_pilih_dosen}`
+    `http://127.0.0.1:8000/api/tampil_PKM/${context.query.id_pilih_dosen}`
   );
-  const res = await req.data.all_relasi;
+  const res = await req.data.all_pkm;
+  const res2 = await req.data.all_dosen;
 
   return {
     props: {
-      pkm: res, // <-- assign response
+      pkm: res, 
+      all_dosen: res2,// <-- assign response
     },
   };
 }
@@ -27,7 +29,7 @@ export async function getServerSideProps(context) {
 export default function editluaran(props) {
   const router = useRouter();
   const { id_pilih_dosen } = router.query;
-  const { pkm } = props;
+  const { pkm, all_dosen } = props;
   const [datapkm, setpkm] = useState(pkm);
   const [dataError, setError] = useState([]);
   const MySwal = withReactContent(Swal);
@@ -39,7 +41,7 @@ export default function editluaran(props) {
   const [datapkms, setpkms] = useState([]);
   const [selectpkm, setSelectpkm] = useState(pkm.profil_dosen_id);
   const [selectId, setSelectId] = useState(id_pilih_dosen);
-  const [dataDosen, setdataDosen] = useState([]);
+  const [dataDosen, setdataDosen] = useState(all_dosen);
 
   const [dataRole, setRole] = useState("");
 
@@ -67,7 +69,7 @@ export default function editluaran(props) {
         console.log(response);
         console.log('Sukses');
         const { profilDosens } = response.data;
-        setdataDosen(profilDosens);
+        // setdataDosen(profilDosens);
         console.log(profilDosens);
       })
       .catch(function (err) {

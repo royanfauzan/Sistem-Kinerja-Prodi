@@ -18,7 +18,7 @@ class SeminarController extends Controller
     {
         return response()->json([
             'success' => true,
-            'all_seminar' => Seminar::with(['anggotaMahasiswas'])->get(),
+            'all_seminar' => Seminar::with('mahasiswa')->get(),
         ]);
     }
 

@@ -19,17 +19,10 @@ class CapKurikulumController extends Controller
     {
         return response()->json([ //ngirim ke front end
             'success' => true,
-            'all_capkurikulum' => CapKurikulum::with(['matkul', 'prodi', 'anggotaMatkuls'])->get(),
+            'all_capkurikulum' => CapKurikulum::with(['matkul', 'prodi'])->get(),
         ]);
     }
 
-    public function relasiCapMatkul($id)
-    {
-        return response()->json([ //ngirim ke front end
-            'success' => true,
-            'all_relasi' => RelasiCapMatkul::with('matkul')->where('cap_kurikulum_id', $id)->get(),
-        ]);
-    }
 
     public function searchcapkurikulum($search)
     {
@@ -39,6 +32,7 @@ class CapKurikulumController extends Controller
             'success' => true,
             'searchcapkurikulum' =>  CapKurikulum::with('matkul', 'prodi')
                 ->whereRelation('matkul', 'nama_matkul', 'LIKE', "%{$search}%")
+                ->orWhereRelation('matkul', 'kode_matkul', 'LIKE', "%{$search}%")   
                 ->orWhereRelation('prodi', 'prodi', 'LIKE', "%{$search}%")
                 ->orWhereRelation('prodi', 'nama_prodi', 'LIKE', "%{$search}%")
                 ->orwhere('semester', 'LIKE', "%{$search}%")
@@ -53,20 +47,6 @@ class CapKurikulumController extends Controller
                 ->orwhere('ketrampilan_khusus', 'LIKE', "%{$search}%")
                 ->orwhere('dok_ren_pembelajaran', 'LIKE', "%{$search}%")
                 ->orwhere('unit_penyelenggara', 'LIKE', "%{$search}%")
-                ->get()
-
-        ]);
-    }
-
-    public function searchhapus($search)
-    {
-
-
-        return response()->json([
-            'success' => true,
-            'searchhapus' =>  RelasiCapMatkul::with('matkul')
-            ->whereRelation('matkul', 'nama_matkul', 'LIKE', "%{$search}%")
-            ->orWhereRelation('matkul', 'kode_matkul', 'LIKE', "%{$search}%")     
                 ->get()
 
         ]);
@@ -113,7 +93,7 @@ class CapKurikulumController extends Controller
         if($request->mata_kuliah_kompetensi){
             $mata_kuliah_kompetensi = $request->mata_kuliah_kompetensi;
         }
-
+        //jika data kosong maka kolom di isi ''
         $sikap = '';
         if($request->sikap){
             $sikap = $request->sikap;
@@ -142,7 +122,7 @@ class CapKurikulumController extends Controller
 
         $datacapkurikulum = CapKurikulum::create( //ngirim ke database
             [
-                //yg kiri dari form, kanan dari database
+                //yg kiri dari database, kanan dari form
                 'semester' => $request->semester,
                 'mata_kuliah_kompetensi'=> $mata_kuliah_kompetensi,
                 'tahun' => $request->tahun,
@@ -160,12 +140,6 @@ class CapKurikulumController extends Controller
                 'matkul_ID' => $request->matkul_ID
             ]
         );
-
-        // if(!is_numeric($request->sikap) && !is_numeric($request->mata_kuliah_kompetensi)){
-        //     return response()->json(['error' => collect(['mata_kuliah_kompetensi'=>'Pilih PkM', 'sikap'=>'Pilih Penelitian'])], 400);
-        // }
-
-        
 
         //Token created, return with success response and jwt token
         return response()->json([ //ngirim ke front end
@@ -193,7 +167,7 @@ class CapKurikulumController extends Controller
     {
         return response()->json([
             'success' => true,
-            'all_capkurikulum' => CapKurikulum::with(['matkul', 'prodi', 'anggotaMatkuls'])->where('id', $id)->first(),
+            'all_capkurikulum' => CapKurikulum::with(['matkul', 'prodi'])->where('id', $id)->first(),
             'id' => $id
         ]);
     }
@@ -271,7 +245,7 @@ class CapKurikulumController extends Controller
             $dok_ren_pembelajaran = $request->dok_ren_pembelajaran;
         }
 
-
+//mengganti data yg di kiri (database) dengan data yg di kanan (form)
         $capkurikulum->semester = $request->semester;
         $capkurikulum->tahun = $request->tahun;
         $capkurikulum->mata_kuliah_kompetensi = $mata_kuliah_kompetensi;
@@ -329,56 +303,4 @@ class CapKurikulumController extends Controller
         ]);
     }
 
-    public function pilihmatkul(Request $request, $id)
-    {
-        $matkul = CapKurikulum::where('id', $id)->first();
-        $datacapkurikulum = $request->only('matkul_id', 'cap_kurikulum_id', 'keanggotaan');
-
-        //valid credential
-        $validator = Validator::make($datacapkurikulum, [
-            'matkul_id' => 'required',
-            'cap_kurikulum_id' => 'required',
-            'keanggotaan' => 'required',
-        ]);
-
-        //Send failed response if request is not valid
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
-        }
-
-        $relasimatkul = RelasiCapMatkul::create(
-            [
-                'matkul_id' => $request->matkul_id,
-                'cap_kurikulum_id' => $request->cap_kurikulum_id,
-                'keanggotaan' => $request->keanggotaan,
-            ]
-        );
-
-
-        //Token created, return with success response and jwt token
-        return response()->json([
-            'success' => true,
-            'matkul_id' => $request->matkul_id,
-            'cap_kurikulum_id' => $request->cap_kurikulum_id,
-            'keanggotaan' => $request->keanggotaan,
-            'all_capkurikulum' => CapKurikulum::all()
-        ]);
-    }
-
-    public function deletematkul($id)
-    {
-        $capkurikulum = RelasiCapMatkul::find($id);
-        $capkurikulum->delete();
-
-        if (!$capkurikulum) {
-            return response()->json([
-                'success' => false,
-                'message' => "Gagal Dihapus"
-            ]);
-        }
-        return response()->json([
-            'success' => true,
-            'message' => "Berhasil Dihapus"
-        ]);
-    }
 }

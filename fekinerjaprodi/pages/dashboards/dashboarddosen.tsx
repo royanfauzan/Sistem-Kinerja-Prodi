@@ -135,6 +135,12 @@ export default function dashboardadmin() {
                           halaman={"/integrasi/daftarintegrasi"}
                           icon={`bi bi-infinity`}
                         />
+                        <ListCardDash
+                          judul={"Data Mahasiswa"}
+                          keterangan={`Kelola Data Mahasiswa`}
+                          halaman={"/mahasiswa/daftarmhs"}
+                          icon={`bi bi-people`}
+                        />
                       </Carddashboard>
                       <Carddashboard judul={`Kriteria Kerjasama`}>
                         <ListCardDash

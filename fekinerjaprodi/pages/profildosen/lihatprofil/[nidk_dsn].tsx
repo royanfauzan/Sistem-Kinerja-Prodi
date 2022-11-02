@@ -288,7 +288,7 @@ export default function lihatprofil(props) {
                                         : ""
                                     }
                                   >
-                                    NIK
+                                    NIK/NIP
                                   </label>
                                   <input
                                     disabled={!editMode}

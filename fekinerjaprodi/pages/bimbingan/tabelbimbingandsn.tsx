@@ -93,9 +93,13 @@ export default function tabelbimbingan() {
       // <--
       if (result.isConfirmed) {
         // <-- if confirmed
+        const lgToken = localStorage.getItem("token");
         axios({
           method: "post",
           url: `http://127.0.0.1:8000/api/delete_bimbingan/${id}`,
+          headers: {
+            Authorization: `Bearer ${lgToken}`
+          }
         })
           .then(function (response) {
             const { databimbingans } = response.data;

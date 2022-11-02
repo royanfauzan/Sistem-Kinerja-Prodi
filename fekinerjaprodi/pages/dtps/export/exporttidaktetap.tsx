@@ -252,7 +252,7 @@ export default function exporttidaktetap() {
                                     <td>{index + 1}</td>
                                     {/* prodi */}
                                     <td>{dosentidaktetap.NamaDosen}</td>
-                                    <td>{dosentidaktetap.NIDK}</td>
+                                    <td>&#10240;{`&nbsp ${dosentidaktetap.NIDK} `}</td>
                                     <td>{penTinggi}</td>
                                     {dosentidaktetap.detaildosen ? (
                                       <>

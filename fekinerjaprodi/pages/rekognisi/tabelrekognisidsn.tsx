@@ -98,8 +98,9 @@ export default function tabelrekognisi() {
           url: `http://127.0.0.1:8000/api/delete_rekognisi/${id}`,
         })
           .then(function (response) {
-            const { datarekognisis } = response.data;
-            setdataRekognisis(datarekognisis);
+            router.reload();
+            // const { datarekognisis } = response.data;
+            // setdataRekognisis(datarekognisis);
           })
           .catch(function (err) {
             console.log("gagal");

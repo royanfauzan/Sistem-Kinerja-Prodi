@@ -38,7 +38,6 @@ export default function tabelewmp() {
         console.log("gagal");
         console.log(err.response);
       });
-    
   };
 
   useEffect(() => {
@@ -74,8 +73,6 @@ export default function tabelewmp() {
         console.log(err.response);
         return router.push("/ewmp/tabelewmpdsn");
       });
-
-    
   }, []);
 
   const deleteEwmp = (id) => {
@@ -91,10 +88,17 @@ export default function tabelewmp() {
     }).then((result) => {
       // <--
       if (result.isConfirmed) {
+        const lgToken = localStorage.getItem("token");
+        if (!lgToken) {
+          router.push("/login");
+        }
         // <-- if confirmed
         axios({
           method: "post",
           url: `http://127.0.0.1:8000/api/delete_ewmp/${id}`,
+          headers: {
+            Authorization: `Bearer ${lgToken}`
+          }
         })
           .then(function (response) {
             const { dataewmps } = response.data;
@@ -107,7 +111,7 @@ export default function tabelewmp() {
       }
     });
   };
- 
+
   const searchdata = async (e) => {
     if (e.target.value == "") {
       const req = await axios.get(`http://127.0.0.1:8000/api/search_ewmp/`);
@@ -162,19 +166,15 @@ export default function tabelewmp() {
                       </div>
                       <div className="col-6">
                         <div className="row">
-                          <div className="col-4 d-flex flex-row-reverse">
-                            
-                          </div>
+                          <div className="col-4 d-flex flex-row-reverse"></div>
 
                           <div className="col-8 d-flex justify-content-end">
-                          <Link href={`/ewmp/inputewmp/`}>
+                            <Link href={`/ewmp/inputewmp/`}>
                               <button className=" btn btn-success border-0 shadow-sm ps-3 pe-3 ps-3 me-3 mt-3 mb-0">
                                 Tambah Data
                               </button>
                             </Link>
-                            <Link
-                              href={`/ewmp/export/exportewmp`}
-                            >
+                            <Link href={`/ewmp/export/exportewmp`}>
                               <button className=" btn btn-outline-success shadow-sm ps-3 ps-3 me-2 mt-3 mb-0">
                                 Cek Laporan
                               </button>

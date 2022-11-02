@@ -98,8 +98,9 @@ export default function tabelmengajar() {
           url: `http://127.0.0.1:8000/api/delete_mengajar/${id}`,
         })
           .then(function (response) {
-            const { datamengajars } = response.data;
-            setdataMengajars(datamengajars);
+            router.reload();
+            // const { datamengajars } = response.data;
+            // setdataMengajars(datamengajars);
           })
           .catch(function (err) {
             console.log("gagal");

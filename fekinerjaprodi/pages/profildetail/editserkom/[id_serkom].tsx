@@ -6,6 +6,9 @@ import FooterUtama from "../../../components/Molecule/Footer/FooterUtama";
 import CardUtama from "../../../components/Molecule/ProfileCard.tsx/CardUtama";
 import LayoutForm from "../../../components/Organism/Layout/LayoutForm";
 import LoadingUtama from "../../../components/Organism/LoadingPage/LoadingUtama";
+import CardSertif from "../../../components/Molecule/MenuCard/CardSertif";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 // Untuk Ngambil Data Berdasarkan ID
 
@@ -26,6 +29,7 @@ export async function getServerSideProps(context) {
 export default function inputserkom(props) {
   const apiurl = "http://127.0.0.1:8000/";
   const { dataserkom } = props;
+  const MySwal = withReactContent(Swal);
 
   const router = useRouter();
 
@@ -149,6 +153,40 @@ export default function inputserkom(props) {
 
   const handleChangeFile = (e) => {
     setfilebuktis(e.target.files[0]);
+  };
+
+  const deleteSertifikat = (id, nama) => {
+    MySwal.fire({
+      title: `Yakin akan menghapus Data Sertifikat ${nama}?`,
+      text: "Data ini akan dihapus secara Permanen!!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Hapus",
+    }).then((result) => {
+      // <--
+      if (result.isConfirmed) {
+        // <-- if confirmed
+        axios({
+          method: "post",
+          url: `http://127.0.0.1:8000/api/delete_serkom/${id}`,
+        })
+          .then(function (response) {
+            if (dataRole == "dosen") {
+              router.push("/profildosen/myprofil");
+            } else {
+              router.push(
+                `/profildosen/lihatprofil/${dataSerkomDosen.profil_dosen.NIDK}`
+              );
+            }
+          })
+          .catch(function (err) {
+            console.log("gagal");
+            console.log(err.response);
+          });
+      }
+    });
   };
 
   return (
@@ -396,6 +434,28 @@ export default function inputserkom(props) {
                     </div>
                   </div>
                 </form>
+                <div className="row">
+                  <div className="col-12">
+                    <CardSertif judul={"HAPUS DATA"}>
+                      <div className="col-12 mt-4">
+                        <div className="row">
+                          <button
+                            className="btn btn-sm btn-outline-danger shadow-sm ps-3 pe-3 mb-2 me-3 mt-2"
+                            type={`button`}
+                            onClick={() =>
+                              deleteSertifikat(
+                                dataSerkomDosen.id,
+                                dataSerkomDosen.nama_skema
+                              )
+                            }
+                          >
+                            Hapus Data Serkom
+                          </button>
+                        </div>
+                      </div>
+                    </CardSertif>
+                  </div>
+                </div>
               </div>
               <div className="col-md-4">
                 <CardUtama />

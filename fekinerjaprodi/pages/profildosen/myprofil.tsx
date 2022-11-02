@@ -276,7 +276,7 @@ export default function myprofil() {
                                         : ""
                                     }
                                   >
-                                    NIK
+                                    NIK/NIP
                                   </label>
                                   <input
                                     disabled={!editMode}

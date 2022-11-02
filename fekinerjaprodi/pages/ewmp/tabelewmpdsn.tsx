@@ -92,9 +92,16 @@ export default function tabelewmp() {
       // <--
       if (result.isConfirmed) {
         // <-- if confirmed
+        const lgToken = localStorage.getItem("token");
+        if (!lgToken) {
+          router.push("/login");
+        }
         axios({
           method: "post",
           url: `http://127.0.0.1:8000/api/delete_ewmp/${id}`,
+          headers: {
+            Authorization: `Bearer ${lgToken}`
+          }
         })
           .then(function (response) {
             const { dataewmps } = response.data;

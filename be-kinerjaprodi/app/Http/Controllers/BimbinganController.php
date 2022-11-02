@@ -279,9 +279,22 @@ class BimbinganController extends Controller
 
         $bimbingan->delete();
 
+        $user = JWTAuth::parseToken()->authenticate();
+        $dosenId = $user->profilDosen->id;
+
+        $bimbingans = Bimbingan::where('profil_dosen_id', $dosenId)->with('profilDosen', 'mahasiswa','prodi')
+            ->orderBy('tahun_akademik', 'DESC')
+            ->get();
+        $arrbimbingan = array();
+        foreach ($bimbingans as $key => $bimbingan) {
+            if ($bimbingan->profil_dosen_id == $dosenId) {
+                $arrbimbingan[] = $bimbingan;
+            }
+        }
+
         return response()->json([
             'success' => true,
-            'bimbinganDosen' => $bimbingan,
+            'databimbingans' => $bimbingans,
         ]);
     }
 

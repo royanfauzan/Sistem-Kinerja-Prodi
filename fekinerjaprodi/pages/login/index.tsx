@@ -127,14 +127,14 @@ export default function index() {
               >
                 <div className="mb-3">
                   <label htmlFor="nidk" className="form-label">
-                    NIDK
+                    NIDN
                   </label>
                   <input
                     type="text"
                     className="form-control"
                     id="nidk"
                     name="nidk"
-                    placeholder="NIDK"
+                    placeholder="NIDN"
                     required
                   />
                 </div>

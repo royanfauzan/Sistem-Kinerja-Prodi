@@ -245,7 +245,7 @@ export default function exportdosenindustri() {
                                       <td>{index + 1}</td>
                                       {/* prodi */}
                                       <td>{dosenindustri.NamaDosen}</td>
-                                      <td>{dosenindustri.NIDK}</td>
+                                      <td>&#10240;{` ${dosenindustri.NIDK} `}</td>
                                       {dosenindustri.detaildosen ? (
                                         <>
                                           <td>

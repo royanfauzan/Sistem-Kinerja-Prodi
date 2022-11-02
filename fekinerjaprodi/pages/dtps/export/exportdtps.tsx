@@ -269,7 +269,7 @@ export default function exportdtps() {
                                     <td>{index + 1}</td>
                                     {/* prodi */}
                                     <td>{dtps.NamaDosen}</td>
-                                    <td>{dtps.NIDK}</td>
+                                    <td><span> &#10240;{` ${dtps.NIDK} `}</span></td>
                                     <td>{dtps.pascasarjana.magister}</td>
                                     <td>{dtps.pascasarjana.doktor}</td>
                                     {dtps.detaildosen?(

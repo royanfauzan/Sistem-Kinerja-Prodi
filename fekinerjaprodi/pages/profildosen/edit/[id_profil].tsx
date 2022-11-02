@@ -220,7 +220,7 @@ export default function update_dataprofil(props) {
                                   : ""
                               }
                             >
-                              NIK
+                              NIK/NIP
                             </label>
                             <input
                               className="form-control"

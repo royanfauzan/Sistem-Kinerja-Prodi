@@ -18,15 +18,15 @@ class EwmpController extends Controller
     {
         //
 
-        $idsDosens=Ewmp::select('profil_dosen_id')->where('tahun_akademik','2020/2021')->get();
+        $idsDosens = Ewmp::select('profil_dosen_id')->where('tahun_akademik', '2020/2021')->get();
         $iddoss = array();
-        foreach($idsDosens as $idsDosen){
-            $iddoss[]=$idsDosen->profil_dosen_id;
+        foreach ($idsDosens as $idsDosen) {
+            $iddoss[] = $idsDosen->profil_dosen_id;
         }
 
-        $iddoss=array_unique($iddoss);
+        $iddoss = array_unique($iddoss);
 
-        $allewmps = Ewmp::with('profilDosen')->where('tahun_akademik','2020/2021')->get()->groupBy('profil_dosen_id');
+        $allewmps = Ewmp::with('profilDosen')->where('tahun_akademik', '2020/2021')->get()->groupBy('profil_dosen_id');
 
         // $hitunganewmp = collect([]);
         // $hitungIndex = 0;
@@ -36,8 +36,8 @@ class EwmpController extends Controller
 
         $hitunganewmp = collect([]);
         $index = 0;
-        $insideCounter=array();
-        foreach($allewmps as $emps){
+        $insideCounter = array();
+        foreach ($allewmps as $emps) {
             $total = 0;
             $collectewmp = $emps[0];
             $collectewmp->profil_dosen = $emps[0]->profil_dosen;
@@ -55,7 +55,7 @@ class EwmpController extends Controller
                 $sks_pengabdian += $emp->sks_pengabdian;
                 $sks_tugas += $emp->sks_tugas;
             }
-            
+
             $collectewmp->sks_ps_akreditasi = $sks_ps_akreditasi;
             $collectewmp->sks_ps_lain_pt = $sks_ps_lain_pt;
             $collectewmp->sks_ps_luar_pt = $sks_ps_luar_pt;
@@ -63,9 +63,9 @@ class EwmpController extends Controller
             $collectewmp->sks_pengabdian = $sks_pengabdian;
             $collectewmp->sks_tugas = $sks_tugas;
 
-            $total = $collectewmp->sks_ps_akreditasi+$collectewmp->sks_ps_lain_pt+$collectewmp->sks_ps_luar_pt+$collectewmp->sks_penelitian+$collectewmp->sks_pengabdian+$collectewmp->sks_tugas;
+            $total = $collectewmp->sks_ps_akreditasi + $collectewmp->sks_ps_lain_pt + $collectewmp->sks_ps_luar_pt + $collectewmp->sks_penelitian + $collectewmp->sks_pengabdian + $collectewmp->sks_tugas;
 
-            $avg = $total/2;
+            $avg = $total / 2;
             $collectewmp->total = $total;
             $collectewmp->avg = $avg;
             $hitunganewmp->push($collectewmp);
@@ -118,18 +118,18 @@ class EwmpController extends Controller
         //     $dosenId = $request->dosenId;
         // }
 
-        $data = $request->only('dtps','profil_dosen_id','tahun_akademik', 'semester', 'sks_ps_akreditasi', 'sks_ps_lain_pt', 'sks_ps_luar_pt', 'sks_penelitian', 'sks_pengabdian', 'sks_tugas');
+        $data = $request->only('dtps', 'profil_dosen_id', 'tahun_akademik', 'semester', 'sks_ps_akreditasi', 'sks_ps_lain_pt', 'sks_ps_luar_pt', 'sks_penelitian', 'sks_pengabdian', 'sks_tugas');
         $validator = Validator::make($data, [
-            'dtps'=>'sometimes|boolean',
-            'tahun_akademik'=>'required|string',
-            'semester'=>"required|string",
-            'profil_dosen_id'=>"required",
-            'sks_ps_akreditasi'=>"sometimes|numeric",
-            'sks_ps_lain_pt'=>"sometimes|numeric",
-            'sks_ps_luar_pt'=>"sometimes|numeric",
-            'sks_penelitian'=>"sometimes|numeric",
-            'sks_pengabdian'=>"sometimes|numeric",
-            'sks_tugas'=>"sometimes|numeric",
+            'dtps' => 'sometimes|boolean',
+            'tahun_akademik' => 'required|string',
+            'semester' => "required|string",
+            'profil_dosen_id' => "required",
+            'sks_ps_akreditasi' => "sometimes|numeric",
+            'sks_ps_lain_pt' => "sometimes|numeric",
+            'sks_ps_luar_pt' => "sometimes|numeric",
+            'sks_penelitian' => "sometimes|numeric",
+            'sks_pengabdian' => "sometimes|numeric",
+            'sks_tugas' => "sometimes|numeric",
         ]);
 
         if ($validator->fails()) {
@@ -139,7 +139,7 @@ class EwmpController extends Controller
             ], 400);
         }
 
-        if (Ewmp::where([['profil_dosen_id', $request->profil_dosen_id],['tahun_akademik', $request->tahun_akademik],['semester', $request->semester]])->first()) {
+        if (Ewmp::where([['profil_dosen_id', $request->profil_dosen_id], ['tahun_akademik', $request->tahun_akademik], ['semester', $request->semester]])->first()) {
             return response()->json([
                 'success' => false,
                 'message' => "EWMP Sudah Tersimpan",
@@ -147,9 +147,9 @@ class EwmpController extends Controller
         }
 
         $Ewmp = Ewmp::create([
-            'tahun_akademik'=>$request->tahun_akademik,
-            'semester'=>$request->semester,
-            'profil_dosen_id'=>$request->profil_dosen_id,
+            'tahun_akademik' => $request->tahun_akademik,
+            'semester' => $request->semester,
+            'profil_dosen_id' => $request->profil_dosen_id,
         ]);
 
         if (isset($request->dtps)) {
@@ -227,19 +227,19 @@ class EwmpController extends Controller
     public function update(Request $request, $id)
     {
         //
-        
-        $data = $request->only('dtps','profil_dosen_id','tahun_akademik', 'semester', 'sks_ps_akreditasi', 'sks_ps_lain_pt', 'sks_ps_luar_pt', 'sks_penelitian', 'sks_pengabdian', 'sks_tugas');
+
+        $data = $request->only('dtps', 'profil_dosen_id', 'tahun_akademik', 'semester', 'sks_ps_akreditasi', 'sks_ps_lain_pt', 'sks_ps_luar_pt', 'sks_penelitian', 'sks_pengabdian', 'sks_tugas');
         $validator = Validator::make($data, [
-            'dtps'=>'sometimes|boolean',
-            'tahun_akademik'=>'required|string',
-            'semester'=>"required|string",
-            'profil_dosen_id'=>"required",
-            'sks_ps_akreditasi'=>"sometimes|numeric",
-            'sks_ps_lain_pt'=>"sometimes|numeric",
-            'sks_ps_luar_pt'=>"sometimes|numeric",
-            'sks_penelitian'=>"sometimes|numeric",
-            'sks_pengabdian'=>"sometimes|numeric",
-            'sks_tugas'=>"sometimes|numeric",
+            'dtps' => 'sometimes|boolean',
+            'tahun_akademik' => 'required|string',
+            'semester' => "required|string",
+            'profil_dosen_id' => "required",
+            'sks_ps_akreditasi' => "sometimes|numeric",
+            'sks_ps_lain_pt' => "sometimes|numeric",
+            'sks_ps_luar_pt' => "sometimes|numeric",
+            'sks_penelitian' => "sometimes|numeric",
+            'sks_pengabdian' => "sometimes|numeric",
+            'sks_tugas' => "sometimes|numeric",
         ]);
 
         if ($validator->fails()) {
@@ -253,7 +253,7 @@ class EwmpController extends Controller
         //     ], 400);
         // }
 
-        $ewmpExist = Ewmp::where([['profil_dosen_id', $request->profil_dosen_id],['tahun_akademik', $request->tahun_akademik],['semester', $request->semester]])->where([['id','!=',$id]])->get()->count();
+        $ewmpExist = Ewmp::where([['profil_dosen_id', $request->profil_dosen_id], ['tahun_akademik', $request->tahun_akademik], ['semester', $request->semester]])->where([['id', '!=', $id]])->get()->count();
         if ($ewmpExist) {
             return response()->json([
                 'success' => false,
@@ -314,16 +314,34 @@ class EwmpController extends Controller
         $ewmp = Ewmp::find($id);
         $ewmp->delete();
 
+
         if (!$ewmp) {
             return response()->json([
                 'success' => false,
                 'message' => "Gagal Dihapus"
             ]);
         }
+
+        $arrEwmp = array();
+        $user = JWTAuth::parseToken()->authenticate();
+        if ($user->profilDosen) {
+            $dosenId = $user->profilDosen->id;
+            $ewmps = Ewmp::where('profil_dosen_id', $dosenId)->with('profilDosen')->orderBy('tahun_akademik', 'DESC')->get();
+            foreach ($ewmps as $key => $ewmp) {
+                if ($ewmp->profil_dosen_id == $dosenId) {
+                    $arrEwmp[] = $ewmp;
+                }
+            }
+        } else {
+            $ewmps = Ewmp::with('profilDosen')->orderBy('tahun_akademik', 'DESC')->get();
+            foreach ($ewmps as $key => $ewmp) {
+                $arrEwmp[] = $ewmp;
+            }
+        }
         return response()->json([
             'success' => true,
             'message' => "Berhasil Dihapus",
-            'dataewmps' => Ewmp::with('profilDosen')->orderBy('tahun_akademik','DESC')->get()
+            'dataewmps' => $arrEwmp
         ]);
     }
 
@@ -347,20 +365,20 @@ class EwmpController extends Controller
         //
         return response()->json([
             'success' => true,
-            'dataewmps' => Ewmp::with('profilDosen')->orderBy('tahun_akademik','DESC')->get(),
+            'dataewmps' => Ewmp::with('profilDosen')->orderBy('tahun_akademik', 'DESC')->get(),
             // 'dataewmps' => Ewmp::where([['profil_dosen_id', '2'],['tahun_akademik', '2020/2021'],['semester', 'Genap']])->where([['id','!=',5]])->get(),
         ]);
     }
 
-    public function searchewmp(Request $request,$search)
+    public function searchewmp(Request $request, $search)
     {
         //
-        
+
         $ewmps = Ewmp::with('profilDosen')->whereRelation('profilDosen', 'NamaDosen', 'LIKE', "%{$search}%")
-        ->orWhere('Semester', 'LIKE', "%{$search}%")
-        ->orWhere('tahun_akademik', 'LIKE', "%{$search}%")
-        ->orderBy('tahun_akademik','DESC')
-        ->get();
+            ->orWhere('Semester', 'LIKE', "%{$search}%")
+            ->orWhere('tahun_akademik', 'LIKE', "%{$search}%")
+            ->orderBy('tahun_akademik', 'DESC')
+            ->get();
         return response()->json([
             'success' => true,
             'dataewmps' => $ewmps,
@@ -371,13 +389,13 @@ class EwmpController extends Controller
     {
         //
         $user = JWTAuth::parseToken()->authenticate();
-        $dosenId=$user->profilDosen->id;
+        $dosenId = $user->profilDosen->id;
 
-        $ewmps = Ewmp::where('profil_dosen_id',$dosenId)->with('profilDosen')->orderBy('tahun_akademik','DESC')->get();
-        $arrEwmp=array();
+        $ewmps = Ewmp::where('profil_dosen_id', $dosenId)->with('profilDosen')->orderBy('tahun_akademik', 'DESC')->get();
+        $arrEwmp = array();
         foreach ($ewmps as $key => $ewmp) {
             if ($ewmp->profil_dosen_id == $dosenId) {
-                $arrEwmp[]=$ewmp;
+                $arrEwmp[] = $ewmp;
             }
         }
         return response()->json([
@@ -387,20 +405,20 @@ class EwmpController extends Controller
         ]);
     }
 
-    public function searchewmpdsn(Request $request,$search)
+    public function searchewmpdsn(Request $request, $search)
     {
         $user = JWTAuth::parseToken()->authenticate();
-        $dosenId=$user->profilDosen->id;
+        $dosenId = $user->profilDosen->id;
         //
         $ewmps = Ewmp::with('profilDosen')->whereRelation('profilDosen', 'NamaDosen', 'LIKE', "%{$search}%")
-        ->orWhere('Semester', 'LIKE', "%{$search}%")
-        ->orWhere('tahun_akademik', 'LIKE', "%{$search}%")
-        ->orderBy('tahun_akademik','DESC')
-        ->get();
-        $arrEwmp=array();
+            ->orWhere('Semester', 'LIKE', "%{$search}%")
+            ->orWhere('tahun_akademik', 'LIKE', "%{$search}%")
+            ->orderBy('tahun_akademik', 'DESC')
+            ->get();
+        $arrEwmp = array();
         foreach ($ewmps as $key => $ewmp) {
             if ($ewmp->profil_dosen_id == $dosenId) {
-                $arrEwmp[]=$ewmp;
+                $arrEwmp[] = $ewmp;
             }
         }
         // $ewmpsfilter = $ewmps->where('profil_dosen_id',$dosenId);
